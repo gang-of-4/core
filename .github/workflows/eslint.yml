@@ -1,0 +1,40 @@
+name: ESLint check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  eslint:
+    name: ESLINT
+    runs-on: ubuntu-latest
+
+    env:
+      bun-version: 1.0.4
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        id: dependencies-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-bun-turborepo-${{ hashFiles('**/bun.lockb') }}-eslint
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.bun-version }}
+
+      - name: Install Dependencies
+        if: steps.dependencies-cache.outputs.cache-hit != 'true'
+        run: bun install --no-save
+
+      - name: ESLint check
+        run: bun lint
