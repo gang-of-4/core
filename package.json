@@ -1,4 +1,6 @@
 {
+  "name": "core",
+  "packageManager": "bun@1.0.4",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -10,10 +12,9 @@
     "eslint": "^8.48.0",
     "prettier": "^3.0.3",
     "tsconfig": "*",
+    "eslint-config-custom": "*",
     "turbo": "latest"
   },
-  "name": "core",
-  "packageManager": "bun@1.0.3",
   "workspaces": [
     "apps/*",
     "packages/*"
