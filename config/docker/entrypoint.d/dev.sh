@@ -1,5 +1,5 @@
 #!/bin/bash
 
-pnpm install --frozen-lockfile
+pnpm install
 
 pnpm dev
