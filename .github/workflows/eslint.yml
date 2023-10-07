@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      bun-version: 1.0.4
+      pnpm-version: 8.8.0
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
@@ -27,14 +27,14 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-bun-turborepo-${{ hashFiles('**/bun.lockb') }}-eslint
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
         with:
-          bun-version: ${{ env.bun-version }}
+          version: ${{ env.pnpm-version }}
 
       - name: Install Dependencies
         if: steps.dependencies-cache.outputs.cache-hit != 'true'
-        run: bun install --no-save
+        run: pnpm install --frozen-lockfile
 
       - name: ESLint check
-        run: bun lint
+        run: pnpm lint
