@@ -1,5 +1,17 @@
 version: '3'
 services:
+    gateway:
+        image: nginx:mainline-alpine-slim
+        container_name: gateway
+        restart: unless-stopped
+        ports:
+            - '3000:80'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        networks:
+            - core-network
+        volumes:
+            - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     turbo:
         container_name: app
         restart: unless-stopped
@@ -9,13 +21,9 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         networks:
-            - turbo-network
-        ports:
-            - '3000:3000'
-            - '3001:3001'
-            - '3002:3002'
+            - core-network
         volumes:
             - .:/app
 networks:
-    turbo-network:
+    core-network:
         driver: bridge
