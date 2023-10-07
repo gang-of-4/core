@@ -1,0 +1,21 @@
+version: '3'
+services:
+    turbo:
+        container_name: app
+        restart: unless-stopped
+        build:
+          context: .
+          dockerfile: Dockerfile
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        networks:
+            - turbo-network
+        ports:
+            - '3000:3000'
+            - '3001:3001'
+            - '3002:3002'
+        volumes:
+            - .:/app
+networks:
+    turbo-network:
+        driver: bridge
