@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Box, Card, CardHeader, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const categories = [
   {
@@ -120,12 +120,12 @@ export const LogisticsVehiclesCondition = (props) => {
                   >
                     {category.title}
                   </Typography>
-                  <Chart
+                  {/* <Chart
                     height={200}
                     options={chartOptions}
                     series={chartSeries}
                     type="radialBar"
-                  />
+                  /> */}
                   <Typography variant="h6">
                     {amount}
                   </Typography>

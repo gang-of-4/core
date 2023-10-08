@@ -10,7 +10,7 @@ import {
   Unstable_Grid2 as Grid
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const useChartOptions = (labels) => {
   const theme = useTheme();
@@ -78,12 +78,12 @@ export const LogisticsVehiclesOverview = (props) => {
             xs={12}
             md={6}
           >
-            <Chart
+            {/* <Chart
               height={300}
               options={chartOptions}
               series={chartSeries}
               type="radialBar"
-            />
+            /> */}
           </Grid>
           <Grid
             xs={12}

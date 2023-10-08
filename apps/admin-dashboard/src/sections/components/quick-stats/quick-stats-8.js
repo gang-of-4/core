@@ -1,7 +1,7 @@
 import RefreshCcw02Icon from '@untitled-ui/icons-react/build/esm/RefreshCcw02';
 import { Avatar, Box, Card, Stack, SvgIcon, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const chartSeries = [
   {
@@ -120,12 +120,12 @@ export const QuickStats8 = () => {
               </Typography>
             </Box>
             <Box sx={{ maxWidth: 200 }}>
-              <Chart
+              {/* <Chart
                 height={100}
                 type="line"
                 options={chartOptions}
                 series={chartSeries}
-              />
+              /> */}
             </Box>
           </Stack>
         </Card>

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
 import { Button, Stack, SvgIcon, Typography } from '@mui/material';
-import { QuillEditor } from '../../../components/quill-editor';
+// import { QuillEditor } from '../../../components/quill-editor';
 
 export const JobDescriptionStep = (props) => {
   const { onBack, onNext, ...other } = props;
@@ -21,12 +21,12 @@ export const JobDescriptionStep = (props) => {
           How would you describe the job post?
         </Typography>
       </div>
-      <QuillEditor
+      {/* <QuillEditor
         onChange={handleContentChange}
         placeholder="Write something"
         sx={{ height: 400 }}
         value={content}
-      />
+      /> */}
       <Stack
         alignItems="center"
         direction="row"

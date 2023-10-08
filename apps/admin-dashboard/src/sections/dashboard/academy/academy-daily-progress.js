@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const useChartOptions = (timeLeft) => {
   const theme = useTheme();
@@ -92,13 +92,13 @@ export const AcademyDailyProgress = (props) => {
             my: -6
           }}
         >
-          <Chart
+          {/* <Chart
             width={260}
             height={260}
             options={chartOptions}
             series={chartSeries}
             type="radialBar"
-          />
+          /> */}
         </Box>
         <Typography variant="h6">
           Today’s progress of your {timeGoal}-minutes goal

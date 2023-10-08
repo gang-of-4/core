@@ -5,7 +5,7 @@ import ChevronUpIcon from '@untitled-ui/icons-react/build/esm/ChevronUp';
 import DotsHorizontalIcon from '@untitled-ui/icons-react/build/esm/DotsHorizontal';
 import { Box, Card, CardHeader, IconButton, Stack, SvgIcon, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const logoMap = {
   BTC: '/assets/logos/logo-bitcoin.svg',
@@ -111,12 +111,12 @@ export const CryptoWallet = (props) => {
           </Typography>
         )}
       />
-      <Chart
+      {/* <Chart
         height={140}
         options={chartOptions}
         series={chartSeries}
         type="area"
-      />
+      /> */}
       <Box
         sx={{
           pb: 2,

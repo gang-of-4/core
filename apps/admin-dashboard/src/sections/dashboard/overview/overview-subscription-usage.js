@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Box, Card, CardHeader, Tab, Tabs } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const useChartOptions = () => {
   const theme = useTheme();
@@ -112,12 +112,12 @@ export const OverviewSubscriptionUsage = (props) => {
         </Tabs>}
       />
       <Box sx={{ height: 336 }}>
-        <Chart
+        {/* <Chart
           height={300}
           options={chartOptions}
           series={chartSeries}
           type="bar"
-        />
+        /> */}
       </Box>
     </Card>
   );

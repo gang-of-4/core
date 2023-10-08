@@ -16,7 +16,7 @@ import {
   Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 import { FileIcon } from '../../../components/file-icon';
 import { bytesToSize } from '../../../utils/bytes-to-size';
 
@@ -139,13 +139,13 @@ export const StorageStats = () => {
               mb: '-100px'
             }}
           >
-            <Chart
+            {/* <Chart
               width={260}
               height={260}
               options={chartOptions}
               series={chartSeries}
               type="radialBar"
-            />
+            /> */}
           </Box>
           <Typography
             variant="h6"

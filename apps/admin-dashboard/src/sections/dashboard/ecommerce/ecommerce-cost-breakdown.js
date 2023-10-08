@@ -14,7 +14,7 @@ import {
   Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const useChartOptions = (labels) => {
   const theme = useTheme();
@@ -76,12 +76,12 @@ export const EcommerceCostBreakdown = (props) => {
         subheader="Based on selected period"
       />
       <CardContent>
-        <Chart
+        {/* <Chart
           height={240}
           options={chartOptions}
           series={chartSeries}
           type="donut"
-        />
+        /> */}
         <Table>
           <TableHead
             sx={{

@@ -15,7 +15,7 @@ import {
   Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const useChartOptions = (labels) => {
   const theme = useTheme();
@@ -114,12 +114,12 @@ export const CryptoCurrentBalance = (props) => {
               width: 200
             }}
           >
-            <Chart
+            {/* <Chart
               height={200}
               options={chartOptions}
               series={chartSeries}
               type="donut"
-            />
+            /> */}
           </Box>
           <Stack
             spacing={4}

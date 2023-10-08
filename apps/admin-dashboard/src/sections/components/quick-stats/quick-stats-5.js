@@ -1,6 +1,6 @@
 import { Box, Card, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const chartSeries = [
   {
@@ -71,11 +71,11 @@ const Graphic = () => {
         width: 177
       }}
     >
-      <Chart
+      {/* <Chart
         options={chartOptions}
         series={chartSeries}
         type="line"
-      />
+      /> */}
     </Box>
   );
 };
