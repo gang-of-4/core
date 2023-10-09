@@ -33,8 +33,8 @@ importers:
         specifier: 5.1.3
         version: 5.1.3(react-native@0.72.5)
       '@emotion/cache':
-        specifier: 11.10.3
-        version: 11.10.3
+        specifier: 11.11.0
+        version: 11.11.0
       '@emotion/react':
         specifier: 11.10.4
         version: 11.10.4(@babel/core@7.23.0)(@types/react@18.2.25)(react@18.2.0)
@@ -3899,16 +3899,6 @@ packages:
       stylis: 4.2.0
     dev: false
 
-  /@emotion/cache@11.10.3:
-    resolution: {integrity: sha512-Psmp/7ovAa8appWh3g51goxu/z3iVms7JXOreq136D8Bbn6dYraPnmL6mdM8GThEx9vwSn92Fz+mGSjBzN8UPQ==}
-    dependencies:
-      '@emotion/memoize': 0.8.1
-      '@emotion/sheet': 1.2.2
-      '@emotion/utils': 1.2.1
-      '@emotion/weak-memoize': 0.3.1
-      stylis: 4.0.13
-    dev: false
-
   /@emotion/cache@11.11.0:
     resolution: {integrity: sha512-P34z9ssTCBi3e9EI1ZsWpNHcfY1r09ZO0rZbRO2ob3ZQMnFI35jB536qoXbkdesr5EUhYi22anuEJuyxifaqAQ==}
     dependencies:
@@ -3948,7 +3938,7 @@ packages:
       '@babel/core': 7.23.0
       '@babel/runtime': 7.23.1
       '@emotion/babel-plugin': 11.11.0
-      '@emotion/cache': 11.10.3
+      '@emotion/cache': 11.11.0
       '@emotion/serialize': 1.1.2
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@emotion/utils': 1.2.1
@@ -11869,7 +11859,7 @@ packages:
     dependencies:
       object-assign: 4.1.1
       react: 18.2.0
-      react-is: 16.13.1
+      react-is: 18.2.0
     dev: false
 
   /react-slick@0.29.0(react-dom@18.2.0)(react@18.2.0):
@@ -12730,10 +12720,6 @@ packages:
     dependencies:
       cssjanus: 2.1.0
       stylis: 4.1.2
-    dev: false
-
-  /stylis@4.0.13:
-    resolution: {integrity: sha512-xGPXiFVl4YED9Jh7Euv2V220mriG9u4B2TA6Ybjc1catrstKD2PpIdU3U0RKpkVBC2EhmL/F0sPCr9vrFTNRag==}
     dev: false
 
   /stylis@4.1.2:
