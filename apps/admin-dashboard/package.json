@@ -60,7 +60,7 @@
     "lodash.debounce": "4.0.8",
     "lodash.isequal": "4.5.0",
     "mapbox-gl": "2.11.0",
-    "mui-one-time-password-input": "1.0.3",
+    "mui-one-time-password-input": "2.0.0",
     "next": "13.0.7",
     "nprogress": "0.2.0",
     "numeral": "2.0.6",
