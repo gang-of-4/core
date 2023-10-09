@@ -60,8 +60,8 @@ importers:
         specifier: 5.11.3
         version: 5.11.3
       '@fullcalendar/react':
-        specifier: 5.11.2
-        version: 5.11.2(react-dom@18.2.0)(react@18.2.0)
+        specifier: 6.1.9
+        version: 6.1.9(@fullcalendar/core@5.11.3)(react-dom@18.2.0)(react@18.2.0)
       '@fullcalendar/timegrid':
         specifier: 5.11.3
         version: 5.11.3
@@ -4600,16 +4600,16 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@fullcalendar/react@5.11.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-OnLvfV406VEQcK4QGN8xR4ro6Manp9dKE7/n9dhs19J1kKpqS1w1sIEYg1dT11njbk0Ob+TdF3cXLDFq73jUlA==}
+  /@fullcalendar/react@6.1.9(@fullcalendar/core@5.11.3)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ioxu0V++pYz2u/N1LL1V8DkMyiKGRun0gMAll2tQz3Kzi3r9pTwncGKRb1zO8h0e+TrInU08ywk/l5lBwp7eog==}
     peerDependencies:
+      '@fullcalendar/core': ~6.1.9
       react: ^16.7.0 || ^17 || ^18
       react-dom: ^16.7.0 || ^17 || ^18
     dependencies:
-      '@fullcalendar/common': 5.11.3
+      '@fullcalendar/core': 5.11.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      tslib: 2.6.2
     dev: false
 
   /@fullcalendar/scrollgrid@5.11.5:
@@ -11869,7 +11869,7 @@ packages:
     dependencies:
       object-assign: 4.1.1
       react: 18.2.0
-      react-is: 16.13.1
+      react-is: 18.2.0
     dev: false
 
   /react-slick@0.29.0(react-dom@18.2.0)(react@18.2.0):
