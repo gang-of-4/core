@@ -1,0 +1,42 @@
+model User {
+    id                  Char    
+    name                String
+    email               String
+    phone               String
+    role                Role
+    accounts            account[]
+    email_verified_at   Datetime
+    created_at          Datetime
+    updated_at          Datetime
+}
+
+model Role {
+    display_name    String
+    permissions     Permission[]
+}
+
+model Permission {
+    id      Char
+    name    String
+    url     String
+}
+
+model Provider {
+    provider    Provider
+}
+
+model Account {
+    id          Char
+    name        String
+    api_key     String
+}
+
+model CredentialsAccount {
+    password    Char
+}
+
+model OAuthAccount {
+    access_token    String
+    refresh_token   String
+    expires_at      Datetime
+}
