@@ -34,4 +34,4 @@ const config = {
 //   '@fullcalendar/timeline'
 // ]);
 
-// module.exports = withTM(config);
+module.exports = config;
