@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Box, Link, Stack, Tooltip, Typography } from '@mui/material';
-import { paths } from '../../paths';
+// import { paths } from '../../paths';
 
 const issuers = {
   Amplify: '/assets/logos/logo-amplify.svg',
@@ -30,7 +30,8 @@ export const AuthIssuer = (props) => {
         {' '}
         <Link
           component="a"
-          href={paths.docs.welcome}
+          // href={paths.docs.welcome}
+          href={'/'}
           target="_blank"
           underline="hover"
           variant="subtitle2"

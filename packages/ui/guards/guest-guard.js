@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import { useAuth } from '../hooks/use-auth';
-import { paths } from '../paths';
+// import { paths } from '../paths';
 
 export const GuestGuard = (props) => {
   const { children } = props;
@@ -12,7 +12,8 @@ export const GuestGuard = (props) => {
 
   const check = useCallback(() => {
     if (isAuthenticated) {
-      router.replace(paths.dashboard.index);
+      // router.replace(paths.dashboard.index);
+      router.replace('/');
     } else {
       setChecked(true);
     }
