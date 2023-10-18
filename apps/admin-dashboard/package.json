@@ -85,7 +85,8 @@
     "simplebar-react": "2.4.1",
     "stylis": "4.1.2",
     "stylis-plugin-rtl": "2.1.1",
-    "yup": "0.32.11"
+    "yup": "0.32.11",
+    "ui": "workspace:*"
   },
   "devDependencies": {
     "@svgr/webpack": "6.5.1",
