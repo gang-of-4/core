@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Container, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
-import { paths } from '../../paths';
+// import { paths } from '../../paths';
 
 const TOP_NAV_HEIGHT = 64;
 
@@ -44,7 +44,8 @@ export const Layout = (props) => {
               component={NextLink}
               direction="row"
               display="inline-flex"
-              href={paths.index}
+              // href={paths.index}
+              href={'/'}
               spacing={1}
               sx={{ textDecoration: 'none' }}
             >
