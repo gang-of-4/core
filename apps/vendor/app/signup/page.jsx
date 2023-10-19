@@ -78,8 +78,8 @@ const Page = () => {
         await signUp(values.email, values.name, values.password);
 
         if (isMounted()) {
-        //   router.push(returnTo || paths.dashboard.index);
-            router.push(returnTo || '/');
+          //   router.push(returnTo || paths.dashboard.index);
+          router.push(returnTo || '/');
         }
       } catch (err) {
         console.error(err);
@@ -99,128 +99,130 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Register | Devias Kit PRO
+          Sign up | Vendor
         </title>
       </Head>
-      <div>
-        <Card elevation={16}>
-          <CardHeader
-            subheader={(
-              <Typography
-                color="text.secondary"
-                variant="body2"
-              >
-                Already have an account?
-                &nbsp;
-                <Link
+      <div className='flex items-center justify-center w-screen h-screen'>
+        <div className='w-4/5 max-w-2xl'>
+          <Card elevation={16}>
+            <CardHeader
+              subheader={(
+                <Typography
+                  color="text.secondary"
+                  variant="body2"
+                >
+                  Already have an account?
+                  &nbsp;
+                  <Link
                     component={NextLink}
                     // href={paths.auth.jwt.login}
                     href={'/login'}
                     underline="hover"
                     variant="subtitle2"
-                >
-                  Log in
-                </Link>
-              </Typography>
-            )}
-            sx={{ pb: 0 }}
-            title="Register"
-          />
-          <CardContent>
-            <form
-              noValidate
-              onSubmit={formik.handleSubmit}
-            >
-              <Stack spacing={3}>
-                <TextField
-                  error={!!(formik.touched.name && formik.errors.name)}
-                  fullWidth
-                  helperText={formik.touched.name && formik.errors.name}
-                  label="Name"
-                  name="name"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.name}
-                />
-                <TextField
-                  error={!!(formik.touched.email && formik.errors.email)}
-                  fullWidth
-                  helperText={formik.touched.email && formik.errors.email}
-                  label="Email Address"
-                  name="email"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  type="email"
-                  value={formik.values.email}
-                />
-                <TextField
-                  error={!!(formik.touched.password && formik.errors.password)}
-                  fullWidth
-                  helperText={formik.touched.password && formik.errors.password}
-                  label="Password"
-                  name="password"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  type="password"
-                  value={formik.values.password}
-                />
-              </Stack>
-              <Box
-                sx={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  ml: -1,
-                  mt: 1
-                }}
-              >
-                <Checkbox
-                  checked={formik.values.policy}
-                  name="policy"
-                  onChange={formik.handleChange}
-                />
-                <Typography
-                  color="text.secondary"
-                  variant="body2"
-                >
-                  I have read the
-                  {' '}
-                  <Link
-                    component="a"
-                    href="#"
                   >
-                    Terms and Conditions
+                    Log in
                   </Link>
                 </Typography>
-              </Box>
-              {!!(formik.touched.policy && formik.errors.policy) && (
-                <FormHelperText error>
-                  {formik.errors.policy}
-                </FormHelperText>
               )}
-              {formik.errors.submit && (
-                <FormHelperText
-                  error
-                  sx={{ mt: 3 }}
-                >
-                  {formik.errors.submit}
-                </FormHelperText>
-              )}
-              <Button
-                disabled={formik.isSubmitting}
-                fullWidth
-                size="large"
-                sx={{ mt: 2 }}
-                type="submit"
-                variant="contained"
+              sx={{ pb: 0 }}
+              title="Register"
+            />
+            <CardContent>
+              <form
+                noValidate
+                onSubmit={formik.handleSubmit}
               >
-                Register
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-        <Box sx={{ mt: 3 }}>
-          <AuthIssuer issuer={issuer} />
-        </Box>
+                <Stack spacing={3}>
+                  <TextField
+                    error={!!(formik.touched.name && formik.errors.name)}
+                    fullWidth
+                    helperText={formik.touched.name && formik.errors.name}
+                    label="Name"
+                    name="name"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    value={formik.values.name}
+                  />
+                  <TextField
+                    error={!!(formik.touched.email && formik.errors.email)}
+                    fullWidth
+                    helperText={formik.touched.email && formik.errors.email}
+                    label="Email Address"
+                    name="email"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    type="email"
+                    value={formik.values.email}
+                  />
+                  <TextField
+                    error={!!(formik.touched.password && formik.errors.password)}
+                    fullWidth
+                    helperText={formik.touched.password && formik.errors.password}
+                    label="Password"
+                    name="password"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    type="password"
+                    value={formik.values.password}
+                  />
+                </Stack>
+                <Box
+                  sx={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    ml: -1,
+                    mt: 1
+                  }}
+                >
+                  <Checkbox
+                    checked={formik.values.policy}
+                    name="policy"
+                    onChange={formik.handleChange}
+                  />
+                  <Typography
+                    color="text.secondary"
+                    variant="body2"
+                  >
+                    I have read the
+                    {' '}
+                    <Link
+                      component="a"
+                      href="#"
+                    >
+                      Terms and Conditions
+                    </Link>
+                  </Typography>
+                </Box>
+                {!!(formik.touched.policy && formik.errors.policy) && (
+                  <FormHelperText error>
+                    {formik.errors.policy}
+                  </FormHelperText>
+                )}
+                {formik.errors.submit && (
+                  <FormHelperText
+                    error
+                    sx={{ mt: 3 }}
+                  >
+                    {formik.errors.submit}
+                  </FormHelperText>
+                )}
+                <Button
+                  disabled={formik.isSubmitting}
+                  fullWidth
+                  size="large"
+                  sx={{ mt: 2 }}
+                  type="submit"
+                  variant="contained"
+                >
+                  Sign up
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+          <Box sx={{ mt: 3 }}>
+            <AuthIssuer issuer={issuer} />
+          </Box>
+        </div>
       </div>
     </>
   );
