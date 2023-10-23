@@ -1,7 +1,7 @@
 import { format, subDays } from 'date-fns';
 import { Card, CardContent, CardHeader } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const now = new Date();
 
@@ -131,12 +131,12 @@ export const EcommerceSalesRevenue = (props) => {
     <Card>
       <CardHeader title="Sales Revenue" />
       <CardContent sx={{ pt: 0 }}>
-        <Chart
+        {/* <Chart
           height={320}
           options={chartOptions}
           series={chartSeries}
           type="line"
-        />
+        /> */}
       </CardContent>
     </Card>
   );

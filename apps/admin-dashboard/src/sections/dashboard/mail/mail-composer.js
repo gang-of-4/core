@@ -19,7 +19,7 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import { QuillEditor } from '../../../components/quill-editor';
+// import { QuillEditor } from '../../../components/quill-editor';
 
 export const MailComposer = (props) => {
   const {
@@ -134,7 +134,7 @@ export const MailComposer = (props) => {
           }}
           value={subject}
         />
-        <QuillEditor
+        {/* <QuillEditor
           onChange={onMessageChange}
           placeholder="Leave a message"
           sx={{
@@ -142,7 +142,7 @@ export const MailComposer = (props) => {
             flexGrow: 1
           }}
           value={message}
-        />
+        /> */}
         <Divider />
         <Stack
           alignItems="center"

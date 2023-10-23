@@ -12,7 +12,7 @@ import {
   Unstable_Grid2 as Grid
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const useChartOptions = (labels) => {
   const theme = useTheme();
@@ -87,12 +87,12 @@ export const AnalyticsSocialSources = (props) => {
         )}
       />
       <CardContent>
-        <Chart
+        {/* <Chart
           height={200}
           options={chartOptions}
           series={chartSeries}
           type="donut"
-        />
+        /> */}
         <Grid
           container
           spacing={1}

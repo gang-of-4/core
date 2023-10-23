@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Box, Card, CardActions, Divider, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Chart } from '../../../components/chart';
+// import { Chart } from '../../../components/chart';
 
 const useChartOptions = () => {
   const theme = useTheme();
@@ -95,12 +95,12 @@ export const AnalyticsStats = (props) => {
           </Typography>
         </div>
         <Box sx={{ width: 200 }}>
-          <Chart
+          {/* <Chart
             height={100}
             options={chartOptions}
             series={chartSeries}
             type="area"
-          />
+          /> */}
         </Box>
       </Stack>
       <Divider />
