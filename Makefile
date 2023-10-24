@@ -29,7 +29,18 @@ gateway-logs:
 	$(call compose,logs,-f gateway)
 
 install:
-	$(call compose,exec,app pnpm install)
+	docker exec -it app pnpm install
+
+clean:
+	rm -rf ./node_modules
+	rm -rf ./.next
+	rm -rf ./.turbo
+	find ./apps -type d -name "node_modules" -maxdepth 2 -exec rm -r {} +
+	find ./apps -type d -name ".next" -maxdepth 2 -exec rm -r {} +
+	find ./apps -type d -name ".turbo" -maxdepth 2 -exec rm -r {} +
+	find ./packages -type d -name "node_modules" -maxdepth 2 -exec rm -r {} +
+	find ./packages -type d -name ".next" -maxdepth 2 -exec rm -r {} +
+	find ./packages -type d -name ".turbo" -maxdepth 2 -exec rm -r {} +
 
 # Functions
 define colorecho
