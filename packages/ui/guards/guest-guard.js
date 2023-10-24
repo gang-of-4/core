@@ -13,7 +13,7 @@ export const GuestGuard = (props) => {
   const check = useCallback(() => {
     if (isAuthenticated) {
       // router.replace(paths.dashboard.index);
-      router.replace('/');
+      router.replace('/dashboard');
     } else {
       setChecked(true);
     }

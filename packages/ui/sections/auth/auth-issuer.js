@@ -3,10 +3,12 @@ import { Box, Link, Stack, Tooltip, Typography } from '@mui/material';
 // import { paths } from '../../paths';
 
 const issuers = {
-  Amplify: '/assets/logos/logo-amplify.svg',
-  Auth0: '/assets/logos/logo-auth0.svg',
-  Firebase: '/assets/logos/logo-firebase.svg',
-  JWT: '/assets/logos/logo-jwt.svg'
+  // @todo: API to get issuers
+
+  // Amplify: '/assets/logos/logo-amplify.svg',
+  // Auth0: '/assets/logos/logo-auth0.svg',
+  // Firebase: '/assets/logos/logo-firebase.svg',
+  // JWT: '/assets/logos/logo-jwt.svg'
 };
 
 export const AuthIssuer = (props) => {
@@ -25,22 +27,6 @@ export const AuthIssuer = (props) => {
         p: 3
       }}
     >
-      <Typography variant="body2">
-        Visit our
-        {' '}
-        <Link
-          component="a"
-          // href={paths.docs.welcome}
-          href={'/'}
-          target="_blank"
-          underline="hover"
-          variant="subtitle2"
-        >
-          docs
-        </Link>
-        {' '}
-        and find out how to switch between
-      </Typography>
       <Stack
         alignItems="center"
         direction="row"
