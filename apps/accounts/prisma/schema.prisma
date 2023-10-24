@@ -1,6 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://accounts:password@localhost:5432/mydb?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -113,3 +117,4 @@ model OAuthAccount {
     deleted_at      DateTime?
     @@unique([provider_id, user_id])
 }
+
