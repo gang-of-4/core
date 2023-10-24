@@ -13,7 +13,7 @@ model User {
     last_name           String
     email               String @unique
     phone               String @unique
-    role                UserRoles[]
+    roles               UserRoles[]
     email_verified_at   DateTime?
     credentials         CredentialsAccount?
     oauth_accounts      OAuthAccount[]
