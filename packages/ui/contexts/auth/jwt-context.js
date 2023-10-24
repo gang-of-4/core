@@ -126,7 +126,15 @@ export const AuthProvider = (props) => {
     });
   }, [dispatch]);
 
-  const signUp = useCallback(async (email, name, password) => {
+  const signUp = useCallback(async (email, firstName, lastName, phone, password) => {
+
+    // @todo: integrate with backend API
+
+    console.log('[sign up]: ', 
+      email, firstName, lastName, phone, password
+    );
+
+    const name = `${firstName} ${lastName}`;
     const { accessToken } = await authApi.signUp({ email, name, password });
     const user = await authApi.me({ accessToken });
 
