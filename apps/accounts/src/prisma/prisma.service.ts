@@ -9,10 +9,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       query: {
         $allModels: {
           async create({ args, query }) {
-            args.data = {
-              ...args.data,
-              id: ulid(),
-            };
+            if ('id' in args.data) {
+              args.data = {
+                ...args.data,
+                id: ulid(),
+              };
+            }
 
             return query(args);
           },
