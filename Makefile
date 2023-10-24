@@ -16,6 +16,9 @@ up:
 up-rebuild:
 	$(call compose,up,-d --build)
 
+up-recreate:
+	$(call compose,up,-d --force-recreate)
+
 down:
 	$(call compose,down)
 
