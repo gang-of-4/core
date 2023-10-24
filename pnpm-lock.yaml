@@ -222,6 +222,12 @@ importers:
       next-transpile-modules:
         specifier: 10.0.0
         version: 10.0.0
+      tailwind-config:
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       typescript:
         specifier: 4.9.4
         version: 4.9.4
@@ -305,9 +311,15 @@ importers:
       postcss:
         specifier: ^8
         version: 8.4.14
+      tailwind-config:
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
       tailwindcss:
         specifier: ^3
         version: 3.3.3
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       typescript:
         specifier: ^5
         version: 5.2.2
@@ -323,6 +335,12 @@ importers:
       typescript:
         specifier: ^4.5.3
         version: 4.9.4
+
+  packages/tailwind-config:
+    devDependencies:
+      tailwindcss:
+        specifier: ^3
+        version: 3.3.3
 
   packages/tsconfig: {}
 
