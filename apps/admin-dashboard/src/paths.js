@@ -9,8 +9,8 @@ export const paths = {
       login: '/auth/auth0/login'
     },
     jwt: {
-      login: '/auth/jwt/login',
-      register: '/auth/jwt/register'
+      login: '/auth/login',
+      register: '/auth/signup'
     },
     firebase: {
       login: '/auth/firebase/login',
