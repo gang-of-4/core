@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 
 export class UserEntity implements User {
   id: string;
@@ -6,10 +6,11 @@ export class UserEntity implements User {
   last_name: string;
   email: string;
   phone: string;
-  email_verified_at: Date | null;
+  role_id: Role['id'];
+  email_verified_at: Date;
   created_at: Date;
   updated_at: Date;
-  deleted_at: Date | null;
+  deleted_at: Date;
 
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);

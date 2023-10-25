@@ -13,7 +13,8 @@ model User {
     last_name           String
     email               String @unique
     phone               String @unique
-    roles               UserRoles[]
+    role_id             String @db.Uuid
+    role                Role @relation(fields: [role_id], references: [id])
     email_verified_at   DateTime?
     credentials         CredentialsAccount?
     oauth_accounts      OAuthAccount[]
@@ -22,24 +23,15 @@ model User {
     deleted_at          DateTime?
 }
 
-model UserRoles {
-    user_id         String @db.Uuid
-    role_id         String @db.Uuid
-    user            User   @relation(fields: [user_id], references: [id])
-    role            Role   @relation(fields: [role_id], references: [id])
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    @@id([user_id, role_id])
-}
-
 model Role {
     id              String @db.Uuid @id @default(uuid())  
     name            String
     permissions     RolePermissions[]
-    users           UserRoles[]
+    users           User[]
     created_at      DateTime @default(now())
     updated_at      DateTime @default(now())
     deleted_at      DateTime?
+    @@index([name])
 }
 
 model Permission {
