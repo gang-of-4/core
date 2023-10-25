@@ -1,12 +1,11 @@
 'use client'
 
-import Head from 'next/head';
 import { useRouter, useSearchParams } from 'next/navigation';
 import NextLink from 'next/link';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
-  Alert,
+  // Alert,
   Button,
   Card,
   CardContent,
@@ -23,8 +22,9 @@ import { useAuth } from 'ui/hooks/use-auth';
 import { useMounted } from 'ui/hooks/use-mounted';
 import { usePageView } from 'ui/hooks/use-page-view';
 import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
-import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
+// import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
 import { Issuer } from 'ui/utils/auth';
+import { paths } from 'ui/paths';
 
 const useParams = () => {
   const searchParams = useSearchParams();
@@ -66,7 +66,7 @@ const Page = () => {
         await signIn(values.email, values.password);
 
         if (isMounted()) {
-          router.push(returnTo || '/dashboard');
+          router.push(returnTo || paths.vendor.dashboard);
         }
       } catch (err) {
         console.error(err);
@@ -97,7 +97,7 @@ const Page = () => {
                   &nbsp;
                   <Link
                     component={NextLink}
-                    href={'/auth/jwt/signup'}
+                    href={paths.auth.register}
                     underline="hover"
                     variant="subtitle2"
                   >

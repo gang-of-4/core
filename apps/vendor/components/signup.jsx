@@ -1,17 +1,14 @@
 'use client'
 
-import Head from 'next/head';
 import { useRouter, useSearchParams } from 'next/navigation';
 import NextLink from 'next/link';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
-    Box,
     Button,
     Card,
     CardContent,
     CardHeader,
-    Checkbox,
     FormHelperText,
     Link,
     Stack,
@@ -24,8 +21,8 @@ import { useAuth } from 'ui/hooks/use-auth';
 import { useMounted } from 'ui/hooks/use-mounted';
 import { usePageView } from 'ui/hooks/use-page-view';
 import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
-// import { paths } from 'ui/paths';
-import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
+import { paths } from 'ui/paths';
+// import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
 import { Issuer } from 'ui/utils/auth';
 
 const useParams = () => {
@@ -90,8 +87,7 @@ const Page = () => {
                 );
 
                 if (isMounted()) {
-                    //   router.push(returnTo || paths.dashboard.index);
-                    router.push(returnTo || '/dashboard');
+                    router.push(returnTo || paths.vendor.dashboard.index);
                 }
             } catch (err) {
                 console.error(err);
@@ -122,8 +118,7 @@ const Page = () => {
                                     &nbsp;
                                     <Link
                                         component={NextLink}
-                                        // href={paths.auth.jwt.login}
-                                        href={'/auth/jwt/login'}
+                                        href={paths.auth.login}
                                         underline="hover"
                                         variant="subtitle2"
                                     >
@@ -132,7 +127,7 @@ const Page = () => {
                                 </Typography>
                             )}
                             sx={{ pb: 0 }}
-                            title="Sign up"
+                            title="Sign up as a vendor"
                         />
                         <CardContent>
                             <form
