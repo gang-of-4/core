@@ -1,9 +1,9 @@
 import React from 'react'
-import Page from '../../../../components/signup'
+import Page from '../../../components/signup'
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sign up',
+  title: 'Sign up | Vendor',
   description: 'Vendor sign up page'
 };
 

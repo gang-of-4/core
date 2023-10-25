@@ -1,9 +1,9 @@
 import React from 'react'
-import Page from '../../../../components/login'
+import Page from '../../../components/login'
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Login',
+  title: 'Login | Vendor',
   description: 'Vendor login page'
 };
 
