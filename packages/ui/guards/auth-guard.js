@@ -6,16 +6,13 @@ import { paths } from '../paths';
 import { Issuer } from '../utils/auth';
 
 const loginPaths = {
-  [Issuer.Amplify]: paths.auth.amplify.login,
-  [Issuer.Auth0]: paths.auth.auth0.login,
-  [Issuer.Firebase]: paths.auth.firebase.login,
-  [Issuer.JWT]: paths.auth.jwt.login
+  [Issuer.JWT]: paths.auth.login
 };
 
 export const AuthGuard = (props) => {
-  const { children } = props;
+  const { children, role } = props;
   const router = useRouter();
-  const { isAuthenticated, issuer } = useAuth();
+  const { user, isAuthenticated, issuer } = useAuth();
   const [checked, setChecked] = useState(false);
 
   const check = useCallback(() => {
@@ -24,7 +21,11 @@ export const AuthGuard = (props) => {
       const href = loginPaths[issuer] + `?${searchParams}`;
       router.replace(href);
     } else {
-      setChecked(true);
+      if (role && user.role !== role) {
+        router.replace(paths.errors.forbidden);
+      } else {
+        setChecked(true);
+      } 
     }
   }, [isAuthenticated, issuer, router]);
 
