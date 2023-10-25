@@ -6,8 +6,19 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "lint": {},
+    "lint": {
+      "dependsOn": ["^prisma:generate"]
+    },
+    "prisma:generate": {
+      "dependsOn": ["^prisma:generate"],
+      "cache": false
+    },
+    "prisma:migrate:dev": {
+      "dependsOn": ["^prisma:generate"],
+      "cache": false
+    },
     "dev": {
+      "dependsOn": ["^prisma:migrate:dev"],
       "cache": false,
       "persistent": true
     }

@@ -2,4 +2,6 @@
 
 pnpm install
 
+pnpm prisma:dev
+
 pnpm dev
