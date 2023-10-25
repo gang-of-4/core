@@ -1,29 +1,25 @@
 import Head from 'next/head';
 import { useRouter, useSearchParams } from 'next/navigation';
-import NextLink from 'next/link';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
-  Alert,
   Button,
   Card,
   CardContent,
   CardHeader,
   FormHelperText,
-  Link,
   Stack,
   TextField,
-  Typography
 } from '@mui/material';
-import { GuestGuard } from '../../../guards/guest-guard';
-import { IssuerGuard } from '../../../guards/issuer-guard';
-import { useAuth } from '../../../hooks/use-auth';
-import { useMounted } from '../../../hooks/use-mounted';
-import { usePageView } from '../../../hooks/use-page-view';
-import { Layout as AuthLayout } from '../../../layouts/auth/classic-layout';
-import { paths } from '../../../paths';
-import { AuthIssuer } from '../../../sections/auth/auth-issuer';
-import { Issuer } from '../../../utils/auth';
+import { GuestGuard } from '../../guards/guest-guard';
+import { IssuerGuard } from '../../guards/issuer-guard';
+import { useAuth } from '../../hooks/use-auth';
+import { useMounted } from '../../hooks/use-mounted';
+import { usePageView } from '../../hooks/use-page-view';
+import { Layout as AuthLayout } from '../../layouts/auth/classic-layout';
+import { paths } from '../../paths';
+// import { AuthIssuer } from '../../sections/auth/auth-issuer';
+import { Issuer } from '../../utils/auth';
 
 const useParams = () => {
   const searchParams = useSearchParams();
@@ -85,29 +81,12 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Login | Devias Kit PRO
+          Login | Admin
         </title>
       </Head>
       <div>
         <Card elevation={16}>
           <CardHeader
-            subheader={(
-              <Typography
-                color="text.secondary"
-                variant="body2"
-              >
-                Don&apos;t have an account?
-                &nbsp;
-                <Link
-                  component={NextLink}
-                  href={paths.auth.jwt.register}
-                  underline="hover"
-                  variant="subtitle2"
-                >
-                  Register
-                </Link>
-              </Typography>
-            )}
             sx={{ pb: 0 }}
             title="Log in"
           />
@@ -162,7 +141,8 @@ const Page = () => {
             </form>
           </CardContent>
         </Card>
-        <Stack
+        {/* @todo: API to get issuers */}
+        {/* <Stack
           spacing={3}
           sx={{ mt: 3 }}
         >
@@ -172,7 +152,7 @@ const Page = () => {
             </div>
           </Alert>
           <AuthIssuer issuer={issuer} />
-        </Stack>
+        </Stack> */}
       </div>
     </>
   );
