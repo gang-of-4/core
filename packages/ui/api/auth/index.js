@@ -1,7 +1,19 @@
 import { createResourceId } from '../../utils/create-resource-id';
 import { decode, JWT_EXPIRES_IN, JWT_SECRET, sign } from '../../utils/jwt';
 import { wait } from '../../utils/wait';
-import { users } from './data';
+
+let users = [
+  {
+    id: '5e86809283e28b96d2d38537',
+    avatar: '/assets/avatars/avatar-anika-visser.png',
+    email: 'demo@devias.io',
+    name: 'Anika Visser',
+    password: 'Password123!',
+    plan: 'Premium',
+    role: 'vendor'
+  },
+];
+
 
 class AuthApi {
   async signIn(request) {
@@ -87,7 +99,8 @@ class AuthApi {
           avatar: user.avatar,
           email: user.email,
           name: user.name,
-          plan: user.plan
+          plan: user.plan,
+          role: user.role
         });
       } catch (err) {
         console.error('[Auth Api]: ', err);
