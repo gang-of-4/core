@@ -1,7 +1,7 @@
-import { Metadata } from "next";
 import Link from "next/link";
+import { paths } from "ui/paths";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Vendor Page',
   description: 'Vendor Landing Page',
 }
@@ -12,10 +12,10 @@ export default function Home() {
       <h1>
         Vendor Landing Page
       </h1>
-      <Link href="/auth/jwt/login" className="underline hover:text-blue-500">
+      <Link href={paths.auth.login} className="underline hover:text-blue-500">
         Login
       </Link>
-      <Link href="/dashboard" className="underline hover:text-blue-500">
+      <Link href={paths.vendor.dashboard.index} className="underline hover:text-blue-500">
         Dashboard
       </Link>
     </main>
