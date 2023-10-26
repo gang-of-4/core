@@ -277,6 +277,9 @@ importers:
 
   apps/vendor:
     dependencies:
+      atomic-spinner:
+        specifier: ^1.3.1
+        version: 1.3.1(react-dom@18.2.0)(react@18.2.0)
       next:
         specifier: 13.5.5
         version: 13.5.5(react-dom@18.2.0)(react@18.2.0)
@@ -7196,6 +7199,18 @@ packages:
     resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
     engines: {node: '>= 4.0.0'}
     dev: true
+
+  /atomic-spinner@1.3.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pQzrMMjpT2AU7gPhnRP2BNFsF9js2wwolH8xk61b+oIBu36qnaeZUzFB2oscCSQStLeOvmmnhnkQ3Efzr1G5kg==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /attr-accept@2.2.2:
     resolution: {integrity: sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==}
