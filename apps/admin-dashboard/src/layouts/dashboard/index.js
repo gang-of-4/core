@@ -13,7 +13,6 @@ const useTranslatedSections = () => {
   return useMemo(() => getSections(t), [t]);
 };
 
-// @todo add admin role to guard
 export const Layout = withAuthGuard((props) => {
   const settings = useSettings();
   const sections = useTranslatedSections();
