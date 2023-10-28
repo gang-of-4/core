@@ -207,7 +207,6 @@ const Page = () => {
                                     sx={{ mt: 2 }}
                                     type="submit"
                                     variant="contained"
-                                    className='bg-blue-500 hover:bg-blue-700 text-white'
                                 >
                                     Sign up
                                 </Button>
