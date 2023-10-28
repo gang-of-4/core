@@ -18,6 +18,7 @@ export const paths = {
     },
   },
   storefront: {
+    index: '/',
   },
   auth: {
     login: '/auth/login',
