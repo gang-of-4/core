@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Sign up | Customer',
-  description: 'Vendor sign up page'
+  description: 'Customer sign up page'
 };
 
 export default function page() {
