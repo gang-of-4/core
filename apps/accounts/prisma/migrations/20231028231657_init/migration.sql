@@ -4,7 +4,7 @@ CREATE TABLE "User" (
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
+    "phone" TEXT,
     "role_id" UUID NOT NULL,
     "email_verified_at" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -114,10 +114,16 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 
 -- CreateIndex
-CREATE INDEX "Role_name_idx" ON "Role"("name");
+CREATE UNIQUE INDEX "Role_name_key" ON "Role"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Permission_name_key" ON "Permission"("name");
 
 -- CreateIndex
 CREATE INDEX "Activity_method_url_idx" ON "Activity"("method", "url");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Provider_name_key" ON "Provider"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CredentialsAccount_user_id_key" ON "CredentialsAccount"("user_id");
