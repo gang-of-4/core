@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Role, User } from '@prisma/client';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { RoleEntity } from 'src/roles/entities/role.entity';
 
 export class UserEntity implements User {
   @ApiProperty()
@@ -17,11 +19,15 @@ export class UserEntity implements User {
   @ApiProperty({ required: false })
   phone: string;
 
-  @ApiProperty({ type: String })
+  @Exclude()
   role_id: Role['id'];
 
   @ApiProperty({ nullable: true, default: null })
   email_verified_at: Date;
+
+  @ApiProperty({ type: RoleEntity })
+  @Type(() => RoleEntity)
+  role: RoleEntity;
 
   @ApiProperty()
   created_at: Date;
@@ -30,6 +36,7 @@ export class UserEntity implements User {
   updated_at: Date;
 
   @ApiProperty({ nullable: true, default: null })
+  @Expose({ groups: ['users.delete', 'self'] })
   deleted_at: Date;
 
   constructor(partial: Partial<UserEntity>) {

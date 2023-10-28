@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
+import { Expose, Type } from 'class-transformer';
+import { PermissionEntity } from './permission.entity';
 
 export class RoleEntity implements Role {
   @ApiProperty()
@@ -9,12 +11,15 @@ export class RoleEntity implements Role {
   name: string;
 
   @ApiProperty()
+  @Expose({ groups: ['roles.create', 'roles.update', 'roles.delete'] })
   created_at: Date;
 
   @ApiProperty()
+  @Expose({ groups: ['roles.create', 'roles.update', 'roles.delete'] })
   updated_at: Date;
 
   @ApiProperty({ nullable: true, default: null })
+  @Expose({ groups: ['roles.create', 'roles.update', 'roles.delete'] })
   deleted_at: Date;
 
   constructor(partial: Partial<RoleEntity>) {
