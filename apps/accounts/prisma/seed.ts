@@ -12,7 +12,7 @@ async function main() {
         name: 'vendor',
       },
       {
-        name: 'user',
+        name: 'customer',
       },
     ],
     skipDuplicates: true,
