@@ -5,7 +5,7 @@ import {
   ValidatorConstraintInterface,
   registerDecorator,
 } from 'class-validator';
-import { RolesService } from 'src/roles/roles.service';
+import { RolesService } from 'src/roles/services/roles.service';
 
 @ValidatorConstraint({ name: 'RoleExists', async: true })
 export class RoleExistsRule implements ValidatorConstraintInterface {
