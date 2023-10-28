@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Login | Customer',
-  description: 'Vendor login page'
+  description: 'Customer login page'
 };
 
 
