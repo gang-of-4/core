@@ -22,6 +22,8 @@ services:
             - 'host.docker.internal:host-gateway'
         networks:
             - core-network
+        ports:
+            - '5555:5555'
         volumes:
             - .:/app
     db:
