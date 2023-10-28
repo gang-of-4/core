@@ -1,20 +1,12 @@
 import { useCallback } from 'react';
-import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
-import CreditCard01Icon from '@untitled-ui/icons-react/build/esm/CreditCard01';
-import Settings04Icon from '@untitled-ui/icons-react/build/esm/Settings04';
-import User03Icon from '@untitled-ui/icons-react/build/esm/User03';
 import {
   Box,
   Button,
   Divider,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Popover,
-  SvgIcon,
   Typography
 } from '@mui/material';
 import { useAuth } from '../../../hooks/use-auth';
@@ -22,7 +14,7 @@ import { paths } from '../../../paths';
 import { Issuer } from '../../../utils/auth';
 
 export const AccountPopover = (props) => {
-  const { anchorEl, onClose, open, ...other } = props;
+  const { anchorEl, onClose, open, listItems, ...other } = props;
   const router = useRouter();
   const auth = useAuth();
 
@@ -77,84 +69,17 @@ export const AccountPopover = (props) => {
       {...other}>
       <Box sx={{ p: 2 }}>
         <Typography variant="body1">
-          Anika Visser
+          {auth.user?.name}
         </Typography>
         <Typography
           color="text.secondary"
           variant="body2"
         >
-          demo@devias.io
+          {auth.user?.email}
         </Typography>
       </Box>
       <Divider />
-      <Box sx={{ p: 1 }}>
-        <ListItemButton
-          component={NextLink}
-          href={paths.dashboard.social.profile}
-          sx={{
-            borderRadius: 1,
-            px: 1,
-            py: 0.5
-          }}
-        >
-          <ListItemIcon>
-            <SvgIcon fontSize="small">
-              <User03Icon />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText
-            primary={(
-              <Typography variant="body1">
-                Profile
-              </Typography>
-            )}
-          />
-        </ListItemButton>
-        <ListItemButton
-          component={NextLink}
-          href={paths.dashboard.account}
-          sx={{
-            borderRadius: 1,
-            px: 1,
-            py: 0.5
-          }}
-        >
-          <ListItemIcon>
-            <SvgIcon fontSize="small">
-              <Settings04Icon />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText
-            primary={(
-              <Typography variant="body1">
-                Settings
-              </Typography>
-            )}
-          />
-        </ListItemButton>
-        <ListItemButton
-          component={NextLink}
-          href={paths.dashboard.index}
-          sx={{
-            borderRadius: 1,
-            px: 1,
-            py: 0.5
-          }}
-        >
-          <ListItemIcon>
-            <SvgIcon fontSize="small">
-              <CreditCard01Icon />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText
-            primary={(
-              <Typography variant="body1">
-                Billing
-              </Typography>
-            )}
-          />
-        </ListItemButton>
-      </Box>
+      {listItems}
       <Divider sx={{ my: '0 !important' }} />
       <Box
         sx={{

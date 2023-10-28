@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import Menu01Icon from '@untitled-ui/icons-react/build/esm/Menu01';
 import {
   Box,
-  Button,
   Chip,
   Container,
   IconButton,
@@ -17,28 +16,15 @@ import { alpha } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
 import { useWindowScroll } from '../../hooks/use-window-scroll';
 import { paths } from '../../paths';
-import { PagesPopover } from './pages-popover';
 import { TopNavItem } from './top-nav-item';
+import { organization } from '../../config'
+import Account from '../../components/custom/Account';
 
-const items = [
-  {
-    title: 'Components',
-    path: paths.components.index
-  },
-  {
-    title: 'Pages',
-    children: <PagesPopover />
-  },
-  {
-    title: 'Docs',
-    path: paths.docs.welcome
-  }
-];
 
 const TOP_NAV_HEIGHT = 64;
 
 export const TopNav = (props) => {
-  const { onMobileNavOpen } = props;
+  const { onMobileNavOpen, items, openSide, app } = props;
   const pathname = usePathname();
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const [elevate, setElevate] = useState(false);
@@ -114,7 +100,9 @@ export const TopNav = (props) => {
                   width: 24
                 }}
               >
+
                 <Logo />
+
               </Box>
               {mdUp && (
                 <Box
@@ -130,12 +118,12 @@ export const TopNav = (props) => {
                     }
                   }}
                 >
-                  Devias Kit <span>PRO</span>
+                  {organization.name}
                 </Box>
               )}
             </Stack>
             <Chip
-              label="v6.0.0"
+              label={organization.version}
               size="small"
             />
           </Stack>
@@ -192,22 +180,16 @@ export const TopNav = (props) => {
             spacing={2}
             sx={{ flexGrow: 1 }}
           >
-            <Button
-              component="a"
-              size={mdUp ? 'medium' : 'small'}
-              href="https://mui.com/store/items/devias-kit-pro"
-              target="_blank"
-              variant="contained"
-            >
-              Purchase Now
-            </Button>
-            {!mdUp && (
-              <IconButton onClick={onMobileNavOpen}>
-                <SvgIcon fontSize="small">
-                  <Menu01Icon />
-                </SvgIcon>
-              </IconButton>
-            )}
+            <Account app={app} />
+            {!mdUp &&
+              openSide > 0 &&
+              (
+                <IconButton onClick={onMobileNavOpen}>
+                  <SvgIcon fontSize="small">
+                    <Menu01Icon />
+                  </SvgIcon>
+                </IconButton>
+              )}
           </Stack>
         </Stack>
       </Container>
