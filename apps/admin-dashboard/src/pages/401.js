@@ -4,10 +4,13 @@ import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material
 import { useTheme } from '@mui/material/styles';
 import { usePageView } from '../hooks/use-page-view';
 import { paths } from '../paths';
+import { organization } from '/app/packages/ui/config/index.js';
+import Image from 'next/image'
 
 const Page = () => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.down('md'));
+  const name = organization.name;
 
   usePageView();
 
@@ -15,7 +18,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Error: Authorization Required | Devias Kit PRO
+          Error: Authorization Required | {name}
         </title>
       </Head>
       <Box
@@ -38,7 +41,7 @@ const Page = () => {
             <Box
               alt="Not authorized"
               component="img"
-              src="/assets/errors/error-401.png"
+              src="/admin/assets/errors/error-401.png"
               sx={{
                 height: 'auto',
                 maxWidth: '100%',

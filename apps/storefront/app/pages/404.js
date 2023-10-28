@@ -6,6 +6,7 @@ import { usePageView } from '../hooks/use-page-view';
 import { paths } from '../paths';
 import { organization } from '/app/packages/ui/config/index.js';
 
+
 const Page = () => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
@@ -18,7 +19,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Error: Server Error | {name}
+          Error: Not Found | {name}
         </title>
       </Head>
       <Box
@@ -39,9 +40,9 @@ const Page = () => {
             }}
           >
             <Box
-              alt="Internal server error"
+              alt="Not found"
               component="img"
-              src="/admin/assets/errors/error-500.png"
+              src="/storefront/assets/errors/error-404.png"
               sx={{
                 height: 'auto',
                 maxWidth: '100%',
@@ -53,7 +54,7 @@ const Page = () => {
             align="center"
             variant={mdUp ? 'h1' : 'h4'}
           >
-            500: Internal Server Error
+            404: The page you are looking for isn’t here
           </Typography>
           <Typography
             align="center"
@@ -71,7 +72,7 @@ const Page = () => {
           >
             <Button
               component={NextLink}
-              href={paths.index}
+              href={paths.storefront.index}
             >
               Back to Home
             </Button>
@@ -83,4 +84,3 @@ const Page = () => {
 };
 
 export default Page;
-

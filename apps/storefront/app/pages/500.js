@@ -41,7 +41,7 @@ const Page = () => {
             <Box
               alt="Internal server error"
               component="img"
-              src="/admin/assets/errors/error-500.png"
+              src="/storefront/assets/errors/error-500.png"
               sx={{
                 height: 'auto',
                 maxWidth: '100%',
@@ -71,7 +71,7 @@ const Page = () => {
           >
             <Button
               component={NextLink}
-              href={paths.index}
+              href={paths.storefront.index}
             >
               Back to Home
             </Button>

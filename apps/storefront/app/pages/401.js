@@ -5,12 +5,12 @@ import { useTheme } from '@mui/material/styles';
 import { usePageView } from '../hooks/use-page-view';
 import { paths } from '../paths';
 import { organization } from '/app/packages/ui/config/index.js';
+import Image from 'next/image'
 
 const Page = () => {
   const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
-  const name = organization.name; 
-
+  const mdUp = useMediaQuery(theme.breakpoints.down('md'));
+  const name = organization.name;
 
   usePageView();
 
@@ -18,7 +18,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Error: Server Error | {name}
+          Error: Authorization Required | {name}
         </title>
       </Head>
       <Box
@@ -39,9 +39,9 @@ const Page = () => {
             }}
           >
             <Box
-              alt="Internal server error"
+              alt="Not authorized"
               component="img"
-              src="/admin/assets/errors/error-500.png"
+              src="/storefront/assets/errors/error-401.png"
               sx={{
                 height: 'auto',
                 maxWidth: '100%',
@@ -53,7 +53,7 @@ const Page = () => {
             align="center"
             variant={mdUp ? 'h1' : 'h4'}
           >
-            500: Internal Server Error
+            401: Authorization required
           </Typography>
           <Typography
             align="center"
@@ -71,7 +71,7 @@ const Page = () => {
           >
             <Button
               component={NextLink}
-              href={paths.index}
+              href={paths.storefront.index}
             >
               Back to Home
             </Button>
@@ -83,4 +83,3 @@ const Page = () => {
 };
 
 export default Page;
-
