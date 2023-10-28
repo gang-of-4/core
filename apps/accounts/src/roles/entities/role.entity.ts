@@ -14,6 +14,10 @@ export class RoleEntity implements Role {
   @ApiProperty()
   updated_at: Date;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true, default: null })
   deleted_at: Date;
+
+  constructor(partial: Partial<RoleEntity>) {
+    Object.assign(this, partial);
+  }
 }
