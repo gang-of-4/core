@@ -18,11 +18,11 @@ export default function Account({app}) {
   function getUrl(app) {
     switch (app) {
       case 'vendor':
-        return `vendor/`;
+        return `vendor`;
       case 'admin':
-        return `admin/`;
+        return `admin`;
       default:
-        return `/`;
+        return '';
     }
   }
 
