@@ -106,7 +106,7 @@ const Page = () => {
     return (
         <>
             <div className='flex items-center justify-center w-screen h-screen'>
-                <div className='w-4/5 max-w-2xl'>
+                <div className='w-4/5 max-w-lg'>
                     <Card elevation={16}>
                         <CardHeader
                             subheader={(
@@ -207,6 +207,7 @@ const Page = () => {
                                     sx={{ mt: 2 }}
                                     type="submit"
                                     variant="contained"
+                                    style={{ backgroundColor: '#2970FF' }}
                                 >
                                     Sign up
                                 </Button>
