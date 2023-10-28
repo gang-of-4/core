@@ -79,7 +79,7 @@ const Page = () => {
         onSubmit: async (values, helpers) => {
             try {
                 await signUp(
-                    values.email, 
+                    values.email,
                     values.firstName,
                     values.lastName,
                     values.phone,
@@ -106,7 +106,7 @@ const Page = () => {
     return (
         <>
             <div className='flex items-center justify-center w-screen h-screen'>
-                <div className='w-4/5 max-w-2xl'>
+                <div className='w-4/5 max-w-lg'>
                     <Card elevation={16}>
                         <CardHeader
                             subheader={(
@@ -122,12 +122,12 @@ const Page = () => {
                                         underline="hover"
                                         variant="subtitle2"
                                     >
-                                        Log in
+                                        Login
                                     </Link>
                                 </Typography>
                             )}
                             sx={{ pb: 0 }}
-                            title="Sign up as a vendor"
+                            title="Sign up"
                         />
                         <CardContent>
                             <form
@@ -207,6 +207,7 @@ const Page = () => {
                                     sx={{ mt: 2 }}
                                     type="submit"
                                     variant="contained"
+                                    style={{ backgroundColor: '#2970FF' }}
                                 >
                                     Sign up
                                 </Button>
