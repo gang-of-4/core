@@ -66,7 +66,7 @@ const Page = () => {
         await signIn(values.email, values.password);
 
         if (isMounted()) {
-          router.push(returnTo || paths.vendor.dashboard);
+          router.push(returnTo || paths.vendor.dashboard.index);
         }
       } catch (err) {
         console.error(err);
@@ -153,7 +153,6 @@ const Page = () => {
                   sx={{ mt: 2 }}
                   type="submit"
                   variant="contained"
-                  className='bg-blue-500 hover:bg-blue-700 text-white'
                 >
                   Log In
                 </Button>
