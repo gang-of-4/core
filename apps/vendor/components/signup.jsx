@@ -122,7 +122,7 @@ const Page = () => {
                                         underline="hover"
                                         variant="subtitle2"
                                     >
-                                        Log in
+                                        Login
                                     </Link>
                                 </Typography>
                             )}
