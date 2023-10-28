@@ -17,7 +17,7 @@ import { UserEntity } from './entities/user.entity';
   version: '1',
   path: 'users',
 })
-@ApiTags('users')
+@ApiTags('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

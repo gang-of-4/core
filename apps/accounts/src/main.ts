@@ -22,7 +22,6 @@ async function bootstrap() {
     .setTitle('Accounts Service')
     .setDescription('Manage accounts, roles, and permissions')
     .setVersion('0.1')
-    .addTag('accounts')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/docs/accounts', app, document);

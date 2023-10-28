@@ -8,7 +8,7 @@ import { UserEntity } from './entities/user.entity';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     return new UserEntity(
       await this.prisma.user.create({
         data: {
@@ -26,7 +26,7 @@ export class UsersService {
     );
   }
 
-  async findAll() {
+  async findAll(): Promise<UserEntity[]> {
     const users = await this.prisma.user.findMany();
     return users.map((user) => new UserEntity(user));
   }
@@ -44,7 +44,7 @@ export class UsersService {
     );
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     return new UserEntity(
       await this.prisma.user.update({
         where: {
@@ -65,7 +65,7 @@ export class UsersService {
     );
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<UserEntity> {
     return new UserEntity(
       await this.prisma.user.delete({
         where: {
