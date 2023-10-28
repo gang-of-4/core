@@ -41,18 +41,12 @@ const Page = () => {
             <Box
               alt="Not authorized"
               component="img"
-              src="/assets/errors/error-401.png"
+              src="/admin/assets/errors/error-401.png"
               sx={{
                 height: 'auto',
                 maxWidth: '100%',
                 width: 400
               }}
-            />
-            <img
-              src="public/assets/apple-touch-icon.png"
-              alt="Not authorized"
-              width={500}
-              height={500}
             />
           </Box>
           <Typography
