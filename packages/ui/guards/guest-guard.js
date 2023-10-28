@@ -13,10 +13,9 @@ export const GuestGuard = (props) => {
   const check = useCallback(() => {
     if (isAuthenticated) {
       // @todo make sure it works as intended
-      // if (user.role === 'admin') return router.replace(`${paths.absolutePaths.admin}${paths.admin.dashboard.index}`);
-      // if (user.role === 'vendor') return router.replace(`${paths.absolutePaths.vendor}${paths.vendor.dashboard.index}`);
-      // router.replace(paths.absolutePaths.storefront);
-      router.replace('/dashboard');
+      if (user.role === 'admin') return router.replace(paths.admin.dashboard.index);
+      if (user.role === 'vendor') return router.replace(paths.vendor.dashboard.index);
+      router.replace(paths.absolutePaths.storefront);
     } else {
       setChecked(true);
     }
