@@ -11,10 +11,14 @@
     },
     "prisma:generate": {
       "dependsOn": ["^prisma:generate"],
-      "cache": false
+      "cache": true
     },
     "prisma:migrate:dev": {
       "dependsOn": ["^prisma:generate"],
+      "cache": false
+    },
+    "prisma:seed": {
+      "dependsOn": ["^prisma:migrate:dev"],
       "cache": false
     },
     "dev": {
@@ -24,7 +28,7 @@
     },
     "test": {
       "dependsOn": ["^prisma:migrate:dev"],
-      "cache": false
+      "cache": true
     }
   }
 }
