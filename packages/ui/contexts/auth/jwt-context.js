@@ -144,8 +144,6 @@ export const AuthProvider = (props) => {
         break;
     }
 
-    console.log(res);
-
     const { accessToken } = res;
 
     const user = await authApi.me({ accessToken });
@@ -192,8 +190,6 @@ export const AuthProvider = (props) => {
       default:
         break;
     }
-
-    console.log(res);
 
     const { accessToken } = res;
     const user = await authApi.me({ accessToken });
