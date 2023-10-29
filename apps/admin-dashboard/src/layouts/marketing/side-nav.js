@@ -5,72 +5,8 @@ import { Box, ButtonBase, Drawer, Stack } from '@mui/material';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
 import { SideNavItem } from './side-nav-item';
+import { organization } from 'ui/config';
 
-const items = [
-  {
-    title: 'Components',
-    path: paths.components.index
-  },
-  {
-    title: 'Pages',
-    children: [
-      {
-        subheader: 'Dashboard',
-        items: [
-          {
-            title: 'Overview',
-            path: paths.dashboard.index
-          },
-          {
-            title: 'Customers',
-            path: paths.dashboard.customers.index
-          },
-          {
-            title: 'Logistics',
-            path: paths.dashboard.logistics.index
-          },
-          {
-            title: 'File Manager',
-            path: paths.dashboard.fileManager
-          },
-          {
-            title: 'Academy',
-            path: paths.dashboard.academy.index
-          }
-        ]
-      },
-      {
-        subheader: 'Other',
-        items: [
-          {
-            title: 'Blog',
-            path: paths.dashboard.blog.index
-          },
-          {
-            title: 'Pricing',
-            path: paths.pricing
-          },
-          {
-            title: 'Contact',
-            path: paths.contact
-          },
-          {
-            title: 'Checkout',
-            path: paths.checkout
-          },
-          {
-            title: 'Error',
-            path: paths[404]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    title: 'Docs',
-    path: paths.docs.welcome
-  }
-];
 
 const renderItems = ({ depth = 0, items, pathname }) => items.reduce((acc,
   item) => reduceChildRoutes({
@@ -228,7 +164,7 @@ const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
 };
 
 export const SideNav = (props) => {
-  const { onClose, open = false } = props;
+  const { onClose, open = false, items } = props;
   const pathname = usePathname();
 
   return (
@@ -281,7 +217,7 @@ export const SideNav = (props) => {
               }
             }}
           >
-            Devias Kit <span>PRO</span>
+            {organization.name}
           </Box>
         </Stack>
       </Box>
