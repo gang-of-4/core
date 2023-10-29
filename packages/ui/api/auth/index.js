@@ -32,7 +32,7 @@ class AuthApi {
             })
           });
 
-        if (res.status !== 200) {
+        if (!res.ok) {
           reject(new Error(data.message));
           return;
         }
@@ -67,13 +67,13 @@ class AuthApi {
             })
           });
 
-        if (res.status !== 200) {
+        if (!res.ok) {
           reject(new Error(data.message));
           return;
         }
 
         const data = await res.json();
-        const accessToken = data.accessToken;
+        const accessToken = data.access_token;
 
         resolve({ accessToken });
 
@@ -110,18 +110,7 @@ class AuthApi {
     return new Promise(async (resolve, reject) => {
       try {
         // Decode access token
-        const { userId } = decode(accessToken);
-
-        // Find the user
-        const res = await fetch(`${api.url}/users/${userId}`)
-
-        if (res.status !== 200) {
-          reject(new Error(data.message));
-          return;
-        }
-
-        const data = await res.json();
-        const user = data.user;
+        const { user } = await decode(accessToken);
 
         if (!user) {
           reject(new Error('Invalid authorization token'));
