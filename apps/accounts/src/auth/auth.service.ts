@@ -3,14 +3,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UsersService } from 'src/users/users.service';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { PrismaService } from '../prisma/prisma.service';
+import { UsersService } from '../users/users.service';
+import { UserEntity } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UserLoginDto } from './dto/user-login.dto';
 import * as bcrypt from 'bcrypt';
-import { RoleEntity } from 'src/roles/entities/role.entity';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { RoleEntity } from '../roles/entities/role.entity';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import { instanceToPlain } from 'class-transformer';
 import { JwtTokenDto } from './dto/jwt-token.dto';
 
