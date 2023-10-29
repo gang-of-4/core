@@ -7,7 +7,7 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "prisma:dev": "turbo run prisma:generate prisma:migrate:dev",
-    "test": "turbo run prisma:generate prisma:migrate:dev prisma:seed test",
+    "test": "turbo run prisma:generate prisma:migrate:dev test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
