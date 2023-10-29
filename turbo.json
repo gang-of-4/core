@@ -23,7 +23,7 @@
       "persistent": true
     },
     "test": {
-      "dependsOn": ["^prisma:generate"],
+      "dependsOn": ["^prisma:migrate:dev"],
       "cache": false
     }
   }
