@@ -22,24 +22,15 @@ export const sign = (payload, privateKey, header) => {
 
 // Since we create a fake signed token, we have to implement a fake jwt decode
 // platform to simulate "jwt-decode" library.
-export const decode = (token) => {
+export const decode = async (token) => {
   const [encodedHeader, encodedPayload, signature] = token.split('.');
-  const header = JSON.parse(atob(encodedHeader));
-  const payload = JSON.parse(atob(encodedPayload));
+
+  const header = await JSON.parse(atob(encodedHeader));
+  const payload = await JSON.parse(atob(encodedPayload));
   const now = new Date();
 
-  if (now < header.expiresIn) {
+  if (header.expiresIn && now < header.expiresIn) {
     throw new Error('Expired token');
-  }
-
-  const verifiedSignature = btoa(Array
-    .from(encodedPayload)
-    .map((item, key) => (String.fromCharCode(item.charCodeAt(0) ^ JWT_SECRET[key
-    % JWT_SECRET.length].charCodeAt(0))))
-    .join(''));
-
-  if (verifiedSignature !== signature) {
-    throw new Error('Invalid signature');
   }
 
   return payload;
