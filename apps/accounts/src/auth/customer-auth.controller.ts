@@ -4,8 +4,9 @@ import { UserLoginDto } from './dto/user-login.dto';
 import { JwtTokenDto } from './dto/jwt-token.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { RolesService } from 'src/roles/services/roles.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { RoleEntity } from 'src/roles/entities/role.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Controller({
   version: '1',
@@ -23,6 +24,7 @@ export class CustomerAuthController {
   }
 
   @Post('register')
+  @ApiOkResponse({ type: UserEntity })
   async register(@Body() userRegisterDto: UserRegisterDto) {
     return await this.authService.register(
       userRegisterDto,
@@ -31,6 +33,7 @@ export class CustomerAuthController {
   }
 
   @Post('login')
+  @ApiOkResponse({ type: JwtTokenDto })
   async login(@Body() userLoginDto: UserLoginDto): Promise<JwtTokenDto> {
     const user = await this.authService.validateUserCredentials(userLoginDto);
     return this.authService.login(user);
