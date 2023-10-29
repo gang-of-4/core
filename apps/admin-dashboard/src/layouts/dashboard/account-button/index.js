@@ -1,11 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
 import User01Icon from '@untitled-ui/icons-react/build/esm/User01';
 import { Avatar, Box, ButtonBase, SvgIcon } from '@mui/material';
+import { useMockedUser } from '../../../hooks/use-mocked-user';
 import { AccountPopover } from './account-popover';
-import { useAuth } from '../../../hooks/use-auth';
 
-export const AccountButton = ({children}) => {
-  const { user } = useAuth();
+export const AccountButton = () => {
+  const user = useMockedUser();
   const anchorRef = useRef(null);
   const [openPopover, setOpenPopover] = useState(false);
 
@@ -39,7 +39,7 @@ export const AccountButton = ({children}) => {
             height: 32,
             width: 32
           }}
-          src={user?.avatar}
+          src={user.avatar}
         >
           <SvgIcon>
             <User01Icon />
@@ -50,7 +50,6 @@ export const AccountButton = ({children}) => {
         anchorEl={anchorRef.current}
         onClose={handlePopoverClose}
         open={openPopover}
-        listItems={children}
       />
     </>
   );

@@ -1,6 +1,7 @@
 import {
   Box,
   Container,
+  Divider,
   Link,
   Stack,
   Typography,
@@ -9,7 +10,6 @@ import {
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
 import NextLink from 'next/link';
-import { organization } from 'ui/config';
 
 const sections = [
   {
@@ -34,6 +34,10 @@ const sections = [
       },
       {
         title: 'License',
+        path: '#'
+      },
+      {
+        title: 'Contact',
         path: '#'
       }
     ]
@@ -64,7 +68,7 @@ export const Footer = (props) => (
       borderTopWidth: 1,
       pb: 6,
       pt: {
-        md: 6,
+        md: 15,
         xs: 6
       }
     }}
@@ -117,14 +121,14 @@ export const Footer = (props) => (
                   }
                 }}
               >
-                {organization.name}
+                Devias Kit <span>PRO</span>
               </Box>
             </Stack>
             <Typography
               color="text.secondary"
               variant="caption"
             >
-              © {new Date().getFullYear()} All rights reserved
+              © 2022 Devias IO
             </Typography>
           </Stack>
         </Grid>
@@ -183,6 +187,13 @@ export const Footer = (props) => (
           </Grid>
         ))}
       </Grid>
+      <Divider sx={{ my: 6 }} />
+      <Typography
+        color="text.secondary"
+        variant="caption"
+      >
+        All Rights Reserved.
+      </Typography>
     </Container>
   </Box>
 );

@@ -4,7 +4,6 @@ import { Box, Container, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
-import { organization } from 'ui/config';
 
 const TOP_NAV_HEIGHT = 64;
 
@@ -71,7 +70,7 @@ export const Layout = (props) => {
                   }
                 }}
               >
-                {organization.name}
+                Devias Kit <span>PRO</span>
               </Box>
             </Stack>
           </Stack>

@@ -87,8 +87,7 @@ class AuthApi {
           avatar: user.avatar,
           email: user.email,
           name: user.name,
-          plan: user.plan,
-          role: user.role
+          plan: user.plan
         });
       } catch (err) {
         console.error('[Auth Api]: ', err);

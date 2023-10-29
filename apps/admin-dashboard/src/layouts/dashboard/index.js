@@ -32,7 +32,7 @@ export const Layout = withAuthGuard((props) => {
       navColor={settings.navColor}
       {...props} />
   );
-}, {role: 'admin'});
+});
 
 Layout.propTypes = {
   children: PropTypes.node

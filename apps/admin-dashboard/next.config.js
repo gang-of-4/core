@@ -2,7 +2,6 @@
 const config = {
   swcMinify: true,
   reactStrictMode: false,
-  transpilePackages: ['ui'],
   experimental: {
     appDir: false
   },

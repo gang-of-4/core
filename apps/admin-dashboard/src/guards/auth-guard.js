@@ -13,9 +13,9 @@ const loginPaths = {
 };
 
 export const AuthGuard = (props) => {
-  const { children, role } = props;
+  const { children } = props;
   const router = useRouter();
-  const { user, isAuthenticated, issuer } = useAuth();
+  const { isAuthenticated, issuer } = useAuth();
   const [checked, setChecked] = useState(false);
 
   const check = useCallback(() => {
@@ -24,11 +24,7 @@ export const AuthGuard = (props) => {
       const href = loginPaths[issuer] + `?${searchParams}`;
       router.replace(href);
     } else {
-      if (role && user.role !== role) {
-        router.replace(paths.errors.forbidden);
-      } else {
-        setChecked(true);
-      } 
+      setChecked(true);
     }
   }, [isAuthenticated, issuer, router]);
 
