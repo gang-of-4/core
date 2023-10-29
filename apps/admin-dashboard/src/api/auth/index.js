@@ -1,4 +1,4 @@
-import { decode, JWT_EXPIRES_IN, JWT_SECRET, sign } from '../../utils/jwt';
+import { decode } from '../../utils/jwt';
 import { api } from 'ui/config';
 
 class AuthApi {
@@ -38,10 +38,7 @@ class AuthApi {
         }
 
         const data = await res.json();
-        const user = data.user;
-
-        // Create the access token
-        const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        const accessToken = data.accessToken;
 
         resolve({ accessToken });
 
@@ -76,10 +73,7 @@ class AuthApi {
         }
 
         const data = await res.json();
-        const user = data.user;
-
-        // Create the access token
-        const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        const accessToken = data.accessToken;
 
         resolve({ accessToken });
 
