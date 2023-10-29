@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
-import { Expose, Type } from 'class-transformer';
-import { PermissionEntity } from './permission.entity';
+import { Expose } from 'class-transformer';
 
 export class RoleEntity implements Role {
   @ApiProperty()
