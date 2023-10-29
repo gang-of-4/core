@@ -16,10 +16,9 @@ jobs:
 
     services:
       postgres:
-        image: 'postgres:alpine3.18'
+        image: 'postgres'
         env:
-          POSTGRES_USER: 'root'
-          POSTGRES_PASSWORD: 'root'
+          POSTGRES_PASSWORD: 'secret'
         ports:
           - 5432:5432
 
@@ -30,4 +29,4 @@ jobs:
           fetch-depth: 2
 
       - name: Initialize Database
-        run: psql -f ./config/postgresql/init.sql
+        run: PGPASSWORD=secret psql -U postgres -h 127.0.0.1 -p ${{ job.services.postgres.ports[5432] }} -f ./config/postgresql/init.sql
