@@ -1,0 +1,33 @@
+name: Jest Unit Tests
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      pnpm-version: 8.8.0
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      DATABASE_URL: "postgresql://root:root@db:5432"
+
+    services:
+      postgres:
+        image: 'postgres:alpine3.18'
+        env:
+          POSTGRES_USER: 'root'
+          POSTGRES_PASSWORD: 'root'
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Initialize Database
+        run: psql -f ./config/postgresql/init.sql
