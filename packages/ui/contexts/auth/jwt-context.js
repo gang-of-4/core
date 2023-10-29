@@ -107,13 +107,47 @@ export const AuthProvider = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-      initialize();
-    },
+    initialize();
+  },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []);
 
-  const signIn = useCallback(async (email, password) => {
-    const { accessToken } = await authApi.signIn({ email, password });
+  const signIn = useCallback(async (userInfo, role) => {
+
+    let res;
+
+    switch (role) {
+      case 'vendor':
+        res = await authApi.vendorSignIn(
+          {
+            email: userInfo.email,
+            password: userInfo.password
+          },
+        );
+        break;
+      case 'customer':
+        res = await authApi.customerSignIn(
+          {
+            email: userInfo.email,
+            password: userInfo.password
+          },
+        );
+        break;
+      case 'admin':
+        res = await authApi.adminSignIn(
+          {
+            email: userInfo.email,
+            password: userInfo.password
+          },
+        );
+      default:
+        break;
+    }
+
+    console.log(res);
+
+    const { accessToken } = res;
+
     const user = await authApi.me({ accessToken });
 
     localStorage.setItem(STORAGE_KEY, accessToken);
@@ -126,16 +160,42 @@ export const AuthProvider = (props) => {
     });
   }, [dispatch]);
 
-  const signUp = useCallback(async (email, firstName, lastName, phone, password) => {
+  const signUp = useCallback(async (userInfo, role) => {
 
-    // @todo: integrate with backend API
+    let res;
 
-    console.log('[sign up]: ', 
-      email, firstName, lastName, phone, password
-    );
+    switch (role) {
+      case 'vendor':
+        res = await authApi.vendorSignUp(
+          {
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            email: userInfo.email,
+            phone: userInfo.phone,
+            password: userInfo.password,
+            passwordConfirmation: userInfo.passwordConfirmation
+          },
+        );
+        break;
+      case 'customer':
+        res = await authApi.customerSignUp(
+          {
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            email: userInfo.email,
+            phone: userInfo.phone,
+            password: userInfo.password,
+            passwordConfirmation: userInfo.passwordConfirmation
+          },
+        );
+        break;
+      default:
+        break;
+    }
 
-    const name = `${firstName} ${lastName}`;
-    const { accessToken } = await authApi.signUp({ email, name, password });
+    console.log(res);
+
+    const { accessToken } = res;
     const user = await authApi.me({ accessToken });
 
     localStorage.setItem(STORAGE_KEY, accessToken);
