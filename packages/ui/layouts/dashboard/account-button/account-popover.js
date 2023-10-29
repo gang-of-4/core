@@ -69,7 +69,7 @@ export const AccountPopover = (props) => {
       {...other}>
       <Box sx={{ p: 2 }}>
         <Typography variant="body1">
-          {auth.user?.name}
+          {auth.user?.firstName} {auth.user?.lastName}
         </Typography>
         <Typography
           color="text.secondary"
