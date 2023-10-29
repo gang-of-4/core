@@ -36,6 +36,7 @@ class AuthApi {
           reject(new Error(data.message));
           return;
         }
+        // @todo sign up does NOT sign you in directly
 
         const data = await res.json();
         const accessToken = data.accessToken;
