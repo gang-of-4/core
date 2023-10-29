@@ -92,7 +92,7 @@ const Page = () => {
         <Card elevation={16}>
           <CardHeader
             sx={{ pb: 0 }}
-            title="Log in"
+            title="Login"
           />
           <CardContent>
             <form
