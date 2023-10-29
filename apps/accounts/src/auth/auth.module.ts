@@ -7,6 +7,8 @@ import { RolesModule } from 'src/roles/roles.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { VendorAuthController } from './vendor-auth.controller';
+import { AdminAuthController } from './admin-auth.controller';
 
 @Module({
   imports: [
@@ -19,7 +21,11 @@ import { JwtStrategy } from './jwt.strategy';
       signOptions: { expiresIn: '60s' },
     }),
   ],
-  controllers: [CustomerAuthController],
+  controllers: [
+    CustomerAuthController,
+    VendorAuthController,
+    AdminAuthController,
+  ],
   providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}
