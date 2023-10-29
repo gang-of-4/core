@@ -30,11 +30,15 @@ export class CreateUserDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsPhoneNumber()
-  phone: string;
+  phone?: string;
 
   @ApiProperty({ type: String })
   @IsNotEmpty()
   @IsUUID()
   @RoleExists()
   role_id: Role['id'];
+
+  constructor(partial: Partial<CreateUserDto>) {
+    Object.assign(this, partial);
+  }
 }

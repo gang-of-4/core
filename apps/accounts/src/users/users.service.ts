@@ -9,13 +9,14 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+    console.log(createUserDto);
     return new UserEntity(
       await this.prisma.user.create({
         data: {
           first_name: createUserDto.first_name,
           last_name: createUserDto.last_name,
           email: createUserDto.email,
-          phone: createUserDto.phone,
+          phone: createUserDto?.phone,
           role: {
             connect: {
               id: createUserDto.role_id,
@@ -44,6 +45,19 @@ export class UsersService {
     );
   }
 
+  async findOneByEmail(email: string): Promise<UserEntity> {
+    return new UserEntity(
+      await this.prisma.user.findUnique({
+        where: {
+          email,
+        },
+        include: {
+          role: true,
+        },
+      }),
+    );
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     return new UserEntity(
       await this.prisma.user.update({
@@ -54,7 +68,7 @@ export class UsersService {
           first_name: updateUserDto.first_name,
           last_name: updateUserDto.last_name,
           email: updateUserDto.email,
-          phone: updateUserDto.phone,
+          phone: updateUserDto?.phone,
           role: {
             connect: {
               id: updateUserDto.role_id,

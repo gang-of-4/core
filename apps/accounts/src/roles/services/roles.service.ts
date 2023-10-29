@@ -6,10 +6,6 @@ import { RoleEntity } from '../entities/role.entity';
 export class RolesService {
   constructor(private prisma: PrismaService) {}
 
-  // create(createRoleDto: CreateRoleDto) {
-  //   return 'This action adds a new role';
-  // }
-
   async findAll(): Promise<RoleEntity[]> {
     const roles = await this.prisma.role.findMany();
     return roles.map((role) => new RoleEntity(role));
@@ -25,11 +21,13 @@ export class RolesService {
     );
   }
 
-  // update(id: number, updateRoleDto: UpdateRoleDto) {
-  //   return `This action updates a #${id} role`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} role`;
-  // }
+  async findOneByName(name: string): Promise<RoleEntity> {
+    return new RoleEntity(
+      await this.prisma.role.findUnique({
+        where: {
+          name: name,
+        },
+      }),
+    );
+  }
 }

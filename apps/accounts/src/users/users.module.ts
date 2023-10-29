@@ -9,5 +9,6 @@ import { RoleExistsRule } from './rules/role-exist.rule';
   imports: [PrismaModule, RolesModule],
   controllers: [UsersController],
   providers: [UsersService, RoleExistsRule],
+  exports: [UsersService],
 })
 export class UsersModule {}
