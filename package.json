@@ -11,10 +11,11 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "dotenv-cli": "^7.3.0",
     "eslint": "^8.48.0",
+    "eslint-config-custom": "workspace:*",
     "prettier": "^3.0.3",
     "tsconfig": "workspace:*",
-    "eslint-config-custom": "workspace:*",
     "turbo": "latest"
   }
 }
