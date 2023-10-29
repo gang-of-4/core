@@ -12,7 +12,6 @@ jobs:
       pnpm-version: 8.8.0
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-      DATABASE_URL: "postgresql://root:root@db:5432"
 
     services:
       postgres:
