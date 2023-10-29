@@ -36,7 +36,7 @@ jobs:
         id: dependencies-cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-pnpm-turborepo-${{ hashFiles('**/pnpm-lock.yaml') }}-eslint
+          key: ${{ runner.os }}-pnpm-turborepo-${{ hashFiles('**/pnpm-lock.yaml') }}-tests
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2
