@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CustomerAuthController } from './customer-auth.controller';
 import { AuthService } from './auth.service';
-import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { PrismaModule } from '..//prisma/prisma.module';
+import { JwtModule } from '@nestjs/jwt';
+import { PrismaModule } from '../prisma/prisma.module';
 import { RolesModule } from '../roles/roles.module';
 import { UsersModule } from '../users/users.module';
 import { AdminAuthController } from './admin-auth.controller';
-import { CustomerAuthController } from './customer-auth.controller';
 import { VendorAuthController } from './vendor-auth.controller';
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('CustomerAuthController', () => {
+  let controller: CustomerAuthController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,10 +32,10 @@ describe('AuthService', () => {
       providers: [AuthService],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    controller = module.get<CustomerAuthController>(CustomerAuthController);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(controller).toBeDefined();
   });
 });
