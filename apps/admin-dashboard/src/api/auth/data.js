@@ -5,6 +5,7 @@ export const users = [
     email: 'demo@devias.io',
     name: 'Anika Visser',
     password: 'Password123!',
-    plan: 'Premium'
+    plan: 'Premium',
+    role: 'admin'
   }
 ];

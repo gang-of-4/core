@@ -18,8 +18,8 @@ const useMobileNav = () => {
   }, [isOpen]);
 
   useEffect(() => {
-      handlePathnameChange();
-    },
+    handlePathnameChange();
+  },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [pathname]);
 
@@ -48,15 +48,64 @@ export const Layout = (props) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const mobileNav = useMobileNav();
 
+  const sideItems = [];
+  const topItems = [];
+
+  // Refer to the following structure when passing sideItems
+
+  /** 
+  const items = [
+    {
+      title: 'Components',
+      path: paths.components.index
+    },
+    {
+      title: 'Pages',
+      children: [
+        {
+          subheader: 'Dashboard',
+          items: [
+            {
+              title: 'Overview',
+              path: paths.dashboard.index
+            },
+            ...
+          ]
+        },
+        {
+          subheader: 'Other',
+          items: [
+            {
+              title: 'Blog',
+              path: paths.dashboard.blog.index
+            },
+            ...
+          ]
+        },
+           ...
+      ]
+    },
+     ...
+  ];
+  */
+
+  // For topItems, the children should be a component
+  // e.g. <PagesPopover /> from ui/layouts/marketing/pages-popover.js
+
+  // If no children are used, both can use the same array
+
   return (
     <>
-      <TopNav onMobileNavOpen={mobileNav.handleOpen} />
-      {!lgUp && (
-        <SideNav
-          onClose={mobileNav.handleClose}
-          open={mobileNav.isOpen}
-        />
-      )}
+      <TopNav onMobileNavOpen={mobileNav.handleOpen} items={topItems} openSide={sideItems.length > 0} />
+      {!lgUp &&
+        sideItems.length > 0 &&
+        (
+          <SideNav
+            onClose={mobileNav.handleClose}
+            open={mobileNav.isOpen}
+            items={sideItems}
+          />
+        )}
       <LayoutRoot>
         {children}
         <Footer />
