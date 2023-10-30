@@ -1,3 +1,5 @@
+'use client'
+
 import NextLink from 'next/link';
 import Head from 'next/head';
 import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';

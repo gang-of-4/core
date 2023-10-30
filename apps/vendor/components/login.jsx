@@ -63,7 +63,11 @@ const Page = () => {
     validationSchema,
     onSubmit: async (values, helpers) => {
       try {
-        await signIn(values.email, values.password);
+        const userInfo = {
+          email: values.email,
+          password: values.password
+        }
+        await signIn(userInfo, 'vendor');
 
         if (isMounted()) {
           router.push(returnTo || paths.vendor.dashboard.index);

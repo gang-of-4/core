@@ -40,6 +40,7 @@ const initialValues = {
     lastName: '',
     phone: '',
     password: '',
+    passwordConfirmation: '',
     submit: null
 };
 
@@ -59,13 +60,16 @@ const validationSchema = Yup.object({
         .required('Last name is required'),
     phone: Yup
         .string()
-        .max(10)
         .required('Phone number is required'),
     password: Yup
         .string()
-        .min(7)
+        .min(8)
         .max(255)
         .required('Password is required'),
+    passwordConfirmation: Yup
+        .string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required('Password confirmation is required')
 });
 
 const Page = () => {
@@ -78,13 +82,15 @@ const Page = () => {
         validationSchema,
         onSubmit: async (values, helpers) => {
             try {
-                await signUp(
-                    values.email,
-                    values.firstName,
-                    values.lastName,
-                    values.phone,
-                    values.password
-                );
+                const userInfo = {
+                    email: values.email,
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    phone: values.phone,
+                    password: values.password,
+                    passwordConfirmation: values.passwordConfirmation
+                }
+                await signUp(userInfo, 'customer');
 
                 if (isMounted()) {
                     router.push(returnTo || paths.storefront.index);
@@ -189,6 +195,17 @@ const Page = () => {
                                         onChange={formik.handleChange}
                                         type="password"
                                         value={formik.values.password}
+                                    />
+                                    <TextField
+                                        error={!!(formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)}
+                                        fullWidth
+                                        helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
+                                        label="Password Confirmation"
+                                        name="passwordConfirmation"
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        type="password"
+                                        value={formik.values.passwordConfirmation}
                                     />
                                 </Stack>
 
