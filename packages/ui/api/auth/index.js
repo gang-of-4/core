@@ -39,9 +39,9 @@ class AuthApi {
         // @todo sign up does NOT sign you in directly
 
         const data = await res.json();
-        const accessToken = data.accessToken;
+        const user = data.user;
 
-        resolve({ accessToken });
+        resolve({ user });
 
       } catch (err) {
         console.error('[Auth Api]: ', err);

@@ -164,7 +164,7 @@ export const AuthProvider = (props) => {
 
     switch (role) {
       case 'vendor':
-        res = await authApi.vendorSignUp(
+         await authApi.vendorSignUp(
           {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
@@ -174,9 +174,17 @@ export const AuthProvider = (props) => {
             passwordConfirmation: userInfo.passwordConfirmation
           },
         );
+
+        res = await authApi.vendorSignIn(
+          {
+            email: userInfo.email,
+            password: userInfo.password
+          },
+        );
         break;
+
       case 'customer':
-        res = await authApi.customerSignUp(
+        await authApi.customerSignUp(
           {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
@@ -186,7 +194,15 @@ export const AuthProvider = (props) => {
             passwordConfirmation: userInfo.passwordConfirmation
           },
         );
+
+        res = await authApi.customerSignIn(
+          {
+            email: userInfo.email,
+            password: userInfo.password
+          },
+        );
         break;
+
       default:
         break;
     }
