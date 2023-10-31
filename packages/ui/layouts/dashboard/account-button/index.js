@@ -18,7 +18,7 @@ export const AccountButton = ({children}) => {
   }, []);
 
   return (
-    <>
+    <div className='account-dropdown'>
       <Box
         component={ButtonBase}
         onClick={handlePopoverOpen}
@@ -52,6 +52,6 @@ export const AccountButton = ({children}) => {
         open={openPopover}
         listItems={children}
       />
-    </>
+    </div>
   );
 };
