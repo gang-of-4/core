@@ -17,6 +17,16 @@ describe('auth works', () => {
         password: 'tba'
     };
 
+    function visitVendorDashboard(){
+        cy.visit('/admin/dashboard');
+        cy.contains('The page you are looking for isn’t here')
+    }
+
+    function visitAdminDashboard(){
+        cy.visit('/admin/dashboard');
+        cy.contains('The page you are looking for isn’t here')
+    }
+
     // customer auth
     it('should have a working customer account', () => {
 
@@ -48,6 +58,10 @@ describe('auth works', () => {
             expect(localStorage.getItem('accessToken')).to.be.a('string');
         });
         cy.url().should('contain', '/');
+
+        visitVendorDashboard()
+        visitAdminDashboard()
+
     });
 
     // vendor auth
@@ -81,6 +95,8 @@ describe('auth works', () => {
             expect(localStorage.getItem('accessToken')).to.be.a('string');
         });
         cy.url().should('contain', '/vendor');
+
+        visitAdminDashboard()
     });
 
     // admin auth tba
