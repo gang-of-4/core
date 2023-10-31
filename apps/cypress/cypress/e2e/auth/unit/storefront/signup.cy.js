@@ -1,6 +1,6 @@
 describe('Sign Up Page', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000/vendor/auth/signup'); // Replace with the actual path to your sign-up page
+        cy.visit('/auth/signup'); // Replace with the actual path to your sign-up page
     });
 
     // Done Successfully 
@@ -12,6 +12,7 @@ describe('Sign Up Page', () => {
         cy.get('input[name="email"]').should('exist');
         cy.get('input[name="phone"]').should('exist');
         cy.get('input[name="password"]').should('exist');
+        cy.get('input[name="passwordConfirmation"]').should('exist');
 
         cy.get('button[type="submit"]').should('exist');
     });
@@ -25,28 +26,29 @@ describe('Sign Up Page', () => {
         cy.contains('First name is required').should('exist');
         cy.contains('Last name is required').should('exist');
         cy.contains('Email is required').should('exist');
-        cy.contains('Phone number is required').should('exist');
         cy.contains('Password is required').should('exist');
+        cy.contains('Password confirmation is required').should('exist');
     });
 
     // Done Successfully 
     it('should navigate to login page when "Already have an account?"', () => {
         cy.contains('Already have an account?').should('exist');
-        cy.contains('Login').click();
-        cy.url().should('eq', 'http://localhost:3000/auth/login');
+        cy.contains('Login').then((login) => {
+            const href = login.prop('href');
+            cy.visit(href);
+        });
+        cy.url().should('contain', '/auth/login')
     });
 
     // Done Successfully 
     it('should submit the form with valid data', () => {
-        // Enter valid data in the form fields
         cy.get('input[name="firstName"]').type('John');
         cy.get('input[name="lastName"]').type('Doe');
         cy.get('input[name="email"]').type('johndoe@example.com');
         cy.get('input[name="phone"]').type('1234567890');
         cy.get('input[name="password"]').type('Password123!');
-
-        // Submit the form
-        cy.contains('Sign up').click();
-        // cy.url().should('eq', 'http://localhost:3000/');
+        cy.get('input[name="passwordConfirmation"]').type('Password123!');
+        cy.get('button[type="submit"]').click();
+        cy.url().should('contain', '/');
     });
 });

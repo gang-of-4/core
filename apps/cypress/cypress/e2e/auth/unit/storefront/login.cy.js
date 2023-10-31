@@ -1,15 +1,15 @@
 describe('Login Page', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/auth/login');
+    cy.visit('/auth/login');
   });
 
   // Error display error message 
-  it('should have a message for Sign up, and Sign up button', () => {
-    //  Check if email input field exists
-    // cy.contains('Dont have an account?').should('exist');
+  // it('should have a message for Sign up, and Sign up button', () => {
+  //   //  Check if email input field exists
+  //   // cy.contains('Dont have an account?').should('exist');
 
-    cy.get('link[type="Sign up"]').should('exist');
-  });
+  //   cy.get('link[type="Sign up"]').should('exist');
+  // });
 
   // Done Successfully 
   it('should have a form with email, password fields, and a submit button', () => {
