@@ -25,7 +25,7 @@ export const paths = {
     register: '/auth/signup'
   },
   errors: {
-    forbidden: 'localhost:3000/403',
+    forbidden: 'localhost:3000/404',
   },
   // auth: {
   //   auth0: {
