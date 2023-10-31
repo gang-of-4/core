@@ -59,8 +59,7 @@ const validationSchema = Yup.object({
         .max(255)
         .required('Last name is required'),
     phone: Yup
-        .string()
-        .required('Phone number is required'),
+        .string(),
     password: Yup
         .string()
         .min(8)
@@ -86,7 +85,7 @@ const Page = () => {
                     email: values.email,
                     firstName: values.firstName,
                     lastName: values.lastName,
-                    phone: values.phone,
+                    phone: values?.phone,
                     password: values.password,
                     passwordConfirmation: values.passwordConfirmation
                 }

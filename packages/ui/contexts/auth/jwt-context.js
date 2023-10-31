@@ -169,7 +169,7 @@ export const AuthProvider = (props) => {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
             email: userInfo.email,
-            phone: userInfo.phone,
+            phone: userInfo?.phone,
             password: userInfo.password,
             passwordConfirmation: userInfo.passwordConfirmation
           },
@@ -189,7 +189,7 @@ export const AuthProvider = (props) => {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
             email: userInfo.email,
-            phone: userInfo.phone,
+            phone: userInfo?.phone,
             password: userInfo.password,
             passwordConfirmation: userInfo.passwordConfirmation
           },
