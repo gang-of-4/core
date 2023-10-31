@@ -13,6 +13,23 @@ class AuthApi {
       passwordConfirmation
     } = request;
 
+    let requestBody = {}
+    
+    phone ? requestBody = {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      phone: phone,
+      password: password,
+      password_confirmation: passwordConfirmation
+    } : requestBody = {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password: password,
+      password_confirmation: passwordConfirmation
+    }
+
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch(
@@ -22,14 +39,7 @@ class AuthApi {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-              first_name: firstName,
-              last_name: lastName,
-              email: email,
-              phone: phone,
-              password: password,
-              password_confirmation: passwordConfirmation
-            })
+            body: JSON.stringify(requestBody)
           });
 
         if (!res.ok) {
