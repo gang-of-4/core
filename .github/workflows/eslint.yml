@@ -1,4 +1,4 @@
-name: ESLint check
+name: Style Check
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   eslint:
-    name: ESLINT
+    name: ESLint check
     runs-on: ubuntu-latest
 
     env:
