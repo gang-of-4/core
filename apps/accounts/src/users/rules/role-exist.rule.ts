@@ -1,4 +1,4 @@
-import { Role } from '@prisma/accounts-client';
+import { Role } from '@prisma/client';
 import {
   ValidationOptions,
   ValidatorConstraint,

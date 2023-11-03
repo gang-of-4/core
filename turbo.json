@@ -13,8 +13,7 @@
       "dependsOn": ["^prisma:generate"],
       "cache": false
     },
-    "prisma:migrate:dev": {
-      "dependsOn": ["^prisma:generate"],
+    "prisma:push": {
       "cache": false
     },
     "prisma:seed": {
@@ -27,7 +26,7 @@
       "persistent": true
     },
     "test": {
-      "dependsOn": ["^prisma:migrate:dev"],
+      "dependsOn": ["^prisma:push"],
       "cache": true
     }
   }

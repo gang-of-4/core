@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Permission } from '@prisma/accounts-client';
+import { Permission } from '@prisma/client';
 import { Expose, Type } from 'class-transformer';
 import { RoleEntity } from './role.entity';
 

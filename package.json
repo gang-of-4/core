@@ -6,13 +6,13 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "prisma:dev": "turbo run prisma:generate prisma:migrate:dev",
-    "test": "turbo run prisma:generate prisma:migrate:dev test",
+    "prisma:generate": "turbo run prisma:generate",
+    "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "dotenv-cli": "^7.3.0",
-    "eslint": "^8.48.0",
+    "eslint": "^8.52.0",
     "eslint-config-custom": "workspace:*",
     "prettier": "^3.0.3",
     "tsconfig": "workspace:*",

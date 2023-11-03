@@ -17,7 +17,8 @@ jobs:
       postgres:
         image: 'postgres'
         env:
-          POSTGRES_PASSWORD: 'password'
+          POSTGRES_USER: 'root'
+          POSTGRES_PASSWORD: 'root'
         ports:
           - 5432:5432
 
@@ -28,7 +29,7 @@ jobs:
           fetch-depth: 2
 
       - name: Initialize Database
-        run: PGPASSWORD=password psql -U postgres -h 127.0.0.1 -p ${{ job.services.postgres.ports[5432] }} -f ./config/postgresql/init.sql
+        run: PGPASSWORD=root psql -U root -h 127.0.0.1 -p ${{ job.services.postgres.ports[5432] }} -f ./config/postgresql/init.sql
 
       - name: Cache dependencies
         uses: actions/cache@v3
