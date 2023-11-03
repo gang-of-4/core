@@ -33,7 +33,6 @@ jobs:
           version: ${{ env.pnpm-version }}
 
       - name: Install Dependencies
-        if: steps.dependencies-cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
 
       - name: ESLint check
