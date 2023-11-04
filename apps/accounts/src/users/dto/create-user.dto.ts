@@ -10,6 +10,7 @@ import {
 } from 'class-validator';
 import { RoleExists } from '../rules/role-exist.rule';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEmailUnique } from '../rules/is-unique';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -25,6 +26,7 @@ export class CreateUserDto {
   @ApiProperty({ example: 'example@example.com' })
   @IsNotEmpty()
   @IsEmail()
+  @IsEmailUnique()
   email: string;
 
   @ApiProperty({ required: false })
