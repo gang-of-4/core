@@ -1,0 +1,48 @@
+enum Status {
+  Pending
+  InReview
+  Approved
+  Rejected
+}
+
+model User {
+  id                    String @id @default(uuid())  
+}
+
+model Store {
+  id                    String @id @default(auto())  
+  vendorId              String
+  vendor                User   @relation(fields: [vendorId], references: [id])
+  status                Status @default(Pending)
+  individualStore       IndividualStore?
+  businessStore         BusinessStore[]
+  created_at            DateTime @default(now())
+  updated_at            DateTime @default(now())
+  deleted_at            DateTime?
+}
+
+model Media {
+    id                  String @id @default(uuid())  
+    name                String
+    ownerId             String
+    owner               User @relation(fields: [ownerId], references: [id])
+    extension           String
+    size                Int
+}
+
+model BusinessStore {
+  id                    String @id @default(auto())  
+  storeId               String
+  store                 Store  @relation(fields: [storeId], references: [id])
+  name                  String
+  logo                  String
+  vat_number            String
+  cr_number             String
+  owner_national_id     String
+}
+
+model IndividualStore {
+  id                    String @id @default(auto())  
+  storeId               String
+  store                 Store  @relation(fields: [storeId], references: [id])
+}
