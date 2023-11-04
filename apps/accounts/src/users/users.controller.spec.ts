@@ -28,8 +28,8 @@ describe('UsersController', () => {
     defaultUser = {
       first_name: 'example',
       last_name: 'example',
-      email: 'example@example.com',
-      phone: '+966500000000',
+      email: 'users@controller.com',
+      phone: '+966500000001',
       role_id: (
         await prisma.role.findFirst({
           select: {
