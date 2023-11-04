@@ -28,11 +28,11 @@ describe('UsersService', () => {
     prisma.$connect();
 
     defaultUser = {
-      first_name: 'example',
-      last_name: 'example',
+      firstName: 'example',
+      lastName: 'example',
       email: 'users@service.com',
       phone: '+966500000002',
-      role_id: (
+      roleId: (
         await prisma.role.findFirst({
           select: {
             id: true,
@@ -69,8 +69,8 @@ describe('UsersService', () => {
 
     const update = {
       ...defaultUser,
-      first_name: 'updated',
-      last_name: 'updated',
+      firstName: 'updated',
+      lastName: 'updated',
     };
 
     const updatedUser = await service.update(

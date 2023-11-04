@@ -29,7 +29,7 @@ export class AuthService {
     const user = await this.usersService.create(
       new CreateUserDto({
         ...userRegisterDto,
-        role_id: role.id,
+        roleId: role.id,
       }),
     );
 
@@ -68,7 +68,7 @@ export class AuthService {
 
     const credentials = await this.prisma.credentialsAccount.findUnique({
       where: {
-        user_id: user.id,
+        userId: user.id,
       },
     });
 

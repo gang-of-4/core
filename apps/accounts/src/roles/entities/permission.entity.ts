@@ -14,19 +14,19 @@ export class PermissionEntity implements Permission {
   @Expose({
     groups: ['permissions.create', 'permissions.update', 'permissions.delete'],
   })
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty()
   @Expose({
     groups: ['permissions.create', 'permissions.update', 'permissions.delete'],
   })
-  updated_at: Date;
+  updatedAt: Date;
 
   @ApiProperty({ nullable: true, default: null })
   @Expose({
     groups: ['permissions.create', 'permissions.update', 'permissions.delete'],
   })
-  deleted_at: Date;
+  deletedAt: Date;
 
   @ApiProperty({ type: RoleEntity })
   @Type(() => RoleEntity)

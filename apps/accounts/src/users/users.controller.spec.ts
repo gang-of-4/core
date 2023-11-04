@@ -26,11 +26,11 @@ describe('UsersController', () => {
     prisma.$connect();
 
     defaultUser = {
-      first_name: 'example',
-      last_name: 'example',
+      firstName: 'example',
+      lastName: 'example',
       email: 'users@controller.com',
       phone: '+966500000001',
-      role_id: (
+      roleId: (
         await prisma.role.findFirst({
           select: {
             id: true,

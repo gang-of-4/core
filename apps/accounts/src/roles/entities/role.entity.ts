@@ -11,15 +11,15 @@ export class RoleEntity implements Role {
 
   @ApiProperty()
   @Expose({ groups: ['roles.create', 'roles.update', 'roles.delete'] })
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty()
   @Expose({ groups: ['roles.create', 'roles.update', 'roles.delete'] })
-  updated_at: Date;
+  updatedAt: Date;
 
   @ApiProperty({ nullable: true, default: null })
   @Expose({ groups: ['roles.create', 'roles.update', 'roles.delete'] })
-  deleted_at: Date;
+  deletedAt: Date;
 
   constructor(partial: Partial<RoleEntity>) {
     Object.assign(this, partial);

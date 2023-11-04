@@ -14,12 +14,12 @@ export class UserRegisterDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  first_name: string;
+  firstName: string;
 
   @ApiProperty()
   @IsDefined()
   @IsString()
-  last_name: string;
+  lastName: string;
 
   @ApiProperty({ example: 'example@example.com' })
   @IsNotEmpty()
@@ -47,5 +47,5 @@ export class UserRegisterDto {
   @IsNotEmpty()
   @IsString()
   @IsEqualTo(UserRegisterDto, (request) => request.password)
-  password_confirmation: string;
+  passwordConfirmation: string;
 }

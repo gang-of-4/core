@@ -8,10 +8,10 @@ export class UserEntity implements User {
   id: string;
 
   @ApiProperty()
-  first_name: string;
+  firstName: string;
 
   @ApiProperty()
-  last_name: string;
+  lastName: string;
 
   @ApiProperty({ example: 'example@example.com' })
   email: string;
@@ -20,24 +20,24 @@ export class UserEntity implements User {
   phone: string;
 
   @Exclude()
-  role_id: Role['id'];
+  roleId: Role['id'];
 
   @ApiProperty({ nullable: true, default: null })
-  email_verified_at: Date;
+  emailVerifiedAt: Date;
 
   @ApiProperty({ type: RoleEntity })
   @Type(() => RoleEntity)
   role: RoleEntity;
 
   @ApiProperty()
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty()
-  updated_at: Date;
+  updatedAt: Date;
 
   @ApiProperty({ nullable: true, default: null })
   @Expose({ groups: ['users.delete', 'self'] })
-  deleted_at: Date;
+  deletedAt: Date;
 
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);

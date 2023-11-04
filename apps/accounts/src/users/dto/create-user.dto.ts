@@ -16,12 +16,12 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  first_name: string;
+  firstName: string;
 
   @ApiProperty()
   @IsDefined()
   @IsString()
-  last_name: string;
+  lastName: string;
 
   @ApiProperty({ example: 'example@example.com' })
   @IsNotEmpty()
@@ -38,7 +38,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsUUID()
   @RoleExists()
-  role_id: Role['id'];
+  roleId: Role['id'];
 
   constructor(partial: Partial<CreateUserDto>) {
     Object.assign(this, partial);

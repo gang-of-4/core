@@ -9,18 +9,18 @@ datasource db {
 
 model User {
     id                  String @db.Uuid @id @default(uuid())  
-    first_name          String
-    last_name           String
+    firstName           String
+    lastName            String
     email               String @unique
     phone               String? @unique
-    role_id             String @db.Uuid
-    role                Role @relation(fields: [role_id], references: [id])
-    email_verified_at   DateTime?
+    roleId              String @db.Uuid
+    role                Role @relation(fields: [roleId], references: [id])
+    emailVerifiedAt     DateTime?
     credentials         CredentialsAccount?
-    oauth_accounts      OAuthAccount[]
-    created_at          DateTime @default(now())
-    updated_at          DateTime @default(now())
-    deleted_at          DateTime?
+    oauthAccounts       OAuthAccount[]
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @default(now())
+    deletedAt           DateTime?
 }
 
 model Role {
@@ -28,9 +28,9 @@ model Role {
     name            String @unique
     permissions     RolePermissions[]
     users           User[]
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    deleted_at      DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
 }
 
 model Permission {
@@ -38,19 +38,19 @@ model Permission {
     name            String @unique
     roles           RolePermissions[]
     activities      PermissionActivites[]
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    deleted_at      DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
 }
 
 model RolePermissions {
-    role_id         String      @db.Uuid
-    permission_id   String      @db.Uuid
-    role            Role        @relation(fields: [role_id], references: [id])
-    permission      Permission  @relation(fields: [permission_id], references: [id])
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    @@id([role_id, permission_id])
+    roleId          String      @db.Uuid
+    permissionId    String      @db.Uuid
+    role            Role        @relation(fields: [roleId], references: [id])
+    permission      Permission  @relation(fields: [permissionId], references: [id])
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    @@id([roleId, permissionId])
 }
 
 model Activity {
@@ -58,54 +58,54 @@ model Activity {
     permissions     PermissionActivites[]
     method          String @db.Char(8)
     url             String
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    deleted_at      DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
     @@index([method, url])
 }
 
 model PermissionActivites {
-    permission_id   String @db.Uuid
-    activity_id     String @db.Uuid
-    permission      Permission @relation(fields: [permission_id], references: [id])
-    activity        Activity @relation(fields: [activity_id], references: [id])
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    @@id([permission_id, activity_id])
+    permissionId    String @db.Uuid
+    activityId      String @db.Uuid
+    permission      Permission @relation(fields: [permissionId], references: [id])
+    activity        Activity @relation(fields: [activityId], references: [id])
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    @@id([permissionId, activityId])
 }
 
 model Provider {
     id              String @db.Uuid() @id @default(uuid())  
     name            String @unique
-    oauth_accounts  OAuthAccount[]
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    deleted_at      DateTime?
+    oauthAccounts   OAuthAccount[]
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
 }
 
 model CredentialsAccount {
     id              String @db.Uuid() @id @default(uuid())  
-    user_id         String @db.Uuid @unique
-    user            User @relation(fields: [user_id], references: [id])
+    userId          String @db.Uuid @unique
+    user            User @relation(fields: [userId], references: [id])
     password        String @db.Char(60)
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    deleted_at      DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
 }
 
 model OAuthAccount {
     id              String @db.Uuid() @id @default(uuid())  
-    provider_id     String @db.Uuid
-    provider        Provider @relation(fields: [provider_id], references: [id])
-    user_id         String @db.Uuid
-    user            User @relation(fields: [user_id], references: [id])
-    access_token    String?
-    refresh_token   String?
+    providerId      String @db.Uuid
+    provider        Provider @relation(fields: [providerId], references: [id])
+    userId          String @db.Uuid
+    user            User @relation(fields: [userId], references: [id])
+    accessToken     String?
+    refreshToken    String?
     payload         Json?
-    expires_at      DateTime?
-    created_at      DateTime @default(now())
-    updated_at      DateTime @default(now())
-    deleted_at      DateTime?
-    @@unique([provider_id, user_id])
+    expiresAt       DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
+    @@unique([providerId, userId])
 }
 

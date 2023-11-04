@@ -13,13 +13,13 @@ export class UsersService {
     return new UserEntity(
       await this.prisma.user.create({
         data: {
-          first_name: createUserDto.first_name,
-          last_name: createUserDto.last_name,
+          firstName: createUserDto.firstName,
+          lastName: createUserDto.lastName,
           email: createUserDto.email,
           phone: createUserDto?.phone,
           role: {
             connect: {
-              id: createUserDto.role_id,
+              id: createUserDto.roleId,
             },
           },
         },
@@ -68,13 +68,13 @@ export class UsersService {
           id,
         },
         data: {
-          first_name: updateUserDto.first_name,
-          last_name: updateUserDto.last_name,
+          firstName: updateUserDto.firstName,
+          lastName: updateUserDto.lastName,
           email: updateUserDto.email,
           phone: updateUserDto?.phone,
           role: {
             connect: {
-              id: updateUserDto.role_id,
+              id: updateUserDto.roleId,
             },
           },
         },

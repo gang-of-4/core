@@ -11,8 +11,8 @@ import { RolesService } from '../../roles/services/roles.service';
 export class RoleExistsRule implements ValidatorConstraintInterface {
   constructor(private readonly rolesService: RolesService) {}
 
-  async validate(role_id: Role['id']) {
-    if (await this.rolesService.findOne(role_id)) {
+  async validate(roleId: Role['id']) {
+    if (await this.rolesService.findOne(roleId)) {
       return true;
     }
     return false;
