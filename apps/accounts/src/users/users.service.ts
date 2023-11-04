@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserEntity } from './entities/user.entity';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -31,7 +32,7 @@ export class UsersService {
     return users.map((user) => new UserEntity(user));
   }
 
-  async findOne(id: string) {
+  async findOne(id: User['id']) {
     return new UserEntity(
       await this.prisma.user.findUnique({
         where: {
@@ -44,7 +45,7 @@ export class UsersService {
     );
   }
 
-  async findOneByEmail(email: string): Promise<UserEntity> {
+  async findOneByEmail(email: User['email']): Promise<UserEntity> {
     return new UserEntity(
       await this.prisma.user.findUnique({
         where: {
@@ -57,7 +58,10 @@ export class UsersService {
     );
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
+  async update(
+    id: User['id'],
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserEntity> {
     return new UserEntity(
       await this.prisma.user.update({
         where: {
@@ -78,7 +82,7 @@ export class UsersService {
     );
   }
 
-  async remove(id: string): Promise<UserEntity> {
+  async remove(id: User['id']): Promise<UserEntity> {
     return new UserEntity(
       await this.prisma.user.delete({
         where: {

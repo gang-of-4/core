@@ -1,21 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PermissionEntity } from '../entities/permission.entity';
+import { Permission } from '@prisma/client';
 
 @Injectable()
 export class PermissionsService {
   constructor(private prisma: PrismaService) {}
-
-  // create(createRoleDto: CreateRoleDto) {
-  //   return 'This action adds a new role';
-  // }
 
   async findAll(): Promise<PermissionEntity[]> {
     const permissions = await this.prisma.permission.findMany();
     return permissions.map((permission) => new PermissionEntity(permission));
   }
 
-  async findOne(id: string): Promise<PermissionEntity> {
+  async findOne(id: Permission['id']): Promise<PermissionEntity> {
     return new PermissionEntity(
       await this.prisma.permission.findUnique({
         where: {
@@ -24,12 +21,4 @@ export class PermissionsService {
       }),
     );
   }
-
-  // update(id: number, updateRoleDto: UpdateRoleDto) {
-  //   return `This action updates a #${id} role`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} role`;
-  // }
 }

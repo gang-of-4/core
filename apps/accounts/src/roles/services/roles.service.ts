@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { RoleEntity } from '../entities/role.entity';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class RolesService {
@@ -11,7 +12,7 @@ export class RolesService {
     return roles.map((role) => new RoleEntity(role));
   }
 
-  async findOne(id: string): Promise<RoleEntity> {
+  async findOne(id: Role['id']): Promise<RoleEntity> {
     return new RoleEntity(
       await this.prisma.role.findUnique({
         where: {
@@ -21,7 +22,7 @@ export class RolesService {
     );
   }
 
-  async findOneByName(name: string): Promise<RoleEntity> {
+  async findOneByName(name: Role['name']): Promise<RoleEntity> {
     return new RoleEntity(
       await this.prisma.role.findUnique({
         where: {
