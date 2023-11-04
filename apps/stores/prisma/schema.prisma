@@ -1,8 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 enum Status {
-  Pending
-  InReview
-  Approved
-  Rejected
+  PENDING
+  INREVIEW
+  APPROVED
+  REJECTED
 }
 
 model User {
@@ -11,23 +20,25 @@ model User {
 
 model Store {
   id                    String  @db.Uuid @id @default(uuid())  
-  vendorId              String  @db.Uuid
-  vendor                User    @relation(fields: [vendorId], references: [id])
-  status                Status  @default(Pending)
+  vendorId             String  @db.Uuid
+  status                Status  @default(PENDING)
   individualStore       IndividualStore?
   businessStore         BusinessStore[]
   created_at            DateTime @default(now())
   updated_at            DateTime @default(now())
   deleted_at            DateTime?
+
+  @@index([vendorId])
 }
 
 model Media {
     id                  String  @db.Uuid @id @default(uuid())  
     name                String
     ownerId             String  @db.Uuid
-    owner               User    @relation(fields: [ownerId], references: [id])
     extension           String
     size                Int
+
+  @@index([ownerId])
 }
 
 model BusinessStore {
@@ -43,6 +54,6 @@ model BusinessStore {
 
 model IndividualStore {
   id                    String  @db.Uuid @id @default(uuid())  
-  storeId               String  @db.Uuid
+  storeId               String  @db.Uuid @unique
   store                 Store   @relation(fields: [storeId], references: [id])
 }
