@@ -14,7 +14,7 @@ class AuthApi {
     } = request;
 
     let requestBody = {}
-    
+
     phone ? requestBody = {
       first_name: firstName,
       last_name: lastName,
@@ -42,15 +42,14 @@ class AuthApi {
             body: JSON.stringify(requestBody)
           });
 
+        const data = await res.json();
+
         if (!res.ok) {
           reject(new Error(data.message));
           return;
         }
-        // @todo sign up does NOT sign you in directly
 
-        const data = await res.json();
         const user = data.user;
-
         resolve({ user });
 
       } catch (err) {
