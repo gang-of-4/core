@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { PrismaModule } from '../prisma/prisma.module';
-import { RolesModule } from '../roles/roles.module';
-import { RoleExistsRule } from './rules/role-exist.rule';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserEntity } from './entities/user.entity';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersController } from '../controllers/users.controller';
+import { UsersService } from '../services/users.service';
+import { PrismaModule } from '../../prisma/prisma.module';
+import { RolesModule } from '../../roles/roles.module';
+import { RoleExistsRule } from '../rules/role-exist.rule';
+import { PrismaService } from '../../prisma/prisma.service';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UserEntity } from '../entities/user.entity';
+import { UpdateUserDto } from '../dto/update-user.dto';
 import { plainToInstance } from 'class-transformer';
 
 describe('UsersService', () => {
