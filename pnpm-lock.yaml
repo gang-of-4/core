@@ -319,8 +319,8 @@ importers:
         specifier: 2.13.9
         version: 2.13.9(redux@4.2.0)
       redux-thunk:
-        specifier: 2.4.1
-        version: 2.4.1(redux@4.2.0)
+        specifier: 2.4.2
+        version: 2.4.2(redux@4.2.0)
       simplebar:
         specifier: 5.3.8
         version: 5.3.8
@@ -6387,7 +6387,7 @@ packages:
       react: 18.2.0
       react-redux: 8.0.2(@types/react@18.2.34)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(redux@4.2.0)
       redux: 4.2.0
-      redux-thunk: 2.4.1(redux@4.2.0)
+      redux-thunk: 2.4.2(redux@4.2.0)
       reselect: 4.1.8
     dev: false
 
@@ -14771,8 +14771,8 @@ packages:
       redux: 4.2.0
     dev: false
 
-  /redux-thunk@2.4.1(redux@4.2.0):
-    resolution: {integrity: sha512-OOYGNY5Jy2TWvTL1KgAlVy6dcx3siPJ1wTq741EPyUKfn6W6nChdICjZwCd0p8AZBs5kWpZlbkXW2nE/zjUa+Q==}
+  /redux-thunk@2.4.2(redux@4.2.0):
+    resolution: {integrity: sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==}
     peerDependencies:
       redux: ^4
     dependencies:
