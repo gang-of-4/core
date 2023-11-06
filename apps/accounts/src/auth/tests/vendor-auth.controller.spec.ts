@@ -14,8 +14,8 @@ import { UserRegisterDto } from '../dto/user-register.dto';
 import { validateOrReject } from 'class-validator';
 import { JwtTokenDto } from '../dto/jwt-token.dto';
 
-describe('CustomerAuthController', () => {
-  let controller: CustomerAuthController;
+describe('VendorAuthController', () => {
+  let controller: VendorAuthController;
   let prisma: PrismaService;
   let defaultUser;
 
@@ -39,15 +39,15 @@ describe('CustomerAuthController', () => {
       providers: [AuthService],
     }).compile();
 
-    controller = module.get<CustomerAuthController>(CustomerAuthController);
+    controller = module.get<VendorAuthController>(VendorAuthController);
     prisma = module.get<PrismaService>(PrismaService);
     prisma.$connect();
 
     defaultUser = {
       firstName: 'example',
       lastName: 'example',
-      email: 'customer@controller.com',
-      phone: '+966500000004',
+      email: 'vendor@controller.com',
+      phone: '+966500000005',
       password: '12345678QWErty@#',
       passwordConfirmation: '12345678QWErty@#',
     };
@@ -77,7 +77,7 @@ describe('CustomerAuthController', () => {
     expect(prisma).toBeDefined();
   });
 
-  it('should signup a customer', async () => {
+  it('should signup a vendor', async () => {
     const userData = plainToInstance(UserRegisterDto, defaultUser);
     await validateOrReject(userData);
     const user = await controller.register(userData);
@@ -90,14 +90,14 @@ describe('CustomerAuthController', () => {
     expect(user.roleId).toEqual(
       (
         await prisma.role.findFirst({
-          where: { name: 'customer' },
+          where: { name: 'vendor' },
           select: { id: true },
         })
       ).id,
     );
   });
 
-  it('should login a customer', async () => {
+  it('should login a vendor', async () => {
     const userData = plainToInstance(UserRegisterDto, defaultUser);
     await validateOrReject(userData);
 

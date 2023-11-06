@@ -10,12 +10,12 @@ import { AdminAuthController } from '../controllers/admin-auth.controller';
 import { VendorAuthController } from '../controllers/vendor-auth.controller';
 import { PrismaService } from '../../prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
-import { UserRegisterDto } from '../dto/user-register.dto';
 import { validateOrReject } from 'class-validator';
+import { UserLoginDto } from '../dto/user-login.dto';
 import { JwtTokenDto } from '../dto/jwt-token.dto';
 
-describe('CustomerAuthController', () => {
-  let controller: CustomerAuthController;
+describe('AdminAuthController', () => {
+  let controller: AdminAuthController;
   let prisma: PrismaService;
   let defaultUser;
 
@@ -39,18 +39,25 @@ describe('CustomerAuthController', () => {
       providers: [AuthService],
     }).compile();
 
-    controller = module.get<CustomerAuthController>(CustomerAuthController);
+    controller = module.get<AdminAuthController>(AdminAuthController);
     prisma = module.get<PrismaService>(PrismaService);
     prisma.$connect();
 
-    defaultUser = {
-      firstName: 'example',
-      lastName: 'example',
-      email: 'customer@controller.com',
-      phone: '+966500000004',
-      password: '12345678QWErty@#',
-      passwordConfirmation: '12345678QWErty@#',
-    };
+    defaultUser = await prisma.user.findFirst({
+      where: {
+        role: {
+          name: 'admin',
+        },
+      },
+      select: {
+        email: true,
+        credentials: {
+          select: {
+            password: true,
+          },
+        },
+      },
+    });
   });
 
   it('should be defined', () => {
@@ -58,18 +65,6 @@ describe('CustomerAuthController', () => {
   });
 
   afterEach(async () => {
-    await prisma.credentialsAccount.deleteMany({
-      where: {
-        user: {
-          email: defaultUser.email,
-        },
-      },
-    });
-    await prisma.user.deleteMany({
-      where: {
-        email: defaultUser.email,
-      },
-    });
     await prisma.$disconnect();
   });
 
@@ -77,32 +72,14 @@ describe('CustomerAuthController', () => {
     expect(prisma).toBeDefined();
   });
 
-  it('should signup a customer', async () => {
-    const userData = plainToInstance(UserRegisterDto, defaultUser);
-    await validateOrReject(userData);
-    const user = await controller.register(userData);
+  it('should login a vendor', async () => {
+    const loginData = plainToInstance(UserLoginDto, {
+      email: defaultUser.email,
+      password: 'Q1W2E3R4',
+    });
+    await validateOrReject(loginData);
 
-    expect(user).toBeInstanceOf(Object);
-    expect(user.email).toEqual(defaultUser.email);
-    expect(user.firstName).toEqual(defaultUser.firstName);
-    expect(user.lastName).toEqual(defaultUser.lastName);
-    expect(user.phone).toEqual(defaultUser.phone);
-    expect(user.roleId).toEqual(
-      (
-        await prisma.role.findFirst({
-          where: { name: 'customer' },
-          select: { id: true },
-        })
-      ).id,
-    );
-  });
-
-  it('should login a customer', async () => {
-    const userData = plainToInstance(UserRegisterDto, defaultUser);
-    await validateOrReject(userData);
-
-    await controller.register(userData);
-    const token = await controller.login(userData);
+    const token = await controller.login(loginData);
 
     expect(token).toBeInstanceOf(JwtTokenDto);
     expect(token.access_token).toBeDefined();

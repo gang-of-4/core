@@ -40,8 +40,6 @@ describe('AuthService', () => {
   });
 
   afterEach(async () => {
-    await prisma.credentialsAccount.deleteMany();
-    await prisma.user.deleteMany();
     await prisma.$disconnect();
   });
 

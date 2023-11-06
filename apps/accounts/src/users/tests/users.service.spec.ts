@@ -34,6 +34,11 @@ describe('UsersService', () => {
       phone: '+966500000002',
       roleId: (
         await prisma.role.findFirst({
+          where: {
+            name: {
+              not: 'admin',
+            },
+          },
           select: {
             id: true,
           },
@@ -43,7 +48,11 @@ describe('UsersService', () => {
   });
 
   afterEach(async () => {
-    await prisma.user.deleteMany();
+    await prisma.user.deleteMany({
+      where: {
+        email: defaultUser.email,
+      },
+    });
     await prisma.$disconnect();
   });
 
@@ -106,11 +115,10 @@ describe('UsersService', () => {
   });
 
   it('should return array of users', async () => {
-    const user = await service.create(new CreateUserDto(defaultUser));
+    await service.create(new CreateUserDto(defaultUser));
     const users = await service.findAll();
 
     expect(users).toBeInstanceOf(Array);
-    expect(users.length).toBe(1);
-    expect(users[0]).toEqual(user);
+    expect(users.length).toBeGreaterThan(0);
   });
 });
