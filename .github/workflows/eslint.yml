@@ -1,4 +1,4 @@
-name: ESLint check
+name: Style Check
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   eslint:
-    name: ESLINT
+    name: ESLint check
     runs-on: ubuntu-latest
 
     env:
@@ -33,7 +33,6 @@ jobs:
           version: ${{ env.pnpm-version }}
 
       - name: Install Dependencies
-        if: steps.dependencies-cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
 
       - name: ESLint check

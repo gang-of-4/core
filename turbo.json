@@ -6,10 +6,28 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "lint": {},
+    "lint": {
+      "dependsOn": ["^prisma:generate"]
+    },
+    "prisma:generate": {
+      "dependsOn": ["^prisma:generate"],
+      "cache": false
+    },
+    "prisma:push": {
+      "cache": false
+    },
+    "prisma:seed": {
+      "dependsOn": ["^prisma:migrate:dev"],
+      "cache": false
+    },
     "dev": {
+      "dependsOn": ["^prisma:migrate:dev"],
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^prisma:push"],
+      "cache": true
     }
   }
 }

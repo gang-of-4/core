@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+    id                  String @db.Uuid @id @default(uuid())  
+    firstName           String
+    lastName            String
+    email               String @unique
+    phone               String? @unique
+    roleId              String @db.Uuid
+    role                Role @relation(fields: [roleId], references: [id])
+    emailVerifiedAt     DateTime?
+    credentials         CredentialsAccount?
+    oauthAccounts       OAuthAccount[]
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @default(now())
+    deletedAt           DateTime?
+}
+
+model Role {
+    id              String @db.Uuid @id @default(uuid())  
+    name            String @unique
+    permissions     RolePermissions[]
+    users           User[]
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
+}
+
+model Permission {
+    id              String @db.Uuid @id @default(uuid())  
+    name            String @unique
+    roles           RolePermissions[]
+    activities      PermissionActivites[]
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
+}
+
+model RolePermissions {
+    roleId          String      @db.Uuid
+    permissionId    String      @db.Uuid
+    role            Role        @relation(fields: [roleId], references: [id])
+    permission      Permission  @relation(fields: [permissionId], references: [id])
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    @@id([roleId, permissionId])
+}
+
+model Activity {
+    id              String @db.Uuid() @id @default(uuid())  
+    permissions     PermissionActivites[]
+    method          String @db.Char(8)
+    url             String
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
+    @@index([method, url])
+}
+
+model PermissionActivites {
+    permissionId    String @db.Uuid
+    activityId      String @db.Uuid
+    permission      Permission @relation(fields: [permissionId], references: [id])
+    activity        Activity @relation(fields: [activityId], references: [id])
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    @@id([permissionId, activityId])
+}
+
+model Provider {
+    id              String @db.Uuid() @id @default(uuid())  
+    name            String @unique
+    oauthAccounts   OAuthAccount[]
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
+}
+
+model CredentialsAccount {
+    id              String @db.Uuid() @id @default(uuid())  
+    userId          String @db.Uuid @unique
+    user            User @relation(fields: [userId], references: [id])
+    password        String @db.Char(60)
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
+}
+
+model OAuthAccount {
+    id              String @db.Uuid() @id @default(uuid())  
+    providerId      String @db.Uuid
+    provider        Provider @relation(fields: [providerId], references: [id])
+    userId          String @db.Uuid
+    user            User @relation(fields: [userId], references: [id])
+    accessToken     String?
+    refreshToken    String?
+    payload         Json?
+    expiresAt       DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+    deletedAt       DateTime?
+    @@unique([providerId, userId])
+}
+
