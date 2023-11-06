@@ -259,8 +259,8 @@ importers:
         specifier: 2.11.0
         version: 2.11.0
       mui-one-time-password-input:
-        specifier: 1.0.3
-        version: 1.0.3(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@mui/material@5.11.0)(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 2.0.1
+        version: 2.0.1(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@mui/material@5.11.0)(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
       next:
         specifier: 13.0.7
         version: 13.0.7(@babel/core@7.23.2)(react-dom@18.2.0)(react@18.2.0)
@@ -13394,15 +13394,15 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  /mui-one-time-password-input@1.0.3(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@mui/material@5.11.0)(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-4/FDmm9wdXT2TmNoLZ7vNkO+bYRREiwgZj97TKAb7s9zEafJNFqNI5p74X5UoQyFXXS1uazGZYY5dkA31j/e8Q==}
+  /mui-one-time-password-input@2.0.1(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@mui/material@5.11.0)(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-VIp4bSHUpX2GK5VSzAoi8leRnZLcXUQ+T3mR+HHY8T/+31hfe3nR2OPPLHEB79Rp+91HWDaWkD6DQ7JMveX9gQ==}
     peerDependencies:
       '@emotion/react': ^11.5.0
       '@emotion/styled': ^11.3.0
       '@mui/material': ^5.0.0
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
+      '@types/react': ^18.0.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
