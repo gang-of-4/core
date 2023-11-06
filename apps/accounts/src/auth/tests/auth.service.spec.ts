@@ -8,9 +8,11 @@ import { UsersModule } from '../../users/users.module';
 import { AdminAuthController } from '../controllers/admin-auth.controller';
 import { CustomerAuthController } from '../controllers/customer-auth.controller';
 import { VendorAuthController } from '../controllers/vendor-auth.controller';
+import { PrismaService } from '../../prisma/prisma.service';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,9 +35,21 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    prisma = module.get<PrismaService>(PrismaService);
+    prisma.$connect();
+  });
+
+  afterEach(async () => {
+    await prisma.credentialsAccount.deleteMany();
+    await prisma.user.deleteMany();
+    await prisma.$disconnect();
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('prisma should be defined', async () => {
+    expect(prisma).toBeDefined();
   });
 });

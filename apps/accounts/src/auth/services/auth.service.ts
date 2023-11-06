@@ -10,9 +10,9 @@ import { JwtService } from '@nestjs/jwt';
 import { UserLoginDto } from '../dto/user-login.dto';
 import * as bcrypt from 'bcrypt';
 import { RoleEntity } from '../../roles/entities/role.entity';
-import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { instanceToPlain } from 'class-transformer';
 import { JwtTokenDto } from '../dto/jwt-token.dto';
+import { UserRegisterDto } from '../dto/user-register.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,28 +23,29 @@ export class AuthService {
   ) {}
 
   async register(
-    userRegisterDto: UserLoginDto,
+    userRegisterDto: UserRegisterDto,
     role: RoleEntity,
   ): Promise<UserEntity> {
-    const user = await this.usersService.create(
-      new CreateUserDto({
-        ...userRegisterDto,
-        roleId: role.id,
-      }),
-    );
-
-    await this.prisma.credentialsAccount.create({
-      data: {
-        password: await bcrypt.hash(userRegisterDto.password, 10),
-        user: {
-          connect: {
-            id: user.id,
+    return new UserEntity(
+      await this.prisma.user.create({
+        data: {
+          firstName: userRegisterDto.firstName,
+          lastName: userRegisterDto.lastName,
+          email: userRegisterDto.email,
+          phone: userRegisterDto?.phone,
+          role: {
+            connect: {
+              id: role.id,
+            },
+          },
+          credentials: {
+            create: {
+              password: await bcrypt.hash(userRegisterDto.password, 10),
+            },
           },
         },
-      },
-    });
-
-    return user;
+      }),
+    );
   }
 
   login(user: UserEntity): JwtTokenDto {
