@@ -89,10 +89,10 @@ const Page = () => {
                     password: values.password,
                     passwordConfirmation: values.passwordConfirmation
                 }
-                await signUp(userInfo, 'customer');
+                await signUp(userInfo, 'vendor');
 
                 if (isMounted()) {
-                    router.push(returnTo || paths.storefront.index);
+                    router.push(returnTo || paths.vendor.dashboard.index);
                 }
             } catch (err) {
                 console.error(err);
@@ -132,7 +132,7 @@ const Page = () => {
                                 </Typography>
                             )}
                             sx={{ pb: 0 }}
-                            title="Sign up"
+                            title="Sign up as a vendor"
                         />
                         <CardContent>
                             <form
@@ -177,7 +177,7 @@ const Page = () => {
                                         error={!!(formik.touched.phone && formik.errors.phone)}
                                         fullWidth
                                         helperText={formik.touched.phone && formik.errors.phone}
-                                        label="Phone Number"
+                                        label="Phone Number (optional)"
                                         name="phone"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
