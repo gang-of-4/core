@@ -2,8 +2,8 @@ export const paths = {
   index: '/',
   absolutePaths: {
     storefront: '/',
-    vendor: 'vendor',
-    admin: 'admin',
+    vendor: '/vendor',
+    admin: '/admin',
   },
   admin: {
     index: '/',
