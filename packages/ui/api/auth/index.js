@@ -4,31 +4,13 @@ import { api } from '../../config';
 class AuthApi {
 
   async signUp(request, endpoint) {
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-      passwordConfirmation
-    } = request;
 
-    let requestBody = {}
-
-    phone ? requestBody = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      phone: phone,
-      password: password,
-      password_confirmation: passwordConfirmation
-    } : requestBody = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      password: password,
-      password_confirmation: passwordConfirmation
-    }
+    let requestBody = {};
+    
+    request.phone ? requestBody = {
+      ...request,
+      phone: request.phone
+    } : requestBody = request;
 
     return new Promise(async (resolve, reject) => {
       try {
