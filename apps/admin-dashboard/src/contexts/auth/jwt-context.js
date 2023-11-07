@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { authApi } from '../../api/auth';
 import { Issuer } from '../../utils/auth';
 
-const STORAGE_KEY = 'accessToken';
 
 var ActionType;
 (function (ActionType) {
@@ -68,7 +67,7 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = (props) => {
-  const { children } = props;
+  const { children, STORAGE_KEY } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const initialize = useCallback(async () => {
