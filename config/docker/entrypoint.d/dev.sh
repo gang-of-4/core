@@ -2,6 +2,6 @@
 
 pnpm install
 
-pnpm prisma:dev
+pnpm prisma:setup
 
 pnpm dev
