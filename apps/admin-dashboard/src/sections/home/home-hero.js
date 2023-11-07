@@ -14,7 +14,7 @@ export const HomeHero = () => {
       sx={{
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'top center',
-        backgroundImage: 'url("/assets/gradient-bg.svg")',
+        backgroundImage: 'url("/admin/assets/gradient-bg.svg")',
         pt: '120px',
         mb: 6
       }}
