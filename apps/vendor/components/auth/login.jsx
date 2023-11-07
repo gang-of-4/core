@@ -110,7 +110,7 @@ const Page = () => {
                 </Typography>
               )}
               sx={{ pb: 0 }}
-              title="Log in"
+              title="Vendor Login"
             />
             <CardContent>
               <form
@@ -162,6 +162,32 @@ const Page = () => {
                   Login
                 </Button>
               </form>
+              <div className='flex items-center justify-center w-full mt-3'>
+                <Typography
+                  color="text.secondary"
+                  variant="body2"
+                >
+                  Not a vendor? Login as a
+                  &nbsp;
+                  <Link
+                    href={`${paths.auth.login}`}
+                    underline="hover"
+                    variant="subtitle2"
+                  >
+                    Customer
+                  </Link>
+                  &nbsp;
+                  or
+                  &nbsp;
+                  <Link
+                    href={`${paths.absolutePaths.admin}${paths.auth.login}`}
+                    underline="hover"
+                    variant="subtitle2"
+                  >
+                    Admin
+                  </Link>
+                </Typography>
+              </div>
             </CardContent>
           </Card>
           {/* @todo: API to get issuers */}

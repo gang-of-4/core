@@ -8,8 +8,10 @@ import {
   CardContent,
   CardHeader,
   FormHelperText,
+  Link,
   Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import { GuestGuard } from '../../guards/guest-guard';
 import { IssuerGuard } from '../../guards/issuer-guard';
@@ -92,7 +94,7 @@ const Page = () => {
         <Card elevation={16}>
           <CardHeader
             sx={{ pb: 0 }}
-            title="Login"
+            title="Admin Login"
           />
           <CardContent>
             <form
@@ -143,6 +145,40 @@ const Page = () => {
                 Log In
               </Button>
             </form>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                marginTop: '1rem'
+              }}
+            >
+              <Typography
+                color="text.secondary"
+                variant="body2"
+              >
+                Not a customer? Login as a
+                &nbsp;
+                <Link
+                  href={`/auth/login`}
+                  underline="hover"
+                  variant="subtitle2"
+                >
+                  Customer
+                </Link>
+                &nbsp;
+                or
+                &nbsp;
+                <Link
+                  href={`/vendor/auth/login`}
+                  underline="hover"
+                  variant="subtitle2"
+                >
+                  Vendor
+                </Link>
+              </Typography>
+            </div>
           </CardContent>
         </Card>
         {/* @todo: API to get issuers */}
