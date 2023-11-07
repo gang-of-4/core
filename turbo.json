@@ -17,11 +17,10 @@
       "cache": false
     },
     "prisma:seed": {
-      "dependsOn": ["^prisma:migrate:dev"],
+      "dependsOn": ["^prisma:push"],
       "cache": false
     },
     "dev": {
-      "dependsOn": ["^prisma:migrate:dev"],
       "cache": false,
       "persistent": true
     },
