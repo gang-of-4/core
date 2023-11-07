@@ -182,9 +182,9 @@ export const TopNav = (props) => {
             sx={{ flexGrow: 1 }}
           >
             <Button
-              component="a"
+              component={NextLink}
               size={mdUp ? 'medium' : 'small'}
-              href={`admin/${paths.dashboard.index}`}
+              href={paths.auth.jwt.login}
               variant="contained"
             >
               Login
