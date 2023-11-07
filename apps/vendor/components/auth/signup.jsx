@@ -132,7 +132,7 @@ const Page = () => {
                                 </Typography>
                             )}
                             sx={{ pb: 0 }}
-                            title="Sign up as a vendor"
+                            title="Vendor Sign up"
                         />
                         <CardContent>
                             <form
