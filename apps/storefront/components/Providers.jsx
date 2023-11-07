@@ -24,7 +24,7 @@ export function Providers({ children }) {
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider>
+        <AuthProvider STORAGE_KEY={'customerAccessToken'}>
           <ThemeProvider theme={theme}>
             {children}
           </ThemeProvider>

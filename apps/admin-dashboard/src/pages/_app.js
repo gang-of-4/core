@@ -44,7 +44,7 @@ console.log('-------------------')
     <CacheProvider value={emotionCache}>
       <ReduxProvider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <AuthProvider>
+          <AuthProvider STORAGE_KEY={'adminAccessToken'}>
             <AuthConsumer>
               {(auth) => (
                 <SettingsProvider>
