@@ -81,7 +81,7 @@
     "redux": "4.2.0",
     "redux-devtools-extension": "2.13.9",
     "redux-thunk": "2.4.1",
-    "simplebar": "5.3.8",
+    "simplebar": "6.2.5",
     "simplebar-react": "2.4.1",
     "stylis": "4.1.2",
     "stylis-plugin-rtl": "2.1.1",
