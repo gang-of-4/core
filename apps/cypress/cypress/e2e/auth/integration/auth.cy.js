@@ -1,5 +1,5 @@
-describe('auth works', () => { 
-    
+describe('auth works', () => {
+
     const user = {
         firstName: 'John',
         lastName: 'Doe',
@@ -13,22 +13,14 @@ describe('auth works', () => {
     }
 
     const admin = {
-        email: 'tba',
-        password: 'tba'
+        email: 'admin@example.com',
+        password: 'Q1W2E3R4'
     };
-
-    function visitVendorDashboard(){
-        cy.visit('/admin/dashboard');
-        cy.contains('The page you are looking for isn’t here')
-    }
-
-    function visitAdminDashboard(){
-        cy.visit('/admin/dashboard');
-        cy.contains('The page you are looking for isn’t here')
-    }
 
     // customer auth
     it('should have a working customer account', () => {
+
+        const STORAGE_KEY = 'customerAccessToken';
 
         // Register vendor
         cy.visit('/auth/signup');
@@ -38,34 +30,32 @@ describe('auth works', () => {
         cy.get('input[name="password"]').type(user.password);
         cy.get('input[name="passwordConfirmation"]').type(user.password);
         cy.get('button[type="submit"]').click().should(() => {
-            expect(localStorage.getItem('accessToken')).to.be.a('string');
+            expect(localStorage.getItem(STORAGE_KEY)).to.be.a('string');
         });
         cy.url().should('contain', '/');
 
 
-        // Logout vendor
+        // Logout customer
         cy.get('.account-dropdown').click();
         cy.contains('Logout').click().should(() => {
-            expect(localStorage.getItem('accessToken')).to.be.null;
+            expect(localStorage.getItem(STORAGE_KEY)).to.be.null;
         });
         cy.url().should('contain', '/');
 
-        // Login vendor
+        // Login customer
         cy.visit('/auth/login');
         cy.get('input[name="email"]').type(user.email);
         cy.get('input[name="password"]').type(user.password);
         cy.get('button[type="submit"]').click().should(() => {
-            expect(localStorage.getItem('accessToken')).to.be.a('string');
+            expect(localStorage.getItem(STORAGE_KEY)).to.be.a('string');
         });
         cy.url().should('contain', '/');
-
-        visitVendorDashboard()
-        visitAdminDashboard()
-
     });
 
     // vendor auth
     it('should have a working vendor account', () => {
+
+        const STORAGE_KEY = 'vendorAccessToken';
 
         // Register vendor
         cy.visit('/vendor/auth/signup');
@@ -75,7 +65,7 @@ describe('auth works', () => {
         cy.get('input[name="password"]').type(vendor.password);
         cy.get('input[name="passwordConfirmation"]').type(vendor.password);
         cy.get('button[type="submit"]').click().should(() => {
-            expect(localStorage.getItem('accessToken')).to.be.a('string');
+            expect(localStorage.getItem(STORAGE_KEY)).to.be.a('string');
         });
         cy.url().should('contain', '/vendor');
 
@@ -83,7 +73,7 @@ describe('auth works', () => {
         // Logout vendor
         cy.get('.account-dropdown').click();
         cy.contains('Logout').click().should(() => {
-            expect(localStorage.getItem('accessToken')).to.be.null;
+            expect(localStorage.getItem(STORAGE_KEY)).to.be.null;
         });
         cy.url().should('contain', '/vendor');
 
@@ -92,13 +82,26 @@ describe('auth works', () => {
         cy.get('input[name="email"]').type(vendor.email);
         cy.get('input[name="password"]').type(vendor.password);
         cy.get('button[type="submit"]').click().should(() => {
-            expect(localStorage.getItem('accessToken')).to.be.a('string');
+            expect(localStorage.getItem(STORAGE_KEY)).to.be.a('string');
         });
         cy.url().should('contain', '/vendor');
 
-        visitAdminDashboard()
     });
 
-    // admin auth tba
+    // admin auth
+    it('should have a working admin account', () => {
 
- })
+        const STORAGE_KEY = 'adminAccessToken';
+
+        // Login admin
+        cy.visit('/admin/auth/login');
+        cy.get('input[name="email"]').type(admin.email);
+        cy.get('input[name="password"]').type(admin.password);
+        cy.get('button[type="submit"]').click().should(() => {
+            expect(localStorage.getItem(STORAGE_KEY)).to.be.a('string');
+        });
+        cy.url().should('contain', '/admin');
+
+    });
+
+})
