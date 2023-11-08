@@ -4,14 +4,19 @@ import { api } from 'ui/config';
 class AuthApi {
 
   async signUp(request, endpoint) {
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-      passwordConfirmation
-    } = request;
+
+    let requestBody = {};
+
+    request.phone ? requestBody = {
+      ...request,
+      phone: request.phone
+    } : requestBody = {
+      firstName: request.firstName,
+      lastName: request.lastName,
+      email: request.email,
+      password: request.password,
+      passwordConfirmation: request.passwordConfirmation
+    };
 
     return new Promise(async (resolve, reject) => {
       try {
@@ -67,14 +72,14 @@ class AuthApi {
             })
           });
 
+        const data = await res.json();
+
         if (!res.ok) {
           reject(new Error(data.message));
           return;
         }
 
-        const data = await res.json();
-        const accessToken = data.accessToken;
-
+        const accessToken = data.access_token;
         resolve({ accessToken });
 
       } catch (err) {
@@ -119,15 +124,15 @@ class AuthApi {
 
         resolve({
           id: user.id,
-          firstName: user.first_name,
-          lastName: user.last_name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           phone: user.phone,
           role: user.role,
-          createdAt: user.created_at,
-          updatedAt: user.updated_at,
-          emailVerefiedAt: user.email_verefied_at,
-          deletedAt: user.deleted_at
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          emailVerefiedAt: user.emailVerefiedAt,
+          deletedAt: user.deletedAt
         });
       } catch (err) {
         console.error('[Auth Api]: ', err);
