@@ -42,18 +42,9 @@ const App = (props) => {
 console.log('-------------------')
   return (
     <CacheProvider value={emotionCache}>
-      <Head>
-        {/* <title>
-          Devias Kit PRO
-        </title>
-        <meta
-          name="viewport"
-          content="initial-scale=1, width=device-width"
-        /> */}
-      </Head>
       <ReduxProvider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <AuthProvider>
+          <AuthProvider STORAGE_KEY={'adminAccessToken'}>
             <AuthConsumer>
               {(auth) => (
                 <SettingsProvider>
@@ -96,7 +87,7 @@ console.log('-------------------')
                                   {getLayout(
                                     <Component {...pageProps} />
                                   )}
-                                  <SettingsButton onClick={settings.handleDrawerOpen} />
+                                  {/* <SettingsButton onClick={settings.handleDrawerOpen} />
                                   <SettingsDrawer
                                     canReset={settings.isCustom}
                                     onClose={settings.handleDrawerClose}
@@ -113,7 +104,7 @@ console.log('-------------------')
                                       layout: settings.layout,
                                       navColor: settings.navColor
                                     }}
-                                  />
+                                  /> */}
                                 </>
                               )}
                             <Toaster />

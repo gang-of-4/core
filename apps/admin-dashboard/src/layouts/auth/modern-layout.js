@@ -29,7 +29,7 @@ export const Layout = (props) => {
         sx={{
           alignItems: 'center',
           backgroundColor: 'neutral.800',
-          backgroundImage: 'url("/assets/gradient-bg.svg")',
+          backgroundImage: 'url("/admin/assets/gradient-bg.svg")',
           backgroundPosition: 'top center',
           backgroundRepeat: 'no-repeat',
           color: 'common.white',

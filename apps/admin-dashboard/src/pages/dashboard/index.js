@@ -36,7 +36,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Dashboard: Overview | Devias Kit PRO
+          Dashboard | Admin
         </title>
       </Head>
       <Box
