@@ -1,9 +1,8 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Providers } from '@/components/Providers'
+import { ContextProviders } from '@/components/ContextProviders'
 import { Suspense } from 'react'
 import Loading from './loading'
-import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,12 +15,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
+        <ContextProviders>
           <Suspense fallback={<Loading />}>
-            <Header />
             {children}
           </Suspense>
-        </Providers>
+        </ContextProviders>
       </body>
     </html>
   )

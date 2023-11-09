@@ -8,7 +8,7 @@ import { createTheme } from 'ui/theme'
 import { ThemeProvider } from '@mui/material/styles';
 
 
-export function Providers({ children }) {
+export function ContextProviders({ children }) {
 
   const theme = createTheme({
       colorPreset: 'blue',
