@@ -6,27 +6,30 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { AuthProvider } from 'ui/contexts/auth/jwt-context';
 import { createTheme } from 'ui/theme'
 import { ThemeProvider } from '@mui/material/styles';
+import { StoresProvider } from '@/contexts/StoresContext';
 
 
 export function ContextProviders({ children }) {
 
   const theme = createTheme({
-      colorPreset: 'blue',
-      contrast: 'normal',
-      direction: 'ltr',
-      layout: 'vertical',
-      navColor: 'evident',
-      paletteMode: 'light',
-      responsiveFontSizes: true,
-      stretch: false
-    })
+    colorPreset: 'blue',
+    contrast: 'normal',
+    direction: 'ltr',
+    layout: 'vertical',
+    navColor: 'evident',
+    paletteMode: 'light',
+    responsiveFontSizes: true,
+    stretch: false
+  })
 
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <AuthProvider STORAGE_KEY={'vendorAccessToken'} >
           <ThemeProvider theme={theme}>
-            {children}
+            <StoresProvider>
+              {children}
+            </StoresProvider>
           </ThemeProvider>
         </AuthProvider>
       </LocalizationProvider>
