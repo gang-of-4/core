@@ -7,38 +7,32 @@ interface Store {
     crNumber?: string;
 }
 
-const stores = [
-    {
-        id: '1',
-        name: 'Store 1',
-        vendorId: '1',
-        logo: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        vatNumber: '123456789',
-        crNumber: '123456789'
-    },
-    {
-        id: '2',
-        name: 'Store 2',
-        vendorId: '1',
-    },
-    {
-        id: '3',
-        name: 'Store 3',
-        vendorId: '1'
-    }
-]
+interface CreateStoreDto {
+    name: string;
+    vendorId: string;
+    logo?: File;
+    vatNumber?: string;
+    crNumber?: string;
+}
+
+const logoUrl = 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
+const stores: Store[] = []
 
 
 export async function getStoresApi(vendorId: string): Promise<Store[]> {
     // const response = await fetch(`/api/stores?vendorId=${vendorId}`);
     // return await response.json();
     return new Promise<Store[]>((resolve, reject) => {
-        resolve(stores);
-        // reject();
+        if (stores.length > 0) {
+            resolve(stores);
+        } else {
+            reject();
+        }
     });
 }
 
-export async function createStoreApi({ name, vendorId }: { name: string, vendorId: string }): Promise<Store> {
+export async function createStoreApi(createStore: CreateStoreDto): Promise<Store> {
     // const response = await fetch(`/api/stores`, {
     //     method: 'POST',
     //     body: JSON.stringify({name, vendorId})
@@ -47,8 +41,8 @@ export async function createStoreApi({ name, vendorId }: { name: string, vendorI
 
     const store = {
         id: stores.length.toString(),
-        name,
-        vendorId
+        name: createStore.name,
+        vendorId: createStore.vendorId,
     }
     stores.push(store);
     return new Promise<Store>((resolve, reject) => resolve(store));
