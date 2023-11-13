@@ -1,5 +1,5 @@
 import { createStoreApi, deleteStoreApi, getStoresApi, updateStoreApi } from "@/api/storeApi";
-import { createContext, useCallback, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 
 const STORAGE_KEY = 'vendorStores';
 
@@ -10,47 +10,29 @@ const ActionType = {
     UPDATE_STORE: 'UPDATE_STORE',
 };
 
+function getInitialState() {
+    const stores = localStorage.getItem(STORAGE_KEY);
+    return stores ? JSON.parse(stores) : [];
+}
+
 const initialState = {
-    stores: JSON.parse(localStorage.getItem(STORAGE_KEY)) || [],
+    stores: getInitialState(),
 };
 
-function addLocalStorage(store) {
-    const stores = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    stores.push(store);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(stores));
-}
-
-function updateLocalStorage(store) {
-    const stores = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    const storeIndex = stores.findIndex((s) => s.id === store.id);
-    stores[storeIndex] = store;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(stores));
-}
-
-function removeLocalStorage(storeId) {
-    const stores = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    const storeIndex = stores.findIndex((s) => s.id === storeId);
-    stores.splice(storeIndex, 1);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(stores));
-}
 
 const reducer = (state, action) => {
     switch (action.type) {
         case ActionType.INITIALIZE:
-            console.log('action.payload', action.payload);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(action.payload));
             return {
                 ...state,
                 stores: action.payload,
             };
         case ActionType.ADD_STORE:
-            addLocalStorage(action.payload);
             return {
                 ...state,
                 stores: [...state.stores, action.payload],
             };
         case ActionType.REMOVE_STORE:
-            removeLocalStorage(action.payload);
             return {
                 ...state,
                 stores: state.stores.filter(
@@ -58,7 +40,6 @@ const reducer = (state, action) => {
                 ),
             };
         case ActionType.UPDATE_STORE:
-            updateLocalStorage(action.payload);
             return {
                 ...state,
                 stores: state.stores.map((store) =>
@@ -118,6 +99,10 @@ export const StoresProvider = ({ children }) => {
         }
     }, [dispatch]);
 
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.stores));
+    }, [state.stores]);
+
     return (
         <StoresContext.Provider
             value={{
@@ -134,9 +119,9 @@ export const StoresProvider = ({ children }) => {
 };
 
 
-export function signOutCallback(){
+export function signOutCallback() {
     localStorage.removeItem(STORAGE_KEY);
-  }
+}
 
 
 
