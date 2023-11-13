@@ -1,5 +1,5 @@
 import React from 'react'
-import Page from '@/components/onboarding/onboarding'
+import Page from '@/components/stores/onboarding'
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
