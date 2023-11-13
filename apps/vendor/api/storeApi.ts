@@ -2,18 +2,24 @@ interface Store {
     id: string;
     name: string;
     vendorId: string;
+    logo?: string;
+    vatNumber?: string;
+    crNumber?: string;
 }
 
 const stores = [
     {
         id: '1',
         name: 'Store 1',
-        vendorId: '1'
+        vendorId: '1',
+        logo: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        vatNumber: '123456789',
+        crNumber: '123456789'
     },
     {
         id: '2',
         name: 'Store 2',
-        vendorId: '1'
+        vendorId: '1',
     },
     {
         id: '3',
@@ -23,10 +29,13 @@ const stores = [
 ]
 
 
-export async function getStoresApi({ vendorId }: { vendorId: string }): Promise<Store[]> {
+export async function getStoresApi(vendorId: string): Promise<Store[]> {
     // const response = await fetch(`/api/stores?vendorId=${vendorId}`);
     // return await response.json();
-    return new Promise<Store[]>((resolve, reject) => resolve(stores));
+    return new Promise<Store[]>((resolve, reject) => {
+        resolve(stores);
+        // reject();
+    });
 }
 
 export async function createStoreApi({ name, vendorId }: { name: string, vendorId: string }): Promise<Store> {
