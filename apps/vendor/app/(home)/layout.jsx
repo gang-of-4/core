@@ -4,8 +4,9 @@ import React from 'react'
 function layout({ children }) {
   return (
     <>
-      <Header />
-      {children}
+      <Header>
+        {children}
+      </Header>
     </>
   )
 }
