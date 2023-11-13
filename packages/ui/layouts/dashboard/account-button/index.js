@@ -3,6 +3,7 @@ import User01Icon from '@untitled-ui/icons-react/build/esm/User01';
 import { Avatar, Box, ButtonBase, SvgIcon } from '@mui/material';
 import { AccountPopover } from './account-popover';
 import { useAuth } from '../../../hooks/use-auth';
+import { getInitials } from '../../../utils/get-initials';
 
 export const AccountButton = ({children}) => {
   const { user } = useAuth();
@@ -41,9 +42,10 @@ export const AccountButton = ({children}) => {
           }}
           src={user?.avatar}
         >
-          <SvgIcon>
+          {/* <SvgIcon>
             <User01Icon />
-          </SvgIcon>
+          </SvgIcon> */}
+          {getInitials(`${user?.firstName} ${user?.lastName}`)}
         </Avatar>
       </Box>
       <AccountPopover
