@@ -418,6 +418,15 @@ importers:
 
   apps/vendor:
     dependencies:
+      '@emotion/react':
+        specifier: 11.10.4
+        version: 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled':
+        specifier: 11.10.4
+        version: 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@mui/material':
+        specifier: 5.11.0
+        version: 5.11.0(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
       atomic-spinner:
         specifier: ^1.3.1
         version: 1.3.1(react-dom@18.2.0)(react@18.2.0)
