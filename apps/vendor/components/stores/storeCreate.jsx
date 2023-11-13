@@ -27,6 +27,7 @@ import { Issuer } from 'ui/utils/auth';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { useStores } from '@/hooks/useStores';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -52,9 +53,9 @@ const useParams = () => {
 const initialValues = {
     name: '',
     logo: null,
-    vat_number: '',
-    cr_number: '',
-    owner_national_id: '',
+    vatNumber: '',
+    crNumber: '',
+    ownerNationalId: '',
     submit: null
 };
 
@@ -74,15 +75,15 @@ const validationSchema = Yup.object({
             if (!value) return true;
             return value && value.size <= 2 * 1024 * 1024; // 2MB
         }),
-    vat_number: Yup
+    vatNumber: Yup
         .string()
         .max(255)
         .required('Vat Number is required'),
-    cr_number: Yup
+    crNumber: Yup
         .string()
         .max(255)
         .required('CR Number is required'),
-    owner_national_id: Yup
+    ownerNationalId: Yup
         .string()
         .min(10)
         .max(255)
@@ -94,20 +95,23 @@ const Page = () => {
     const isMounted = useMounted();
     const router = useRouter();
     const { returnTo } = useParams();
-    const { issuer, signUp } = useAuth();
+    const { user } = useAuth();
+    const { createStore } =  useStores();
     const formik = useFormik({
         initialValues,
         validationSchema,
         onSubmit: async (values, helpers) => {
             try {
-                const userInfo = {
+                const store = {
                     name: values.name,
+                    vatNumber: values.vatNumber,
+                    crNumber: values.crNumber,
+                    ownerNationalId: values.ownerNationalId,
                     logo: values.logo,
-                    vat_number: values.vat_number,
-                    cr_number: values.cr_number,
-                    owner_national_id: values.owner_national_id
-                }
-                // await signUp(userInfo, 'vendor');
+                    vendorId: user.id
+                };
+
+                await createStore(store);
 
                 if (isMounted()) {
                     router.push(returnTo || paths.vendor.dashboard.index);
@@ -129,7 +133,7 @@ const Page = () => {
 
     return (
         <>
-            <div className='flex items-center justify-center w-screen h-screen'>
+            <div className='flex items-center justify-center w-screen h-full'>
                 <div className='w-4/5 max-w-lg'>
                     <Card elevation={16}>
                         <CardHeader
@@ -154,37 +158,37 @@ const Page = () => {
                                         value={formik.values.name}
                                     />
                                     <TextField
-                                        error={!!(formik.touched.vat_number && formik.errors.vat_number)}
+                                        error={!!(formik.touched.vatNumber && formik.errors.vatNumber)}
                                         fullWidth
-                                        helperText={formik.touched.vat_number && formik.errors.vat_number}
+                                        helperText={formik.touched.vatNumber && formik.errors.vatNumber}
                                         label="Vat Number"
-                                        name="vat_number"
+                                        name="vatNumber"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
-                                        type="vat_number"
-                                        value={formik.values.vat_number}
+                                        type="vatNumber"
+                                        value={formik.values.vatNumber}
                                     />
                                     <TextField
-                                        error={!!(formik.touched.cr_number && formik.errors.cr_number)}
+                                        error={!!(formik.touched.crNumber && formik.errors.crNumber)}
                                         fullWidth
-                                        helperText={formik.touched.cr_number && formik.errors.cr_number}
+                                        helperText={formik.touched.crNumber && formik.errors.crNumber}
                                         label="Commercial Registration Number"
-                                        name="cr_number"
+                                        name="crNumber"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
-                                        type="cr_number"
-                                        value={formik.values.cr_number}
+                                        type="crNumber"
+                                        value={formik.values.crNumber}
                                     />
                                     <TextField
-                                        error={!!(formik.touched.owner_national_id && formik.errors.owner_national_id)}
+                                        error={!!(formik.touched.ownerNationalId && formik.errors.ownerNationalId)}
                                         fullWidth
-                                        helperText={formik.touched.owner_national_id && formik.errors.owner_national_id}
+                                        helperText={formik.touched.ownerNationalId && formik.errors.ownerNationalId}
                                         label="Owner National ID"
-                                        name="owner_national_id"
+                                        name="ownerNationalId"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
-                                        type="owner_national_id"
-                                        value={formik.values.owner_national_id}
+                                        type="ownerNationalId"
+                                        value={formik.values.ownerNationalId}
                                     />
                                     <Typography variant="body2" color="textSecondary" sx={{ pl: 1}}>
                                         Accepted formats: JPEG, PNG, GIF. 
@@ -240,10 +244,6 @@ const Page = () => {
                             </form>
                         </CardContent>
                     </Card>
-                    {/* @todo: API to get issuers */}
-                    {/* <Box sx={{ mt: 3 }}>
-                        <AuthIssuer issuer={issuer} />
-                    </Box> */}
                 </div>
             </div>
         </>
