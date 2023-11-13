@@ -72,6 +72,7 @@ function layout({ children }) {
       <DashboardLayout
         options={options}
         sections={sections}
+        bgUrl={'/vendor/assets/gradient-bg.svg'}
       >
         {children}
       </DashboardLayout>

@@ -6,7 +6,7 @@ import { VerticalLayout } from './vertical-layout';
 
 export const Layout = (props) => {
   const settings = useSettings();
-  const {sections, ...other} = props;
+  const {sections, bgUrl, ...other} = props;
 
   if (settings.layout === 'horizontal') {
     return (
@@ -21,6 +21,7 @@ export const Layout = (props) => {
     <VerticalLayout
       sections={sections}
       navColor={settings.navColor}
+      bgUrl={bgUrl}
       {...other} />
   );
 };

@@ -11,7 +11,7 @@ const TOP_NAV_HEIGHT = 64;
 const SIDE_NAV_WIDTH = 280;
 
 export const TopNav = (props) => {
-  const { onMobileNavOpen, children, ...other  } = props;
+  const { onMobileNavOpen, children, ...other } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   return (
@@ -19,7 +19,6 @@ export const TopNav = (props) => {
       component="header"
       sx={{
         backdropFilter: 'blur(6px)',
-        backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
         position: 'sticky',
         left: {
           lg: `${SIDE_NAV_WIDTH}px`
@@ -68,7 +67,7 @@ export const TopNav = (props) => {
           </AccountButton>
         </Stack>
       </Stack>
-    </Box>
+    </Box >
   );
 };
 
