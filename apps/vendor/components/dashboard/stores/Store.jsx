@@ -87,6 +87,7 @@ export default function Store({ params }) {
                   </SvgIcon>
                 )}
                 variant="contained"
+                style={{ backgroundColor: '#2970FF' }}
               >
                 Edit Store
               </Button>

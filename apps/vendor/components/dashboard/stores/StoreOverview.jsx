@@ -11,10 +11,7 @@ export default function StoreOverview({ store }) {
                 spacing={3}
                 sx={{ mt: 3 }}
             >
-                <Grid
-                    xs={12}
-                    lg={4}
-                >
+                <Grid>
                     <Card>
                         <CardHeader title="Store Overview" />
                         <PropertyList>
@@ -28,10 +25,7 @@ export default function StoreOverview({ store }) {
                         </PropertyList>
                     </Card>
                 </Grid>
-                <Grid
-                    xs={12}
-                    lg={8}
-                >
+                <Grid>
                     <DeleteStoreDialog />
                 </Grid>
             </Stack>
