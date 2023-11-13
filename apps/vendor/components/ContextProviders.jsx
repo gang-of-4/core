@@ -7,6 +7,7 @@ import { AuthProvider } from 'ui/contexts/auth/jwt-context';
 import { createTheme } from 'ui/theme'
 import { ThemeProvider } from '@mui/material/styles';
 import { StoresProvider } from '@/contexts/StoresContext';
+import { signOutCallback as storesCallback } from '@/contexts/StoresContext';
 
 
 export function ContextProviders({ children }) {
@@ -25,7 +26,10 @@ export function ContextProviders({ children }) {
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider STORAGE_KEY={'vendorAccessToken'} >
+        <AuthProvider 
+          STORAGE_KEY={'vendorAccessToken'} 
+          signOutCallback={storesCallback}  
+        >
           <ThemeProvider theme={theme}>
             <StoresProvider>
               {children}
