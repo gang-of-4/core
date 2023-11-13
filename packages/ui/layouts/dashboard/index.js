@@ -1,28 +1,19 @@
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useSettings } from '../../hooks/use-settings';
 import { HorizontalLayout } from './horizontal-layout';
 import { VerticalLayout } from './vertical-layout';
-import { getSections } from './config';
-import { withAuthGuard } from '../../hocs/with-auth-guard';
 
-const useTranslatedSections = () => {
-  const { t } = useTranslation();
 
-  return useMemo(() => getSections(t), [t]);
-};
-
-export const Layout = withAuthGuard((props) => {
+export const Layout = (props) => {
   const settings = useSettings();
-  const sections = useTranslatedSections();
+  const {sections, ...other} = props;
 
   if (settings.layout === 'horizontal') {
     return (
       <HorizontalLayout
         sections={sections}
         navColor={settings.navColor}
-        {...props} />
+        {...other} />
     );
   }
 
@@ -30,9 +21,9 @@ export const Layout = withAuthGuard((props) => {
     <VerticalLayout
       sections={sections}
       navColor={settings.navColor}
-      {...props} />
+      {...other} />
   );
-});
+};
 
 Layout.propTypes = {
   children: PropTypes.node

@@ -2,14 +2,15 @@ import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import File04Icon from '@untitled-ui/icons-react/build/esm/File04';
-import { Box, Button, Drawer, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Drawer, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Logo } from '../../../components/logo';
 import { Scrollbar } from '../../../components/scrollbar';
 import { paths } from '../../../paths';
-import { TenantSwitch } from '../tenant-switch';
+import { OptionSwitch } from '../option-switch';
 import { SideNavSection } from './side-nav-section';
+import { organization } from '../../../config';
+
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -142,7 +143,7 @@ const useCssVars = (color) => {
 };
 
 export const SideNav = (props) => {
-  const { color = 'evident', sections = [] } = props;
+  const { color = 'evident', sections = [], options } = props;
   const pathname = usePathname();
   const cssVars = useCssVars(color);
 
@@ -197,7 +198,14 @@ export const SideNav = (props) => {
             >
               <Logo />
             </Box>
-            <TenantSwitch sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexGrow: 1 }}>
+              <Typography
+                color="inherit"
+                variant="h6"
+              >
+                {organization.name}
+              </Typography>
+            </Box>
           </Stack>
           <Stack
             component="nav"
@@ -206,7 +214,31 @@ export const SideNav = (props) => {
               flexGrow: 1,
               px: 2
             }}
+            style={{
+              alignItems: 'flex-start',
+            }}
           >
+            {
+              options &&
+              <Stack
+                component="ul"
+                spacing={0.5}
+                sx={{
+                  listStyle: 'none',
+                  m: 0,
+                  p: 0,
+                  width: '100%',
+                }}>
+                <OptionSwitch
+                  sx={{ flexGrow: 1 }}
+                  options={options.list}
+                  firstOption={options.firstOption}
+                  optionsTitle={options.title}
+                  optionsSubtitle={options.subtitle}
+                  handleOptionsChange={options.handleChange}
+                />
+              </Stack>
+            }
             {sections.map((section, index) => (
               <SideNavSection
                 items={section.items}
@@ -216,31 +248,6 @@ export const SideNav = (props) => {
               />
             ))}
           </Stack>
-          <Box sx={{ p: 3 }}>
-            <Typography variant="subtitle1">
-              Need help?
-            </Typography>
-            <Typography
-              color="neutral.400"
-              sx={{ mb: 2 }}
-              variant="body2"
-            >
-              Please check our docs.
-            </Typography>
-            <Button
-              component={NextLink}
-              fullWidth
-              href={paths.docs.welcome}
-              startIcon={(
-                <SvgIcon>
-                  <File04Icon />
-                </SvgIcon>
-              )}
-              variant="contained"
-            >
-              Documentation
-            </Button>
-          </Box>
         </Stack>
       </Scrollbar>
     </Drawer>

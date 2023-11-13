@@ -73,7 +73,8 @@ export const SideNavSection = (props) => {
       sx={{
         listStyle: 'none',
         m: 0,
-        p: 0
+        p: 0,
+        width: '100%'
       }}
       {...other}>
       {subheader && (
