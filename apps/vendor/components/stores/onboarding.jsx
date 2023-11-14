@@ -82,7 +82,7 @@ export default function page() {
                                 <CardContent
                                     className={useStyles().cardContent}
                                 >
-                                    <button onClick={handleCreateIndividual}>
+                                    <button onClick={handleCreateIndividual} id='individualStoreButton'>
                                         <PersonIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
                                         <h1 className='text-primary text-xl'>Individual Store</h1>
                                         <Typography
@@ -104,7 +104,7 @@ export default function page() {
                             >
                                 <CardContent>
                                     <Link href={paths.vendor.dashboard.stores.create}>
-                                        <button>
+                                        <button id='businessStoreButton'>
                                             <StoreIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
                                             <h1 className='text-primary text-xl'>Business Store</h1>
                                             <Typography
