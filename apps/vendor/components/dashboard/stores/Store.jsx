@@ -1,12 +1,13 @@
 'use client'
 
 import { useStores } from '@/hooks/useStores';
-import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography, Chip } from '@mui/material';
 import { React, useCallback, useEffect, useState } from 'react';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import StoreLogo from './StoreLogo';
 import StoreOverview from './StoreOverview';
+
 
 
 const tabs = [
@@ -15,6 +16,18 @@ const tabs = [
   { label: 'Orders', value: 'orders' },
   { label: 'Settings', value: 'settings' }
 ];
+
+const getStatusColor = (status) => {
+  const statusColor = {
+    Approved: "Green",
+    Pending: "Yellow",
+    InReview: "Blue",
+    Deleted: "Red"
+  };
+
+  return statusColor[status];
+};
+
 
 export default function Store({ params }) {
 
@@ -42,7 +55,7 @@ export default function Store({ params }) {
         }}
       >
         <Container maxWidth="lg"
-        
+
         >
           {currentStore?.logo && (
             <StoreLogo logo={currentStore.logo} />
@@ -60,6 +73,13 @@ export default function Store({ params }) {
             >
               <Typography variant="h5">
                 {currentStore?.name}
+              </Typography>
+              <Typography variant="h8">
+                <Chip
+                  label={currentStore?.status}
+                  size="small"
+                  color={getStatusColor(currentStore?.status)}
+                />
               </Typography>
             </Stack>
             <Box sx={{ flexGrow: 1 }} />

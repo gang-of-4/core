@@ -1,3 +1,10 @@
+enum Status {
+    Approved = "Approved",
+    Pending = "Pending",
+    InReview = "InReview",
+    Deleted = "Deleted"
+}
+
 interface Store {
     id: string;
     name: string;
@@ -5,6 +12,7 @@ interface Store {
     logo?: string;
     vatNumber?: string;
     crNumber?: string;
+    status: Status.Pending;
 }
 
 interface CreateStoreDto {
