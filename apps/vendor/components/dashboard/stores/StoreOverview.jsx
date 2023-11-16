@@ -26,7 +26,7 @@ export default function StoreOverview({ store }) {
                     </Card>
                 </Grid>
                 <Grid>
-                    <DeleteStoreDialog />
+                    <DeleteStoreDialog store={store} />
                 </Grid>
             </Stack>
         </>

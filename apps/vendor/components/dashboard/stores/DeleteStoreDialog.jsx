@@ -12,23 +12,17 @@ import {
     DialogTitle,
 } from '@mui/material';
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useStores } from '@/hooks/useStores';
+import { useRouter } from 'next/navigation';
+import { paths } from 'ui/paths';
 
-export default function DeleteStoreDialog({ params }) {
+export default function DeleteStoreDialog({ store }) {
 
-    const { stores } = useStores();
-    const [currentStore, setCurrentStore] = useState();
+    const router = useRouter();
     const { deleteStore } = useStores();
 
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
-    useEffect(() => {
-        if (params && params.id && params.id[0]) {
-            setCurrentStore(stores?.find(store => store.id === params.id[0]));
-        }
-    }, [params, stores]);
-
 
     const handleOpenDeleteDialog = () => {
         setDeleteDialogOpen(true);
@@ -40,10 +34,7 @@ export default function DeleteStoreDialog({ params }) {
 
     const handleDeleteStore = async () => {
         try {
-            const store = {
-                storeId: currentStore.id,
-            };
-            await deleteStore(store);
+            await deleteStore(store.id);
             router.push(paths.vendor.dashboard.index);
         } catch (error) {
             console.error(error);
@@ -91,7 +82,7 @@ export default function DeleteStoreDialog({ params }) {
                     <Button onClick={handleCloseDeleteDialog} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleDeleteStore} color="error" variant="outlined">
+                    <Button onClick={handleDeleteStore} color="error" variant='contained'>
                         Delete
                     </Button>
                 </DialogActions>
