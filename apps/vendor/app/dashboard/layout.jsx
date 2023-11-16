@@ -34,11 +34,16 @@ function layout({ children }) {
   }
 
   useEffect(() => {
+    console.log('stores', stores)
     if (stores?.length === 0) {
       console.log('No stores found for this vendor, redirecting to onboarding')
-      router.push(paths.vendor.onboarding.index)
+
+      // router.replace(paths.vendor.onboarding.index)
+
+      // the redirect is done this way instead to force a hard navigation
+      window.location.href = `/vendor${paths.vendor.onboarding.index}`;
     }
-  }, [])
+  }, [stores])
 
 
   const createStore = (
