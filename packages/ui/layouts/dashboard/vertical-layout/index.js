@@ -72,7 +72,7 @@ export const VerticalLayout = (props) => {
           height: '100vh'
         }}
       >
-        <TopNav onMobileNavOpen={mobileNav.handleOpen} bgUrl={bgUrl}>
+        <TopNav onMobileNavOpen={mobileNav.handleOpen}>
           {/* options under topnav go here */}
         </TopNav>
         {lgUp && (
