@@ -7,6 +7,7 @@ import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import StoreLogo from './StoreLogo';
 import StoreOverview from './StoreOverview';
+import { Status } from '@/api/storeApi';
 
 
 
@@ -18,14 +19,19 @@ const tabs = [
 ];
 
 const getStatusColor = (status) => {
-  const statusColor = {
-    Approved: "Green",
-    Pending: "Yellow",
-    InReview: "Blue",
-    Deleted: "Red"
-  };
 
-  return statusColor[status];
+  switch (status) {
+    case Status.Approved:
+      return { backgroundColor: 'success.main', color: 'white' };
+    case Status.Pending:
+      return { backgroundColor: 'neutral', color: 'black' };
+    case Status.InReview:
+      return { backgroundColor: 'primary.main', color: 'white' };
+    case Status.Deleted:
+      return { backgroundColor: 'error.main', color: 'white' };
+    default:
+      return { backgroundColor: 'neutral', color: 'black' };
+  }
 };
 
 
@@ -78,7 +84,7 @@ export default function Store({ params }) {
                 <Chip
                   label={currentStore?.status}
                   size="small"
-                  color={getStatusColor(currentStore?.status)}
+                  sx={{...getStatusColor(currentStore?.status), px: 1}}
                 />
               </Typography>
             </Stack>

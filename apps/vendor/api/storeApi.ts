@@ -1,4 +1,4 @@
-enum Status {
+export enum Status {
     Approved = "Approved",
     Pending = "Pending",
     InReview = "InReview",
@@ -12,7 +12,7 @@ interface Store {
     logo?: string;
     vatNumber?: string;
     crNumber?: string;
-    status: Status.Pending;
+    status: Status;
 }
 
 interface CreateStoreDto {
@@ -51,6 +51,7 @@ export async function createStoreApi(createStore: CreateStoreDto): Promise<Store
         id: stores.length.toString(),
         name: createStore.name,
         vendorId: createStore.vendorId,
+        status: Status.Pending,
     }
     stores.push(store);
     return new Promise<Store>((resolve, reject) => resolve(store));
