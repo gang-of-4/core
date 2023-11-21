@@ -4,6 +4,7 @@ import { Box, Container, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
+import { organization } from 'ui/config';
 
 const TOP_NAV_HEIGHT = 64;
 
@@ -11,7 +12,7 @@ const LayoutRoot = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'top center',
-  backgroundImage: 'url("/assets/gradient-bg.svg")',
+  backgroundImage: 'url("/admin/assets/gradient-bg.svg")',
   display: 'flex',
   flex: '1 1 auto',
   flexDirection: 'column',
@@ -70,7 +71,7 @@ export const Layout = (props) => {
                   }
                 }}
               >
-                Devias Kit <span>PRO</span>
+                {organization.name}
               </Box>
             </Stack>
           </Stack>

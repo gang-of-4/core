@@ -23,7 +23,7 @@ model Store {
   vendorId             String  @db.Uuid
   status                Status  @default(PENDING)
   individualStore       IndividualStore?
-  businessStore         BusinessStore[]
+  businessStore         BusinessStore?
   created_at            DateTime @default(now())
   updated_at            DateTime @default(now())
   deleted_at            DateTime?
@@ -43,7 +43,7 @@ model Media {
 
 model BusinessStore {
   id                    String  @db.Uuid @id @default(uuid())  
-  storeId               String  @db.Uuid
+  storeId               String  @db.Uuid @unique
   store                 Store   @relation(fields: [storeId], references: [id])
   name                  String
   logo                  String

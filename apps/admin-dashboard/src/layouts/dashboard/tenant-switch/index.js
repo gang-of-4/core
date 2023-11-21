@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import { Box, IconButton, Stack, SvgIcon, Typography } from '@mui/material';
 import { TenantPopover } from './tenant-popover';
+import { organization } from 'ui/config'
 
-const tenants = ['Devias', 'Acme Corp'];
+const tenants = [organization.name, 'Acme Corp'];
 
 export const TenantSwitch = (props) => {
   const anchorRef = useRef(null);
@@ -34,13 +35,13 @@ export const TenantSwitch = (props) => {
             color="inherit"
             variant="h6"
           >
-            Devias
+            {organization.name}
           </Typography>
           <Typography
             color="neutral.400"
             variant="body2"
           >
-            Production
+            Development
           </Typography>
         </Box>
         <IconButton

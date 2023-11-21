@@ -1,28 +1,52 @@
-import { createResourceId } from '../../utils/create-resource-id';
-import { decode, JWT_EXPIRES_IN, JWT_SECRET, sign } from '../../utils/jwt';
-import { wait } from '../../utils/wait';
-import { users } from './data';
+import { decode } from '../../utils/jwt';
+import { api } from 'ui/config';
 
 class AuthApi {
-  async signIn(request) {
-    const { email, password } = request;
 
-    await wait(500);
+  async signUp(request, endpoint) {
 
-    return new Promise((resolve, reject) => {
+    let requestBody = {};
+
+    request.phone ? requestBody = {
+      ...request,
+      phone: request.phone
+    } : requestBody = {
+      firstName: request.firstName,
+      lastName: request.lastName,
+      email: request.email,
+      password: request.password,
+      passwordConfirmation: request.passwordConfirmation
+    };
+
+    return new Promise(async (resolve, reject) => {
       try {
-        // Find the user
-        const user = users.find((user) => user.email === email);
+        const res = await fetch(
+          `${api.url}${endpoint}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              first_name: firstName,
+              last_name: lastName,
+              email: email,
+              phone: phone,
+              password: password,
+              password_confirmation: passwordConfirmation
+            })
+          });
 
-        if (!user || (user.password !== password)) {
-          reject(new Error('Please check your email and password'));
+        if (!res.ok) {
+          reject(new Error(data.message));
           return;
         }
 
-        // Create the access token
-        const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        const data = await res.json();
+        const accessToken = data.accessToken;
 
         resolve({ accessToken });
+
       } catch (err) {
         console.error('[Auth Api]: ', err);
         reject(new Error('Internal server error'));
@@ -30,52 +54,68 @@ class AuthApi {
     });
   }
 
-  async signUp(request) {
-    const { email, name, password } = request;
+  async signIn(request, endpoint) {
+    const { email, password } = request;
 
-    await wait(1000);
-
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        // Check if a user already exists
-        let user = users.find((user) => user.email === email);
+        const res = await fetch(
+          `${api.url}${endpoint}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email,
+              password
+            })
+          });
 
-        if (user) {
-          reject(new Error('User already exists'));
+        const data = await res.json();
+
+        if (!res.ok) {
+          reject(new Error(data.message));
           return;
         }
 
-        user = {
-          id: createResourceId(),
-          avatar: undefined,
-          email,
-          name,
-          password,
-          plan: 'Standard'
-        };
-
-        users.push(user);
-
-        const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-
+        const accessToken = data.access_token;
         resolve({ accessToken });
+
       } catch (err) {
         console.error('[Auth Api]: ', err);
         reject(new Error('Internal server error'));
       }
     });
+  }
+
+  async vendorSignUp(request) {
+    return await this.signUp(request, '/auth/vendor/register');
+  };
+
+  async vendorSignIn(request) {
+    return await this.signIn(request, '/auth/vendor/login');
+  }
+
+  async customerSignUp(request) {
+    return await this.signUp(request, '/auth/customer/register');
+  }
+
+  async customerSignIn(request) {
+    return await this.signIn(request, '/auth/customer/login');
+  }
+
+  async adminSignIn(request) {
+    return await this.signIn(request, '/auth/admin/login');
   }
 
   me(request) {
     const { accessToken } = request;
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
         // Decode access token
-        const { userId } = decode(accessToken);
-
-        // Find the user
-        const user = users.find((user) => user.id === userId);
+        const { user } = await decode(accessToken);
 
         if (!user) {
           reject(new Error('Invalid authorization token'));
@@ -84,10 +124,15 @@ class AuthApi {
 
         resolve({
           id: user.id,
-          avatar: user.avatar,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
-          name: user.name,
-          plan: user.plan
+          phone: user.phone,
+          role: user.role,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          emailVerefiedAt: user.emailVerefiedAt,
+          deletedAt: user.deletedAt
         });
       } catch (err) {
         console.error('[Auth Api]: ', err);
@@ -95,6 +140,7 @@ class AuthApi {
       }
     });
   }
+
 }
 
 export const authApi = new AuthApi();

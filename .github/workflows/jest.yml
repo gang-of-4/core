@@ -1,4 +1,4 @@
-name: Jest Unit Tests
+name: Unit Tests
 
 on:
   pull_request:
@@ -6,19 +6,20 @@ on:
 
 jobs:
   test:
+    name: Jest Unit Tests
     runs-on: ubuntu-latest
 
     env:
       pnpm-version: 8.8.0
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-      DATABASE_URL: "postgresql://root:root@db:5432"
 
     services:
       postgres:
         image: 'postgres'
         env:
-          POSTGRES_PASSWORD: 'secret'
+          POSTGRES_USER: 'root'
+          POSTGRES_PASSWORD: 'root'
         ports:
           - 5432:5432
 
@@ -29,4 +30,22 @@ jobs:
           fetch-depth: 2
 
       - name: Initialize Database
-        run: PGPASSWORD=secret psql -U postgres -h 127.0.0.1 -p ${{ job.services.postgres.ports[5432] }} -f ./config/postgresql/init.sql
+        run: PGPASSWORD=root psql -U root -h 127.0.0.1 -p ${{ job.services.postgres.ports[5432] }} -f ./config/postgresql/init.sql
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        id: dependencies-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-pnpm-turborepo-${{ hashFiles('**/pnpm-lock.yaml') }}-tests
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.pnpm-version }}
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Run Tests
+        run: pnpm test

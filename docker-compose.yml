@@ -22,8 +22,21 @@ services:
             - 'host.docker.internal:host-gateway'
         networks:
             - core-network
+        ports:
+            - '5555:5555'
         volumes:
             - .:/app
+    db:
+        container_name: db
+        restart: unless-stopped
+        image: 'postgres:alpine3.18'
+        environment:
+            POSTGRES_USER: 'root'
+            POSTGRES_PASSWORD: 'root'
+        volumes:
+            - ./config/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks:
+            - core-network
 networks:
     core-network:
         driver: bridge
