@@ -67,7 +67,7 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = (props) => {
-  const { children, STORAGE_KEY } = props;
+  const { children, STORAGE_KEY, signOutCallback } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const initialize = useCallback(async () => {
@@ -155,6 +155,8 @@ export const AuthProvider = (props) => {
         user
       }
     });
+
+    return user;
   }, [dispatch]);
 
   const signUp = useCallback(async (userInfo, role) => {
@@ -221,6 +223,9 @@ export const AuthProvider = (props) => {
 
   const signOut = useCallback(async () => {
     localStorage.removeItem(STORAGE_KEY);
+    if (signOutCallback) {
+      signOutCallback();
+    }
     dispatch({ type: ActionType.SIGN_OUT });
   }, [dispatch]);
 
