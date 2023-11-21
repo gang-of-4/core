@@ -6,7 +6,7 @@ import { CreateStoreDto } from '../dto/create-store.dto';
 import { UpdateStoreDto } from '../dto/update-store-dto';
 import { CreateBusinessStoreDto } from '../dto/create-business-store.dto';
 import { UpdateBusinessStoreDto } from '../dto/update-business-store.dto';
-import { Status } from '@prisma/client';
+import { Status } from '@prisma/client/stores';
 
 @Controller({
   version: '1',

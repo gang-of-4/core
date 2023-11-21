@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IndividualStore, Store } from "@prisma/client";
+import { IndividualStore, Store } from "@prisma/client/stores";
 import { StoreEntity } from "./store.entity";
 import { Exclude, Type } from "class-transformer";
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Status } from "@prisma/client";
+import { Status } from "@prisma/client/stores";
 import {
     IsNotEmpty,
     IsOptional,

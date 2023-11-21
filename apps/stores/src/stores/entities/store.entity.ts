@@ -1,4 +1,4 @@
-import { Store, Status } from '@prisma/client';
+import { Store, Status } from '@prisma/client/stores';
 import { ApiProperty } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
 

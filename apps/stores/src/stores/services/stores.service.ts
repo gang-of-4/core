@@ -4,7 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBusinessStoreDto } from '../dto/create-business-store.dto';
 import { UpdateBusinessStoreDto } from '../dto/update-business-store.dto';
 import { StoreEntity } from '../entities/store.entity';
-import { Status, Store, User } from '@prisma/client';
+import { Status, Store, User } from '@prisma/client/stores';
 import { UpdateStoreDto } from '../dto/update-store-dto';
 
 @Injectable()
