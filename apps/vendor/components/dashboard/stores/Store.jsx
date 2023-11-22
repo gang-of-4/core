@@ -1,14 +1,15 @@
 'use client'
 
 import { useStores } from '@/hooks/useStores';
-import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography, Chip } from '@mui/material';
+import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography, Chip, Avatar } from '@mui/material';
 import { React, useCallback, useEffect, useState } from 'react';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import StoreLogo from './StoreLogo';
 import StoreOverview from './StoreOverview';
 import { Status } from '@/api/storeApi';
-
+import { getInitials } from 'ui/utils/get-initials';
+import { useAuth } from 'ui/hooks/use-auth';
 
 
 const tabs = [
@@ -19,32 +20,63 @@ const tabs = [
 ];
 
 const getStatusColor = (status) => {
-
   switch (status) {
-    case Status.Approved:
+    case Status.APPROVED:
       return { backgroundColor: 'success.main', color: 'white' };
-    case Status.Pending:
+    case Status.PENDING:
       return { backgroundColor: 'neutral', color: 'black' };
-    case Status.InReview:
+    case Status.INREVIEW:
       return { backgroundColor: 'primary.main', color: 'white' };
-    case Status.Deleted:
+    case Status.REJECTED:
       return { backgroundColor: 'error.main', color: 'white' };
     default:
       return { backgroundColor: 'neutral', color: 'black' };
   }
 };
 
+function formatStore(store, vendor) {
+  if (store?.individualStore) {
+    return {
+      id: store?.id,
+      vendorId: vendor?.id,
+      name: `${vendor?.firstName} ${vendor?.lastName}'s Store`,
+      status: store?.status,
+      logo: vendor?.avatar || getInitials(`${vendor?.firstName} ${vendor?.lastName}`),
+      type: 'individual'
+    }
+  } else if (store?.businessStore) {
+    return {
+      id: store?.id,
+      vendorId: vendor?.id,
+      name: store?.businessStore?.name,
+      status: store?.status,
+      vatNumber: store?.businessStore?.vat_number,
+      crNumber: store?.businessStore?.cr_number,
+      ownerNationalId: store?.businessStore?.owner_national_id,
+      logo: store?.businessStore?.logo,
+      type: 'business'
+    }
+  } else {
+    return { ...store, type: 'unknown' };
+  }
+}
 
 export default function Store({ params }) {
 
   const { stores } = useStores();
   const [currentStore, setCurrentStore] = useState();
+  const { user } = useAuth();
 
   const [currentTab, setCurrentTab] = useState('overview');
 
+  function changeCurrentStore(store) {
+    const formattedStore = formatStore(store, user);
+    setCurrentStore(formattedStore);
+  }
+
 
   useEffect(() => {
-    setCurrentStore(stores?.find(store => store.id === params.id[0]));
+    changeCurrentStore(stores?.find(store => store.id === params.id));
   }, [params])
 
   const handleTabsChange = useCallback((event, value) => {
@@ -60,12 +92,30 @@ export default function Store({ params }) {
           py: 8
         }}
       >
-        <Container maxWidth="lg"
-
-        >
-          {currentStore?.logo && (
-            <StoreLogo logo={currentStore.logo} />
-          )}
+        <Container maxWidth="lg">
+          {currentStore?.type === 'individual' ?
+            <Box
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
+              <Avatar
+                sx={{
+                  height: 128,
+                  width: 128,
+                  fontSize: 64,
+                }}
+                src={currentStore?.logo}
+              >
+                {currentStore?.logo}
+              </Avatar>
+            </Box>
+            : (currentStore?.logo !== 'default') && (
+              <StoreLogo logo={currentStore?.logo} />
+            )
+          }
           <Stack
             alignItems="center"
             direction="row"
@@ -84,7 +134,7 @@ export default function Store({ params }) {
                 <Chip
                   label={currentStore?.status}
                   size="small"
-                  sx={{...getStatusColor(currentStore?.status), px: 1}}
+                  sx={{ ...getStatusColor(currentStore?.status), px: 1 }}
                 />
               </Typography>
             </Stack>
