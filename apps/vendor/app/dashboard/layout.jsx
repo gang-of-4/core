@@ -1,6 +1,7 @@
 "use client"
 
 import { useStores } from '@/hooks/useStores'
+import { useAuth } from 'ui/hooks/use-auth';
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { withAuthGuard } from 'ui/hocs/with-auth-guard'
@@ -18,13 +19,29 @@ function layout({ children }) {
   const params = useParams();
 
   const { stores } = useStores();
+  const { user } = useAuth();
   
-  const optionsList = stores?.map(store => store.name);
+  const optionsList = stores?.map(store => {
+    if (store?.individualStore) {
+      return {
+        id: store?.id,
+        text: `${user?.firstName} ${user?.lastName}'s Store`
+      }
+    } else if (store?.businessStore) {
+      return {
+        id: store?.id,
+        text: store?.businessStore?.name
+      }
+    }
+    return {
+      id: '',
+      text: 'N/A'
+    }
+  });
 
 
-  function handleChange(storeName) {
-    const store = stores.find(store => store.name === storeName);
-    router.push(`${paths.vendor.dashboard.stores.index}/${store.id}`)
+  function handleChange(storeId) {
+    router.push(`${paths.vendor.dashboard.stores.index}/${storeId}`)
   }
 
   let currentStore = {};
@@ -34,7 +51,6 @@ function layout({ children }) {
   }
 
   useEffect(() => {
-    console.log('stores', stores)
     if (stores?.length === 0) {
       console.log('No stores found for this vendor, redirecting to onboarding')
 
@@ -50,7 +66,7 @@ function layout({ children }) {
     <>
       <Button
         component={NextLink}
-        href={`/${paths.vendor.dashboard.stores.create}`}
+        href={`${paths.vendor.onboarding.index}`}
         variant="contained"
         endIcon={(
           <SvgIcon>
