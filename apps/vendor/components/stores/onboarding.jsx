@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Card,
     CardContent,
@@ -31,30 +31,42 @@ const useStyles = makeStyles((theme) => ({
         transition: 'all 0.3s ease'
     },
     cardText: {
-        transition: 'all 0.3s ease'
+        transition: 'all 0.3s ease',
     }
 }));
 
 
 export default function page() {
 
+    const classes = useStyles();
+
     const router = useRouter();
     const { user } = useAuth();
-    const { createStore } = useStores();
-    
+    const { createIndividualStore, stores } = useStores();
+    const [hasIndividual, setHasIndividual] = useState(false);
+
     async function handleCreateIndividual() {
         try {
-            const store = {
-                name: `${user.firstName} ${user.lastName}`,
-                vendorId: user.id,
-            };
-            await createStore(store);
+            await createIndividualStore(user.id);
             router.push(paths.vendor.dashboard.index);
         } catch (error) {
             console.error(error);
         }
     }
 
+    function checkHasIndividual() {
+        let has = false;
+        stores?.forEach(store => {
+            if (store?.individualStore) {
+                has = true;
+            }
+        });
+        setHasIndividual(has);
+    }
+
+    useEffect(() => {
+        checkHasIndividual();
+    }, [stores]);
 
     return (
         <>
@@ -77,22 +89,38 @@ export default function page() {
                                 sx={{
                                     width: { xs: '90%', sm: '45%' }
                                 }}
-                                className={useStyles().card}
+                                className={hasIndividual ? '' : classes.card}
+                                style={hasIndividual ?
+                                    { backgroundColor: blueGrey[50] }
+                                    : {}
+                                }
                             >
-                                <CardContent
-                                    className={useStyles().cardContent}
-                                >
-                                    <button onClick={handleCreateIndividual} id='individualStoreButton'>
+                                <CardContent>
+                                    <button
+                                        onClick={handleCreateIndividual}
+                                        id='individualStoreButton'
+                                        disabled={hasIndividual}
+                                        style={{ width: '100%' }}
+                                    >
                                         <PersonIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
-                                        <h1 className='text-primary text-xl'>Individual Store</h1>
+                                        <h1
+                                            className={hasIndividual ?
+                                                'text-error text-xl'
+                                                : 'text-primary text-xl'
+                                            }>Individual Store</h1>
                                         <Typography
                                             variant="body1"
                                             sx={{
                                                 color: blueGrey[400]
                                             }}
-                                            className={useStyles().cardText}
+                                            className={classes.cardText}
                                         >
-                                            Individual stores are designed to meet personal offering of products and services.
+                                            {
+                                                hasIndividual ?
+                                                    'You already have an individual store'
+                                                    :
+                                                    'Individual stores are designed to meet personal offering of products and services.'
+                                            }
                                         </Typography>
                                     </button>
                                 </CardContent>
@@ -100,11 +128,14 @@ export default function page() {
 
                             <Card
                                 sx={{ width: { xs: '90%', sm: '45%' } }}
-                                className={useStyles().card}
+                                className={classes.card}
                             >
                                 <CardContent>
                                     <Link href={paths.vendor.dashboard.stores.create}>
-                                        <button id='businessStoreButton'>
+                                        <button
+                                            id='businessStoreButton'
+                                            style={{ width: '100%' }}
+                                        >
                                             <StoreIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
                                             <h1 className='text-primary text-xl'>Business Store</h1>
                                             <Typography
@@ -112,7 +143,7 @@ export default function page() {
                                                 sx={{
                                                     color: blueGrey[400]
                                                 }}
-                                                className={useStyles().cardText}
+                                                className={classes.cardText}
                                             >
                                                 Business stores are designed to meet branding and professional requirements, as well as the needs of companies and institutions with specialized products and services.
                                             </Typography>

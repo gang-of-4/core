@@ -94,7 +94,7 @@ const Page = () => {
     const router = useRouter();
     const { returnTo } = useParams();
     const { user } = useAuth();
-    const { createStore } =  useStores();
+    const { createBusinessStore } =  useStores();
     const formik = useFormik({
         initialValues,
         validationSchema,
@@ -109,7 +109,7 @@ const Page = () => {
                     vendorId: user.id
                 };
 
-                await createStore(store);
+                await createBusinessStore(store);
 
                 if (isMounted()) {
                     router.push(returnTo || paths.vendor.dashboard.index);
