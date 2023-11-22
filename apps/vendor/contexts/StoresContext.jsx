@@ -1,4 +1,4 @@
-import { createStoreApi, deleteStoreApi, getStoresApi, updateStoreApi } from "@/api/storeApi";
+import { createBusinessStoreApi, createIndividualStoreApi, deleteStoreApi, getStoresApi, updateBusinessStoreApi } from "@/api/storeApi";
 import { createContext, useCallback, useEffect, useReducer } from "react";
 
 const STORAGE_KEY = 'vendorStores';
@@ -11,13 +11,19 @@ const ActionType = {
 };
 
 function getInitialState() {
-    const stores = localStorage.getItem(STORAGE_KEY);
-    return stores ? JSON.parse(stores) : [];
-}
-
-const initialState = {
-    stores: getInitialState(),
+    if (typeof window !== 'undefined') {
+        const stores = localStorage.getItem(STORAGE_KEY);
+        return stores ?
+            {
+                stores: JSON.parse(stores),
+            }
+            : {
+                stores: [],
+            };
+    }
 };
+
+const initialState = getInitialState();
 
 
 const reducer = (state, action) => {
@@ -49,13 +55,14 @@ const reducer = (state, action) => {
         default:
             return state;
     }
-}
+};
 
 export const StoresContext = createContext({
     ...initialState,
     getStores: (vendorId) => Promise.resolve(),
-    createStore: (store) => Promise.resolve(),
-    updateStore: (store) => Promise.resolve(),
+    createIndividualStore: (vendorId) => Promise.resolve(),
+    createBusinessStore: (store) => Promise.resolve(),
+    updateBusinessStore: (store) => Promise.resolve(),
     deleteStore: (storeId) => Promise.resolve(),
 });
 
@@ -69,21 +76,30 @@ export const StoresProvider = ({ children }) => {
             return res;
         } catch (err) {
             console.error(err);
-        }
+        };
     }, [dispatch]);
 
-    const createStore = useCallback(async (store) => {
+    const createIndividualStore = useCallback(async (vendorId) => {
         try {
-            const res = await createStoreApi(store);
+            const res = await createIndividualStoreApi(vendorId);
+            dispatch({ type: ActionType.ADD_STORE, payload: res });
+        } catch (err) {
+            console.error(err);
+        };
+    }, [dispatch]);
+
+    const createBusinessStore = useCallback(async (store) => {
+        try {
+            const res = await createBusinessStoreApi(store);
             dispatch({ type: ActionType.ADD_STORE, payload: res });
         } catch (err) {
             console.error(err);
         }
     }, [dispatch]);
 
-    const updateStore = useCallback(async (store) => {
+    const updateBusinessStore = useCallback(async ({ storeId, store }) => {
         try {
-            const res = await updateStoreApi(store);
+            const res = await updateBusinessStoreApi({ storeId, store });
             dispatch({ type: ActionType.UPDATE_STORE, payload: res });
         } catch (err) {
             console.error(err);
@@ -108,8 +124,9 @@ export const StoresProvider = ({ children }) => {
             value={{
                 ...state,
                 getStores,
-                createStore,
-                updateStore,
+                createIndividualStore,
+                createBusinessStore,
+                updateBusinessStore,
                 deleteStore,
             }}
         >
@@ -121,7 +138,7 @@ export const StoresProvider = ({ children }) => {
 
 export function signOutCallback() {
     localStorage.removeItem(STORAGE_KEY);
-}
+};
 
 
 

@@ -1,89 +1,148 @@
-export enum Status {
-    Approved = "Approved",
-    Pending = "Pending",
-    InReview = "InReview",
-    Deleted = "Deleted"
-}
+const apiUrl: string = 'http://localhost:3000/api/v1/stores';
 
-interface Store {
+export enum Status {
+    PENDING = 'PENDING',
+    INREVIEW = 'INREVIEW',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED'
+};
+
+type IndividualStore = {
     id: string;
+    storeId: string;
+};
+
+type BusinessStore = {
+    id: string;
+    storeId: string;
     name: string;
+    logo: string;
+    vatNumber: string;
+    crNumber: string;
+    ownerNationalId: string;
+};
+
+type Store = {
+    id: string;
     vendorId: string;
+    status: Status;
+    created_at: Date;
+    updated_at: Date;
+    individualStore: IndividualStore;
+    businessStore: BusinessStore;
+};
+
+type CreateBusinessStoreDto = {
+    vendorId: string;
+    name: string;
+    logo: string;
+    vatNumber: string;
+    crNumber: string;
+    ownerNationalId: string;
+};
+
+type UpdateBusinessStoreDto = {
+    name?: string;
     logo?: string;
     vatNumber?: string;
     crNumber?: string;
-    status: Status;
-}
-
-interface CreateStoreDto {
-    name: string;
-    vendorId: string;
-    logo?: File;
-    vatNumber?: string;
-    crNumber?: string;
-}
-
-const logoUrl = 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-
-const stores: Store[] = []
+    ownerNationalId?: string;
+};
 
 
 export async function getStoresApi(vendorId: string): Promise<Store[]> {
-    // const response = await fetch(`/api/stores?vendorId=${vendorId}`);
-    // return await response.json();
+    const res = await fetch(`${apiUrl}/vendor/${vendorId}`);
+    const stores = await res.json();
     return new Promise<Store[]>((resolve, reject) => {
-        if (stores.length > 0) {
+        if (stores?.length > 0) {
             resolve(stores);
         } else {
             reject();
         }
     });
-}
+};
 
-export async function createStoreApi(createStore: CreateStoreDto): Promise<Store> {
-    // const response = await fetch(`/api/stores`, {
-    //     method: 'POST',
-    //     body: JSON.stringify({name, vendorId})
-    // });
-    // return await response.json();
+export async function createIndividualStoreApi(vendorId: string): Promise<Store> {
 
-    const store = {
-        id: stores.length.toString(),
-        name: createStore.name,
-        vendorId: createStore.vendorId,
-        status: Status.Pending,
-    }
-    stores.push(store);
-    return new Promise<Store>((resolve, reject) => resolve(store));
-}
+    const res = await fetch(`${apiUrl}/individual`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            vendorId: vendorId,
+        })
+    });
 
-export async function updateStoreApi({ id, name }: { id: string, name: string }): Promise<Store> {
-    // const response = await fetch(`/api/stores/${id}`, {
-    //     method: 'PUT',
-    //     body: JSON.stringify({name})
-    // });
-    // return await response.json();
+    const store = await res.json();
+    return new Promise<Store>((resolve, reject) => {
+        if (store) resolve(store);
+        else reject();
+    });
+};
+
+export async function createBusinessStoreApi(createBusinessStoreDto: CreateBusinessStoreDto): Promise<Store> {
+    // const formData = new FormData();
+    // formData.append('vendorId', createBusinessStoreDto.vendorId);
+    // formData.append('name', createBusinessStoreDto.name);
+    // if (createBusinessStoreDto.logo) {
+    //     formData.append('logo', createBusinessStoreDto.logo);
+    // }
+    // formData.append('vatNumber', createBusinessStoreDto.vatNumber);
+    // formData.append('crNumber', createBusinessStoreDto.crNumber);
+    // formData.append('ownerNationalId', createBusinessStoreDto.ownerNationalId);
+
+    console.log(createBusinessStoreDto);
+
+    const res = await fetch(`${apiUrl}/business`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            vendorId: createBusinessStoreDto.vendorId,
+            name: createBusinessStoreDto.name,
+            logo: createBusinessStoreDto.logo || 'default',
+            vatNumber: createBusinessStoreDto.vatNumber,
+            crNumber: createBusinessStoreDto.crNumber,
+            ownerNationalId: createBusinessStoreDto.ownerNationalId,
+        })
+    });
+
+    const store = await res.json();
 
     return new Promise<Store>((resolve, reject) => {
-        stores.forEach(store => {
-            if (store.id === id) {
-                store.name = name;
-                resolve(store);
-            }
-        });
-        reject();
+        if (store) resolve(store);
+        else reject();
     });
-}
+};
 
-export async function deleteStoreApi({ id }: { id: string }): Promise<void> {
-    // await fetch(`/api/stores/${id}`, {
-    //     method: 'DELETE'
-    // });
-    stores.forEach((store, index) => {
-        if (store.id === id) {
-            stores.splice(index, 1);
-            return;
-        }
+export async function updateBusinessStoreApi(
+    { storeId, updateBusinessStoreDto }
+        : { storeId: string, updateBusinessStoreDto: UpdateBusinessStoreDto }
+): Promise<Store> {
+
+    const res = await fetch(`${apiUrl}/business/${storeId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(updateBusinessStoreDto)
     });
-    return new Promise<void>((resolve, reject) => resolve());
-}
+
+    const store = await res.json();
+
+    return new Promise<Store>((resolve, reject) => {
+        if (store) resolve(store);
+        else reject();
+    });
+};
+
+export async function deleteStoreApi(storeId: string): Promise<Store> {
+
+    const res = await fetch(`${apiUrl}/${storeId}`, {
+        method: 'DELETE'
+    });
+    const store = await res.json();
+    return new Promise<Store>((resolve, reject) => {
+        if (store) resolve(store);
+        else reject();
+    });
+};
