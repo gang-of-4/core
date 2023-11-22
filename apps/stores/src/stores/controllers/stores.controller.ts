@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Headers, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { StoresService } from '../services/stores.service';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { StoreEntity } from '../entities/store.entity';
@@ -6,7 +6,6 @@ import { CreateStoreDto } from '../dto/create-store.dto';
 import { UpdateStoreDto } from '../dto/update-store-dto';
 import { CreateBusinessStoreDto } from '../dto/create-business-store.dto';
 import { UpdateBusinessStoreDto } from '../dto/update-business-store.dto';
-import { Status } from '@prisma/client/stores';
 
 @Controller({
   version: '1',
@@ -18,11 +17,12 @@ export class StoresController {
 
   @Post('individual')
   @ApiCreatedResponse({ type: StoreEntity })
-  createIndividual(@Body() createStoreDto: CreateStoreDto,) {
-    try{
-      return this.storesService.createIndividual(createStoreDto);
-    }catch(e){
-      console.log(e);
+  createIndividual(@Body() createStoreDto: CreateStoreDto) {
+    try {
+      const res = this.storesService.createIndividual(createStoreDto);
+      return res;
+    } catch (e) {
+      return e;
     }
   }
 
