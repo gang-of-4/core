@@ -30,9 +30,9 @@ export const OptionSwitch = (props) => {
 
   function handleChange(option) {
     if (handleOptionsChange) {
-      handleOptionsChange(option);
+      handleOptionsChange(option.id);
     }
-    setTitle(option);
+    setTitle(option.text);
     setOpenPopover(false);
   }
 

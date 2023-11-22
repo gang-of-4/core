@@ -34,10 +34,10 @@ export const OptionPopover = (props) => {
       }
       {options?.map((option) => (
         <MenuItem
-          key={option}
+          key={option.id}
           onClick={() => onChange(option)}
         >
-          {option}
+          {option.text}
         </MenuItem>
       ))}
     </Popover>
