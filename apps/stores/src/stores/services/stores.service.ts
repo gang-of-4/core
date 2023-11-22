@@ -17,18 +17,16 @@ export class StoresService {
 
     const stores = await this.findByVendor(createStoreDto.vendorId);
 
-    console.log('stores service | stores: ', stores);
-
-    stores.forEach(async (store) => {
+    for (const store of stores) {
       const individualStore = await this.prisma.individualStore.findUnique({
         where: {
           storeId: store.id,
         },
       });
       if (individualStore) {
-        throw new Error('Vendor ID already has an individual store');
+        throw new Error('Vendor already has an individual store');
       }
-    });
+    };
 
     return new StoreEntity(
       await this.prisma.store.create({
@@ -38,7 +36,10 @@ export class StoresService {
           individualStore: {
             create: {}
           }
-        }
+        },
+        include: {
+          individualStore: true,
+        },
       })
     );
   }
@@ -58,7 +59,10 @@ export class StoresService {
               owner_national_id: createBusinessStoreDto.ownerNationalId,
             }
           }
-        }
+        },
+        include: {
+          businessStore: true,
+        },
       })
     );
   }
