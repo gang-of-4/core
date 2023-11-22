@@ -22,6 +22,9 @@ export default function StoreOverview({ store }) {
                             {store?.crNumber &&
                                 <PropertyListItem label="CR Number" value={store?.crNumber} />
                             }
+                            {store?.ownerNationalId &&
+                                <PropertyListItem label="Owner National ID" value={store?.ownerNationalId} />
+                            }
                         </PropertyList>
                     </Card>
                 </Grid>
