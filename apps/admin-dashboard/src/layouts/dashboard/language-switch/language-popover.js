@@ -7,15 +7,15 @@ import { tokens } from '../../../locales/tokens';
 
 const languageOptions = {
   en: {
-    icon: '/assets/flags/flag-uk.svg',
+    icon: '/admin/assets/flags/flag-uk.svg',
     label: 'English'
   },
   de: {
-    icon: '/assets/flags/flag-de.svg',
+    icon: '/admin/assets/flags/flag-de.svg',
     label: 'German'
   },
   es: {
-    icon: '/assets/flags/flag-es.svg',
+    icon: '/admin/assets/flags/flag-es.svg',
     label: 'Spanish'
   }
 };
