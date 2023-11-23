@@ -49,6 +49,7 @@ export const tokens = {
     register: 'nav.register',
     resetPassword: 'nav.resetPassword',
     socialMedia: 'nav.socialMedia',
+    stores: 'nav.stores',
     verifyCode: 'nav.verifyCode'
   }
 };
