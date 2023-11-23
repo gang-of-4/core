@@ -4,9 +4,9 @@ import { Box, IconButton, Tooltip } from '@mui/material';
 import { LanguagePopover } from './language-popover';
 
 const languages = {
-  en: '/assets/flags/flag-uk.svg',
-  de: '/assets/flags/flag-de.svg',
-  es: '/assets/flags/flag-es.svg'
+  en: '/admin/assets/flags/flag-uk.svg',
+  de: '/admin/assets/flags/flag-de.svg',
+  es: '/admin/assets/flags/flag-es.svg'
 };
 
 export const LanguageSwitch = () => {
