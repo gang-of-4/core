@@ -10,6 +10,7 @@ import StoreOverview from './StoreOverview';
 import { Status } from '@/api/storeApi';
 import { getInitials } from 'ui/utils/get-initials';
 import { useAuth } from 'ui/hooks/use-auth';
+import { SeverityPill } from 'ui/components/severity-pill';
 
 
 const tabs = [
@@ -21,16 +22,16 @@ const tabs = [
 
 const getStatusColor = (status) => {
   switch (status) {
-    case Status.APPROVED:
-      return { backgroundColor: 'success.main', color: 'white' };
-    case Status.PENDING:
-      return { backgroundColor: 'neutral', color: 'black' };
-    case Status.INREVIEW:
-      return { backgroundColor: 'primary.main', color: 'white' };
-    case Status.REJECTED:
-      return { backgroundColor: 'error.main', color: 'white' };
-    default:
-      return { backgroundColor: 'neutral', color: 'black' };
+      case Status.APPROVED:
+          return 'success';
+      case Status.PENDING:
+          return 'warning';
+      case Status.INREVIEW:
+          return 'info';
+      case Status.REJECTED:
+          return 'error';
+      default:
+          return 'info';
   }
 };
 
@@ -76,7 +77,9 @@ export default function Store({ params }) {
 
 
   useEffect(() => {
-    changeCurrentStore(stores?.find(store => store.id === params.id));
+    const store = stores?.find(store => store.id === params.id);
+    changeCurrentStore(store);
+    console.log(store)
   }, [params])
 
   const handleTabsChange = useCallback((event, value) => {
@@ -130,13 +133,9 @@ export default function Store({ params }) {
               <Typography variant="h5">
                 {currentStore?.name}
               </Typography>
-              <Typography variant="h8">
-                <Chip
-                  label={currentStore?.status}
-                  size="small"
-                  sx={{ ...getStatusColor(currentStore?.status), px: 1 }}
-                />
-              </Typography>
+              <SeverityPill color={getStatusColor(currentStore?.status)}>
+                {currentStore?.status}
+              </SeverityPill>
             </Stack>
             <Box sx={{ flexGrow: 1 }} />
             <Stack
