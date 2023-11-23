@@ -18,8 +18,14 @@ function layout({ children }) {
   const router = useRouter();
   const params = useParams();
 
-  const { stores } = useStores();
+  const { stores, getStores } = useStores();
   const { user } = useAuth();
+
+  async function initStores(userId){
+    const res = await getStores(userId);
+    console.log('res', res);
+    console.log('state', stores);
+  }
   
   const optionsList = stores?.map(store => {
     if (store?.individualStore) {
@@ -60,6 +66,12 @@ function layout({ children }) {
       window.location.href = `/vendor${paths.vendor.onboarding.index}`;
     }
   }, [stores])
+
+  useEffect(() => {
+    console.log(user)
+    initStores(user?.id);
+  }, [])
+    
 
 
   const createStore = (
