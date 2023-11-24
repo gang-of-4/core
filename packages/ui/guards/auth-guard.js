@@ -21,7 +21,7 @@ export const AuthGuard = (props) => {
       const href = loginPaths[issuer] + `?${searchParams}`;
       router.replace(href);
     } else {
-      if (role && user.role.name !== role) {
+      if (role && user?.role.name !== role) {
         router.replace(paths.errors.forbidden);
       } else {
         setChecked(true);

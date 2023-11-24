@@ -12,6 +12,25 @@ var ActionType;
   ActionType['SIGN_OUT'] = 'SIGN_OUT';
 })(ActionType || (ActionType = {}));
 
+function getInitialState(STORAGE_KEY) {
+    const accessToken = localStorage.getItem(STORAGE_KEY);
+
+    if (accessToken) {
+      return {
+        isAuthenticated: true,
+        isInitialized: false,
+        user: null
+      };
+    }
+
+    return {
+      isAuthenticated: false,
+      isInitialized: false,
+      user: null
+    };
+
+}
+
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
@@ -67,8 +86,9 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = (props) => {
-  const { children, STORAGE_KEY } = props;
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { children, STORAGE_KEY, signOutCallback } = props;
+  const initializedState = getInitialState(STORAGE_KEY);
+  const [state, dispatch] = useReducer(reducer, initializedState);
 
   const initialize = useCallback(async () => {
     try {
@@ -155,6 +175,8 @@ export const AuthProvider = (props) => {
         user
       }
     });
+
+    return user;
   }, [dispatch]);
 
   const signUp = useCallback(async (userInfo, role) => {
@@ -163,7 +185,7 @@ export const AuthProvider = (props) => {
 
     switch (role) {
       case 'vendor':
-         await authApi.vendorSignUp(
+        await authApi.vendorSignUp(
           {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
@@ -221,6 +243,9 @@ export const AuthProvider = (props) => {
 
   const signOut = useCallback(async () => {
     localStorage.removeItem(STORAGE_KEY);
+    if (signOutCallback) {
+      signOutCallback();
+    }
     dispatch({ type: ActionType.SIGN_OUT });
   }, [dispatch]);
 

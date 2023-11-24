@@ -25,6 +25,7 @@ import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
 // import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
 import { Issuer } from 'ui/utils/auth';
 import { paths } from 'ui/paths';
+import { useStores } from '@/hooks/useStores';
 
 const useParams = () => {
   const searchParams = useSearchParams();
@@ -58,6 +59,7 @@ const Page = () => {
   const router = useRouter();
   const { returnTo } = useParams();
   const { issuer, signIn } = useAuth();
+  const { getStores } = useStores();
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -67,10 +69,17 @@ const Page = () => {
           email: values.email,
           password: values.password
         }
-        await signIn(userInfo, 'vendor');
+
+        const user = await signIn(userInfo, 'vendor');
 
         if (isMounted()) {
-          router.push(returnTo || paths.vendor.dashboard.index);
+          const stores = await getStores(user.id);
+          if (stores?.length > 0) {
+            router.push(returnTo || paths.vendor.dashboard.index);
+          } else {
+            console.log('No stores associated with this vendor id, redirecting to onboarding to add at least one store');
+            router.push(paths.vendor.onboarding.index);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -88,7 +97,7 @@ const Page = () => {
 
   return (
     <>
-      <div className='flex items-center justify-center w-screen h-screen'>
+      <div className='flex items-center justify-center w-screen h-full'>
         <div className='w-4/5 max-w-lg'>
           <Card elevation={16}>
             <CardHeader

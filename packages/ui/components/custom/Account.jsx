@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 import { paths } from '../../paths';
 import { useMediaQuery } from '@mui/material';
 import { usePathname } from 'next/navigation';
+import NextLink from 'next/link';
 
 
 export default function Account({app}) {
@@ -34,7 +35,7 @@ export default function Account({app}) {
         pathname.includes('/auth/')
           ? <></>
           : <Button
-            component="a"
+            component={NextLink}
             size={mdUp ? 'medium' : 'small'}
             href={`${url}${paths.auth.login}`}
             variant="contained"

@@ -10,9 +10,8 @@ import { Scrollbar } from '../../../components/scrollbar';
 import { paths } from '../../../paths';
 import { AccountButton } from '../account-button';
 import { ContactsButton } from '../contacts-button';
-import { LanguageSwitch } from '../language-switch';
 import { NotificationsButton } from '../notifications-button';
-import { TenantSwitch } from '../tenant-switch';
+import { OptionSwitch } from '../option-switch';
 import { TopNavSection } from './top-nav-section';
 
 const useCssVars = (color) => {
@@ -146,7 +145,7 @@ const useCssVars = (color) => {
 };
 
 export const TopNav = (props) => {
-  const { color = 'evident', onMobileNav, sections = [] } = props;
+  const { color = 'evident', onMobileNav, sections = [], children } = props;
   const pathname = usePathname();
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const cssVars = useCssVars(color);
@@ -205,17 +204,19 @@ export const TopNav = (props) => {
           >
             <Logo />
           </Box>
-          <TenantSwitch />
+          <OptionSwitch />
         </Stack>
         <Stack
           alignItems="center"
           direction="row"
           spacing={2}
         >
-          <LanguageSwitch />
+          {/* options under topnav go here */}
+          {children}
           <NotificationsButton />
-          <ContactsButton />
-          <AccountButton />
+          <AccountButton>
+            {/* options under account popover go here */}
+          </AccountButton>
         </Stack>
       </Stack>
       {mdUp && (

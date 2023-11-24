@@ -2,11 +2,21 @@ import { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import { Box, IconButton, Stack, SvgIcon, Typography } from '@mui/material';
-import { TenantPopover } from './tenant-popover';
+import { OptionPopover } from './option-popover';
 
-const tenants = ['Devias', 'Acme Corp'];
+export const OptionSwitch = (props) => {
 
-export const TenantSwitch = (props) => {
+  const {
+    options,
+    firstOption,
+    optionsTitle,
+    optionsSubtitle,
+    handleOptionsChange,
+    ...other
+  } = props;
+
+  const [title, setTitle] = useState(optionsTitle);
+
   const anchorRef = useRef(null);
   const [openPopover, setOpenPopover] = useState(false);
 
@@ -18,9 +28,13 @@ export const TenantSwitch = (props) => {
     setOpenPopover(false);
   }, []);
 
-  const handleTenantChange = useCallback((tenant) => {
+  function handleChange(option) {
+    if (handleOptionsChange) {
+      handleOptionsChange(option.id);
+    }
+    setTitle(option.text);
     setOpenPopover(false);
-  }, []);
+  }
 
   return (
     <>
@@ -28,19 +42,19 @@ export const TenantSwitch = (props) => {
         alignItems="center"
         direction="row"
         spacing={2}
-        {...props}>
+        {...other}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography
             color="inherit"
             variant="h6"
           >
-            Devias
+            {title}
           </Typography>
           <Typography
             color="neutral.400"
             variant="body2"
           >
-            Production
+            {optionsSubtitle}
           </Typography>
         </Box>
         <IconButton
@@ -52,18 +66,19 @@ export const TenantSwitch = (props) => {
           </SvgIcon>
         </IconButton>
       </Stack>
-      <TenantPopover
+      <OptionPopover
         anchorEl={anchorRef.current}
-        onChange={handleTenantChange}
+        onChange={handleChange}
         onClose={handlePopoverClose}
         open={openPopover}
-        tenants={tenants}
+        options={options}
+        firstOption={firstOption}
       />
     </>
   );
 };
 
-TenantSwitch.propTypes = {
+OptionSwitch.propTypes = {
   // @ts-ignore
   sx: PropTypes.object
 };
