@@ -1,4 +1,5 @@
 import Store from "@/components/dashboard/stores/Store";
+import { formatStore } from "@/utils/format-store";
 import { Metadata, ResolvingMetadata } from "next";
 
 export async function generateMetadata(
@@ -9,21 +10,36 @@ export async function generateMetadata(
   const id = params.id
 
   // fetch data
-  // const store = await fetch(`https://.../${id}`).then((res) => res.json())
-
-  const store = {
-    name: `Vendor Dashboard | Store ${id}`,
-  }
-
+  const store = await fetch(
+    `${process.env.STORES_API_URL}/${id}`,
+    { next: { revalidate: 60 } }
+  ).then((res) => res.json())
+  const formattedStore = await formatStore(store);
+  
   return {
-    title: store.name,
+    title: `Dashboard | ${formattedStore?.name}`,
   }
 }
 
-export default function Page({ params }: { params: { id: string } }) {
+async function getStore(id: string) {
+  const store = await fetch(
+      `${process.env.STORES_API_URL}/${id}`,
+      { next: {revalidate: 0} }
+  ).then((res) => {
+      if (!res.ok) throw new Error('Failed to fetch');
+      return res.json();
+  });
+  const formattedStore = await formatStore(store);
+  return formattedStore;
+}
+
+export default async function Page({ params }: { params: { id: string } }) {
+
+  const store = await getStore(params.id);
+
   return (
     <>
-      <Store params={params} />
+      <Store store={store} />
     </>
   )
 }

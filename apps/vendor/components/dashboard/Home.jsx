@@ -5,21 +5,9 @@ import { Box, Button, Card, CardContent, Container, Stack, SvgIcon, Typography }
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import NextLink from 'next/link';
 import { paths } from 'ui/paths'
-import { RefreshCw01 } from '@untitled-ui/icons-react';
-import { useStores } from '@/hooks/useStores';
-import { useAuth } from 'ui/hooks/use-auth';
-
 
 
 export default function Home() {
-
-  const { getStores } = useStores();
-  const { user } = useAuth();
-
-  function handleRefreshStores() {
-    console.log('refreshing stores');
-    getStores(user?.id);
-  }
 
   return (
     <>
@@ -69,18 +57,6 @@ export default function Home() {
                         )}
                       >
                         Create a Store
-                      </Button>
-
-                      <Button
-                        onClick={handleRefreshStores}
-                        variant="outlined"
-                        endIcon={(
-                          <SvgIcon>
-                            <RefreshCw01 />
-                          </SvgIcon>
-                        )}
-                      >
-                        Refresh Stores
                       </Button>
 
                     </Stack>
