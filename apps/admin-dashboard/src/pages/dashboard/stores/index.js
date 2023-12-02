@@ -70,7 +70,7 @@ const Page = () => {
 
   usePageView();
 
-  const handleFiltersChange = useCallback((filters) => {s
+  const handleFiltersChange = useCallback((filters) => {
     updateSearch((prevState) => ({
       ...prevState,
       filters
