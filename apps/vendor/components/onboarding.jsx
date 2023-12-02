@@ -6,6 +6,7 @@ import {
     CardContent,
     CardHeader,
     Container,
+    Tooltip,
     Typography,
 } from '@mui/material';
 import StoreIcon from '@mui/icons-material/Store';
@@ -96,33 +97,50 @@ export default function page() {
                                 }
                             >
                                 <CardContent>
-                                    <button
-                                        onClick={handleCreateIndividual}
-                                        id='individualStoreButton'
-                                        disabled={hasIndividual}
-                                        style={{ width: '100%' }}
-                                    >
-                                        <PersonIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
-                                        <h1
-                                            className={hasIndividual ?
-                                                'text-error text-xl'
-                                                : 'text-primary text-xl'
-                                            }>Individual Store</h1>
-                                        <Typography
-                                            variant="body1"
-                                            sx={{
-                                                color: blueGrey[400]
-                                            }}
-                                            className={classes.cardText}
-                                        >
-                                            {
-                                                hasIndividual ?
-                                                    'You already have an individual store'
-                                                    :
-                                                    'Individual stores are designed to meet personal offering of products and services.'
-                                            }
-                                        </Typography>
-                                    </button>
+                                    {
+                                        hasIndividual ? (
+                                            <Tooltip title="You already have an individual store">
+                                                <span>
+                                                    <button
+                                                        id='individualStoreButton'
+                                                        disabled
+                                                        style={{ width: '100%' }}
+                                                    >
+                                                        <PersonIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
+                                                        <h1 className='text-primary text-xl'>Individual Store</h1>
+                                                        <Typography
+                                                            variant="body1"
+                                                            sx={{
+                                                                color: blueGrey[400]
+                                                            }}
+                                                            className={classes.cardText}
+                                                        >
+                                                            Individual stores are designed to meet personal offering of products and services.
+                                                        </Typography>
+                                                    </button>
+                                                </span>
+                                            </Tooltip>
+                                        ) : (
+                                            <button
+                                                onClick={handleCreateIndividual}
+                                                id='individualStoreButton'
+                                                style={{ width: '100%' }}
+                                            >
+                                                <PersonIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
+                                                <h1 className='text-primary text-xl'>Individual Store</h1>
+                                                <Typography
+                                                    variant="body1"
+                                                    sx={{
+                                                        color: blueGrey[400]
+                                                    }}
+                                                    className={classes.cardText}
+                                                >
+                                                    Individual stores are designed to meet personal offering of products and services.
+                                                </Typography>
+                                            </button>
+                                        )
+                                    }
+
                                 </CardContent>
                             </Card>
 
