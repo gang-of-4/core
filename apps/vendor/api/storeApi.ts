@@ -82,18 +82,6 @@ export async function createIndividualStoreApi(vendorId: string): Promise<Store>
 };
 
 export async function createBusinessStoreApi(createBusinessStoreDto: CreateBusinessStoreDto): Promise<Store> {
-    // const formData = new FormData();
-    // formData.append('vendorId', createBusinessStoreDto.vendorId);
-    // formData.append('name', createBusinessStoreDto.name);
-    // if (createBusinessStoreDto.logo) {
-    //     formData.append('logo', createBusinessStoreDto.logo);
-    // }
-    // formData.append('vatNumber', createBusinessStoreDto.vatNumber);
-    // formData.append('crNumber', createBusinessStoreDto.crNumber);
-    // formData.append('ownerNationalId', createBusinessStoreDto.ownerNationalId);
-
-    console.log(createBusinessStoreDto);
-
     const res = await fetch(`${apiUrl}/business`, {
         method: 'POST',
         headers: {
@@ -124,7 +112,16 @@ export async function updateBusinessStoreApi(
 
     const res = await fetch(`${apiUrl}/business/${storeId}`, {
         method: 'PATCH',
-        body: JSON.stringify(updateBusinessStoreDto)
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: updateBusinessStoreDto.name,
+            logo: updateBusinessStoreDto.logo || 'default',
+            vatNumber: updateBusinessStoreDto.vatNumber,
+            crNumber: updateBusinessStoreDto.crNumber,
+            ownerNationalId: updateBusinessStoreDto.ownerNationalId,
+        })
     });
 
     const store = await res.json();
