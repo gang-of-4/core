@@ -1,16 +1,15 @@
 'use client'
 
-import { useStores } from '@/hooks/useStores';
-import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography, Chip, Avatar } from '@mui/material';
-import { React, useCallback, useEffect, useState } from 'react';
+import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography, Avatar, Tooltip } from '@mui/material';
+import { React, useCallback, useState } from 'react';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import StoreLogo from './StoreLogo';
 import StoreOverview from './StoreOverview';
 import { Status } from '@/api/storeApi';
-import { getInitials } from 'ui/utils/get-initials';
-import { useAuth } from 'ui/hooks/use-auth';
 import { SeverityPill } from 'ui/components/severity-pill';
+import NextLink from 'next/link';
+import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
 
 
 const tabs = [
@@ -22,65 +21,22 @@ const tabs = [
 
 const getStatusColor = (status) => {
   switch (status) {
-      case Status.APPROVED:
-          return 'success';
-      case Status.PENDING:
-          return 'warning';
-      case Status.INREVIEW:
-          return 'info';
-      case Status.REJECTED:
-          return 'error';
-      default:
-          return 'info';
+    case Status.APPROVED:
+      return 'success';
+    case Status.PENDING:
+      return 'warning';
+    case Status.INREVIEW:
+      return 'info';
+    case Status.REJECTED:
+      return 'error';
+    default:
+      return 'info';
   }
 };
 
-function formatStore(store, vendor) {
-  if (store?.individualStore) {
-    return {
-      id: store?.id,
-      vendorId: vendor?.id,
-      name: `${vendor?.firstName} ${vendor?.lastName}'s Store`,
-      status: store?.status,
-      logo: vendor?.avatar || getInitials(`${vendor?.firstName} ${vendor?.lastName}`),
-      type: 'individual'
-    }
-  } else if (store?.businessStore) {
-    return {
-      id: store?.id,
-      vendorId: vendor?.id,
-      name: store?.businessStore?.name,
-      status: store?.status,
-      vatNumber: store?.businessStore?.vat_number,
-      crNumber: store?.businessStore?.cr_number,
-      ownerNationalId: store?.businessStore?.owner_national_id,
-      logo: store?.businessStore?.logo,
-      type: 'business'
-    }
-  } else {
-    return { ...store, type: 'unknown' };
-  }
-}
-
-export default function Store({ params }) {
-
-  const { stores } = useStores();
-  const [currentStore, setCurrentStore] = useState();
-  const { user } = useAuth();
+export default function Store({ store }) {
 
   const [currentTab, setCurrentTab] = useState('overview');
-
-  function changeCurrentStore(store) {
-    const formattedStore = formatStore(store, user);
-    setCurrentStore(formattedStore);
-  }
-
-
-  useEffect(() => {
-    const store = stores?.find(store => store.id === params.id);
-    changeCurrentStore(store);
-    console.log(store)
-  }, [params])
 
   const handleTabsChange = useCallback((event, value) => {
     setCurrentTab(value);
@@ -96,7 +52,7 @@ export default function Store({ params }) {
         }}
       >
         <Container maxWidth="lg">
-          {currentStore?.type === 'individual' ?
+          {store?.type === 'individual' ?
             <Box
               sx={{
                 alignItems: 'center',
@@ -110,13 +66,31 @@ export default function Store({ params }) {
                   width: 128,
                   fontSize: 64,
                 }}
-                src={currentStore?.logo}
+                src={store?.logo}
               >
-                {currentStore?.logo}
+                {store?.logo}
               </Avatar>
             </Box>
-            : (currentStore?.logo !== 'default') && (
-              <StoreLogo logo={currentStore?.logo} />
+            : (
+              <Box
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <Avatar
+                  sx={{
+                    height: 128,
+                    width: 128,
+                    fontSize: 64,
+                  }}
+                >
+                  <SvgIcon>
+                    <Image01Icon />
+                  </SvgIcon>
+                </Avatar>
+              </Box>
             )
           }
           <Stack
@@ -131,10 +105,10 @@ export default function Store({ params }) {
               spacing={2}
             >
               <Typography variant="h5">
-                {currentStore?.name}
+                {store?.name}
               </Typography>
-              <SeverityPill color={getStatusColor(currentStore?.status)}>
-                {currentStore?.status}
+              <SeverityPill color={getStatusColor(store?.status)}>
+                {store?.status}
               </SeverityPill>
             </Stack>
             <Box sx={{ flexGrow: 1 }} />
@@ -154,18 +128,44 @@ export default function Store({ params }) {
               >
                 Add Items
               </Button>
-              <Button
-                size="small"
-                startIcon={(
-                  <SvgIcon>
-                    <Edit02Icon />
-                  </SvgIcon>
-                )}
-                variant="contained"
-                style={{ backgroundColor: '#2970FF' }}
-              >
-                Edit Store
-              </Button>
+              {
+                store.type === 'individual' ?
+                  (
+                    <Tooltip title="Individual stores cannot be edited">
+                      <span>
+
+                        <Button
+                          size="small"
+                          startIcon={(
+                            <SvgIcon>
+                              <Edit02Icon />
+                            </SvgIcon>
+                          )}
+                          variant="contained"
+                          disabled
+                        >
+                          Edit Store
+                        </Button>
+                      </span>
+                    </Tooltip>
+                  ) : (
+
+                    <Button
+                      size="small"
+                      startIcon={(
+                        <SvgIcon>
+                          <Edit02Icon />
+                        </SvgIcon>
+                      )}
+                      variant="contained"
+                      style={{ backgroundColor: '#2970FF' }}
+                      component={NextLink}
+                      href={`${store?.id}/edit`}
+                    >
+                      Edit Store
+                    </Button>
+                  )
+              }
             </Stack>
           </Stack>
           <Stack>
@@ -189,7 +189,7 @@ export default function Store({ params }) {
             <Divider />
           </Stack>
           {currentTab === 'overview' && (
-            <StoreOverview store={currentStore} />
+            <StoreOverview store={store} />
           )}
         </Container>
       </Box>

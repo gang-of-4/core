@@ -1,4 +1,4 @@
-import { Card, CardHeader, Grid, Stack } from '@mui/material'
+import { Card, CardContent, CardHeader, Grid, Stack } from '@mui/material'
 import React from 'react'
 import { PropertyList } from 'ui/components/property-list'
 import { PropertyListItem } from 'ui/components/property-list-item'
@@ -13,19 +13,21 @@ export default function StoreOverview({ store }) {
             >
                 <Grid>
                     <Card>
-                        <CardHeader title="Store Overview" />
-                        <PropertyList>
-                            <PropertyListItem label="Name" value={store?.name} />
-                            {store?.vatNumber &&
-                                <PropertyListItem label="VAT Number" value={store?.vatNumber} />
-                            }
-                            {store?.crNumber &&
-                                <PropertyListItem label="CR Number" value={store?.crNumber} />
-                            }
-                            {store?.ownerNationalId &&
-                                <PropertyListItem label="Owner National ID" value={store?.ownerNationalId} />
-                            }
-                        </PropertyList>
+                        <CardHeader title="Store Overview" sx={{pb: '12px'}} />
+                        <CardContent sx={{ pt: 0 }}>
+                            <PropertyList>
+                                <PropertyListItem label="Name" value={store?.name} />
+                                {store?.vatNumber &&
+                                    <PropertyListItem label="VAT Number" value={store?.vatNumber} />
+                                }
+                                {store?.crNumber &&
+                                    <PropertyListItem label="CR Number" value={store?.crNumber} />
+                                }
+                                {store?.ownerNationalId &&
+                                    <PropertyListItem label="Owner National ID" value={store?.ownerNationalId} />
+                                }
+                            </PropertyList>
+                        </CardContent>
                     </Card>
                 </Grid>
                 <Grid>

@@ -132,6 +132,7 @@ export class StoresService {
           deleted_at: null,
         },
         data: {
+          status: Status.PENDING,
           businessStore: {
             update: {
               name: updateBusinessStoreDto.name,

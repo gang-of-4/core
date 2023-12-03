@@ -23,8 +23,17 @@ function layout({ children }) {
 
   async function initStores(userId){
     const res = await getStores(userId);
-    console.log('res', res);
-    console.log('state', stores);
+  }
+
+  async function checkStores() {
+    if (stores?.length === 0) {
+      console.log('No stores found for this vendor, redirecting to onboarding')
+
+      // router.replace(paths.vendor.onboarding.index)
+
+      // the redirect is done this way instead to force a hard navigation
+      window.location.href = `/vendor${paths.vendor.onboarding.index}`;
+    }
   }
   
   const optionsList = stores?.map(store => {
@@ -57,18 +66,10 @@ function layout({ children }) {
   }
 
   useEffect(() => {
-    if (stores?.length === 0) {
-      console.log('No stores found for this vendor, redirecting to onboarding')
-
-      // router.replace(paths.vendor.onboarding.index)
-
-      // the redirect is done this way instead to force a hard navigation
-      window.location.href = `/vendor${paths.vendor.onboarding.index}`;
-    }
+    checkStores();
   }, [stores])
 
   useEffect(() => {
-    console.log(user)
     initStores(user?.id);
   }, [])
     

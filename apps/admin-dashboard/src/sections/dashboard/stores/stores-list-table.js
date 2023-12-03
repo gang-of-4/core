@@ -66,14 +66,14 @@ export const StoresListTable = (props) => {
 
     const handleStoreUpdate = useCallback(async (values) => {
         if (values.type === 'business') {
-            await storesApi.updateStore({
-                id: values.id,
-                status: values.status
-            });
             await storesApi.updateBusinessStore({
                 id: values.id,
                 name: values.name,
             });
+            await storesApi.updateStore({
+                id: values.id,
+                status: values.status
+            }); 
         } else {
             await storesApi.updateStore({
                 id: values.id,

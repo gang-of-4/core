@@ -99,7 +99,7 @@ export const StoresProvider = ({ children }) => {
 
     const updateBusinessStore = useCallback(async ({ storeId, store }) => {
         try {
-            const res = await updateBusinessStoreApi({ storeId, store });
+            const res = await updateBusinessStoreApi({ storeId, updateBusinessStoreDto: store });
             dispatch({ type: ActionType.UPDATE_STORE, payload: res });
         } catch (err) {
             console.error(err);
