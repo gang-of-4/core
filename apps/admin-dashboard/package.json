@@ -42,7 +42,7 @@
     "@fullcalendar/timeline": "5.11.3",
     "@mui/icons-material": "5.11.0",
     "@mui/lab": "5.0.0-alpha.112",
-    "@mui/material": "5.11.0",
+    "@mui/material": "5.14.20",
     "@mui/system": "5.11.0",
     "@mui/x-date-pickers": "5.0.11",
     "@react-pdf/renderer": "3.0.1",
