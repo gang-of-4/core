@@ -10,50 +10,100 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import LinkExternal01Icon from '@untitled-ui/icons-react/build/esm/LinkExternal01';
+import Feature from './home-feature';
 
 const features = [
   {
-    id: 'experts',
-    title: 'Built by experts',
-    description: 'All of the code follows MUI best practices, it’s written by our in-house team of experts.',
-    imageDark: '/assets/home-features-experts-dark.png',
-    imageLight: '/assets/home-features-experts-light.png'
+    id: 'auth',
+    title: 'Auth',
+    description: 'This feature enables the user to register in the system, so that their account is saved and can be logged into at any time. In addition to assigning roles to users which grants them their respective permissions.',
+    icon: '🔒'
   },
   {
-    id: 'figma',
-    title: 'Design Files',
-    description: 'We\'ve included the source Figma files to Plus & Extended licenses so you can get creative! Build layouts with confidence.',
-    imageDark: '/assets/home-features-figma-dark.png',
-    imageLight: '/assets/home-features-figma-light.png'
+    id: 'stores-management',
+    title: 'Stores Management',
+    description: 'This feature enables the vendor to add a store. If approved by the admin (YOU), the vendor is able to add items for sale. In addition, the vendor can manage his store.',
+    icon: '🏪'
   },
   {
-    id: 'tech',
-    title: 'Built with modern technologies',
-    description: 'Each template is a well-structured Next.js project, giving you a codebase that’s productive and enjoyable to work in.',
-    imageDark: '/assets/home-features-tech-dark.png',
-    imageLight: '/assets/home-features-tech-light.png'
+    id: 'catalog',
+    title: 'Catalog',
+    description: 'This feature contains managing items - adding, editing, deleting, and viewing so that users can view and search for their needed items.',
+    icon: '🍟'
   },
   {
-    id: 'customize',
-    title: 'Easy to customize',
-    description: 'Everything is styled using global theme overrides, just open the theme file in your editor and change whatever you want.',
-    imageDark: '/assets/home-features-customize-dark.png',
-    imageLight: '/assets/home-features-customize-light.png'
+    id: 'orders-management',
+    title: 'Orders Management',
+    description: 'This feature contains the creation of an order and tracking of its status, so that users can view and track their orders.',
+    icon: '🧾'
   },
   {
-    id: 'nextjs',
-    title: 'Built with Next.js',
-    description: 'Well-structured, thoughtfully componentized Next.js project, giving you a codebase that’s productive and enjoyable to work in.',
-    imageDark: '/assets/home-features-nextjs-dark.png',
-    imageLight: '/assets/home-features-nextjs-light.png'
-  }
+    id: 'cart',
+    title: 'Cart',
+    description: 'This feature enables users to add items to their cart and enables checkout for those items with the ability to apply certain discounts or promotions.',
+    icon: '🛒'
+  },
+  {
+    id: 'payment',
+    title: 'Payment',
+    description: 'This feature implements a payment process for easy bill payment by users.',
+    icon: '💳'
+  },
+  {
+    id: 'notifications',
+    title: 'Notifications',
+    description: 'This feature enables users to receive notifications based on certain events that trigger them, so that users are informed of new updates (for example regarding their order status).',
+    icon: '🔔'
+  },
+  {
+    id: 'bidding',
+    title: 'Bidding',
+    description: 'This feature introduces a bidding process for users to bid on items that support this feature and sell to the highest bidder.',
+    icon: '📈'
+  },
+  {
+    id: 'reviews',
+    title: 'Reviews',
+    description: 'This feature enables customers to write a review on items they purchased.',
+    icon: '🌟'
+  },
+  {
+    id: 'discounts-and-promotions',
+    title: 'Discounts & Promotions',
+    description: 'This feature allows admins to create discounts and promotions for items.',
+    icon: '🏷️'
+  },
+  {
+    id: 'profiles-management',
+    title: 'Profiles Management',
+    description: 'Users can edit their profiles with personal information and reset their passwords.',
+    icon: '👤'
+  },
+  {
+    id: 'subscriptions',
+    title: 'Subscriptions',
+    description: 'This feature enables users to subscribe to different plans that include special discounts on items and shipping.',
+    icon: '🔁'
+  },
+  {
+    id: 'wishlist',
+    title: 'Wishlist',
+    description: 'This feature enables users to add items into a list so that they can come back to them later.',
+    icon: '🔖'
+  },
+  {
+    id: 'wallet',
+    title: 'Wallet',
+    description: 'This feature enables customers to store credits and associate it with their account so that they can use it later for payment within the marketplace.',
+    icon: '💰'
+  },
 ];
 
 export const HomeFeatures = () => {
   const theme = useTheme();
   const [activeFeature, setActiveFeature] = useState(0);
   const feature = features[activeFeature];
-  const image = theme.palette.mode === 'dark' ? feature?.imageDark : feature?.imageLight;
+  const icon = feature.icon || '❌'
 
   return (
     <Box
@@ -76,14 +126,14 @@ export const HomeFeatures = () => {
             color="inherit"
             variant="h3"
           >
-            Everything you need to run your project.
+            Everything you need to build your platform.
           </Typography>
           <Typography
             align="center"
             color="inherit"
             variant="subtitle2"
           >
-            Not just a set of tools, the package includes ready-to-deploy conceptual application.
+            The platform includes a set of common features available in most modern e-commerce platforms.
           </Typography>
         </Stack>
         <Grid
@@ -95,7 +145,15 @@ export const HomeFeatures = () => {
             xs={12}
             md={6}
           >
-            <Stack spacing={1}>
+            <Stack 
+              spacing={2}
+              sx={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
               {features.map((feature, index) => {
                 const isActive = activeFeature === index;
 
@@ -107,6 +165,7 @@ export const HomeFeatures = () => {
                       borderRadius: 2.5,
                       color: 'neutral.400',
                       cursor: 'pointer',
+                      width: 'calc(50% - 12px)',
                       p: 3,
                       transition: (theme) => theme.transitions.create([
                         'background-color, box-shadow',
@@ -129,38 +188,11 @@ export const HomeFeatures = () => {
                       }
                     }}
                   >
-                    <Typography
-                      color="inherit"
-                      sx={{ mb: 1 }}
-                      variant="h6"
-                    >
-                      {feature.title}
-                    </Typography>
-                    <Typography
-                      color="inherit"
-                      variant="body2"
-                    >
-                      {feature.description}
-                    </Typography>
-                    {feature.id === 'figma' && (
-                      <Box sx={{ mt: 3 }}>
-                        <Button
-                          color="success"
-                          component="a"
-                          endIcon={(
-                            <SvgIcon fontSize="small">
-                              <LinkExternal01Icon />
-                            </SvgIcon>
-                          )}
-                          href="https://www.figma.com/file/xrx6uDljzsWuDZiuz3ITCp/Devias-Kit-Pro-UI-6.0-Master"
-                          size="small"
-                          target="_blank"
-                          variant="contained"
-                        >
-                          Preview in Figma
-                        </Button>
-                      </Box>
-                    )}
+                    <Feature 
+                      title={feature.title} 
+                      description={feature.description}
+                      expanded={isActive}
+                    />
                   </Box>
                 );
               })}
@@ -172,12 +204,16 @@ export const HomeFeatures = () => {
           >
             <Box
               sx={{
-                '& img': {
-                  width: '100%'
+                '& div': {
+                  width: '100%',
+                  fontSize: 200,
+                  textAlign: 'center',
                 }
               }}
             >
-              <img src={image} />
+              <div>
+                {icon}
+              </div>
             </Box>
           </Grid>
         </Grid>
