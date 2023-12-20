@@ -19,7 +19,6 @@ import { GuestGuard } from 'ui/guards/guest-guard';
 import { IssuerGuard } from 'ui/guards/issuer-guard';
 import { useAuth } from 'ui/hooks/use-auth';
 import { useMounted } from 'ui/hooks/use-mounted';
-import { usePageView } from 'ui/hooks/use-page-view';
 import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
 import { paths } from 'ui/paths';
 // import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
@@ -105,8 +104,6 @@ const Page = () => {
             }
         }
     });
-
-    usePageView();
 
     return (
         <>
