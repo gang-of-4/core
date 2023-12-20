@@ -13,7 +13,6 @@ const Page = () => {
   const name = organization.name; 
 
 
-  usePageView();
 
   return (
     <>
