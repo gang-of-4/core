@@ -17,7 +17,6 @@ import { GuestGuard } from '../../guards/guest-guard';
 import { IssuerGuard } from '../../guards/issuer-guard';
 import { useAuth } from '../../hooks/use-auth';
 import { useMounted } from '../../hooks/use-mounted';
-import { usePageView } from '../../hooks/use-page-view';
 import { Layout as AuthLayout } from '../../layouts/auth/classic-layout';
 import { paths } from '../../paths';
 // import { AuthIssuer } from '../../sections/auth/auth-issuer';
@@ -80,8 +79,6 @@ const Page = () => {
       }
     }
   });
-
-  usePageView();
 
   return (
     <>
