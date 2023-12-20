@@ -2,7 +2,7 @@ import { applyPagination } from '../../utils/apply-pagination';
 import { deepCopy } from '../../utils/deep-copy';
 import { formatStores } from '../../utils/format-stores';
 
-const apiUrl = 'http://localhost:3000/api/v1/stores';
+const apiUrl = process.env.NEXT_PUBLIC_STORES_API_URL;
 
 class StoresApi {
 

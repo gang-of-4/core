@@ -21,7 +21,7 @@ class AuthApi {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch(
-          `${api.url}${endpoint}`,
+          endpoint,
           {
             method: 'POST',
             headers: {
@@ -53,7 +53,7 @@ class AuthApi {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch(
-          `${api.url}${endpoint}`,
+          endpoint,
           {
             method: 'POST',
             headers: {
@@ -66,7 +66,7 @@ class AuthApi {
           });
 
         const data = await res.json();
-        
+
         if (!res.ok) {
           reject(new Error(data.message));
           return;
@@ -83,24 +83,24 @@ class AuthApi {
     });
   }
 
-  async vendorSignUp(request) {
-    return await this.signUp(request, '/auth/vendor/register');
+  async vendorSignUp({request, apiURL}) {
+    return await this.signUp(request, `${apiURL}/vendor/register`);
   };
 
-  async vendorSignIn(request) {
-    return await this.signIn(request, '/auth/vendor/login');
+  async vendorSignIn({ request, apiURL }) {
+    return await this.signIn(request, `${apiURL}/vendor/login`);
   }
 
-  async customerSignUp(request) {
-    return await this.signUp(request, '/auth/customer/register');
+  async customerSignUp({request, apiURL}) {
+    return await this.signUp(request, `${apiURL}/customer/register`);
   }
 
-  async customerSignIn(request) {
-    return await this.signIn(request, '/auth/customer/login');
+  async customerSignIn({request, apiURL}) {
+    return await this.signIn(request, `${apiURL}/customer/login`);
   }
 
-  async adminSignIn(request) {
-    return await this.signIn(request, '/auth/admin/login');
+  async adminSignIn({request, apiURL}) {
+    return await this.signIn(request, `${apiURL}/admin/login`);
   }
 
   me(request) {
