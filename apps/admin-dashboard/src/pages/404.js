@@ -2,7 +2,6 @@ import NextLink from 'next/link';
 import Head from 'next/head';
 import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { usePageView } from '../hooks/use-page-view';
 import { paths } from '../paths';
 import { organization } from 'ui/config/index.js';
 
@@ -12,8 +11,6 @@ const Page = () => {
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
   const name = organization.name; 
 
-
-  usePageView();
 
   return (
     <>
