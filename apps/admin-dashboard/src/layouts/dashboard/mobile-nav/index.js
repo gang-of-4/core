@@ -2,14 +2,14 @@ import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import File04Icon from '@untitled-ui/icons-react/build/esm/File04';
-import { Box, Button, Drawer, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Drawer, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Logo } from '../../../components/logo';
 import { Scrollbar } from '../../../components/scrollbar';
 import { paths } from '../../../paths';
-import { TenantSwitch } from '../tenant-switch';
 import { SideNavSection } from '../vertical-layout/side-nav-section';
+import { organization } from 'ui/config'
+
 
 const MOBILE_NAV_WIDTH = 280;
 
@@ -17,86 +17,40 @@ const useCssVars = (color) => {
   const theme = useTheme();
 
   return useMemo(() => {
-    switch (color) {
-      // Blend-in and discreet have no difference on mobile because
-      // there's a backdrop and differences are not visible
-      case 'blend-in':
-      case 'discreet':
-        if (theme.palette.mode === 'dark') {
-          return {
-            '--nav-bg': theme.palette.background.default,
-            '--nav-color': theme.palette.neutral[100],
-            '--nav-logo-border': theme.palette.neutral[700],
-            '--nav-section-title-color': theme.palette.neutral[400],
-            '--nav-item-color': theme.palette.neutral[400],
-            '--nav-item-hover-bg': 'rgba(255, 255, 255, 0.04)',
-            '--nav-item-active-bg': 'rgba(255, 255, 255, 0.04)',
-            '--nav-item-active-color': theme.palette.text.primary,
-            '--nav-item-disabled-color': theme.palette.neutral[600],
-            '--nav-item-icon-color': theme.palette.neutral[500],
-            '--nav-item-icon-active-color': theme.palette.primary.main,
-            '--nav-item-icon-disabled-color': theme.palette.neutral[700],
-            '--nav-item-chevron-color': theme.palette.neutral[700],
-            '--nav-scrollbar-color': theme.palette.neutral[400]
-          };
-        } else {
-          return {
-            '--nav-bg': theme.palette.background.default,
-            '--nav-color': theme.palette.text.primary,
-            '--nav-logo-border': theme.palette.neutral[100],
-            '--nav-section-title-color': theme.palette.neutral[400],
-            '--nav-item-color': theme.palette.text.secondary,
-            '--nav-item-hover-bg': theme.palette.action.hover,
-            '--nav-item-active-bg': theme.palette.action.selected,
-            '--nav-item-active-color': theme.palette.text.primary,
-            '--nav-item-disabled-color': theme.palette.neutral[400],
-            '--nav-item-icon-color': theme.palette.neutral[400],
-            '--nav-item-icon-active-color': theme.palette.primary.main,
-            '--nav-item-icon-disabled-color': theme.palette.neutral[400],
-            '--nav-item-chevron-color': theme.palette.neutral[400],
-            '--nav-scrollbar-color': theme.palette.neutral[900]
-          };
-        }
-
-      case 'evident':
-        if (theme.palette.mode === 'dark') {
-          return {
-            '--nav-bg': theme.palette.neutral[800],
-            '--nav-color': theme.palette.common.white,
-            '--nav-logo-border': theme.palette.neutral[700],
-            '--nav-section-title-color': theme.palette.neutral[400],
-            '--nav-item-color': theme.palette.neutral[400],
-            '--nav-item-hover-bg': 'rgba(255, 255, 255, 0.04)',
-            '--nav-item-active-bg': 'rgba(255, 255, 255, 0.04)',
-            '--nav-item-active-color': theme.palette.common.white,
-            '--nav-item-disabled-color': theme.palette.neutral[500],
-            '--nav-item-icon-color': theme.palette.neutral[400],
-            '--nav-item-icon-active-color': theme.palette.primary.main,
-            '--nav-item-icon-disabled-color': theme.palette.neutral[500],
-            '--nav-item-chevron-color': theme.palette.neutral[600],
-            '--nav-scrollbar-color': theme.palette.neutral[400]
-          };
-        } else {
-          return {
-            '--nav-bg': theme.palette.neutral[800],
-            '--nav-color': theme.palette.common.white,
-            '--nav-logo-border': theme.palette.neutral[700],
-            '--nav-section-title-color': theme.palette.neutral[400],
-            '--nav-item-color': theme.palette.neutral[400],
-            '--nav-item-hover-bg': 'rgba(255, 255, 255, 0.04)',
-            '--nav-item-active-bg': 'rgba(255, 255, 255, 0.04)',
-            '--nav-item-active-color': theme.palette.common.white,
-            '--nav-item-disabled-color': theme.palette.neutral[500],
-            '--nav-item-icon-color': theme.palette.neutral[400],
-            '--nav-item-icon-active-color': theme.palette.primary.main,
-            '--nav-item-icon-disabled-color': theme.palette.neutral[500],
-            '--nav-item-chevron-color': theme.palette.neutral[600],
-            '--nav-scrollbar-color': theme.palette.neutral[400]
-          };
-        }
-
-      default:
-        return {};
+    if (theme.palette.mode === 'dark') {
+      return {
+        '--nav-bg': theme.palette.neutral[800],
+        '--nav-color': theme.palette.common.white,
+        '--nav-logo-border': theme.palette.neutral[700],
+        '--nav-section-title-color': theme.palette.neutral[400],
+        '--nav-item-color': theme.palette.neutral[400],
+        '--nav-item-hover-bg': 'rgba(255, 255, 255, 0.04)',
+        '--nav-item-active-bg': 'rgba(255, 255, 255, 0.04)',
+        '--nav-item-active-color': theme.palette.common.white,
+        '--nav-item-disabled-color': theme.palette.neutral[500],
+        '--nav-item-icon-color': theme.palette.neutral[400],
+        '--nav-item-icon-active-color': theme.palette.primary.main,
+        '--nav-item-icon-disabled-color': theme.palette.neutral[500],
+        '--nav-item-chevron-color': theme.palette.neutral[600],
+        '--nav-scrollbar-color': theme.palette.neutral[400]
+      };
+    } else {
+      return {
+        '--nav-bg': theme.palette.neutral[800],
+        '--nav-color': theme.palette.common.white,
+        '--nav-logo-border': theme.palette.neutral[700],
+        '--nav-section-title-color': theme.palette.neutral[400],
+        '--nav-item-color': theme.palette.neutral[400],
+        '--nav-item-hover-bg': 'rgba(255, 255, 255, 0.04)',
+        '--nav-item-active-bg': 'rgba(255, 255, 255, 0.04)',
+        '--nav-item-active-color': theme.palette.common.white,
+        '--nav-item-disabled-color': theme.palette.neutral[500],
+        '--nav-item-icon-color': theme.palette.neutral[400],
+        '--nav-item-icon-active-color': theme.palette.primary.main,
+        '--nav-item-icon-disabled-color': theme.palette.neutral[500],
+        '--nav-item-chevron-color': theme.palette.neutral[600],
+        '--nav-scrollbar-color': theme.palette.neutral[400]
+      };
     }
   }, [theme, color]);
 };
@@ -155,7 +109,20 @@ export const MobileNav = (props) => {
             >
               <Logo />
             </Box>
-            <TenantSwitch sx={{ flexGrow: 1 }} />
+            <Stack
+              alignItems="center"
+              direction="row"
+              spacing={2}
+              {...props}>
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography
+                  color="inherit"
+                  variant="h6"
+                >
+                  {organization.name}
+                </Typography>
+              </Box>
+            </Stack>
           </Stack>
           <Stack
             component="nav"
@@ -183,24 +150,10 @@ export const MobileNav = (props) => {
             </Typography>
             <Typography
               color="neutral.400"
-              sx={{ mb: 2 }}
               variant="body2"
             >
-              Please check our docs.
+              Feel free to contact us.
             </Typography>
-            <Button
-              component={NextLink}
-              fullWidth
-              href={paths.docs.welcome}
-              startIcon={(
-                <SvgIcon>
-                  <File04Icon />
-                </SvgIcon>
-              )}
-              variant="contained"
-            >
-              Documentation
-            </Button>
           </Box>
         </Stack>
       </Scrollbar>

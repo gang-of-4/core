@@ -9,7 +9,6 @@ import {
   Link,
   Card
 } from '@mui/material';
-import { usePageView } from '../../../hooks/use-page-view';
 import { Layout as DashboardLayout } from '../../../layouts/dashboard';
 import { useMounted } from '../../../hooks/use-mounted';
 import { useCallback, useEffect, useState } from 'react';
@@ -67,8 +66,6 @@ const Page = () => {
   const { search, updateSearch } = useSearch();
   const [hasUpdatedStores, setHasUpdatedStores] = useState(false);
   const { stores, storesCount } = useStores(search, hasUpdatedStores);
-
-  usePageView();
 
   const handleFiltersChange = useCallback((filters) => {
     updateSearch((prevState) => ({

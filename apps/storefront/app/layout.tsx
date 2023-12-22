@@ -7,6 +7,7 @@ import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const authApiURL = process.env.AUTH_API_URL;
 
 export default function RootLayout({
   children,
@@ -16,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
+        <Providers
+          authApiURL={authApiURL}
+        >
           <Suspense fallback={<Loading />}>
             <Header />
             {children}

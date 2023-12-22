@@ -10,7 +10,7 @@ import { StoresProvider } from '@/contexts/StoresContext';
 import { signOutCallback as storesCallback } from '@/contexts/StoresContext';
 
 
-export function ContextProviders({ children }) {
+export function ContextProviders({ children, authApiURL }) {
 
   const theme = createTheme({
     colorPreset: 'blue',
@@ -28,7 +28,8 @@ export function ContextProviders({ children }) {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <AuthProvider 
           STORAGE_KEY={'vendorAccessToken'} 
-          signOutCallback={storesCallback}  
+          signOutCallback={storesCallback} 
+          apiURL={authApiURL} 
         >
           <ThemeProvider theme={theme}>
             <StoresProvider>

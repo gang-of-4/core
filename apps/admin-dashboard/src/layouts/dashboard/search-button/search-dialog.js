@@ -17,33 +17,8 @@ import {
   Typography
 } from '@mui/material';
 import { Tip } from '../../../components/tip';
-import { wait } from '../../../utils/wait';
 
 const articles = {
-  Platform: [
-    {
-      description: 'Provide your users with the content they need, exactly when they need it, by building a next-level site search experience using our AI-powered search API.',
-      title: 'Level up your site search experience with our hosted API',
-      path: 'Users / Api-usage'
-    },
-    {
-      description: 'Algolia is a search-as-a-service API that helps marketplaces build performant search experiences at scale while reducing engineering time.',
-      title: 'Build performant marketplace search at scale',
-      path: 'Users / Api-usage'
-    }
-  ],
-  Resources: [
-    {
-      description: 'Algolia’s architecture is heavily redundant, hosting every application on …',
-      title: 'Using NetInfo API to Improve Algolia’s JavaScript Client',
-      path: 'Resources / Blog posts'
-    },
-    {
-      description: 'Algolia is a search-as-a-service API that helps marketplaces build performant search experiences at scale while reducing engineering time.',
-      title: 'Build performance',
-      path: 'Resources / UI libraries'
-    }
-  ]
 };
 
 export const SearchDialog = (props) => {
@@ -57,7 +32,6 @@ export const SearchDialog = (props) => {
     setDisplayArticles(false);
     setIsLoading(true);
     // Do search here
-    await wait(1500);
     setIsLoading(false);
     setDisplayArticles(true);
   }, []);
@@ -185,6 +159,16 @@ export const SearchDialog = (props) => {
                 </Stack>
               </Stack>
             ))}
+            {
+              Object.keys(articles).length === 0 && (
+                <Typography
+                  color="text.secondary"
+                  variant="body2"
+                >
+                  No results found
+                </Typography>
+              )
+            }
           </Stack>
         )}
       </DialogContent>

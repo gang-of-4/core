@@ -1,15 +1,17 @@
+'use client'
+
 import NextLink from 'next/link';
 import Head from 'next/head';
 import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { paths } from '../paths';
 import { organization } from 'ui/config/index.js';
 
 
-const Page = () => {
+const NotFound = () => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
   const name = organization.name; 
+
 
 
   return (
@@ -39,7 +41,7 @@ const Page = () => {
             <Box
               alt="Not found"
               component="img"
-              src="/admin/assets/errors/error-404.png"
+              src="/assets/errors/error-404.png"
               sx={{
                 height: 'auto',
                 maxWidth: '100%',
@@ -69,7 +71,7 @@ const Page = () => {
           >
             <Button
               component={NextLink}
-              href={paths.index}
+              href={'/'}
             >
               Back to Home
             </Button>
@@ -80,4 +82,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default NotFound;

@@ -17,7 +17,6 @@ import {
   Typography
 } from '@mui/material';
 import { Tip } from '../../../components/tip';
-import { wait } from '../../../utils/wait';
 
 const articles = {
   Platform: [
@@ -57,7 +56,6 @@ export const SearchDialog = (props) => {
     setDisplayArticles(false);
     setIsLoading(true);
     // Do search here
-    await wait(1500);
     setIsLoading(false);
     setDisplayArticles(true);
   }, []);

@@ -13,19 +13,6 @@ import { organization } from 'ui/config';
 
 const sections = [
   {
-    title: 'Menu',
-    items: [
-      {
-        title: 'Browse Components',
-        path: paths.components.index
-      },
-      {
-        title: 'Documentation',
-        path: paths.docs.welcome
-      }
-    ]
-  },
-  {
     title: 'Legal',
     items: [
       {

@@ -9,7 +9,6 @@ import { Logo } from '../../../components/logo';
 import { Scrollbar } from '../../../components/scrollbar';
 import { paths } from '../../../paths';
 import { AccountButton } from '../account-button';
-import { ContactsButton } from '../contacts-button';
 import { NotificationsButton } from '../notifications-button';
 import { OptionSwitch } from '../option-switch';
 import { TopNavSection } from './top-nav-section';

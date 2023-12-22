@@ -1,5 +1,6 @@
 import { decode } from '../../utils/jwt';
-import { api } from 'ui/config';
+
+const apiURL = process.env.NEXT_PUBLIC_AUTH_API_URL
 
 class AuthApi {
 
@@ -21,7 +22,7 @@ class AuthApi {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch(
-          `${api.url}${endpoint}`,
+          `${apiURL}${endpoint}`,
           {
             method: 'POST',
             headers: {
@@ -60,7 +61,7 @@ class AuthApi {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch(
-          `${api.url}${endpoint}`,
+          `${apiURL}${endpoint}`,
           {
             method: 'POST',
             headers: {
@@ -90,23 +91,23 @@ class AuthApi {
   }
 
   async vendorSignUp(request) {
-    return await this.signUp(request, '/auth/vendor/register');
+    return await this.signUp(request, '/vendor/register');
   };
 
   async vendorSignIn(request) {
-    return await this.signIn(request, '/auth/vendor/login');
+    return await this.signIn(request, '/vendor/login');
   }
 
   async customerSignUp(request) {
-    return await this.signUp(request, '/auth/customer/register');
+    return await this.signUp(request, '/customer/register');
   }
 
   async customerSignIn(request) {
-    return await this.signIn(request, '/auth/customer/login');
+    return await this.signIn(request, '/customer/login');
   }
 
   async adminSignIn(request) {
-    return await this.signIn(request, '/auth/admin/login');
+    return await this.signIn(request, '/admin/login');
   }
 
   me(request) {

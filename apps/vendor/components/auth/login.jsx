@@ -5,7 +5,6 @@ import NextLink from 'next/link';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
-  // Alert,
   Button,
   Card,
   CardContent,
@@ -20,9 +19,7 @@ import { GuestGuard } from 'ui/guards/guest-guard';
 import { IssuerGuard } from 'ui/guards/issuer-guard';
 import { useAuth } from 'ui/hooks/use-auth';
 import { useMounted } from 'ui/hooks/use-mounted';
-import { usePageView } from 'ui/hooks/use-page-view';
 import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
-// import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
 import { Issuer } from 'ui/utils/auth';
 import { paths } from 'ui/paths';
 import { useStores } from '@/hooks/useStores';
@@ -92,8 +89,6 @@ const Page = () => {
       }
     }
   });
-
-  usePageView();
 
   return (
     <>
@@ -185,27 +180,10 @@ const Page = () => {
                   >
                     Customer
                   </Link>
-                  &nbsp;
-                  or
-                  &nbsp;
-                  <Link
-                    href={`${paths.absolutePaths.admin}${paths.auth.login}`}
-                    underline="hover"
-                    variant="subtitle2"
-                  >
-                    Admin
-                  </Link>
                 </Typography>
               </div>
             </CardContent>
           </Card>
-          {/* @todo: API to get issuers */}
-          {/* <Stack
-            spacing={3}
-            sx={{ mt: 3 }}
-          >
-            <AuthIssuer issuer={issuer} />
-          </Stack> */}
         </div>
       </div>
     </>

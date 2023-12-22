@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3000/api/v1/users';
+const apiUrl = process.env.NEXT_PUBLIC_USERS_API_URL;
 
 class UsersApi {
 

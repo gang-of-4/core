@@ -8,19 +8,15 @@ import {
   CardContent,
   CardHeader,
   FormHelperText,
-  Link,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 import { GuestGuard } from '../../guards/guest-guard';
 import { IssuerGuard } from '../../guards/issuer-guard';
 import { useAuth } from '../../hooks/use-auth';
 import { useMounted } from '../../hooks/use-mounted';
-import { usePageView } from '../../hooks/use-page-view';
 import { Layout as AuthLayout } from '../../layouts/auth/classic-layout';
 import { paths } from '../../paths';
-// import { AuthIssuer } from '../../sections/auth/auth-issuer';
 import { Issuer } from '../../utils/auth';
 
 const useParams = () => {
@@ -80,8 +76,6 @@ const Page = () => {
       }
     }
   });
-
-  usePageView();
 
   return (
     <>
@@ -145,54 +139,8 @@ const Page = () => {
                 Log In
               </Button>
             </form>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                marginTop: '1rem'
-              }}
-            >
-              <Typography
-                color="text.secondary"
-                variant="body2"
-              >
-                Not a customer? Login as a
-                &nbsp;
-                <Link
-                  href={`/auth/login`}
-                  underline="hover"
-                  variant="subtitle2"
-                >
-                  Customer
-                </Link>
-                &nbsp;
-                or
-                &nbsp;
-                <Link
-                  href={`/vendor/auth/login`}
-                  underline="hover"
-                  variant="subtitle2"
-                >
-                  Vendor
-                </Link>
-              </Typography>
-            </div>
           </CardContent>
         </Card>
-        {/* @todo: API to get issuers */}
-        {/* <Stack
-          spacing={3}
-          sx={{ mt: 3 }}
-        >
-          <Alert severity="error">
-            <div>
-              You can use <b>demo@devias.io</b> and password <b>Password123!</b>
-            </div>
-          </Alert>
-          <AuthIssuer issuer={issuer} />
-        </Stack> */}
       </div>
     </>
   );

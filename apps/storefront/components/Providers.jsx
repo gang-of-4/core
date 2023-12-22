@@ -8,7 +8,7 @@ import { createTheme } from 'ui/theme'
 import { ThemeProvider } from '@mui/material/styles';
 
 
-export function Providers({ children }) {
+export function Providers({ children, authApiURL }) {
 
   const theme = createTheme({
       colorPreset: 'blue',
@@ -24,7 +24,10 @@ export function Providers({ children }) {
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider STORAGE_KEY={'customerAccessToken'}>
+        <AuthProvider 
+          STORAGE_KEY={'customerAccessToken'}
+          apiURL={authApiURL}  
+        >
           <ThemeProvider theme={theme}>
             {children}
           </ThemeProvider>

@@ -13,21 +13,21 @@ var ActionType;
 })(ActionType || (ActionType = {}));
 
 function getInitialState(STORAGE_KEY) {
-    const accessToken = localStorage.getItem(STORAGE_KEY);
+  const accessToken = localStorage.getItem(STORAGE_KEY);
 
-    if (accessToken) {
-      return {
-        isAuthenticated: true,
-        isInitialized: false,
-        user: null
-      };
-    }
-
+  if (accessToken) {
     return {
-      isAuthenticated: false,
+      isAuthenticated: true,
       isInitialized: false,
       user: null
     };
+  }
+
+  return {
+    isAuthenticated: false,
+    isInitialized: false,
+    user: null
+  };
 
 }
 
@@ -86,7 +86,7 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = (props) => {
-  const { children, STORAGE_KEY, signOutCallback } = props;
+  const { children, STORAGE_KEY, signOutCallback, apiURL } = props;
   const initializedState = getInitialState(STORAGE_KEY);
   const [state, dispatch] = useReducer(reducer, initializedState);
 
@@ -139,25 +139,34 @@ export const AuthProvider = (props) => {
       case 'vendor':
         res = await authApi.vendorSignIn(
           {
-            email: userInfo.email,
-            password: userInfo.password
-          },
+            request: {
+              email: userInfo.email,
+              password: userInfo.password,
+            },
+            apiURL: apiURL
+          }
         );
         break;
       case 'customer':
         res = await authApi.customerSignIn(
           {
-            email: userInfo.email,
-            password: userInfo.password
-          },
+            request: {
+              email: userInfo.email,
+              password: userInfo.password,
+            },
+            apiURL: apiURL
+          }
         );
         break;
       case 'admin':
         res = await authApi.adminSignIn(
           {
-            email: userInfo.email,
-            password: userInfo.password
-          },
+            request: {
+              email: userInfo.email,
+              password: userInfo.password,
+            },
+            apiURL: apiURL
+          }
         );
       default:
         break;
@@ -187,19 +196,25 @@ export const AuthProvider = (props) => {
       case 'vendor':
         await authApi.vendorSignUp(
           {
-            firstName: userInfo.firstName,
-            lastName: userInfo.lastName,
-            email: userInfo.email,
-            phone: userInfo?.phone,
-            password: userInfo.password,
-            passwordConfirmation: userInfo.passwordConfirmation
+            request: {
+              firstName: userInfo.firstName,
+              lastName: userInfo.lastName,
+              email: userInfo.email,
+              phone: userInfo?.phone,
+              password: userInfo.password,
+              passwordConfirmation: userInfo.passwordConfirmation
+            },
+            apiURL: apiURL
           },
         );
 
         res = await authApi.vendorSignIn(
           {
-            email: userInfo.email,
-            password: userInfo.password
+            request: {
+              email: userInfo.email,
+              password: userInfo.password
+            },
+            apiURL: apiURL
           },
         );
         break;
@@ -207,20 +222,26 @@ export const AuthProvider = (props) => {
       case 'customer':
         await authApi.customerSignUp(
           {
-            firstName: userInfo.firstName,
-            lastName: userInfo.lastName,
-            email: userInfo.email,
-            phone: userInfo?.phone,
-            password: userInfo.password,
-            passwordConfirmation: userInfo.passwordConfirmation
+            request: {
+              firstName: userInfo.firstName,
+              lastName: userInfo.lastName,
+              email: userInfo.email,
+              phone: userInfo?.phone,
+              password: userInfo.password,
+              passwordConfirmation: userInfo.passwordConfirmation
+            },
+            apiURL: apiURL
           },
         );
 
         res = await authApi.customerSignIn(
           {
-            email: userInfo.email,
-            password: userInfo.password
-          },
+            request: {
+              email: userInfo.email,
+              password: userInfo.password
+            },
+            apiURL: apiURL
+          }
         );
         break;
 

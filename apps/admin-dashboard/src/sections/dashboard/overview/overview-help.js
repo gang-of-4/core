@@ -11,8 +11,15 @@ import {
   Typography
 } from '@mui/material';
 
-export const OverviewHelp = (props) => (
-  <Card {...props}>
+export const OverviewHelp = () => (
+  <Card
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      height: '100%'
+    }}
+  >
     <CardContent>
       <Box
         sx={{
@@ -42,10 +49,10 @@ export const OverviewHelp = (props) => (
         sx={{ mt: 1 }}
         variant="body2"
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing
-        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Feel free to reach us if you need any help. We are here to help you.
       </Typography>
     </CardContent>
+    <div>
     <Divider />
     <CardActions>
       <Button
@@ -60,5 +67,6 @@ export const OverviewHelp = (props) => (
         Help Center
       </Button>
     </CardActions>
+    </div>
   </Card>
 );

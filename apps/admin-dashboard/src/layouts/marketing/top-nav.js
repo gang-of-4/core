@@ -17,7 +17,6 @@ import { alpha } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
 import { useWindowScroll } from '../../hooks/use-window-scroll';
 import { paths } from '../../paths';
-import { PagesPopover } from './pages-popover';
 import { TopNavItem } from './top-nav-item';
 import { organization } from 'ui/config'
 
