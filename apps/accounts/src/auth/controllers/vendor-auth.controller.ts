@@ -7,13 +7,14 @@ import { RolesService } from '../../roles/services/roles.service';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { RoleEntity } from '../../roles/entities/role.entity';
 import { UserEntity } from '../../users/entities/user.entity';
+import { AuthController } from './auth.controller.interface';
 
 @Controller({
   version: '1',
   path: 'auth/vendor',
 })
 @ApiTags('Vendor Auth')
-export class VendorAuthController {
+export class VendorAuthController implements AuthController {
   vendorRole: Promise<RoleEntity>;
 
   constructor(
