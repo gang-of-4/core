@@ -92,7 +92,7 @@ const Page = () => {
                 await signUp(userInfo, 'vendor');
 
                 if (isMounted()) {
-                    router.push(returnTo || paths.vendor.dashboard.index);
+                    router.push(returnTo || '/onboarding');
                 }
             } catch (err) {
                 console.error(err);
