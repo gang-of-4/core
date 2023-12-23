@@ -80,8 +80,7 @@ const validationSchema = Yup.object({
         .required('CR Number is required'),
     ownerNationalId: Yup
         .string()
-        .min(10)
-        .max(255)
+        .max(10)
         .required('Owner National ID is required')
 });
 
