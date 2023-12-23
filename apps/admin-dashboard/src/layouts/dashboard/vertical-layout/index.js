@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import PropTypes from 'prop-types';
-import { useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MobileNav } from '../mobile-nav';
 import { SideNav } from './side-nav';
@@ -20,8 +20,8 @@ const useMobileNav = () => {
   }, [isOpen]);
 
   useEffect(() => {
-      handlePathnameChange();
-    },
+    handlePathnameChange();
+  },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [pathname]);
 
@@ -57,32 +57,41 @@ const VerticalLayoutContainer = styled('div')({
 });
 
 export const VerticalLayout = (props) => {
-  const { children, sections, navColor } = props;
+  const { children, sections, navColor, bgUrl='/admin/assets/gradient-bg.svg'} = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const mobileNav = useMobileNav();
 
   return (
     <>
-      <TopNav onMobileNavOpen={mobileNav.handleOpen} />
-      {lgUp && (
-        <SideNav
-          color={navColor}
-          sections={sections}
-        />
-      )}
-      {!lgUp && (
-        <MobileNav
-          color={navColor}
-          onClose={mobileNav.handleClose}
-          open={mobileNav.isOpen}
-          sections={sections}
-        />
-      )}
-      <VerticalLayoutRoot>
-        <VerticalLayoutContainer>
-          {children}
-        </VerticalLayoutContainer>
-      </VerticalLayoutRoot>
+      <Box
+        sx={{
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'top center',
+          backgroundImage: `url(${bgUrl})`,
+          height: '100vh'
+        }}
+      >
+        <TopNav onMobileNavOpen={mobileNav.handleOpen} />
+        {lgUp && (
+          <SideNav
+            color={navColor}
+            sections={sections}
+          />
+        )}
+        {!lgUp && (
+          <MobileNav
+            color={navColor}
+            onClose={mobileNav.handleClose}
+            open={mobileNav.isOpen}
+            sections={sections}
+          />
+        )}
+        <VerticalLayoutRoot>
+          <VerticalLayoutContainer>
+            {children}
+          </VerticalLayoutContainer>
+        </VerticalLayoutRoot>
+      </Box>
     </>
   );
 };

@@ -109,7 +109,7 @@ const Page = () => {
               xs={12}
               md={5}
             >
-              <OverviewHelp/>
+              <OverviewHelp />
             </Grid>
           </Grid>
         </Container>
