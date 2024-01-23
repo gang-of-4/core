@@ -295,8 +295,8 @@ importers:
         specifier: 2.4.0
         version: 2.4.0(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
       react-i18next:
-        specifier: 11.18.6
-        version: 11.18.6(i18next@21.9.1)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
+        specifier: 14.0.1
+        version: 14.0.1(i18next@21.9.1)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
       react-map-gl:
         specifier: 7.0.19
         version: 7.0.19(mapbox-gl@2.11.0)(react@18.2.0)
@@ -526,10 +526,10 @@ importers:
     dependencies:
       '@emotion/react':
         specifier: 11.10.4
-        version: 11.10.4(@types/react@18.2.34)(react@18.2.0)
+        version: 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
       '@emotion/styled':
         specifier: 11.10.4
-        version: 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+        version: 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/material':
         specifier: 5.11.0
         version: 5.11.0(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
@@ -4400,30 +4400,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@emotion/react@11.10.4(@types/react@18.2.34)(react@18.2.0):
-    resolution: {integrity: sha512-j0AkMpr6BL8gldJZ6XQsQ8DnS9TxEQu1R+OGmDZiWjBAJtCcbt0tS3I/YffoqHXxH6MjgI7KdMbYKw3MEiU9eA==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.23.2
-      '@emotion/babel-plugin': 11.11.0
-      '@emotion/cache': 11.10.3
-      '@emotion/serialize': 1.1.2
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
-      '@emotion/utils': 1.2.1
-      '@emotion/weak-memoize': 0.3.1
-      '@types/react': 18.2.34
-      hoist-non-react-statics: 3.3.2
-      react: 18.2.0
-    dev: false
-
   /@emotion/serialize@1.1.2:
     resolution: {integrity: sha512-zR6a/fkFP4EAcCMQtLOhIgpprZOwNmCldtpaISpvz348+DP4Mz8ZoKaGGCQpbzepNIUWbq4w6hNZkwDyKoS+HA==}
     dependencies:
@@ -4470,30 +4446,6 @@ packages:
       '@emotion/babel-plugin': 11.11.0
       '@emotion/is-prop-valid': 1.2.1
       '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/serialize': 1.1.2
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
-      '@emotion/utils': 1.2.1
-      '@types/react': 18.2.34
-      react: 18.2.0
-    dev: false
-
-  /@emotion/styled@11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0):
-    resolution: {integrity: sha512-pRl4R8Ez3UXvOPfc2bzIoV8u9P97UedgHS4FPX594ntwEuAMA114wlaHvOK24HB48uqfXiGlYIZYCxVJ1R1ttQ==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@emotion/react': ^11.0.0-rc.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.23.2
-      '@emotion/babel-plugin': 11.11.0
-      '@emotion/is-prop-valid': 1.2.1
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
       '@emotion/serialize': 1.1.2
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@emotion/utils': 1.2.1
@@ -5656,8 +5608,8 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.2
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/base': 5.0.0-alpha.110(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
       '@mui/core-downloads-tracker': 5.14.16
       '@mui/system': 5.11.0(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@types/react@18.2.34)(react@18.2.0)
@@ -5723,8 +5675,8 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.2
       '@emotion/cache': 11.11.0
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       csstype: 3.1.2
       prop-types: 15.8.1
       react: 18.2.0
@@ -5778,8 +5730,8 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.2
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/private-theming': 5.14.16(@types/react@18.2.34)(react@18.2.0)
       '@mui/styled-engine': 5.14.16(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(react@18.2.0)
       '@mui/types': 7.2.8(@types/react@18.2.34)
@@ -15525,10 +15477,10 @@ packages:
       - csstype
     dev: false
 
-  /react-i18next@11.18.6(i18next@21.9.1)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0):
-    resolution: {integrity: sha512-yHb2F9BiT0lqoQDt8loZ5gWP331GwctHz9tYQ8A2EIEUu+CcEdjBLQWli1USG3RdWQt3W+jqQLg/d4rrQR96LA==}
+  /react-i18next@14.0.1(i18next@21.9.1)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0):
+    resolution: {integrity: sha512-TMV8hFismBmpMdIehoFHin/okfvgjFhp723RYgIqB4XyhDobVMyukyM3Z8wtTRmajyFMZrBl/OaaXF2P6WjUAw==}
     peerDependencies:
-      i18next: '>= 19.0.0'
+      i18next: '>= 23.2.3'
       react: '>= 16.8.0'
       react-dom: '*'
       react-native: '*'
