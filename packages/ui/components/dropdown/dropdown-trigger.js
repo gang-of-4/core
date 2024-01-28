@@ -2,7 +2,7 @@ import { cloneElement, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { DropdownContext } from './dropdown-context';
 
-export const DropdownTrigger = (props) => {
+export function DropdownTrigger(props) {
   const { children } = props;
   const { onTriggerEnter, onTriggerLeave } = useContext(DropdownContext);
 
@@ -16,7 +16,7 @@ export const DropdownTrigger = (props) => {
       onTriggerLeave(event);
     }
   });
-};
+}
 
 DropdownTrigger.propTypes = {
   children: PropTypes.element.isRequired
