@@ -1,7 +1,11 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import {
+  ClassSerializerInterceptor,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
 
 async function bootstrap() {
@@ -9,7 +13,7 @@ async function bootstrap() {
 
   app.enableVersioning({
     type: VersioningType.URI,
-  })
+  });
 
   app.setGlobalPrefix('api');
 

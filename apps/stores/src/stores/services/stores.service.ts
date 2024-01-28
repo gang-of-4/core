@@ -9,12 +9,9 @@ import { UpdateStoreDto } from '../dto/update-store-dto';
 
 @Injectable()
 export class StoresService {
-  constructor(
-    private prisma: PrismaService,
-  ) { }
+  constructor(private prisma: PrismaService) {}
 
   async createIndividual(createStoreDto: CreateStoreDto): Promise<StoreEntity> {
-
     const stores = await this.findByVendor(createStoreDto.vendorId);
 
     for (const store of stores) {
@@ -26,7 +23,7 @@ export class StoresService {
       if (individualStore) {
         throw new Error('Vendor already has an individual store');
       }
-    };
+    }
 
     return new StoreEntity(
       await this.prisma.store.create({
@@ -34,13 +31,13 @@ export class StoresService {
           vendorId: createStoreDto.vendorId,
           status: createStoreDto.status || Status.PENDING,
           individualStore: {
-            create: {}
-          }
+            create: {},
+          },
         },
         include: {
           individualStore: true,
         },
-      })
+      }),
     );
   }
 
@@ -57,28 +54,26 @@ export class StoresService {
               vat_number: createBusinessStoreDto.vatNumber,
               cr_number: createBusinessStoreDto.crNumber,
               owner_national_id: createBusinessStoreDto.ownerNationalId,
-            }
-          }
+            },
+          },
         },
         include: {
           businessStore: true,
         },
-      })
+      }),
     );
   }
 
   async findAll(): Promise<StoreEntity[]> {
-    const stores = await this.prisma.store.findMany(
-      {
-        where: {
-          deleted_at: null,
-        },
-        include: {
-          individualStore: true,
-          businessStore: true,
-        },
-      }
-    );
+    const stores = await this.prisma.store.findMany({
+      where: {
+        deleted_at: null,
+      },
+      include: {
+        individualStore: true,
+        businessStore: true,
+      },
+    });
     return stores.map((store) => new StoreEntity(store));
   }
 
@@ -95,7 +90,7 @@ export class StoresService {
         },
       }),
     );
-  };
+  }
 
   async findByVendor(id: User['id']): Promise<StoreEntity[]> {
     const stores = await this.prisma.store.findMany({
@@ -111,7 +106,10 @@ export class StoresService {
     return stores.map((store) => new StoreEntity(store));
   }
 
-  async update(id: Store['id'], updateStoreDto: UpdateStoreDto): Promise<StoreEntity> {
+  async update(
+    id: Store['id'],
+    updateStoreDto: UpdateStoreDto,
+  ): Promise<StoreEntity> {
     return new StoreEntity(
       await this.prisma.store.update({
         where: {
@@ -124,7 +122,10 @@ export class StoresService {
     );
   }
 
-  async updateBusiness(id: Store['id'], updateBusinessStoreDto: UpdateBusinessStoreDto) {
+  async updateBusiness(
+    id: Store['id'],
+    updateBusinessStoreDto: UpdateBusinessStoreDto,
+  ) {
     return new StoreEntity(
       await this.prisma.store.update({
         where: {
@@ -140,13 +141,13 @@ export class StoresService {
               vat_number: updateBusinessStoreDto.vatNumber,
               cr_number: updateBusinessStoreDto.crNumber,
               owner_national_id: updateBusinessStoreDto.ownerNationalId,
-            }
-          }
+            },
+          },
         },
         include: {
           businessStore: true,
         },
-      })
+      }),
     );
   }
 
@@ -159,8 +160,7 @@ export class StoresService {
         data: {
           deleted_at: new Date(),
         },
-      })
+      }),
     );
   }
-
 }
