@@ -26,6 +26,7 @@ services:
             - '5555:5555'
         volumes:
             - .:/app
+            - .pnpm:/root/.local/share/pnpm/store
     db:
         container_name: db
         restart: unless-stopped
