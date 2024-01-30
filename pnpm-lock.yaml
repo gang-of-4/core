@@ -226,8 +226,8 @@ importers:
         specifier: 0.1.0
         version: 0.1.0(@types/react@18.2.34)(react@18.2.0)
       apexcharts:
-        specifier: 3.35.5
-        version: 3.35.5
+        specifier: 3.45.2
+        version: 3.45.2
       aws-amplify:
         specifier: 5.0.9
         version: 5.0.9(react-native@0.72.6)
@@ -278,7 +278,7 @@ importers:
         version: 18.2.0
       react-apexcharts:
         specifier: 1.4.0
-        version: 1.4.0(apexcharts@3.35.5)(react@18.2.0)
+        version: 1.4.0(apexcharts@3.45.2)(react@18.2.0)
       react-beautiful-dnd:
         specifier: 13.1.1
         version: 13.1.1(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
@@ -526,10 +526,10 @@ importers:
     dependencies:
       '@emotion/react':
         specifier: 11.10.4
-        version: 11.10.4(@types/react@18.2.34)(react@18.2.0)
+        version: 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
       '@emotion/styled':
         specifier: 11.10.4
-        version: 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+        version: 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/material':
         specifier: 5.11.0
         version: 5.11.0(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
@@ -4400,30 +4400,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@emotion/react@11.10.4(@types/react@18.2.34)(react@18.2.0):
-    resolution: {integrity: sha512-j0AkMpr6BL8gldJZ6XQsQ8DnS9TxEQu1R+OGmDZiWjBAJtCcbt0tS3I/YffoqHXxH6MjgI7KdMbYKw3MEiU9eA==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.23.2
-      '@emotion/babel-plugin': 11.11.0
-      '@emotion/cache': 11.10.3
-      '@emotion/serialize': 1.1.2
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
-      '@emotion/utils': 1.2.1
-      '@emotion/weak-memoize': 0.3.1
-      '@types/react': 18.2.34
-      hoist-non-react-statics: 3.3.2
-      react: 18.2.0
-    dev: false
-
   /@emotion/serialize@1.1.2:
     resolution: {integrity: sha512-zR6a/fkFP4EAcCMQtLOhIgpprZOwNmCldtpaISpvz348+DP4Mz8ZoKaGGCQpbzepNIUWbq4w6hNZkwDyKoS+HA==}
     dependencies:
@@ -4470,30 +4446,6 @@ packages:
       '@emotion/babel-plugin': 11.11.0
       '@emotion/is-prop-valid': 1.2.1
       '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/serialize': 1.1.2
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
-      '@emotion/utils': 1.2.1
-      '@types/react': 18.2.34
-      react: 18.2.0
-    dev: false
-
-  /@emotion/styled@11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0):
-    resolution: {integrity: sha512-pRl4R8Ez3UXvOPfc2bzIoV8u9P97UedgHS4FPX594ntwEuAMA114wlaHvOK24HB48uqfXiGlYIZYCxVJ1R1ttQ==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@emotion/react': ^11.0.0-rc.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.23.2
-      '@emotion/babel-plugin': 11.11.0
-      '@emotion/is-prop-valid': 1.2.1
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
       '@emotion/serialize': 1.1.2
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@emotion/utils': 1.2.1
@@ -5656,8 +5608,8 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.2
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/base': 5.0.0-alpha.110(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
       '@mui/core-downloads-tracker': 5.14.16
       '@mui/system': 5.11.0(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@types/react@18.2.34)(react@18.2.0)
@@ -5723,8 +5675,8 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.2
       '@emotion/cache': 11.11.0
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       csstype: 3.1.2
       prop-types: 15.8.1
       react: 18.2.0
@@ -5778,8 +5730,8 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.2
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/private-theming': 5.14.16(@types/react@18.2.34)(react@18.2.0)
       '@mui/styled-engine': 5.14.16(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(react@18.2.0)
       '@mui/types': 7.2.8(@types/react@18.2.34)
@@ -8089,6 +8041,10 @@ packages:
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
     dev: true
 
+  /@yr/monotone-cubic-spline@1.0.3:
+    resolution: {integrity: sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA==}
+    dev: false
+
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     dev: false
@@ -8280,9 +8236,10 @@ packages:
       normalize-path: 3.0.0
       picomatch: 2.3.1
 
-  /apexcharts@3.35.5:
-    resolution: {integrity: sha512-Bi3aq35xWntI71JlywXTBBAOhuKTbB4wijKw4ClkIAFV904YDkHPIJ8N9LcZq9fvVb0VX1AEmyOFBOB2Vwsuew==}
+  /apexcharts@3.45.2:
+    resolution: {integrity: sha512-PpuM4sJWy70sUh5U1IFn1m1p45MdHSChLUNnqEoUUUHSU2IHZugFrsVNhov1S8Q0cvfdrCRCvdBtHGSs6PSAWQ==}
     dependencies:
+      '@yr/monotone-cubic-spline': 1.0.3
       svg.draggable.js: 2.2.2
       svg.easing.js: 2.0.0
       svg.filter.js: 2.0.2
@@ -15426,13 +15383,13 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
-  /react-apexcharts@1.4.0(apexcharts@3.35.5)(react@18.2.0):
+  /react-apexcharts@1.4.0(apexcharts@3.45.2)(react@18.2.0):
     resolution: {integrity: sha512-DrcMV4aAMrUG+n6412yzyATWEyCDWlpPBBhVbpzBC4PDeuYU6iF84SmExbck+jx5MUm4U5PM3/T307Mc3kzc9Q==}
     peerDependencies:
       apexcharts: ^3.18.0
       react: '>=0.13'
     dependencies:
-      apexcharts: 3.35.5
+      apexcharts: 3.45.2
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
