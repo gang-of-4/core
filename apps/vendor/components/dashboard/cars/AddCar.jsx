@@ -21,19 +21,14 @@ import {
     FormControl,
     MenuItem
 } from '@mui/material';
-import { GuestGuard } from 'ui/guards/guest-guard';
-import { IssuerGuard } from 'ui/guards/issuer-guard';
 import { useMounted } from 'ui/hooks/use-mounted';
-import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
-import { Issuer } from 'ui/utils/auth';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useStores } from '@/hooks/useStores';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import NextLink from 'next/link';
-
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -57,6 +52,7 @@ const useParams = () => {
 };
 
 const initialValues = {
+    carType: '',
     brandName: '',
     carName: '',
     carYear: '',
@@ -69,6 +65,9 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object({
+    carType: Yup
+        .string()
+        .required('Car type is required'),
     brandName: Yup
         .string()
         .max(255)
@@ -111,7 +110,7 @@ const validationSchema = Yup.object({
 
 async function getCurrency() {
     const currency = await fetch(
-        `${process.env.CURRENCIES_API_URL}`, 
+        `${process.env.CURRENCIES_API_URL}`,
         { next: { revalidate: 0 } }
     ).then((res) => {
         if (!res.ok) throw new Error('Failed to fetch currency');
@@ -121,10 +120,23 @@ async function getCurrency() {
     return currency;
 }
 
+async function getCarType() {
+    const carType = await fetch(
+        `${process.env.carType_API_URL}`,
+        { next: { revalidate: 0 } }
+    ).then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch car type');
+        return res.json();
+    });
+
+    return carType;
+}
+
 const AddCar = ({ storeId }) => {
 
     const [selectedFileName, setSelectedFileName] = useState('');
     const [currencyOptions, setCurrencyOptions] = useState([]);
+    const [carTypeOptions, setCarTypeOptions] = useState([]);
     const isMounted = useMounted();
     const router = useRouter();
     const { returnTo } = useParams();
@@ -135,6 +147,7 @@ const AddCar = ({ storeId }) => {
         onSubmit: async (values, helpers) => {
             try {
                 const car = {
+                    carType: values.carType,
                     brandName: values.brandName,
                     carName: values.carName,
                     carYear: values.carYear,
@@ -218,6 +231,26 @@ const AddCar = ({ storeId }) => {
                                         spacing={3}
                                         sx={{ width: '100%' }}
                                     >
+                                        <FormControl variant="filled" sx={{ minWidth: 120 }}>
+                                            <InputLabel id="demo-simple-select-filled-label">Car Type</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-filled-label"
+                                                id="demo-simple-select-filled"
+                                                name="carType"
+                                                value={formik.values.carType}
+                                                onChange={formik.handleChange}
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                {carTypeOptions.map((carType) => (
+                                                    <MenuItem key={carType.id} value={carType.id}>
+                                                        {carType.name}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+
                                         <TextField
                                             error={!!(formik.touched.brandName && formik.errors.brandName)}
                                             fullWidth
@@ -262,7 +295,8 @@ const AddCar = ({ storeId }) => {
                                             type="carColor"
                                             value={formik.values.carColor}
                                         />
-                                        <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+                                        <div style={{ display: 'flex', alignItems: 'center'}}>
+                                        <FormControl variant="filled" sx={{ minWidth: 100, marginRight: 2}}>
                                             <InputLabel id="demo-simple-select-filled-label">Currency</InputLabel>
                                             <Select
                                                 labelId="demo-simple-select-filled-label"
@@ -293,6 +327,7 @@ const AddCar = ({ storeId }) => {
                                             type="carPrice"
                                             value={formik.values.carPrice}
                                         />
+                                        </div>
                                         <TextField
                                             error={!!(formik.touched.description && formik.errors.description)}
                                             fullWidth
