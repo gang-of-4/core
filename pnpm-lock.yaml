@@ -54,8 +54,8 @@ importers:
         specifier: ^7.1.14
         version: 7.1.14(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
       '@prisma/client':
-        specifier: ^5.5.2
-        version: 5.5.2(prisma@5.5.2)
+        specifier: ^5.9.1
+        version: 5.9.1(prisma@5.5.2)
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -440,8 +440,8 @@ importers:
         specifier: ^7.1.14
         version: 7.1.14(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
       '@prisma/client':
-        specifier: ^5.5.2
-        version: 5.5.2(prisma@5.5.2)
+        specifier: ^5.9.1
+        version: 5.9.1(prisma@5.5.2)
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -526,10 +526,10 @@ importers:
     dependencies:
       '@emotion/react':
         specifier: 11.10.4
-        version: 11.10.4(@types/react@18.2.34)(react@18.2.0)
+        version: 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
       '@emotion/styled':
         specifier: 11.10.4
-        version: 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+        version: 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/material':
         specifier: 5.11.0
         version: 5.11.0(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
@@ -4400,30 +4400,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@emotion/react@11.10.4(@types/react@18.2.34)(react@18.2.0):
-    resolution: {integrity: sha512-j0AkMpr6BL8gldJZ6XQsQ8DnS9TxEQu1R+OGmDZiWjBAJtCcbt0tS3I/YffoqHXxH6MjgI7KdMbYKw3MEiU9eA==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.23.2
-      '@emotion/babel-plugin': 11.11.0
-      '@emotion/cache': 11.10.3
-      '@emotion/serialize': 1.1.2
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
-      '@emotion/utils': 1.2.1
-      '@emotion/weak-memoize': 0.3.1
-      '@types/react': 18.2.34
-      hoist-non-react-statics: 3.3.2
-      react: 18.2.0
-    dev: false
-
   /@emotion/serialize@1.1.2:
     resolution: {integrity: sha512-zR6a/fkFP4EAcCMQtLOhIgpprZOwNmCldtpaISpvz348+DP4Mz8ZoKaGGCQpbzepNIUWbq4w6hNZkwDyKoS+HA==}
     dependencies:
@@ -4470,30 +4446,6 @@ packages:
       '@emotion/babel-plugin': 11.11.0
       '@emotion/is-prop-valid': 1.2.1
       '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/serialize': 1.1.2
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
-      '@emotion/utils': 1.2.1
-      '@types/react': 18.2.34
-      react: 18.2.0
-    dev: false
-
-  /@emotion/styled@11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0):
-    resolution: {integrity: sha512-pRl4R8Ez3UXvOPfc2bzIoV8u9P97UedgHS4FPX594ntwEuAMA114wlaHvOK24HB48uqfXiGlYIZYCxVJ1R1ttQ==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@emotion/react': ^11.0.0-rc.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.23.2
-      '@emotion/babel-plugin': 11.11.0
-      '@emotion/is-prop-valid': 1.2.1
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
       '@emotion/serialize': 1.1.2
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@emotion/utils': 1.2.1
@@ -5656,8 +5608,8 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.2
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/base': 5.0.0-alpha.110(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
       '@mui/core-downloads-tracker': 5.14.16
       '@mui/system': 5.11.0(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@types/react@18.2.34)(react@18.2.0)
@@ -5723,8 +5675,8 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.2
       '@emotion/cache': 11.11.0
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       csstype: 3.1.2
       prop-types: 15.8.1
       react: 18.2.0
@@ -5778,8 +5730,8 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.2
-      '@emotion/react': 11.10.4(@types/react@18.2.34)(react@18.2.0)
-      '@emotion/styled': 11.10.4(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/react': 11.10.4(@babel/core@7.23.2)(@types/react@18.2.34)(react@18.2.0)
+      '@emotion/styled': 11.10.4(@babel/core@7.23.2)(@emotion/react@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/private-theming': 5.14.16(@types/react@18.2.34)(react@18.2.0)
       '@mui/styled-engine': 5.14.16(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(react@18.2.0)
       '@mui/types': 7.2.8(@types/react@18.2.34)
@@ -6485,8 +6437,8 @@ packages:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
     dev: false
 
-  /@prisma/client@5.5.2(prisma@5.5.2):
-    resolution: {integrity: sha512-54XkqR8M+fxbzYqe+bIXimYnkkcGqgOh0dn0yWtIk6CQT4IUCAvNFNcQZwk2KqaLU+/1PHTSWrcHtx4XjluR5w==}
+  /@prisma/client@5.9.1(prisma@5.5.2):
+    resolution: {integrity: sha512-caSOnG4kxcSkhqC/2ShV7rEoWwd3XrftokxJqOCMVvia4NYV/TPtJlS9C2os3Igxw/Qyxumj9GBQzcStzECvtQ==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
@@ -6495,12 +6447,7 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a
       prisma: 5.5.2
-    dev: false
-
-  /@prisma/engines-version@5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a:
-    resolution: {integrity: sha512-O+qHFnZvAyOFk1tUco2/VdiqS0ym42a3+6CYLScllmnpbyiTplgyLt2rK/B9BTjYkSHjrgMhkG47S0oqzdIckA==}
     dev: false
 
   /@prisma/engines@5.5.2:
