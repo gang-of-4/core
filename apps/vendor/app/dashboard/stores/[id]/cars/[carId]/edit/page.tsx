@@ -7,21 +7,19 @@ export const metadata: Metadata = {
   description: 'Edit car'
 };
 
-async function getCar(id: string, carId: string) {
+async function getCar(id: string) {
   const car = await fetch(
-      `${process.env.STORES_API_URL}/${id}/cars/${carId}`,
+      `${process.env.ITEMS_API_URL}/${id}`,
       { next: {revalidate: 0} }
   ).then((res) => {
       if (!res.ok) throw new Error('Failed to fetch');
       return res.json();
   });
-  const formattedCar = await formatCar(car);
-  return formattedCar;
+  return car;
 }
 
-export default function page({ params }: { params: { id: string } }) {
-
-  const car = await getCar(params.id);
+export default function page({ params }: { params: { id: string, carId: string } }) {
+  const car = getCar(params.carId);
   return (
     <EditCar  storeId ={params.id} car={car} />
   )
