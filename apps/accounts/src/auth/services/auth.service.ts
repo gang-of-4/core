@@ -10,7 +10,7 @@ import { instanceToPlain } from 'class-transformer';
 import { AuthenticationDto } from '../dto/authentication.dto';
 import { UserRegisterDto } from '../dto/user-register.dto';
 import { CredentialsAccount } from '@prisma/client/accounts';
-import { InvalidCredentialsException } from 'src/users/exceptions/invalid-credentials.exception';
+import { InvalidCredentialsException } from '../../users/exceptions/invalid-credentials.exception';
 import { JwtTokenDto } from '../dto/jwt-token.dto';
 import { RolesService } from '../../roles/services/roles.service';
 
