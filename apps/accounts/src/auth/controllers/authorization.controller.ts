@@ -14,7 +14,6 @@ export class AuthorizationController {
   @All()
   @ApiOkResponse()
   async authorize(@Query() authorizeDto: AuthorizeDto) {
-    console.log('GET');
     const role = await this.authService.getUserRole(authorizeDto.access_token);
 
     return await this.authService.authorize(
