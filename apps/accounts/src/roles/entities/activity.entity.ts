@@ -1,13 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '@prisma/client/accounts';
-import { Exclude, Expose } from 'class-transformer';
+import { Activity } from '@prisma/client/accounts';
+import { Expose } from 'class-transformer';
 
-export class RoleEntity implements Role {
+export class ActivityEntity implements Activity {
   @ApiProperty()
   id: string;
 
   @ApiProperty()
-  name: string;
+  method: string;
+
+  @ApiProperty()
+  url: string;
 
   @ApiProperty()
   @Expose({ groups: ['roles.create', 'roles.update', 'roles.delete'] })
@@ -21,7 +24,7 @@ export class RoleEntity implements Role {
   @Expose({ groups: ['roles.create', 'roles.update', 'roles.delete'] })
   deletedAt: Date;
 
-  constructor(partial: Partial<RoleEntity>) {
+  constructor(partial: Partial<ActivityEntity>) {
     Object.assign(this, partial);
   }
 }

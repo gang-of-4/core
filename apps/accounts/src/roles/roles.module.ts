@@ -9,6 +9,6 @@ import { PermissionsService } from './services/permissions.service';
   imports: [PrismaModule],
   controllers: [RolesController, PermissionsController],
   providers: [RolesService, PermissionsService],
-  exports: [RolesService],
+  exports: [RolesService, PermissionsService],
 })
 export class RolesModule {}

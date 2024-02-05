@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CustomerAuthController } from '../controllers/customer-auth.controller';
+import { CustomerAuthController } from '../controllers/customer.controller';
 import { AuthService } from '../services/auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { RolesModule } from '../../roles/roles.module';
 import { UsersModule } from '../../users/users.module';
-import { AdminAuthController } from '../controllers/admin-auth.controller';
-import { VendorAuthController } from '../controllers/vendor-auth.controller';
+import { AdminAuthController } from '../controllers/admin.controller';
+import { VendorAuthController } from '../controllers/vendor.controller';
 import { PrismaService } from '../../prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
 import { UserRegisterDto } from '../dto/user-register.dto';
 import { validateOrReject } from 'class-validator';
-import { JwtTokenDto } from '../dto/jwt-token.dto';
+import { AuthenticationDto } from '../dto/authentication.dto';
 
 describe('CustomerAuthController', () => {
   let controller: CustomerAuthController;
@@ -104,7 +104,7 @@ describe('CustomerAuthController', () => {
     await controller.register(userData);
     const token = await controller.login(userData);
 
-    expect(token).toBeInstanceOf(JwtTokenDto);
+    expect(token).toBeInstanceOf(AuthenticationDto);
     expect(token.access_token).toBeDefined();
     expect(token.access_token).not.toBeNull();
   });

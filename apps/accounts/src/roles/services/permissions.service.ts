@@ -7,8 +7,11 @@ import { Permission } from '@prisma/client/accounts';
 export class PermissionsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(): Promise<PermissionEntity[]> {
-    const permissions = await this.prisma.permission.findMany();
+  async findAll({ where = {}, select = {} } = {}): Promise<PermissionEntity[]> {
+    const permissions = await this.prisma.permission.findMany({
+      select,
+      where,
+    });
     return permissions.map((permission) => new PermissionEntity(permission));
   }
 

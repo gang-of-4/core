@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { RoleEntity } from '../entities/role.entity';
 import { Role } from '@prisma/client/accounts';
+import { NotFoundException } from '../exceptions/not-found.exception';
 
 @Injectable()
 export class RolesService {
@@ -14,21 +15,29 @@ export class RolesService {
 
   async findOne(id: Role['id']): Promise<RoleEntity> {
     return new RoleEntity(
-      await this.prisma.role.findUnique({
-        where: {
-          id: id,
-        },
-      }),
+      await this.prisma.role
+        .findUniqueOrThrow({
+          where: {
+            id: id,
+          },
+        })
+        .catch(() => {
+          throw new NotFoundException();
+        }),
     );
   }
 
   async findOneByName(name: Role['name']): Promise<RoleEntity> {
     return new RoleEntity(
-      await this.prisma.role.findUnique({
-        where: {
-          name: name,
-        },
-      }),
+      await this.prisma.role
+        .findUniqueOrThrow({
+          where: {
+            name: name,
+          },
+        })
+        .catch(() => {
+          throw new NotFoundException();
+        }),
     );
   }
 }
