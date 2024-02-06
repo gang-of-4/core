@@ -212,7 +212,7 @@ importers:
         version: 5.11.0(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@types/react@18.2.34)(react@18.2.0)
       '@mui/x-date-pickers':
         specifier: 5.0.11
-        version: 5.0.11(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@mui/material@5.11.0)(@mui/system@5.11.0)(@types/react@18.2.34)(date-fns@2.29.3)(react-dom@18.2.0)(react@18.2.0)
+        version: 5.0.11(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@mui/material@5.11.0)(@mui/system@5.11.0)(@types/react@18.2.34)(date-fns@3.3.1)(react-dom@18.2.0)(react@18.2.0)
       '@react-pdf/renderer':
         specifier: 3.0.1
         version: 3.0.1(react@18.2.0)
@@ -232,8 +232,8 @@ importers:
         specifier: 5.0.9
         version: 5.0.9(react-native@0.72.6)
       date-fns:
-        specifier: 2.29.3
-        version: 2.29.3
+        specifier: 3.3.1
+        version: 3.3.1
       draft-js:
         specifier: 0.11.7
         version: 0.11.7(react-dom@18.2.0)(react@18.2.0)
@@ -4280,7 +4280,7 @@ packages:
     resolution: {integrity: sha512-+EQE8xZhRM/hsY0CDTVyayMDDY5ihc4MqXCrPxooKw19yAzUIC6uUqsZeaOFNL9YKTNxYKrJP5DFgE8o5xRCOw==}
     dev: false
 
-  /@date-io/date-fns@2.17.0(date-fns@2.29.3):
+  /@date-io/date-fns@2.17.0(date-fns@3.3.1):
     resolution: {integrity: sha512-L0hWZ/mTpy3Gx/xXJ5tq5CzHo0L7ry6KEO9/w/JWiFWFLZgiNVo3ex92gOl3zmzjHqY/3Ev+5sehAr8UnGLEng==}
     peerDependencies:
       date-fns: ^2.0.0
@@ -4289,7 +4289,7 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.17.0
-      date-fns: 2.29.3
+      date-fns: 3.3.1
     dev: false
 
   /@date-io/dayjs@2.17.0:
@@ -5790,7 +5790,7 @@ packages:
       react-is: 18.2.0
     dev: false
 
-  /@mui/x-date-pickers@5.0.11(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@mui/material@5.11.0)(@mui/system@5.11.0)(@types/react@18.2.34)(date-fns@2.29.3)(react-dom@18.2.0)(react@18.2.0):
+  /@mui/x-date-pickers@5.0.11(@emotion/react@11.10.4)(@emotion/styled@11.10.4)(@mui/material@5.11.0)(@mui/system@5.11.0)(@types/react@18.2.34)(date-fns@3.3.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-YxUpyepbtzo6mu42KaaoJrfBHvlLobEdkP5EcEQ+OSaY5xxCEHqfSgi1NioXcxzZUi6ome5jcrjAopUHzFGk0g==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -5820,7 +5820,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.2
       '@date-io/core': 2.17.0
-      '@date-io/date-fns': 2.17.0(date-fns@2.29.3)
+      '@date-io/date-fns': 2.17.0(date-fns@3.3.1)
       '@date-io/dayjs': 2.17.0
       '@date-io/luxon': 2.17.0
       '@date-io/moment': 2.17.0
@@ -5831,7 +5831,7 @@ packages:
       '@mui/utils': 5.14.16(@types/react@18.2.34)(react@18.2.0)
       '@types/react-transition-group': 4.4.8
       clsx: 1.2.1
-      date-fns: 2.29.3
+      date-fns: 3.3.1
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -9515,9 +9515,8 @@ packages:
     engines: {node: '>= 14'}
     dev: true
 
-  /date-fns@2.29.3:
-    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
-    engines: {node: '>=0.11'}
+  /date-fns@3.3.1:
+    resolution: {integrity: sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==}
     dev: false
 
   /dayjs@1.11.10:
