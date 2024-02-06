@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --concurrency=12",
+    "dev": "turbo run dev --concurrency=14",
     "lint": "turbo run lint",
     "prisma:generate": "turbo run prisma:generate",
     "prisma:setup": "turbo run prisma:generate prisma:push prisma:seed",
+    "prisma:push": "turbo run prisma:push",
     "prisma:seed": "turbo run prisma:seed",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -17,6 +18,7 @@
     "eslint": "^8.52.0",
     "eslint-config-custom": "workspace:*",
     "prettier": "^3.0.3",
+    "prisma": "^5.5.2",
     "tsconfig": "workspace:*",
     "turbo": "latest"
   }
