@@ -94,7 +94,7 @@ export const AuthProvider = (props) => {
         });
       }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       dispatch({
         type: ActionType.INITIALIZE,
         payload: {
