@@ -277,8 +277,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0
       react-apexcharts:
-        specifier: 1.4.0
-        version: 1.4.0(apexcharts@3.35.5)(react@18.2.0)
+        specifier: 1.4.1
+        version: 1.4.1(apexcharts@3.35.5)(react@18.2.0)
       react-beautiful-dnd:
         specifier: 13.1.1
         version: 13.1.1(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
@@ -15378,10 +15378,10 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
-  /react-apexcharts@1.4.0(apexcharts@3.35.5)(react@18.2.0):
-    resolution: {integrity: sha512-DrcMV4aAMrUG+n6412yzyATWEyCDWlpPBBhVbpzBC4PDeuYU6iF84SmExbck+jx5MUm4U5PM3/T307Mc3kzc9Q==}
+  /react-apexcharts@1.4.1(apexcharts@3.35.5)(react@18.2.0):
+    resolution: {integrity: sha512-G14nVaD64Bnbgy8tYxkjuXEUp/7h30Q0U33xc3AwtGFijJB9nHqOt1a6eG0WBn055RgRg+NwqbKGtqPxy15d0Q==}
     peerDependencies:
-      apexcharts: ^3.18.0
+      apexcharts: ^3.41.0
       react: '>=0.13'
     dependencies:
       apexcharts: 3.35.5
