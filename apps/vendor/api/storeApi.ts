@@ -26,8 +26,8 @@ type Store = {
   id: string;
   vendorId: string;
   status: Status;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
   individualStore: IndividualStore;
   businessStore: BusinessStore;
 };

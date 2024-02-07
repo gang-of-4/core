@@ -21,13 +21,13 @@ export class BusinessStoreEntity implements BusinessStore {
   logo: string;
 
   @ApiProperty()
-  vat_number: string;
+  vatNumber: string;
 
   @ApiProperty()
-  cr_number: string;
+  crNumber: string;
 
   @ApiProperty()
-  owner_national_id: string;
+  ownerNationalId: string;
 
   constructor(partial: Partial<BusinessStoreEntity>) {
     Object.assign(this, partial);

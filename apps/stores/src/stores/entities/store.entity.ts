@@ -13,14 +13,14 @@ export class StoreEntity implements Store {
   status: Status;
 
   @ApiProperty()
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty()
-  updated_at: Date;
+  updatedAt: Date;
 
   @ApiProperty({ nullable: true, default: null })
   @Expose({ groups: ['stores.delete', 'self'] })
-  deleted_at: Date;
+  deletedAt: Date;
 
   constructor(partial: Partial<StoreEntity>) {
     Object.assign(this, partial);

@@ -51,9 +51,9 @@ export class StoresService {
             create: {
               name: createBusinessStoreDto.name,
               logo: createBusinessStoreDto.logo,
-              vat_number: createBusinessStoreDto.vatNumber,
-              cr_number: createBusinessStoreDto.crNumber,
-              owner_national_id: createBusinessStoreDto.ownerNationalId,
+              vatNumber: createBusinessStoreDto.vatNumber,
+              crNumber: createBusinessStoreDto.crNumber,
+              ownerNationalId: createBusinessStoreDto.ownerNationalId,
             },
           },
         },
@@ -67,7 +67,7 @@ export class StoresService {
   async findAll(): Promise<StoreEntity[]> {
     const stores = await this.prisma.store.findMany({
       where: {
-        deleted_at: null,
+        deletedAt: null,
       },
       include: {
         individualStore: true,
@@ -82,7 +82,7 @@ export class StoresService {
       await this.prisma.store.findUnique({
         where: {
           id,
-          deleted_at: null,
+          deletedAt: null,
         },
         include: {
           individualStore: true,
@@ -96,7 +96,7 @@ export class StoresService {
     const stores = await this.prisma.store.findMany({
       where: {
         vendorId: id,
-        deleted_at: null,
+        deletedAt: null,
       },
       include: {
         individualStore: true,
@@ -130,7 +130,7 @@ export class StoresService {
       await this.prisma.store.update({
         where: {
           id,
-          deleted_at: null,
+          deletedAt: null,
         },
         data: {
           status: Status.PENDING,
@@ -138,9 +138,9 @@ export class StoresService {
             update: {
               name: updateBusinessStoreDto.name,
               logo: updateBusinessStoreDto.logo,
-              vat_number: updateBusinessStoreDto.vatNumber,
-              cr_number: updateBusinessStoreDto.crNumber,
-              owner_national_id: updateBusinessStoreDto.ownerNationalId,
+              vatNumber: updateBusinessStoreDto.vatNumber,
+              crNumber: updateBusinessStoreDto.crNumber,
+              ownerNationalId: updateBusinessStoreDto.ownerNationalId,
             },
           },
         },
@@ -158,7 +158,7 @@ export class StoresService {
           id,
         },
         data: {
-          deleted_at: new Date(),
+          deletedAt: new Date(),
         },
       }),
     );
