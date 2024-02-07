@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import Lightbulb04Icon from '@untitled-ui/icons-react/build/esm/Lightbulb04';
 import { SvgIcon, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -12,7 +11,7 @@ const TipRoot = styled('div')((({ theme }) => ({
   padding: theme.spacing(1)
 })));
 
-export const Tip = (props) => {
+export function Tip(props) {
   const { message } = props;
 
   return (
@@ -43,8 +42,4 @@ export const Tip = (props) => {
       </Typography>
     </TipRoot>
   );
-};
-
-Tip.propTypes = {
-  message: PropTypes.string.isRequired
-};
+}

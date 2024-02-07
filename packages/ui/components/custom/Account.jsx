@@ -1,14 +1,13 @@
 import React from 'react'
-import { useAuth } from '../../hooks/use-auth'
-import { AccountButton } from '../../layouts/dashboard/account-button';
-import { Button } from '@mui/material';
-import { paths } from '../../paths';
-import { useMediaQuery } from '@mui/material';
+import { Button , useMediaQuery } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
+import { paths } from '../../paths';
+import { AccountButton } from '../../layouts/dashboard/account-button';
+import { useAuth } from '../../hooks/use-auth'
 
 
-export default function Account({app}) {
+export function Account({app}) {
   const { isAuthenticated } = useAuth();
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
@@ -27,21 +26,25 @@ export default function Account({app}) {
     }
   }
 
+  const Else = (
+      pathname.includes('/auth/')
+        ? null
+        : <Button
+          component={NextLink}
+          href={`${url}${paths.auth.login}`}
+          size={mdUp ? 'medium' : 'small'}
+          variant="contained"
+        >
+          Login
+        </Button>
+  )
+
   return (
     <div>
       {isAuthenticated ? (
         <AccountButton />
       ) : (
-        pathname.includes('/auth/')
-          ? <></>
-          : <Button
-            component={NextLink}
-            size={mdUp ? 'medium' : 'small'}
-            href={`${url}${paths.auth.login}`}
-            variant="contained"
-          >
-            Login
-          </Button>
+        Else
       )}
     </div>
   )

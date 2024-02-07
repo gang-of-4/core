@@ -33,7 +33,7 @@ const useNotifications = () => {
   };
 };
 
-export const NotificationsButton = () => {
+export function NotificationsButton() {
   const anchorRef = useRef(null);
   const [openPopover, setOpenPopover] = useState(false);
   const { handleRemoveOne, handleMarkAllAsRead, notifications, unread } = useNotifications();
@@ -50,12 +50,12 @@ export const NotificationsButton = () => {
     <>
       <Tooltip title="Notifications">
         <IconButton
-          ref={anchorRef}
           onClick={handlePopoverOpen}
+          ref={anchorRef}
         >
           <Badge
-            color="error"
             badgeContent={unread}
+            color="error"
           >
             <SvgIcon>
               <Bell01Icon />
@@ -73,4 +73,4 @@ export const NotificationsButton = () => {
       />
     </>
   );
-};
+}

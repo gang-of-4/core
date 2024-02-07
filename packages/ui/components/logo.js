@@ -1,7 +1,7 @@
-export const Logo = () => {
+export function Logo() {
 
   return (
-    <svg width="100%" height="100%" viewBox="0 0 1024 1024" className="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+    <svg className="icon" fill="#000000" height="100%" version="1.1" viewBox="0 0 1024 1024" width="100%" xmlns="http://www.w3.org/2000/svg">
 
       <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
@@ -31,4 +31,4 @@ export const Logo = () => {
 
     </svg>
   );
-};
+}

@@ -1,8 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import { DropdownContext } from './dropdown-context';
 
-export const Dropdown = (props) => {
+export function Dropdown(props) {
   const { children, delay = 50 } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const cleanupRef = useRef(null);
@@ -28,7 +27,7 @@ export const Dropdown = (props) => {
     }, delay);
   }, [delay]);
 
-  const open = !!(anchorEl);
+  const open = Boolean(anchorEl);
 
   return (
     <DropdownContext.Provider
@@ -44,9 +43,4 @@ export const Dropdown = (props) => {
       {children}
     </DropdownContext.Provider>
   );
-};
-
-Dropdown.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.any).isRequired,
-  delay: PropTypes.number
-};
+}

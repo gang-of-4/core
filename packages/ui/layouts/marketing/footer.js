@@ -7,9 +7,9 @@ import {
   Typography,
   Unstable_Grid2 as Grid
 } from '@mui/material';
+import NextLink from 'next/link';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
-import NextLink from 'next/link';
 
 const sections = [
   {
@@ -57,8 +57,8 @@ const sections = [
   }
 ];
 
-export const Footer = (props) => (
-  <Box
+export function Footer(props) {
+  return <Box
     sx={{
       backgroundColor: (theme) => theme.palette.mode === 'dark'
         ? 'neutral.800'
@@ -79,15 +79,15 @@ export const Footer = (props) => (
         spacing={3}
       >
         <Grid
-          xs={12}
-          sm={4}
           md={3}
+          sm={4}
           sx={{
             order: {
               xs: 4,
               md: 1
             }
           }}
+          xs={12}
         >
           <Stack spacing={1}>
             <Stack
@@ -135,15 +135,15 @@ export const Footer = (props) => (
         {sections.map((section, index) => (
           <Grid
             key={section.title}
-            xs={12}
-            sm={4}
             md={3}
+            sm={4}
             sx={{
               order: {
                 md: index + 2,
                 xs: index + 1
               }
             }}
+            xs={12}
           >
             <Typography
               color="text.secondary"
@@ -175,8 +175,8 @@ export const Footer = (props) => (
                     }}
                   />
                   <Link
-                    href={item.path}
                     color="text.primary"
+                    href={item.path}
                     variant="subtitle2"
                   >
                     {item.title}
@@ -196,4 +196,4 @@ export const Footer = (props) => (
       </Typography>
     </Container>
   </Box>
-);
+}

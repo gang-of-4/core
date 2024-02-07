@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 
-export const BreadcrumbsSeparator = () => (
-  <Box
+export function BreadcrumbsSeparator() {
+  return <Box
     sx={{
       backgroundColor: 'neutral.500',
       borderRadius: '50%',
@@ -9,4 +9,4 @@ export const BreadcrumbsSeparator = () => (
       width: 4
     }}
   />
-);
+}

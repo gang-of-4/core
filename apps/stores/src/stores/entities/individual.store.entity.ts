@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IndividualStore, Store } from '@prisma/client/stores';
-import { StoreEntity } from './store.entity';
-import { Exclude, Type } from 'class-transformer';
+import { Exclude } from 'class-transformer';
 
 export class IndividualStoreEntity implements IndividualStore {
   @ApiProperty()
@@ -10,7 +9,7 @@ export class IndividualStoreEntity implements IndividualStore {
   @Exclude()
   storeId: Store['id'];
 
-  constructor(partial: Partial<IndividualStoreEntity>, store: StoreEntity) {
+  constructor(partial: Partial<IndividualStoreEntity>) {
     Object.assign(this, partial);
   }
 }

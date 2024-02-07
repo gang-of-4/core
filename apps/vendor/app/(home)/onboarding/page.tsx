@@ -1,5 +1,5 @@
 import React from "react";
-import Page from "@/components/onboarding";
+import Page from "@/components/OnBoarding";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

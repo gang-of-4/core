@@ -1,5 +1,4 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 // @ts-ignore
 import isEqual from 'lodash.isequal';
 
@@ -17,9 +16,7 @@ const restoreSettings = () => {
       value = JSON.parse(restored);
     }
   } catch (err) {
-    console.error(err);
-    // If stored data is not a strigified JSON this will fail,
-    // that's why we catch the error
+    throw new Error('Cannot restore settings');
   }
 
   return value;
@@ -59,7 +56,7 @@ export const SettingsContext = createContext({
   isCustom: false
 });
 
-export const SettingsProvider = (props) => {
+export function SettingsProvider(props) {
   const { children } = props;
   const [state, setState] = useState(initialState);
 
@@ -145,10 +142,6 @@ export const SettingsProvider = (props) => {
       {children}
     </SettingsContext.Provider>
   );
-};
-
-SettingsProvider.propTypes = {
-  children: PropTypes.node.isRequired
-};
+}
 
 export const SettingsConsumer = SettingsContext.Consumer;

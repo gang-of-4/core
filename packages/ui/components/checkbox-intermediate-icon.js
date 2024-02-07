@@ -1,5 +1,5 @@
-export const CheckboxIntermediateIcon = () => (
-  <svg
+export function CheckboxIntermediateIcon() {
+  return <svg
     fill="none"
     height="24"
     viewBox="0 0 24 24"
@@ -13,4 +13,4 @@ export const CheckboxIntermediateIcon = () => (
       fillRule="evenodd"
     />
   </svg>
-);
+}

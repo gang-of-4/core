@@ -1,5 +1,4 @@
 import { cloneElement, useContext } from 'react';
-import PropTypes from 'prop-types';
 import { DropdownContext } from './dropdown-context';
 
 export function DropdownTrigger(props) {
@@ -17,7 +16,3 @@ export function DropdownTrigger(props) {
     }
   });
 }
-
-DropdownTrigger.propTypes = {
-  children: PropTypes.element.isRequired
-};

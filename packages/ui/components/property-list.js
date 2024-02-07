@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import { List } from '@mui/material';
 
-export const PropertyList = (props) => {
+export function PropertyList(props) {
   const { children } = props;
 
   return (
@@ -9,8 +8,4 @@ export const PropertyList = (props) => {
       {children}
     </List>
   );
-};
-
-PropertyList.propTypes = {
-  children: PropTypes.node
-};
+}
