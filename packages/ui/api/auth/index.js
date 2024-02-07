@@ -37,7 +37,7 @@ class AuthApi {
       return ({ user });
 
     } catch (err) {
-      throw new Error('[Auth Api]: ', err);
+      throw new Error(err.message);
     }
   }
 
@@ -69,7 +69,7 @@ class AuthApi {
       return ({ accessToken });
 
     } catch (err) {
-      throw new Error('[Auth Api]: ', err);
+      throw new Error(err.message);
     }
   };
 
@@ -117,7 +117,7 @@ class AuthApi {
         deletedAt: user.deletedAt
       });
     } catch (err) {
-      throw new Error('[Auth Api]: ', err);
+      throw new Error(err.message);
     }
   }
 
