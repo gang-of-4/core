@@ -1,1 +1,0 @@
-export { UiCard } from "./UiCard";

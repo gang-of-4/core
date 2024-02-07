@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import Menu01Icon from '@untitled-ui/icons-react/build/esm/Menu01';
 import { Box, IconButton, Stack, SvgIcon, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -37,7 +36,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[700],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        } else {
+        } 
           return {
             '--nav-bg': theme.palette.background.default,
             '--nav-color': theme.palette.text.primary,
@@ -56,7 +55,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[400],
             '--nav-scrollbar-color': theme.palette.neutral[900]
           };
-        }
+        
 
       case 'discreet':
         if (theme.palette.mode === 'dark') {
@@ -77,7 +76,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[700],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        } else {
+        } 
           return {
             '--nav-bg': theme.palette.neutral[50],
             '--nav-color': theme.palette.text.primary,
@@ -96,7 +95,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[400],
             '--nav-scrollbar-color': theme.palette.neutral[900]
           };
-        }
+        
 
       case 'evident':
         if (theme.palette.mode === 'dark') {
@@ -117,7 +116,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[600],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        } else {
+        } 
           return {
             '--nav-bg': theme.palette.neutral[800],
             '--nav-color': theme.palette.common.white,
@@ -135,7 +134,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[600],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        }
+        
 
       default:
         return {};
@@ -143,7 +142,7 @@ const useCssVars = (color) => {
   }, [theme, color]);
 };
 
-export const TopNav = (props) => {
+export function TopNav(props) {
   const { color = 'evident', onMobileNav, sections = [], children } = props;
   const pathname = usePathname();
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
@@ -218,8 +217,7 @@ export const TopNav = (props) => {
           </AccountButton>
         </Stack>
       </Stack>
-      {mdUp && (
-        <Box
+      {mdUp ? <Box
           sx={{
             borderTopWidth: 1,
             borderTopStyle: 'solid',
@@ -253,14 +251,7 @@ export const TopNav = (props) => {
               ))}
             </Stack>
           </Scrollbar>
-        </Box>
-      )}
+        </Box> : null}
     </Box>
   );
-};
-
-TopNav.propTypes = {
-  color: PropTypes.oneOf(['blend-in', 'discreet', 'evident']),
-  onMobileNav: PropTypes.func,
-  sections: PropTypes.array
-};
+}

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import PropTypes from 'prop-types';
 import { Box, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MobileNav } from '../mobile-nav';
@@ -23,7 +22,7 @@ const useMobileNav = () => {
   useEffect(() => {
     handlePathnameChange();
   },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [pathname]);
 
   const handleOpen = useCallback(() => {
@@ -57,14 +56,13 @@ const VerticalLayoutContainer = styled('div')({
   width: '100%'
 });
 
-export const VerticalLayout = (props) => {
+export function VerticalLayout(props) {
   const { children, sections, navColor, options, bgUrl } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const mobileNav = useMobileNav();
 
   return (
-    <>
-      <Box
+    <Box
         sx={{
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'top center',
@@ -75,20 +73,18 @@ export const VerticalLayout = (props) => {
         <TopNav onMobileNavOpen={mobileNav.handleOpen}>
           {/* options under topnav go here */}
         </TopNav>
-        {lgUp && (
-          <SideNav
+        {lgUp ? <SideNav
             color={navColor}
-            sections={sections}
             options={options}
-          />
-        )}
+            sections={sections}
+          /> : null}
         {!lgUp && (
           <MobileNav
             color={navColor}
             onClose={mobileNav.handleClose}
             open={mobileNav.isOpen}
-            sections={sections}
             options={options}
+            sections={sections}
           />
         )}
         <VerticalLayoutRoot>
@@ -97,10 +93,5 @@ export const VerticalLayout = (props) => {
           </VerticalLayoutContainer>
         </VerticalLayoutRoot>
       </Box>
-    </>
   );
-};
-
-VerticalLayout.propTypes = {
-  children: PropTypes.node
 };

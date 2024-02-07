@@ -3,7 +3,7 @@ import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
 import { IconButton, SvgIcon, Tooltip } from '@mui/material';
 import { SearchDialog } from './search-dialog';
 
-export const SearchButton = () => {
+export function SearchButton() {
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleOpen = useCallback(() => {
@@ -29,4 +29,4 @@ export const SearchButton = () => {
       />
     </>
   );
-};
+}

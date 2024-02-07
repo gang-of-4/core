@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { Box, Link, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Stack, Tooltip } from '@mui/material';
 // import { paths } from '../../paths';
 
 const issuers = {
@@ -11,7 +10,7 @@ const issuers = {
   // JWT: '/assets/logos/logo-jwt.svg'
 };
 
-export const AuthIssuer = (props) => {
+export function AuthIssuer(props) {
   const { issuer: currentIssuer } = props;
 
   return (
@@ -60,9 +59,4 @@ export const AuthIssuer = (props) => {
       </Stack>
     </Box>
   );
-};
-
-AuthIssuer.propTypes = {
-  // @ts-ignore
-  issuer: PropTypes.string.isRequired
-};
+}

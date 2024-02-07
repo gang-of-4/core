@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import { Stack } from '@mui/material';
 import { TopNavItem } from './top-nav-item';
 
-export const TopNavSection = (props) => {
+export function TopNavSection(props) {
   const { items = [], pathname } = props;
 
   return (
@@ -17,7 +16,7 @@ export const TopNavSection = (props) => {
       }}
     >
       {items.map((item) => {
-        const checkPath = !!(item.path && pathname);
+        const checkPath = Boolean(item.path && pathname);
         const partialMatch = checkPath ? pathname.includes(item.path) : false;
         const exactMatch = checkPath ? pathname === item.path : false;
 
@@ -54,10 +53,4 @@ export const TopNavSection = (props) => {
       })}
     </Stack>
   );
-};
-
-TopNavSection.propTypes = {
-  items: PropTypes.array,
-  pathname: PropTypes.string,
-  subheader: PropTypes.string
-};
+}

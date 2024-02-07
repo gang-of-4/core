@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import PropTypes from 'prop-types';
 import { useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MobileNav } from '../mobile-nav';
@@ -19,7 +18,7 @@ const useMobileNav = () => {
   useEffect(() => {
       handlePathnameChange();
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [pathname]);
 
   const handleOpen = useCallback(() => {
@@ -50,7 +49,7 @@ const HorizontalLayoutContainer = styled('div')({
   width: '100%'
 });
 
-export const HorizontalLayout = (props) => {
+export function HorizontalLayout(props) {
   const { children, navColor, sections } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const mobileNav = useMobileNav();
@@ -79,8 +78,4 @@ export const HorizontalLayout = (props) => {
       </HorizontalLayoutRoot>
     </>
   );
-};
-
-HorizontalLayout.propTypes = {
-  children: PropTypes.node
-};
+}

@@ -1,7 +1,6 @@
 import { useTheme } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 
-export const PlanIcon = (props) => {
+export function PlanIcon(props) {
   const { variant } = props;
   const theme = useTheme();
   const fillColor = theme.palette.primary.main;
@@ -70,8 +69,4 @@ export const PlanIcon = (props) => {
     default:
       return null;
   }
-};
-
-PlanIcon.propTypes = {
-  variant: PropTypes.oneOf(['startup', 'standard', 'business']).isRequired
-};
+}

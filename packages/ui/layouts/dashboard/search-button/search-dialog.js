@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
 import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
 import XIcon from '@untitled-ui/icons-react/build/esm/X';
 import {
@@ -45,7 +44,7 @@ const articles = {
   ]
 };
 
-export const SearchDialog = (props) => {
+export function SearchDialog(props) {
   const { onClose, open = false, ...other } = props;
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +96,6 @@ export const SearchDialog = (props) => {
           sx={{ mt: 3 }}
         >
           <TextField
-            fullWidth
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -107,14 +105,14 @@ export const SearchDialog = (props) => {
                 </InputAdornment>
               )
             }}
+            fullWidth
             label="Search"
             onChange={(event) => setValue(event.target.value)}
             placeholder="Search..."
             value={value}
           />
         </Box>
-        {isLoading && (
-          <Box
+        {isLoading ? <Box
             sx={{
               display: 'flex',
               justifyContent: 'center',
@@ -122,10 +120,8 @@ export const SearchDialog = (props) => {
             }}
           >
             <CircularProgress />
-          </Box>
-        )}
-        {displayArticles && (
-          <Stack
+          </Box> : null}
+        {displayArticles ? <Stack
             spacing={2}
             sx={{ mt: 3 }}
           >
@@ -146,7 +142,7 @@ export const SearchDialog = (props) => {
                     borderWidth: 1
                   }}
                 >
-                  {articles[type].map((article, index) => (
+                  {articles[type].map((article) => (
                     <Box
                       key={article.title}
                       sx={{ p: 2 }}
@@ -173,8 +169,8 @@ export const SearchDialog = (props) => {
                       </Typography>
                       <Typography
                         color="text.secondary"
-                        variant="body2"
                         sx={{ mt: 1 }}
+                        variant="body2"
                       >
                         {article.description}
                       </Typography>
@@ -183,14 +179,8 @@ export const SearchDialog = (props) => {
                 </Stack>
               </Stack>
             ))}
-          </Stack>
-        )}
+          </Stack> : null}
       </DialogContent>
     </Dialog>
   );
-};
-
-SearchDialog.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool
-};
+}

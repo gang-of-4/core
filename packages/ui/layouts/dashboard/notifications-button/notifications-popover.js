@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import User01Icon from '@untitled-ui/icons-react/build/esm/User01';
 import Mail04Icon from '@untitled-ui/icons-react/build/esm/Mail04';
@@ -100,8 +99,8 @@ const renderContent = (notification) => {
                 }}
               >
                 <Typography
-                  variant="subtitle2"
                   sx={{ mr: 0.5 }}
+                  variant="subtitle2"
                 >
                   New feature!
                 </Typography>
@@ -184,7 +183,7 @@ const renderContent = (notification) => {
   }
 };
 
-export const NotificationsPopover = (props) => {
+export function NotificationsPopover(props) {
   const {
     anchorEl,
     notifications,
@@ -199,6 +198,7 @@ export const NotificationsPopover = (props) => {
 
   return (
     <Popover
+      PaperProps={{ sx: { width: 380 } }}
       anchorEl={anchorEl}
       anchorOrigin={{
         horizontal: 'left',
@@ -207,7 +207,6 @@ export const NotificationsPopover = (props) => {
       disableScrollLock
       onClose={onClose}
       open={open}
-      PaperProps={{ sx: { width: 380 } }}
       {...other}>
       <Stack
         alignItems="center"
@@ -227,9 +226,9 @@ export const NotificationsPopover = (props) => {
         </Typography>
         <Tooltip title="Mark all as read">
           <IconButton
+            color="inherit"
             onClick={onMarkAllAsRead}
             size="small"
-            color="inherit"
           >
             <SvgIcon>
               <Mail04Icon />
@@ -252,15 +251,6 @@ export const NotificationsPopover = (props) => {
                 <ListItem
                   divider
                   key={notification.id}
-                  sx={{
-                    alignItems: 'flex-start',
-                    '&:hover': {
-                      backgroundColor: 'action.hover'
-                    },
-                    '& .MuiListItemSecondaryAction-root': {
-                      top: '24%'
-                    }
-                  }}
                   secondaryAction={(
                     <Tooltip title="Remove">
                       <IconButton
@@ -274,6 +264,15 @@ export const NotificationsPopover = (props) => {
                       </IconButton>
                     </Tooltip>
                   )}
+                  sx={{
+                    alignItems: 'flex-start',
+                    '&:hover': {
+                      backgroundColor: 'action.hover'
+                    },
+                    '& .MuiListItemSecondaryAction-root': {
+                      top: '24%'
+                    }
+                  }}
                 >
                   {renderContent(notification)}
                 </ListItem>
@@ -283,13 +282,4 @@ export const NotificationsPopover = (props) => {
         )}
     </Popover>
   );
-};
-
-NotificationsPopover.propTypes = {
-  anchorEl: PropTypes.any,
-  notifications: PropTypes.array.isRequired,
-  onClose: PropTypes.func,
-  onMarkAllAsRead: PropTypes.func,
-  onRemoveOne: PropTypes.func,
-  open: PropTypes.bool
-};
+}

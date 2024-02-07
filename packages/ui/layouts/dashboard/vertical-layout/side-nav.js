@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import { Box, Drawer, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Logo } from '../../../components/logo';
 import { Scrollbar } from '../../../components/scrollbar';
 import { paths } from '../../../paths';
 import { OptionSwitch } from '../option-switch';
-import { SideNavSection } from './side-nav-section';
 import { organization } from '../../../config';
+import { SideNavSection } from './side-nav-section';
 
 
 const SIDE_NAV_WIDTH = 280;
@@ -38,7 +37,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[700],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        } else {
+        } 
           return {
             '--nav-bg': theme.palette.background.default,
             '--nav-color': theme.palette.text.primary,
@@ -56,7 +55,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[400],
             '--nav-scrollbar-color': theme.palette.neutral[900]
           };
-        }
+        
 
       case 'discreet':
         if (theme.palette.mode === 'dark') {
@@ -77,7 +76,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[700],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        } else {
+        } 
           return {
             '--nav-bg': theme.palette.neutral[50],
             '--nav-color': theme.palette.text.primary,
@@ -95,7 +94,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[400],
             '--nav-scrollbar-color': theme.palette.neutral[900]
           };
-        }
+        
 
       case 'evident':
         if (theme.palette.mode === 'dark') {
@@ -116,7 +115,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[600],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        } else {
+        } 
           return {
             '--nav-bg': theme.palette.neutral[800],
             '--nav-color': theme.palette.common.white,
@@ -134,7 +133,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[600],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        }
+        
 
       default:
         return {};
@@ -142,15 +141,13 @@ const useCssVars = (color) => {
   }, [theme, color]);
 };
 
-export const SideNav = (props) => {
+export function SideNav(props) {
   const { color = 'evident', sections = [], options } = props;
   const pathname = usePathname();
   const cssVars = useCssVars(color);
 
   return (
     <Drawer
-      anchor="left"
-      open
       PaperProps={{
         sx: {
           ...cssVars,
@@ -162,6 +159,8 @@ export const SideNav = (props) => {
           width: SIDE_NAV_WIDTH
         }
       }}
+      anchor="left"
+      open
       variant="permanent"
     >
       <Scrollbar
@@ -210,17 +209,16 @@ export const SideNav = (props) => {
           <Stack
             component="nav"
             spacing={2}
+            style={{
+              alignItems: 'flex-start',
+            }}
             sx={{
               flexGrow: 1,
               px: 2
             }}
-            style={{
-              alignItems: 'flex-start',
-            }}
           >
             {
-              options &&
-              <Stack
+              options ? <Stack
                 component="ul"
                 spacing={0.5}
                 sx={{
@@ -230,14 +228,14 @@ export const SideNav = (props) => {
                   width: '100%',
                 }}>
                 <OptionSwitch
-                  sx={{ flexGrow: 1 }}
-                  options={options.list}
                   firstOption={options.firstOption}
-                  optionsTitle={options.title}
-                  optionsSubtitle={options.subtitle}
                   handleOptionsChange={options.handleChange}
+                  options={options.list}
+                  optionsSubtitle={options.subtitle}
+                  optionsTitle={options.title}
+                  sx={{ flexGrow: 1 }}
                 />
-              </Stack>
+              </Stack> : null
             }
             {sections.map((section, index) => (
               <SideNavSection
@@ -252,9 +250,4 @@ export const SideNav = (props) => {
       </Scrollbar>
     </Drawer>
   );
-};
-
-SideNav.propTypes = {
-  color: PropTypes.oneOf(['blend-in', 'discreet', 'evident']),
-  sections: PropTypes.array
-};
+}

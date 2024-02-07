@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import Menu01Icon from '@untitled-ui/icons-react/build/esm/Menu01';
 import {
   Box,
@@ -16,14 +15,14 @@ import { alpha } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
 import { useWindowScroll } from '../../hooks/use-window-scroll';
 import { paths } from '../../paths';
-import { TopNavItem } from './top-nav-item';
 import { organization } from '../../config'
-import Account from '../../components/custom/Account';
+import { Account } from '../../components/custom/account';
+import { TopNavItem } from './top-nav-item';
 
 
 const TOP_NAV_HEIGHT = 64;
 
-export const TopNav = (props) => {
+export function TopNav(props) {
   const { onMobileNavOpen, items, openSide, app } = props;
   const pathname = usePathname();
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
@@ -104,75 +103,71 @@ export const TopNav = (props) => {
                 <Logo />
 
               </Box>
-              {mdUp && (
-                <Box
-                  sx={{
-                    color: 'text.primary',
-                    fontFamily: '\'Plus Jakarta Sans\', sans-serif',
-                    fontSize: 14,
-                    fontWeight: 800,
-                    letterSpacing: '0.3px',
-                    lineHeight: 2.5,
-                    '& span': {
-                      color: 'primary.main'
-                    }
-                  }}
-                >
-                  {organization.name}
-                </Box>
-              )}
+              {mdUp ? <Box
+                sx={{
+                  color: 'text.primary',
+                  fontFamily: '\'Plus Jakarta Sans\', sans-serif',
+                  fontSize: 14,
+                  fontWeight: 800,
+                  letterSpacing: '0.3px',
+                  lineHeight: 2.5,
+                  '& span': {
+                    color: 'primary.main'
+                  }
+                }}
+              >
+                {organization.name}
+              </Box> : null}
             </Stack>
             <Chip
               label={organization.version}
               size="small"
             />
           </Stack>
-          {mdUp && (
-            <Stack
-              alignItems="center"
-              direction="row"
-              spacing={2}
+          {mdUp ? <Stack
+            alignItems="center"
+            direction="row"
+            spacing={2}
+          >
+            <Box
+              component="nav"
+              sx={{ height: '100%' }}
             >
-              <Box
-                component="nav"
-                sx={{ height: '100%' }}
+              <Stack
+                alignItems="center"
+                component="ul"
+                direction="row"
+                justifyContent="center"
+                spacing={1}
+                sx={{
+                  height: '100%',
+                  listStyle: 'none',
+                  m: 0,
+                  p: 0
+                }}
               >
-                <Stack
-                  component="ul"
-                  alignItems="center"
-                  justifyContent="center"
-                  direction="row"
-                  spacing={1}
-                  sx={{
-                    height: '100%',
-                    listStyle: 'none',
-                    m: 0,
-                    p: 0
-                  }}
-                >
-                  <>
-                    {items.map((item) => {
-                      const checkPath = !!(item.path && pathname);
-                      const partialMatch = checkPath ? pathname.includes(item.path) : false;
-                      const exactMatch = checkPath ? pathname === item.path : false;
-                      const active = item.children ? partialMatch : exactMatch;
+                <>
+                  {items.map((item) => {
+                    const checkPath = Boolean(item.path && pathname);
+                    const partialMatch = checkPath ? pathname.includes(item.path) : false;
+                    const exactMatch = checkPath ? pathname === item.path : false;
+                    const active = item.children ? partialMatch : exactMatch;
 
-                      return (
-                        <TopNavItem
-                          active={active}
-                          key={item.title}
-                          path={item.path}
-                          title={item.title}
-                        >
-                          {item.children}
-                        </TopNavItem>
-                      );
-                    })}
-                  </>
-                </Stack>
-              </Box>
-            </Stack>
-          )}
+                    return (
+                      <TopNavItem
+                        active={active}
+                        key={item.title}
+                        path={item.path}
+                        title={item.title}
+                      >
+                        {item.children}
+                      </TopNavItem>
+                    );
+                  })}
+                </>
+              </Stack>
+            </Box>
+          </Stack> : null}
           <Stack
             alignItems="center"
             direction="row"
@@ -195,8 +190,4 @@ export const TopNav = (props) => {
       </Container>
     </Box>
   );
-};
-
-TopNav.propTypes = {
-  onMobileNavOpen: PropTypes.func
-};
+}

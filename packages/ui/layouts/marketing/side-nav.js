@@ -1,11 +1,10 @@
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import { Box, ButtonBase, Drawer, Stack } from '@mui/material';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
-import { SideNavItem } from './side-nav-item';
 import { organization } from '../../config'
+import { SideNavItem } from './side-nav-item';
 
 
 const renderItems = ({ depth = 0, items, pathname }) => items.reduce((acc,
@@ -17,7 +16,7 @@ const renderItems = ({ depth = 0, items, pathname }) => items.reduce((acc,
 }), []);
 
 const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
-  const checkPath = !!(item.path && pathname);
+  const checkPath = Boolean(item.path && pathname);
   const partialMatch = checkPath ? pathname.includes(item.path) : false;
   const exactMatch = checkPath ? pathname === item.path : false;
 
@@ -44,8 +43,7 @@ const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
                 p: 0
               }}
             >
-              {child.subheader && (
-                <Box
+              {child.subheader ? <Box
                   component="li"
                   sx={{
                     color: 'text.secondary',
@@ -58,13 +56,12 @@ const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
                   }}
                 >
                   {child.subheader}
-                </Box>
-              )}
+                </Box> : null}
               {child.items.map((item) => {
-                const checkPath = !!(item.path && pathname);
+                const checkPath = Boolean(item.path && pathname);
                 const active = checkPath ? pathname === item.path : false;
 
-                let linkProps = undefined;
+                let linkProps;
 
                 if (item.path) {
                   const isExternal = item.path.startsWith('http');
@@ -163,21 +160,21 @@ const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
   return acc;
 };
 
-export const SideNav = (props) => {
+export function SideNav(props) {
   const { onClose, open = false, items } = props;
   const pathname = usePathname();
 
   return (
     <Drawer
-      anchor="right"
-      onClose={onClose}
-      open={open}
       PaperProps={{
         sx: {
           maxWidth: '100%',
           width: 300
         }
       }}
+      anchor="right"
+      onClose={onClose}
+      open={open}
       variant="temporary"
     >
       <Box
@@ -239,9 +236,4 @@ export const SideNav = (props) => {
       </Box>
     </Drawer>
   );
-};
-
-SideNav.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool
-};
+}
