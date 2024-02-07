@@ -13,7 +13,7 @@ import { getSections } from '@/components/dashboard/Sections'
 import { paths } from 'ui/paths'
 
 
-function layout({ children }) {
+function Layout({ children }) {
 
   const router = useRouter();
   const params = useParams();
@@ -114,4 +114,4 @@ function layout({ children }) {
   )
 }
 
-export default withAuthGuard(layout, { role: 'vendor' });
+export default withAuthGuard(Layout, { role: 'vendor' });

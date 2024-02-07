@@ -32,9 +32,9 @@ export async function formatStore(store) {
                 vendor: vendor,
                 name: store?.businessStore?.name,
                 status: store?.status,
-                vatNumber: store?.businessStore?.vat_number,
-                crNumber: store?.businessStore?.cr_number,
-                ownerNationalId: store?.businessStore?.owner_national_id,
+                vatNumber: store?.businessStore?.vatNumber,
+                crNumber: store?.businessStore?.crNumber,
+                ownerNationalId: store?.businessStore?.ownerNationalId,
                 logo: store?.businessStore?.logo,
                 type: 'business'
             }

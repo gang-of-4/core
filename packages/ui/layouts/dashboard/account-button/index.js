@@ -1,11 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
-import User01Icon from '@untitled-ui/icons-react/build/esm/User01';
-import { Avatar, Box, ButtonBase, SvgIcon } from '@mui/material';
-import { AccountPopover } from './account-popover';
+import { Avatar, Box, ButtonBase } from '@mui/material';
 import { useAuth } from '../../../hooks/use-auth';
 import { getInitials } from '../../../utils/get-initials';
+import { AccountPopover } from './account-popover';
 
-export const AccountButton = ({children}) => {
+export function AccountButton({children}) {
   const { user } = useAuth();
   const anchorRef = useRef(null);
   const [openPopover, setOpenPopover] = useState(false);
@@ -36,11 +35,11 @@ export const AccountButton = ({children}) => {
         }}
       >
         <Avatar
+          src={user?.avatar}
           sx={{
             height: 32,
             width: 32
           }}
-          src={user?.avatar}
         >
           {/* <SvgIcon>
             <User01Icon />
@@ -50,10 +49,10 @@ export const AccountButton = ({children}) => {
       </Box>
       <AccountPopover
         anchorEl={anchorRef.current}
+        listItems={children}
         onClose={handlePopoverClose}
         open={openPopover}
-        listItems={children}
       />
     </div>
   );
-};
+}

@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
 import NextLink from 'next/link';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import { Box, ButtonBase, Paper, Portal, SvgIcon, Typography } from '@mui/material';
@@ -9,7 +8,7 @@ const TOP_NAV_HEIGHT = 64;
 const TOP_NAV_SPACE = 16;
 const OFFSET = 16;
 
-export const TopNavItem = (props) => {
+export function TopNavItem(props) {
   const { active, children, path, title } = props;
   const [open, setOpen] = useState(false);
 
@@ -28,13 +27,13 @@ export const TopNavItem = (props) => {
       <>
         <Box
           component="li"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           sx={{
             display: 'flex',
             alignItems: 'center',
             height: '100%'
           }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
         >
           <ButtonBase
             disableRipple
@@ -70,15 +69,14 @@ export const TopNavItem = (props) => {
             </SvgIcon>
           </ButtonBase>
         </Box>
-        {open && (
-          <Portal>
+        {open ? <Portal>
             <Box
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               sx={{
                 left: 0,
                 position: 'fixed',
-                pt: OFFSET + 'px',
+                pt: `${OFFSET  }px`,
                 right: 0,
                 top: TOP_NAV_HEIGHT + TOP_NAV_SPACE,
                 zIndex: (theme) => theme.zIndex.appBar + 100
@@ -96,15 +94,14 @@ export const TopNavItem = (props) => {
                 {children}
               </Paper>
             </Box>
-          </Portal>
-        )}
+          </Portal> : null}
       </>
     );
   }
 
   // Simple
 
-  let linkProps = undefined;
+  let linkProps;
 
   if (path) {
     const isExternal = path.startsWith('http');
@@ -157,11 +154,4 @@ export const TopNavItem = (props) => {
       </ButtonBase>
     </Box>
   );
-};
-
-TopNavItem.propTypes = {
-  active: PropTypes.bool,
-  children: PropTypes.any,
-  path: PropTypes.string,
-  title: PropTypes.string.isRequired
-};
+}

@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function page() {
+export default function Page() {
 
     const classes = useStyles();
 

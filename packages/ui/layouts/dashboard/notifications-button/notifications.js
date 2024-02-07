@@ -1,6 +1,5 @@
-import { subDays, subHours } from 'date-fns';
-
-const now = new Date();
+// import { subDays, subHours } from 'date-fns';
+// const now = new Date();
 
 export const notifications = [
   // @todo notifications

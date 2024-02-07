@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import { Box, Drawer, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Logo } from '../../../components/logo';
@@ -39,7 +38,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[700],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        } else {
+        } 
           return {
             '--nav-bg': theme.palette.background.default,
             '--nav-color': theme.palette.text.primary,
@@ -56,7 +55,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[400],
             '--nav-scrollbar-color': theme.palette.neutral[900]
           };
-        }
+        
 
       case 'evident':
         if (theme.palette.mode === 'dark') {
@@ -76,7 +75,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[600],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        } else {
+        } 
           return {
             '--nav-bg': theme.palette.neutral[800],
             '--nav-color': theme.palette.common.white,
@@ -93,7 +92,7 @@ const useCssVars = (color) => {
             '--nav-item-chevron-color': theme.palette.neutral[600],
             '--nav-scrollbar-color': theme.palette.neutral[400]
           };
-        }
+        
 
       default:
         return {};
@@ -101,16 +100,13 @@ const useCssVars = (color) => {
   }, [theme, color]);
 };
 
-export const MobileNav = (props) => {
+export function MobileNav(props) {
   const { color = 'evident', open, onClose, sections = [], options } = props;
   const pathname = usePathname();
   const cssVars = useCssVars(color);
 
   return (
     <Drawer
-      anchor="left"
-      onClose={onClose}
-      open={open}
       PaperProps={{
         sx: {
           ...cssVars,
@@ -119,6 +115,9 @@ export const MobileNav = (props) => {
           width: MOBILE_NAV_WIDTH
         }
       }}
+      anchor="left"
+      onClose={onClose}
+      open={open}
       variant="temporary"
     >
       <Scrollbar
@@ -173,8 +172,7 @@ export const MobileNav = (props) => {
             }}
           >
             {
-              options &&
-              <Stack
+              options ? <Stack
                 component="ul"
                 spacing={0.5}
                 sx={{
@@ -183,14 +181,14 @@ export const MobileNav = (props) => {
                   p: 0,
                 }}>
                 <OptionSwitch
-                  sx={{ flexGrow: 1 }}
-                  options={options.list}
                   firstOption={options.firstOption}
-                  optionsTitle={options.title}
-                  optionsSubtitle={options.subtitle}
                   handleOptionsChange={options.handleChange}
+                  options={options.list}
+                  optionsSubtitle={options.subtitle}
+                  optionsTitle={options.title}
+                  sx={{ flexGrow: 1 }}
                 />
-              </Stack>
+              </Stack> : null
             }
             {sections.map((section, index) => (
               <SideNavSection
@@ -205,11 +203,4 @@ export const MobileNav = (props) => {
       </Scrollbar>
     </Drawer>
   );
-};
-
-MobileNav.propTypes = {
-  color: PropTypes.oneOf(['blend-in', 'discreet', 'evident']),
-  onClose: PropTypes.func,
-  open: PropTypes.bool,
-  sections: PropTypes.array
-};
+}

@@ -1,10 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import { Box, IconButton, Stack, SvgIcon, Typography } from '@mui/material';
 import { OptionPopover } from './option-popover';
 
-export const OptionSwitch = (props) => {
+export function OptionSwitch(props) {
 
   const {
     options,
@@ -68,17 +67,12 @@ export const OptionSwitch = (props) => {
       </Stack>
       <OptionPopover
         anchorEl={anchorRef.current}
+        firstOption={firstOption}
         onChange={handleChange}
         onClose={handlePopoverClose}
         open={openPopover}
         options={options}
-        firstOption={firstOption}
       />
     </>
   );
-};
-
-OptionSwitch.propTypes = {
-  // @ts-ignore
-  sx: PropTypes.object
-};
+}

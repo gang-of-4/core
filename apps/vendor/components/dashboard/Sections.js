@@ -1,5 +1,5 @@
 import { SvgIcon } from '@mui/material';
-import HomeSmileIcon from 'ui/icons/untitled-ui/duocolor/home-smile';
+import { HomeSmile } from 'ui/icons/untitled-ui/duocolor/home-smile';
 import { paths } from 'ui/paths';
 
 export const getSections = () => [
@@ -10,7 +10,7 @@ export const getSections = () => [
         path: paths.vendor.dashboard.index,
         icon: (
           <SvgIcon fontSize="small">
-            <HomeSmileIcon />
+            <HomeSmile />
           </SvgIcon>
         )
       },

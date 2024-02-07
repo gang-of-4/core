@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Box, Stack } from '@mui/material';
 import { MobileNavItem } from './mobile-nav-item';
 
@@ -11,7 +10,7 @@ const renderItems = ({ depth = 0, items, pathname }) => items.reduce((acc,
 }), []);
 
 const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
-  const checkPath = !!(item.path && pathname);
+  const checkPath = Boolean(item.path && pathname);
   const partialMatch = checkPath ? pathname.includes(item.path) : false;
   const exactMatch = checkPath ? pathname === item.path : false;
 
@@ -63,7 +62,7 @@ const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
   return acc;
 };
 
-export const MobileNavSection = (props) => {
+export function MobileNavSection(props) {
   const { items = [], pathname, subheader = '', ...other } = props;
 
   return (
@@ -76,8 +75,7 @@ export const MobileNavSection = (props) => {
         p: 0
       }}
       {...other}>
-      {subheader && (
-        <Box
+      {subheader ? <Box
           component="li"
           sx={{
             color: 'var(--nav-section-title-color)',
@@ -90,15 +88,8 @@ export const MobileNavSection = (props) => {
           }}
         >
           {subheader}
-        </Box>
-      )}
+        </Box> : null}
       {renderItems({ items, pathname })}
     </Stack>
   );
-};
-
-MobileNavSection.propTypes = {
-  items: PropTypes.array,
-  pathname: PropTypes.string,
-  subheader: PropTypes.string
-};
+}

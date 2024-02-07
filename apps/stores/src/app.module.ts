@@ -5,8 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    StoresModule, 
-    PrismaModule, 
+    StoresModule,
+    PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

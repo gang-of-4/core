@@ -4,32 +4,32 @@ import { StoreEntity } from './store.entity';
 import { Exclude, Type } from 'class-transformer';
 
 export class BusinessStoreEntity implements BusinessStore {
-    @ApiProperty()
-    id: string;
+  @ApiProperty()
+  id: string;
 
-    @Exclude()
-    storeId: Store['id'];
+  @Exclude()
+  storeId: Store['id'];
 
-    @ApiProperty({ type: StoreEntity })
-    @Type(() => StoreEntity)
-    store: StoreEntity;
+  @ApiProperty({ type: StoreEntity })
+  @Type(() => StoreEntity)
+  store: StoreEntity;
 
-    @ApiProperty()
-    name: string;
+  @ApiProperty()
+  name: string;
 
-    @ApiProperty()
-    logo: string;
+  @ApiProperty()
+  logo: string;
 
-    @ApiProperty()
-    vat_number: string;
+  @ApiProperty()
+  vatNumber: string;
 
-    @ApiProperty()
-    cr_number: string;
+  @ApiProperty()
+  crNumber: string;
 
-    @ApiProperty()
-    owner_national_id: string;
+  @ApiProperty()
+  ownerNationalId: string;
 
-    constructor(partial: Partial<BusinessStoreEntity>) {
-        Object.assign(this, partial);
-    }
+  constructor(partial: Partial<BusinessStoreEntity>) {
+    Object.assign(this, partial);
+  }
 }

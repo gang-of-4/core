@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import NextLink from 'next/link';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import {
@@ -29,7 +28,7 @@ const LayoutContainer = styled('div')({
   width: '100%'
 });
 
-export const Layout = (props) => {
+export function Layout(props) {
   const { breadcrumbs, children, title } = props;
 
   return (
@@ -70,8 +69,7 @@ export const Layout = (props) => {
                 {title}
               </Typography>
             </div>
-            {breadcrumbs && (
-              <div>
+            {breadcrumbs ? <div>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   {breadcrumbs.map((item, index) => {
                     const isLast = breadcrumbs.length - 1 === index;
@@ -101,8 +99,7 @@ export const Layout = (props) => {
                     );
                   })}
                 </Breadcrumbs>
-              </div>
-            )}
+              </div> : null}
           </Stack>
         </Container>
       </Box>
@@ -112,10 +109,4 @@ export const Layout = (props) => {
       </LayoutContainer>
     </LayoutRoot>
   );
-};
-
-Layout.propTypes = {
-  breadcrumbs: PropTypes.array,
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired
-};
+}
