@@ -23,7 +23,7 @@ import { TopNavItem } from './top-nav-item';
 const TOP_NAV_HEIGHT = 64;
 
 export function TopNav(props) {
-  const { onMobileNavOpen, items, openSide, app } = props;
+  const { onMobileNavOpen, items, openSide, app, children } = props;
   const pathname = usePathname();
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const [elevate, setElevate] = useState(false);
@@ -103,7 +103,7 @@ export function TopNav(props) {
                 <Logo />
 
               </Box>
-              {mdUp ? <Box
+              <Box
                 sx={{
                   color: 'text.primary',
                   fontFamily: '\'Plus Jakarta Sans\', sans-serif',
@@ -117,12 +117,8 @@ export function TopNav(props) {
                 }}
               >
                 {organization.name}
-              </Box> : null}
+              </Box>
             </Stack>
-            <Chip
-              label={organization.version}
-              size="small"
-            />
           </Stack>
           {mdUp ? <Stack
             alignItems="center"
@@ -175,6 +171,7 @@ export function TopNav(props) {
             spacing={2}
             sx={{ flexGrow: 1 }}
           >
+            {children}
             <Account app={app} />
             {!mdUp &&
               openSide > 0 &&
