@@ -19,8 +19,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers authApiURL={authApiURL}>
           <Suspense fallback={<Loading />}>
-            <Header />
-            {children}
+            <Header>
+              {children}
+            </Header>
           </Suspense>
         </Providers>
       </body>
