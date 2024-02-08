@@ -88,7 +88,8 @@ export function TopNavItem(props) {
                   backgroundColor: (theme) => alpha(theme.palette.background.paper, 0.90),
                   backdropFilter: 'blur(6px)',
                   mx: 'auto',
-                  width: (theme) => theme.breakpoints.values.md
+                  // maxWidth: (theme) => theme.breakpoints.values.md,
+                  width: 300,
                 }}
               >
                 {children}
