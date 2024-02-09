@@ -369,22 +369,22 @@ importers:
     dependencies:
       '@nestjs/common':
         specifier: ^10.0.0
-        version: 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+        version: 10.2.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/config':
         specifier: ^3.1.1
         version: 3.1.1(@nestjs/common@10.2.8)(reflect-metadata@0.1.13)
       '@nestjs/core':
         specifier: ^10.0.0
-        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+        version: 10.3.1(@nestjs/common@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/mapped-types':
         specifier: '*'
-        version: 2.0.2(@nestjs/common@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+        version: 2.0.2(@nestjs/common@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)
       '@nestjs/platform-express':
         specifier: ^10.0.0
-        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)
+        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.3.1)
       '@nestjs/swagger':
         specifier: ^7.1.14
-        version: 7.1.14(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+        version: 7.1.14(@nestjs/common@10.2.8)(@nestjs/core@10.3.1)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)
       '@prisma/client':
         specifier: 5.5.2
         version: 5.5.2(prisma@5.5.2)
@@ -393,7 +393,7 @@ importers:
         version: 0.5.1
       class-validator:
         specifier: ^0.14.0
-        version: 0.14.0
+        version: 0.14.1
       prisma:
         specifier: ^5.5.2
         version: 5.5.2
@@ -412,7 +412,7 @@ importers:
         version: 10.0.3(chokidar@3.5.3)(typescript@5.2.2)
       '@nestjs/testing':
         specifier: ^10.0.0
-        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(@nestjs/platform-express@10.2.8)
+        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.3.1)(@nestjs/platform-express@10.2.8)
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.20
@@ -442,7 +442,7 @@ importers:
         version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.52.0)(prettier@3.0.3)
       jest:
         specifier: ^29.5.0
-        version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+        version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.2)
       prettier:
         specifier: ^3.0.0
         version: 3.0.3
@@ -460,7 +460,7 @@ importers:
         version: 9.5.0(typescript@5.2.2)(webpack@5.89.0)
       ts-node:
         specifier: ^10.9.1
-        version: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+        version: 10.9.2(@types/node@20.8.10)(typescript@5.2.2)
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
@@ -474,19 +474,19 @@ importers:
     dependencies:
       '@nestjs/common':
         specifier: ^10.0.0
-        version: 10.2.8(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+        version: 10.2.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core':
         specifier: ^10.0.0
-        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+        version: 10.3.1(@nestjs/common@10.2.8)(@nestjs/platform-express@10.2.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/mapped-types':
         specifier: '*'
-        version: 2.0.2(@nestjs/common@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+        version: 2.0.2(@nestjs/common@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)
       '@nestjs/platform-express':
         specifier: ^10.0.0
-        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)
+        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.3.1)
       '@nestjs/swagger':
         specifier: ^7.1.14
-        version: 7.1.14(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+        version: 7.1.14(@nestjs/common@10.2.8)(@nestjs/core@10.3.1)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)
       '@prisma/client':
         specifier: 5.5.2
         version: 5.5.2(prisma@5.5.2)
@@ -495,7 +495,7 @@ importers:
         version: 0.5.1
       class-validator:
         specifier: ^0.14.0
-        version: 0.14.0
+        version: 0.14.1
       prisma:
         specifier: ^5.5.2
         version: 5.5.2
@@ -514,7 +514,7 @@ importers:
         version: 10.0.3(chokidar@3.5.3)(typescript@5.2.2)
       '@nestjs/testing':
         specifier: ^10.0.0
-        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(@nestjs/platform-express@10.2.8)
+        version: 10.2.8(@nestjs/common@10.2.8)(@nestjs/core@10.3.1)(@nestjs/platform-express@10.2.8)
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.20
@@ -544,7 +544,7 @@ importers:
         version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.52.0)(prettier@3.0.3)
       jest:
         specifier: ^29.5.0
-        version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.1)
+        version: 29.7.0(@types/node@20.8.10)(ts-node@10.9.2)
       prettier:
         specifier: ^3.0.0
         version: 3.0.3
@@ -562,7 +562,7 @@ importers:
         version: 9.5.0(typescript@5.2.2)(webpack@5.89.0)
       ts-node:
         specifier: ^10.9.1
-        version: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+        version: 10.9.2(@types/node@20.8.10)(typescript@5.2.2)
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
