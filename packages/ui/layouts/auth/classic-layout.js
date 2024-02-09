@@ -1,5 +1,4 @@
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import { Box, Container, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
@@ -18,7 +17,7 @@ const LayoutRoot = styled('div')(({ theme }) => ({
   height: '100%'
 }));
 
-export const Layout = (props) => {
+export function Layout(props) {
   const { children } = props;
 
   return (
@@ -45,7 +44,7 @@ export const Layout = (props) => {
               direction="row"
               display="inline-flex"
               // href={paths.index}
-              href={'/'}
+              href="/"
               spacing={1}
               sx={{ textDecoration: 'none' }}
             >
@@ -99,8 +98,4 @@ export const Layout = (props) => {
       </Box>
     </LayoutRoot>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.node
-};
+}

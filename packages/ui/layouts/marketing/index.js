@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { usePathname } from 'next/navigation';
 import { useMediaQuery } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { SideNav } from './side-nav';
 import { TopNav } from './top-nav';
-import { styled } from '@mui/material/styles';
 
 
 const useMobileNav = () => {
@@ -20,8 +19,7 @@ const useMobileNav = () => {
   useEffect(() => {
     handlePathnameChange();
   },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pathname]);
+[pathname]);
 
   const handleOpen = useCallback(() => {
     setIsOpen(true);
@@ -43,7 +41,7 @@ const LayoutRoot = styled('div')(({ theme }) => ({
   height: '100%'
 }));
 
-export const Layout = (props) => {
+export function Layout(props) {
   const { children, app } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const mobileNav = useMobileNav();
@@ -97,18 +95,18 @@ export const Layout = (props) => {
   return (
     <>
       <TopNav 
-        onMobileNavOpen={mobileNav.handleOpen} 
-        items={topItems} 
-        openSide={sideItems.length > 0} 
         app={app} 
+        items={topItems} 
+        onMobileNavOpen={mobileNav.handleOpen} 
+        openSide={sideItems.length > 0} 
       />
       {!lgUp &&
         sideItems.length > 0 &&
         (
           <SideNav
+            items={sideItems}
             onClose={mobileNav.handleClose}
             open={mobileNav.isOpen}
-            items={sideItems}
           />
         )}
       <LayoutRoot>
@@ -116,8 +114,4 @@ export const Layout = (props) => {
       </LayoutRoot>
     </>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.node
-};
+}

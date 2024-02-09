@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import Menu01Icon from '@untitled-ui/icons-react/build/esm/Menu01';
 import { Box, IconButton, Stack, SvgIcon, useMediaQuery } from '@mui/material';
 import { AccountButton } from '../account-button';
@@ -8,7 +7,7 @@ import { SearchButton } from '../search-button';
 const TOP_NAV_HEIGHT = 64;
 const SIDE_NAV_WIDTH = 280;
 
-export const TopNav = (props) => {
+export function TopNav(props) {
   const { onMobileNavOpen, children, ...other } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
@@ -67,8 +66,4 @@ export const TopNav = (props) => {
       </Stack>
     </Box >
   );
-};
-
-TopNav.propTypes = {
-  onMobileNavOpen: PropTypes.func
-};
+}

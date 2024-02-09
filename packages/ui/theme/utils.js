@@ -1,5 +1,5 @@
 import { blue } from './colors';
 
-export const getPrimary = (preset) => {
+export const getPrimary = () => {
   return blue;
 };

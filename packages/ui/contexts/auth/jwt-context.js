@@ -1,16 +1,14 @@
 import { createContext, useCallback, useEffect, useReducer } from 'react';
-import PropTypes from 'prop-types';
 import { authApi } from '../../api/auth';
 import { Issuer } from '../../utils/auth';
 
 
-var ActionType;
-(function (ActionType) {
-  ActionType['INITIALIZE'] = 'INITIALIZE';
-  ActionType['SIGN_IN'] = 'SIGN_IN';
-  ActionType['SIGN_UP'] = 'SIGN_UP';
-  ActionType['SIGN_OUT'] = 'SIGN_OUT';
-})(ActionType || (ActionType = {}));
+export const ActionType = {
+  INITIALIZE: 'INITIALIZE',
+  SIGN_IN: 'SIGN_IN',
+  SIGN_UP: 'SIGN_UP',
+  SIGN_OUT: 'SIGN_OUT'
+};
 
 function getInitialState(STORAGE_KEY) {
   const accessToken = localStorage.getItem(STORAGE_KEY);
@@ -85,7 +83,7 @@ export const AuthContext = createContext({
   signOut: () => Promise.resolve()
 });
 
-export const AuthProvider = (props) => {
+export function AuthProvider(props) {
   const { children, STORAGE_KEY, signOutCallback, apiURL } = props;
   const initializedState = getInitialState(STORAGE_KEY);
   const [state, dispatch] = useReducer(reducer, initializedState);
@@ -114,7 +112,6 @@ export const AuthProvider = (props) => {
         });
       }
     } catch (err) {
-      console.error(err);
       dispatch({
         type: ActionType.INITIALIZE,
         payload: {
@@ -128,7 +125,7 @@ export const AuthProvider = (props) => {
   useEffect(() => {
     initialize();
   },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     []);
 
   const signIn = useCallback(async (userInfo, role) => {
@@ -143,7 +140,7 @@ export const AuthProvider = (props) => {
               email: userInfo.email,
               password: userInfo.password,
             },
-            apiURL: apiURL
+            apiURL
           }
         );
         break;
@@ -154,7 +151,7 @@ export const AuthProvider = (props) => {
               email: userInfo.email,
               password: userInfo.password,
             },
-            apiURL: apiURL
+            apiURL
           }
         );
         break;
@@ -165,9 +162,10 @@ export const AuthProvider = (props) => {
               email: userInfo.email,
               password: userInfo.password,
             },
-            apiURL: apiURL
+            apiURL
           }
         );
+        break;
       default:
         break;
     }
@@ -204,7 +202,7 @@ export const AuthProvider = (props) => {
               password: userInfo.password,
               passwordConfirmation: userInfo.passwordConfirmation
             },
-            apiURL: apiURL
+            apiURL
           },
         );
 
@@ -214,7 +212,7 @@ export const AuthProvider = (props) => {
               email: userInfo.email,
               password: userInfo.password
             },
-            apiURL: apiURL
+            apiURL
           },
         );
         break;
@@ -230,7 +228,7 @@ export const AuthProvider = (props) => {
               password: userInfo.password,
               passwordConfirmation: userInfo.passwordConfirmation
             },
-            apiURL: apiURL
+            apiURL
           },
         );
 
@@ -240,7 +238,7 @@ export const AuthProvider = (props) => {
               email: userInfo.email,
               password: userInfo.password
             },
-            apiURL: apiURL
+            apiURL
           }
         );
         break;
@@ -283,10 +281,6 @@ export const AuthProvider = (props) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
-};
+}
 
 export const AuthConsumer = AuthContext.Consumer;
