@@ -19,7 +19,6 @@ function layout({ children }) {
             xs: 3,
             lg: 4
           }}
-          rowGap={3}
         >
           <Grid 
             item

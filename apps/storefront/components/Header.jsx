@@ -5,6 +5,7 @@ import { Layout as MainLayout } from 'ui/layouts/marketing'
 import { Box } from '@mui/material'
 import { PagesPopover } from 'ui/layouts/marketing/pages-popover';
 import { CartButton } from './CartButton';
+import {Footer} from 'ui/layouts/marketing/footer';
 
 
 export default function Header({ children, categories }) {
@@ -76,20 +77,22 @@ export default function Header({ children, categories }) {
       <MainLayout
         sideItems={sideItems}
         topItems={topItems}
+        // @TODO: add currency selectors
         topButtons={<CartButton />}
       >
-        {/* pass nav items as props tp main layout */}
         <Box
           sx={{
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'top center',
             backgroundImage: 'url("/vendor/assets/gradient-bg.svg")',
             pt: '120px',
-            height: '100vh'
+            mb: '120px',
+            minHeight: '100vh'
           }}
         >
           {children}
         </Box>
+          <Footer />
       </MainLayout>
     </>
   )
