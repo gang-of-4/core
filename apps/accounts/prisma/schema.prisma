@@ -57,12 +57,12 @@ model RolePermissions {
 model Activity {
     id              String @db.Uuid() @id @default(uuid())  
     permissions     PermissionActivites[]
-    method          String @db.Char(8)
+    method          String @db.VarChar(8)
     url             String
     createdAt       DateTime @default(now())
     updatedAt       DateTime @default(now())
     deletedAt       DateTime?
-    @@index([method, url])
+    @@unique([method, url])
 }
 
 model PermissionActivites {
@@ -109,4 +109,3 @@ model OAuthAccount {
     deletedAt       DateTime?
     @@unique([providerId, userId])
 }
-

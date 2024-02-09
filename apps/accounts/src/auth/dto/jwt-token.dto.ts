@@ -1,13 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
+import { UserEntity } from '../../users/entities/user.entity';
 
 export class JwtTokenDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  access_token: string;
+  @IsUUID()
+  sub: string;
 
-  constructor(partial: Partial<JwtTokenDto>) {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  user: UserEntity;
+
+  @ApiProperty()
+  @IsNumber()
+  iat: number;
+
+  @ApiProperty()
+  @IsNumber()
+  exp: number;
+
+  constructor(partial: string | Partial<JwtTokenDto>) {
     Object.assign(this, partial);
   }
 }

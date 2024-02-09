@@ -3,7 +3,8 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserEntity } from '../entities/user.entity';
-import { User } from '@prisma/client/accounts';
+import { CredentialsAccount, User } from '@prisma/client/accounts';
+import { NotFoundException } from '../exceptions/not-found.exception';
 
 @Injectable()
 export class UsersService {
@@ -34,28 +35,48 @@ export class UsersService {
 
   async findOne(id: User['id']) {
     return new UserEntity(
-      await this.prisma.user.findUnique({
-        where: {
-          id,
-        },
-        include: {
-          role: true,
-        },
-      }),
+      await this.prisma.user
+        .findUniqueOrThrow({
+          where: {
+            id,
+          },
+          include: {
+            role: true,
+          },
+        })
+        .catch(() => {
+          throw new NotFoundException();
+        }),
     );
   }
 
   async findOneByEmail(email: User['email']): Promise<UserEntity> {
     return new UserEntity(
-      await this.prisma.user.findUnique({
-        where: {
-          email,
-        },
-        include: {
-          role: true,
-        },
-      }),
+      await this.prisma.user
+        .findUniqueOrThrow({
+          where: {
+            email,
+          },
+          include: {
+            role: true,
+          },
+        })
+        .catch(() => {
+          throw new NotFoundException();
+        }),
     );
+  }
+
+  async findUserCredentials(user: UserEntity): Promise<CredentialsAccount> {
+    return await this.prisma.credentialsAccount
+      .findUniqueOrThrow({
+        where: {
+          userId: user.id,
+        },
+      })
+      .catch(() => {
+        throw new NotFoundException();
+      });
   }
 
   async update(

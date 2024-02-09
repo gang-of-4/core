@@ -5,9 +5,9 @@ import { PassportModule } from '@nestjs/passport';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { RolesModule } from '../../roles/roles.module';
 import { UsersModule } from '../../users/users.module';
-import { AdminAuthController } from '../controllers/admin-auth.controller';
-import { CustomerAuthController } from '../controllers/customer-auth.controller';
-import { VendorAuthController } from '../controllers/vendor-auth.controller';
+import { AdminAuthController } from '../controllers/admin.controller';
+import { CustomerAuthController } from '../controllers/customer.controller';
+import { VendorAuthController } from '../controllers/vendor.controller';
 import { PrismaService } from '../../prisma/prisma.service';
 
 describe('AuthService', () => {
