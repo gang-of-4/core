@@ -9,6 +9,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { plainToInstance } from 'class-transformer';
+import { NotFoundException } from '../exceptions/not-found.exception';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -107,9 +108,11 @@ describe('UsersService', () => {
     );
     const user = await service.remove(createdUser.id);
 
-    const result = await service.findOne(createdUser.id);
+    const result = async () => {
+      await service.findOne(createdUser.id);
+    };
 
-    expect(result).toEqual({});
+    expect(result).toThrow(NotFoundException);
     expect(user).toBeInstanceOf(UserEntity);
     expect(user).toEqual(expect.objectContaining(defaultUser));
   });
