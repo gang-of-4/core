@@ -112,7 +112,7 @@ describe('UsersService', () => {
       await service.findOne(createdUser.id);
     };
 
-    expect(result).toThrow(NotFoundException);
+    expect(await result).toThrow(NotFoundException);
     expect(user).toBeInstanceOf(UserEntity);
     expect(user).toEqual(expect.objectContaining(defaultUser));
   });
