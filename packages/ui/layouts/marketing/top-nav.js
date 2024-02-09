@@ -4,7 +4,6 @@ import NextLink from 'next/link';
 import Menu01Icon from '@untitled-ui/icons-react/build/esm/Menu01';
 import {
   Box,
-  Chip,
   Container,
   IconButton,
   Stack,

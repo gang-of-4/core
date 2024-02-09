@@ -1,6 +1,6 @@
 "use client"
-import { Stack, Card, CardActionArea, CardContent, Typography, SvgIcon, CardHeader } from '@mui/material'
-import Link from 'next/link'
+import { Stack, Card, CardActionArea, CardContent, Typography, SvgIcon, CardHeader, CardActions, Button } from '@mui/material'
+import NextLink from 'next/link'
 import React from 'react'
 import { ArrowCircleRight } from '@untitled-ui/icons-react'
 import Item from '../Item'
@@ -15,63 +15,65 @@ export default function FeaturedItems({ items }) {
                         : 'primary.lightest',
                 }}
             >
-                <CardHeader title="Featured Cars" />
-                <Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{
-                        flexWrap: 'wrap'
-                    }}
-                    px={2}
-                >
-                    {items.map((item) => (
-                        <Item
-                            key={item.id}
-                            item={item}
-                        />
-                    ))}
-                    <Card
-                        sx={{
-                            width: 150,
-                            marginRight: 2,
-                            marginLeft: 0,
-                            marginBottom: 2,
-                            marginTop: 0
-                        }}>
-                        <CardActionArea>
-                            <Link href={`/catalog/items`}>
-                                <CardContent
+                <CardHeader title="Featured Items" />
+                <CardContent>
+                    {items && items?.length > 0 ?
+                        <Stack
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                            sx={{
+                                flexWrap: 'wrap'
+                            }}
+                        >
+                            {items.map((item) => (
+                                <Item
+                                    key={item.id}
+                                    item={item}
                                     sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-around',
-                                        height: 200,
-                                        backgroundColor: 'primary.main',
-                                        color: 'white'
+                                        width: 200,
+                                        marginRight: 2,
+                                        marginLeft: 0,
+                                        marginBottom: 2,
+                                        marginTop: 0
                                     }}
-                                >
-                                    <SvgIcon
-                                        color="white"
-                                        sx={{
-                                            fontSize: 75
-                                        }}
-                                    >
-                                        <ArrowCircleRight />
-                                    </SvgIcon>
-                                    <Typography
-                                        gutterBottom
-                                        variant="h6"
-                                        align='center'
-                                    >
-                                        Browse All Items
-                                    </Typography>
-                                </CardContent>
-                            </Link>
-                        </CardActionArea>
-                    </Card>
-                </Stack>
+                                />
+                            ))}
+                        </Stack>
+                        :
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                textAlign: 'center'
+                            }}
+                        >
+                            No featured items
+                        </Typography>
+                    }
+                </CardContent>
+                <CardActions
+                    sx={{
+                        justifyContent: 'end',
+                        px: 3,
+                        pt: 0,
+                        pb: 4
+                    }}
+                >
+                    <Button
+                        component={NextLink}
+                        href={`/catalog/items`}
+                        variant='contained'
+                    >
+                        Browse All Items
+                        <SvgIcon
+                            sx={{
+                                marginLeft: 1
+                            }}
+                        >
+                            <ArrowCircleRight />
+                        </SvgIcon>
+                    </Button>
+                </CardActions>
             </Card>
         </>
     )
