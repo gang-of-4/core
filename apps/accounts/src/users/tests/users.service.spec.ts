@@ -108,7 +108,9 @@ describe('UsersService', () => {
     );
     const user = await service.remove(createdUser.id);
 
-    await expect(service.findOne(createdUser.id)).toThrow(NotFoundException);
+    await expect(service.findOne(createdUser.id)).rejects.toThrow(
+      NotFoundException,
+    );
     expect(user).toBeInstanceOf(UserEntity);
     expect(user).toEqual(expect.objectContaining(defaultUser));
   });
