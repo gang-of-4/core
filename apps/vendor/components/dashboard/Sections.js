@@ -6,8 +6,17 @@ export const getSections = () => [
   {
     items: [
       {
-        title: 'Overview',
+        title: 'Home',
         path: paths.vendor.dashboard.index,
+        icon: (
+          <SvgIcon fontSize="small">
+            <HomeSmileIcon />
+          </SvgIcon>
+        )
+      },
+      {
+        title: 'Overview',
+        //path: `${paths.vendor.dashboard.stores.index}/${id}`,
         icon: (
           <SvgIcon fontSize="small">
             <HomeSmileIcon />

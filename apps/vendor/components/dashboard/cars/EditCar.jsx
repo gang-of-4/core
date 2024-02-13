@@ -119,7 +119,7 @@ async function getCarType() {
     return carType;
 }
 
-const EditCar = ({ storeId, car}) => {
+const EditCar = ({ storeId, car }) => {
 
     const initialValues = {
         carType: car?.carType,
@@ -133,7 +133,7 @@ const EditCar = ({ storeId, car}) => {
         images: [],
         submit: null
     };
-    
+
     const [selectedFileName, setSelectedFileName] = useState('');
     const [currencyOptions, setCurrencyOptions] = useState([]);
     const [carTypeOptions, setCarTypeOptions] = useState([]);
@@ -222,221 +222,268 @@ const EditCar = ({ storeId, car}) => {
                                 noValidate
                                 onSubmit={formik.handleSubmit}
                             >
-                                <Stack
-                                    spacing={3}
-                                    direction='row'
-                                    sx={{ width: '100%' }}
-                                >
+                                <Card elevation={16} className='p-4 mb-6'>
+                                    <CardHeader
+                                        sx={{ pt: 0 }}
+                                        title="Basic Information"
+                                    />
+
                                     <Stack
                                         spacing={3}
+                                        direction='row'
                                         sx={{ width: '100%' }}
-                                    >
-                                        <FormControl variant="filled" sx={{ minWidth: 120 }}>
-                                            <InputLabel id="demo-simple-select-filled-label">Car Type</InputLabel>
-                                            <Select
-                                                labelId="demo-simple-select-filled-label"
-                                                id="demo-simple-select-filled"
-                                                name="carType"
-                                                value={formik.values.carType}
-                                                onChange={formik.handleChange}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>{formik.values.carType}</em>
-                                                </MenuItem>
-                                                {carTypeOptions.map((carType) => (
-                                                    <MenuItem key={carType.id} value={carType.id}>
-                                                        {carType.name}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-
-                                        <TextField
-                                            error={!!(formik.touched.brandName && formik.errors.brandName)}
-                                            fullWidth
-                                            helperText={formik.touched.brandName && formik.errors.brandName}
-                                            label="Brand Name"
-                                            name="brandName"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            type="brandName"
-                                            value={formik.values.brandName}
-                                        />
-                                        <TextField
-                                            error={!!(formik.touched.carName && formik.errors.carName)}
-                                            fullWidth
-                                            helperText={formik.touched.carName && formik.errors.carName}
-                                            label="Car Name"
-                                            name="carName"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            type="carName"
-                                            value={formik.values.carName}
-                                        />
-                                        <TextField
-                                            error={!!(formik.touched.carYear && formik.errors.carYear)}
-                                            fullWidth
-                                            helperText={formik.touched.carYear && formik.errors.carYear}
-                                            label="Car Year"
-                                            name="carYear"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            type="carYear"
-                                            value={formik.values.carYear}
-                                        />
-                                        <TextField
-                                            error={!!(formik.touched.carColor && formik.errors.carColor)}
-                                            fullWidth
-                                            helperText={formik.touched.carColor && formik.errors.carColor}
-                                            label="Car Color"
-                                            name="carColor"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            type="carColor"
-                                            value={formik.values.carColor}
-                                        />
-                                        <div style={{ display: 'flex', alignItems: 'center'}}>
-                                        <FormControl variant="filled" sx={{ minWidth: 100, marginRight: 2}}>
-                                            <InputLabel id="demo-simple-select-filled-label">Currency</InputLabel>
-                                            <Select
-                                                labelId="demo-simple-select-filled-label"
-                                                id="demo-simple-select-filled"
-                                                name="currency"
-                                                value={formik.values.currency}
-                                                onChange={formik.handleChange}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>None</em>
-                                                </MenuItem>
-                                                {currencyOptions.map((currency) => (
-                                                    <MenuItem key={currency.id} value={currency.id}>
-                                                        {currency.name}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-
-                                        <TextField
-                                            error={!!(formik.touched.carPrice && formik.errors.carPrice)}
-                                            fullWidth
-                                            helperText={formik.touched.carPrice && formik.errors.carPrice}
-                                            label="Car Price"
-                                            name="carPrice"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            type="carPrice"
-                                            value={formik.values.carPrice}
-                                        />
-                                        </div>
-                                        <TextField
-                                            error={!!(formik.touched.description && formik.errors.description)}
-                                            fullWidth
-                                            helperText={formik.touched.description && formik.errors.description}
-                                            label="Description"
-                                            name="description"
-                                            multiline
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            type="description"
-                                            value={formik.values.description}
-                                        />
-                                    </Stack>
-                                    <Stack
-                                        justifyContent={'space-between'}
-                                        sx={{ width: '100%' }}
-
                                     >
                                         <Stack
                                             spacing={3}
+                                            sx={{ width: '100%' }}
                                         >
-                                            <div
-                                                className='flex justify-center items-center'
-                                            >
-
-                                                <Box
-                                                    sx={{
-                                                        alignItems: 'center',
-                                                        backgroundColor: 'neutral.50',
-                                                        borderRadius: 1,
-                                                        display: 'flex',
-                                                        justifyContent: 'center',
-                                                        width: '40%',
-                                                        aspectRatio: '1/1',
-                                                    }}
+                                            <FormControl variant="filled" sx={{ minWidth: 120 }}>
+                                                <InputLabel id="demo-simple-select-filled-label">Car Type</InputLabel>
+                                                <Select
+                                                    labelId="demo-simple-select-filled-label"
+                                                    id="demo-simple-select-filled"
+                                                    name="carType"
+                                                    value={formik.values.carType}
+                                                    onChange={formik.handleChange}
                                                 >
-                                                    <SvgIcon>
-                                                        <Image01Icon />
-                                                    </SvgIcon>
-                                                </Box>
-                                            </div>
-                                            <Typography variant="body2" color="textSecondary" sx={{ pl: 1 }}>
-                                                Accepted formats: JPEG, PNG, GIF.
-                                                <br />
-                                                Maximum size: 2MB
-                                            </Typography>
-                                            <Button
-                                                variant="contained"
-                                                component="label"
-                                                fullWidth
-                                                size="large"
-                                                sx={{ mt: 2 }}
-                                                style={{ backgroundColor: '#2970FF' }}
-                                                startIcon={<CloudUploadIcon />}
-                                            >
-                                                {selectedFileName ? `Uploaded: ${selectedFileName}` : 'Upload Images'}
-                                                <VisuallyHiddenInput
-                                                    type="file"
-                                                    onChange={(event) => {
-                                                        const selectedFile = event.currentTarget.files[0];
-                                                        formik.setFieldValue('images', selectedFile);
-                                                        setSelectedFileName(selectedFile ? selectedFile.name : '');
-                                                    }}
-                                                    inputProps={{ accept: 'image/jpeg, image/png, image/gif', multiple: true }}
-                                                />
+                                                    <MenuItem value="">
+                                                        <em>{formik.values.carType}</em>
+                                                    </MenuItem>
+                                                    {carTypeOptions.map((carType) => (
+                                                        <MenuItem key={carType.id} value={carType.id}>
+                                                            {carType.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
 
-                                            </Button>
-                                            {formik.touched.images && formik.errors.images && (
-                                                <FormHelperText error sx={{ mt: 1 }}>
-                                                    {formik.errors.images}
-                                                </FormHelperText>
-                                            )}
+                                            <TextField
+                                                error={!!(formik.touched.brandName && formik.errors.brandName)}
+                                                fullWidth
+                                                helperText={formik.touched.brandName && formik.errors.brandName}
+                                                label="Brand Name"
+                                                name="brandName"
+                                                onBlur={formik.handleBlur}
+                                                onChange={formik.handleChange}
+                                                type="brandName"
+                                                value={formik.values.brandName}
+                                            />
+                                            <TextField
+                                                error={!!(formik.touched.carName && formik.errors.carName)}
+                                                fullWidth
+                                                helperText={formik.touched.carName && formik.errors.carName}
+                                                label="Car Name"
+                                                name="carName"
+                                                onBlur={formik.handleBlur}
+                                                onChange={formik.handleChange}
+                                                type="carName"
+                                                value={formik.values.carName}
+                                            />
+                                            <TextField
+                                                error={!!(formik.touched.carYear && formik.errors.carYear)}
+                                                fullWidth
+                                                helperText={formik.touched.carYear && formik.errors.carYear}
+                                                label="Car Year"
+                                                name="carYear"
+                                                onBlur={formik.handleBlur}
+                                                onChange={formik.handleChange}
+                                                type="carYear"
+                                                value={formik.values.carYear}
+                                            />
+
+
+
                                         </Stack>
-                                        {formik.errors.submit && (
-                                            <FormHelperText
-                                                error
-                                                sx={{ mt: 3 }}
-                                            >
-                                                {formik.errors.submit}
-                                            </FormHelperText>
-                                        )}
                                         <Stack
-                                            direction={'row'}
-                                            spacing={2}
+                                            justifyContent={'space-between'}
+                                            sx={{ width: '100%' }}
+
                                         >
-                                            <Button
-                                                fullWidth
-                                                size="large"
-                                                variant="contained"
-                                                color="inherit"
-                                                component={NextLink}
-                                                href={`/dashboard/stores/${storeId}`}
+                                            <Stack
+                                                spacing={3}
                                             >
-                                                Cancel
-                                            </Button>
-                                            <Button
-                                                disabled={formik.isSubmitting}
-                                                fullWidth
-                                                size="large"
-                                                type="submit"
-                                                variant="contained"
-                                            >
-                                                Submit
-                                            </Button>
+                                                <TextField
+                                                    error={!!(formik.touched.carColor && formik.errors.carColor)}
+                                                    fullWidth
+                                                    helperText={formik.touched.carColor && formik.errors.carColor}
+                                                    label="Car Color"
+                                                    name="carColor"
+                                                    onBlur={formik.handleBlur}
+                                                    onChange={formik.handleChange}
+                                                    type="carColor"
+                                                    value={formik.values.carColor}
+                                                />
+                                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                    <FormControl variant="filled" sx={{ minWidth: 100, marginRight: 2 }}>
+                                                        <InputLabel id="demo-simple-select-filled-label">Currency</InputLabel>
+                                                        <Select
+                                                            labelId="demo-simple-select-filled-label"
+                                                            id="demo-simple-select-filled"
+                                                            name="currency"
+                                                            value={formik.values.currency}
+                                                            onChange={formik.handleChange}
+                                                        >
+                                                            <MenuItem value="">
+                                                                <em>None</em>
+                                                            </MenuItem>
+                                                            {currencyOptions.map((currency) => (
+                                                                <MenuItem key={currency.id} value={currency.id}>
+                                                                    {currency.name}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                    </FormControl>
+
+                                                    <TextField
+                                                        error={!!(formik.touched.carPrice && formik.errors.carPrice)}
+                                                        fullWidth
+                                                        helperText={formik.touched.carPrice && formik.errors.carPrice}
+                                                        label="Car Price"
+                                                        name="carPrice"
+                                                        onBlur={formik.handleBlur}
+                                                        onChange={formik.handleChange}
+                                                        type="carPrice"
+                                                        value={formik.values.carPrice}
+                                                    />
+                                                </div>
+                                                <TextField
+                                                    error={!!(formik.touched.description && formik.errors.description)}
+                                                    fullWidth
+                                                    helperText={formik.touched.description && formik.errors.description}
+                                                    label="Description"
+                                                    name="description"
+                                                    multiline
+                                                    onBlur={formik.handleBlur}
+                                                    onChange={formik.handleChange}
+                                                    type="description"
+                                                    value={formik.values.description}
+                                                />
+                                            </Stack>
+
+
                                         </Stack>
+
                                     </Stack>
+                                </Card>
+                                <Card elevation={16} className='p-4 mb-6'>
+                                    <CardHeader
+                                        sx={{ pt: 0 }}
+                                        title="Extra Information"
+                                    />
+                                    <Stack
+                                        spacing={4}
+                                        direction='row'
+                                        sx={{ width: '100%' }}
+                                    >
+                                        <Stack
+                                            spacing={3}
+                                            sx={{ width: '100%' }}
+                                        >
+                                            {/* Will add the plus button  */}
+                                        </Stack>
 
-                                </Stack>
 
+                                        <Stack
+                                            justifyContent={'space-between'}
+                                            sx={{ width: '100%' }}
+
+                                        >
+                                            <Stack
+                                                spacing={3}
+                                            >
+                                                <div
+                                                    className='flex justify-center items-center'
+                                                >
+
+                                                    <Box
+                                                        sx={{
+                                                            alignItems: 'center',
+                                                            backgroundColor: 'neutral.50',
+                                                            borderRadius: 1,
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            width: '40%',
+                                                            aspectRatio: '1/1',
+                                                        }}
+                                                    >
+                                                        <SvgIcon>
+                                                            <Image01Icon />
+                                                        </SvgIcon>
+                                                    </Box>
+                                                </div>
+                                                <Typography variant="body2" color="textSecondary" sx={{ pl: 1 }}>
+                                                    Accepted formats: JPEG, PNG, GIF.
+                                                    <br />
+                                                    Maximum size: 2MB
+                                                </Typography>
+                                                <Button
+                                                    variant="contained"
+                                                    component="label"
+                                                    fullWidth
+                                                    size="large"
+                                                    sx={{ mt: 2 }}
+                                                    style={{ backgroundColor: '#2970FF' }}
+                                                    startIcon={<CloudUploadIcon />}
+                                                >
+                                                    {selectedFileName ? `Uploaded: ${selectedFileName}` : 'Upload Images'}
+                                                    <VisuallyHiddenInput
+                                                        type="file"
+                                                        onChange={(event) => {
+                                                            const selectedFile = event.currentTarget.files[0];
+                                                            formik.setFieldValue('images', selectedFile);
+                                                            setSelectedFileName(selectedFile ? selectedFile.name : '');
+                                                        }}
+                                                        inputProps={{ accept: 'image/jpeg, image/png, image/gif', multiple: true }}
+                                                    />
+
+                                                </Button>
+                                                {formik.touched.images && formik.errors.images && (
+                                                    <FormHelperText error sx={{ mt: 1 }}>
+                                                        {formik.errors.images}
+                                                    </FormHelperText>
+                                                )}
+                                            </Stack>
+
+                                        </Stack>
+
+                                    </Stack>
+                                </Card>
+                                <Card elevation={16} className='p-4 mb-6'>
+
+
+                                    {formik.errors.submit && (
+                                        <FormHelperText
+                                            error
+                                            sx={{ mt: 3 }}
+                                        >
+                                            {formik.errors.submit}
+                                        </FormHelperText>
+                                    )}
+                                    <Stack
+                                        direction={'row'}
+                                        spacing={2}
+                                    >
+                                        <Button
+                                            fullWidth
+                                            size="large"
+                                            variant="contained"
+                                            color="inherit"
+                                            component={NextLink}
+                                            href={`/dashboard/stores/${storeId}`}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            disabled={formik.isSubmitting}
+                                            fullWidth
+                                            size="large"
+                                            type="submit"
+                                            variant="contained"
+                                        >
+                                            Submit
+                                        </Button>
+                                    </Stack>
+                                </Card>
                             </form>
                         </CardContent>
                     </Card>
