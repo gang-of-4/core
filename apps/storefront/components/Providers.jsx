@@ -6,6 +6,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { AuthProvider } from 'ui/contexts/auth/jwt-context';
 import { createTheme } from 'ui/theme'
 import { ThemeProvider } from '@mui/material/styles';
+import { ItemsProvider } from '@/contexts/ItemsContext';
 
 
 export function Providers({ children, authApiURL }) {
@@ -29,7 +30,9 @@ export function Providers({ children, authApiURL }) {
           apiURL={authApiURL}  
         >
           <ThemeProvider theme={theme}>
-            {children}
+            <ItemsProvider>
+              {children}
+            </ItemsProvider>
           </ThemeProvider>
         </AuthProvider>
       </LocalizationProvider>

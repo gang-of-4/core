@@ -3,7 +3,7 @@ import { Stack, Card, CardActionArea, CardContent, Typography, SvgIcon, CardHead
 import NextLink from 'next/link'
 import React from 'react'
 import { ArrowCircleRight } from '@untitled-ui/icons-react'
-import Item from '../Item'
+import Item from '../../items/Item'
 
 export default function FeaturedItems({ items }) {
     return (
@@ -15,7 +15,7 @@ export default function FeaturedItems({ items }) {
                         : 'primary.lightest',
                 }}
             >
-                <CardHeader title="Featured Items" />
+                <CardHeader title="Featured Cars" />
                 <CardContent>
                     {items && items?.length > 0 ?
                         <Stack
@@ -64,7 +64,7 @@ export default function FeaturedItems({ items }) {
                         href={`/catalog/items`}
                         variant='contained'
                     >
-                        Browse All Items
+                        Browse All Cars
                         <SvgIcon
                             sx={{
                                 marginLeft: 1

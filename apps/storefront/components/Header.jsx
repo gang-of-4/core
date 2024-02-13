@@ -16,7 +16,7 @@ export default function Header({ children, categories }) {
       items: categories.map(category => {
         return {
           title: category.name,
-          path: `catalog/categories/${category.slug}`,
+          path: `/catalog/categories/${category.slug}`,
         }
       })
     },
@@ -35,7 +35,7 @@ export default function Header({ children, categories }) {
           items: categories.map(category => {
             return {
               title: category.name,
-              path: `catalog/category/${category.slug}`
+              path: `/catalog/category/${category.slug}`
             }
           })
         }
@@ -84,8 +84,8 @@ export default function Header({ children, categories }) {
           sx={{
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'top center',
-            backgroundImage: 'url("/vendor/assets/gradient-bg.svg")',
-            pt: '120px',
+            backgroundImage: 'url("/assets/gradient-bg.svg")',
+            pt: '100px',
             mb: '120px',
             minHeight: '100vh'
           }}
