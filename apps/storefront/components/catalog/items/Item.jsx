@@ -38,7 +38,7 @@ export default function Item({ item, ...props }) {
       >
 
         <CardActionArea>
-          <Link href={`catalog/items/${item.id}`}>
+          <Link href={`/catalog/items/${item.id}`}>
             <CardMedia
               component="img"
               height="140"
@@ -65,8 +65,6 @@ export default function Item({ item, ...props }) {
             </Box>
           </Link>
         </CardActionArea>
-
-
         <CardActions
           sx={{
             justifyContent: 'space-between',

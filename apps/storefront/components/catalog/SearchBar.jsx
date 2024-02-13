@@ -2,20 +2,21 @@
 import { Box, InputAdornment, SvgIcon, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
+import { useItems } from '@/contexts/ItemsContext';
 
 
 export default function SearchBar() {
 
-    const [query, setQuery] = useState('');
+    const { searchQuery,  setSearchQuery } = useItems();
 
     function handleQueryChange(event) {
-        setQuery(event.target.value);
+        setSearchQuery(event.target.value);
     }
 
     function handleSubmit(event) {
         event.preventDefault();
         console.log('You searched for:');
-        console.log(query);
+        console.log(searchQuery);
     }
 
     return (
@@ -23,7 +24,6 @@ export default function SearchBar() {
             <Box
                 component="form"
                 onSubmit={handleSubmit}
-                sx={{ mt: 3 }}
             >
                 <TextField
                     fullWidth
@@ -39,7 +39,7 @@ export default function SearchBar() {
                     label="Search"
                     onChange={handleQueryChange}
                     placeholder="Search for an item..."
-                    value={query}
+                    value={searchQuery}
                 />
             </Box>
         </>
