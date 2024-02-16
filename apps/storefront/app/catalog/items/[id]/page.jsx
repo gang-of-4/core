@@ -8,7 +8,7 @@ import { organization } from 'ui/config'
 //   const id = params.id;
 
 //   // fetch data
-//   const item = await fetch(`${process.env.CATALOG_API_URL}/${id}`, {
+//   const item = await fetch(`${process.env.CATALOG_API_URL}/items/${id}`, {
 //     next: { revalidate: 60 },
 //   }).then((res) => res.json());
 

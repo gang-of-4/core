@@ -7,7 +7,6 @@ import RefreshCcw01Icon from '@untitled-ui/icons-react/build/esm/RefreshCcw01';
 import CategoriesFilterSet from './CategoriesFilterSet'
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import ChevronRightIcon from '@untitled-ui/icons-react/build/esm/ChevronRight';
-import { FilterFunnel01 } from '@untitled-ui/icons-react'
 
 
 export default function Filters({ filtersList }) {
@@ -37,7 +36,7 @@ export default function Filters({ filtersList }) {
       if (index in appliedFilters) {
         setAppliedFilters({
           ...appliedFilters,
-          [index]: appliedFilters[index].filter(prevOption => prevOption !== option)
+          [index]: appliedFilters[index].filter(prevOption => prevOption.id !== option.id)
         });
       } else {
         setAppliedFilters(
@@ -58,7 +57,7 @@ export default function Filters({ filtersList }) {
   function isChecked({ index, option }) {
     let checked = false;
     if (index in appliedFilters) {
-      if (appliedFilters[index]?.includes(option)) checked = true;
+      if (appliedFilters[index].some(appliedOption => appliedOption.id === option.id)) checked = true;
     }
     return checked;
   }

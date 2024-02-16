@@ -23,9 +23,9 @@ export default function CategoriesList({ categories }) {
                         {categories.map((category) => (
                             <CategoryCard
                                 key={category.id}
+                                id={category.id}
                                 name={category.name}
                                 image={category.banner}
-                                slug={category.slug}
                             />
                         ))}
                         <Button

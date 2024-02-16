@@ -5,7 +5,7 @@ import React from 'react'
 export default function CategoryCard({
     name,
     image,
-    slug
+    id
 }) {
     return (
         <Card
@@ -19,7 +19,7 @@ export default function CategoryCard({
             }}
         >
             <CardActionArea>
-                <Link href={`catalog/categories/${slug}`}>
+                <Link href={`catalog/categories/${id}`}>
                     <CardContent
                         sx={{
                             background: `linear-gradient( rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) ), url(${image. url})`,

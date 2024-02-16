@@ -16,7 +16,7 @@ export default function Header({ children, categories }) {
       items: categories.map(category => {
         return {
           title: category.name,
-          path: `/catalog/categories/${category.slug}`,
+          path: `/catalog/categories/${category.id}`,
         }
       })
     },
