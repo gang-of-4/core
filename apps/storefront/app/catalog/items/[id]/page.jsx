@@ -97,7 +97,6 @@ function getItem(id) {
 }
 
 
-// @TODO single item page 
 export default function page({ params }) {
 
     const item = getItem(params.id);

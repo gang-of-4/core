@@ -1,9 +1,10 @@
 "use client"
-import { Box, Button, Checkbox, Container, FormControlLabel, Grid, Stack, SvgIcon, Typography } from '@mui/material'
+import { Box, Button, Checkbox, Container, FormControlLabel, Grid, IconButton, Stack, SvgIcon, TextField, Typography } from '@mui/material'
 import NextLink from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
+import Minus from '@untitled-ui/icons-react/build/esm/Minus';
 
 
 function formatPrice({ price, currency = 'USD' }) {
@@ -15,6 +16,42 @@ function formatPrice({ price, currency = 'USD' }) {
 }
 
 export default function ItemPage({ item }) {
+
+  // @TODO: integrate with the cart context
+  // to be replaced with the actual cart state using context in sprint 4
+  // the Add to Cart button could be moved to a separate component
+  const [cart, setCart] = useState([]);
+
+  function handleUpdateCart({ item, amount }) {
+
+    if (amount === -1 && cart.find((cartItem) => cartItem.id === item.id)?.cartAmount === 1) {
+      const newCart = cart.filter((cartItem) => cartItem.id !== item.id);
+      setCart(newCart);
+      return;
+    }
+
+    if (!cart.find((cartItem) => cartItem.id === item.id)) {
+      setCart([
+        ...cart,
+        {
+          ...item,
+          cartAmount: amount
+        }
+      ]);
+      return;
+    }
+
+    const newCart = cart.map((cartItem) => {
+      if (cartItem.id === item.id) {
+        return {
+          ...cartItem,
+          cartAmount: cartItem.cartAmount + amount
+        }
+      }
+      return cartItem
+    })
+    setCart(newCart);
+  }
 
   const [appliedOptions, setAppliedOptions] = useState([]);
 
@@ -192,17 +229,66 @@ export default function ItemPage({ item }) {
                     }}
                     spacing={2}
                   >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      startIcon={(
-                        <SvgIcon>
-                          <PlusIcon />
-                        </SvgIcon>
-                      )}
-                    >
-                      Add to Cart
-                    </Button>
+                    {
+                      cart.find((cartItem) => cartItem.id === item.id && cartItem.cartAmount > 0) ? (
+                        <Stack
+                          alignItems="center"
+                          direction="row"
+                          spacing={1}
+                        >
+                          <IconButton
+                            onClick={() => handleUpdateCart({ item, amount: -1 })}
+                            sx={{
+                              color: 'primary.main'
+                            }}
+                            disabled={cart.find((cartItem) => cartItem.id === item.id)?.cartAmount === 0}
+                          >
+                            <SvgIcon>
+                              <Minus />
+                            </SvgIcon>
+                          </IconButton>
+                          <TextField
+                            value={cart.find((cartItem) => cartItem.id === item.id)?.cartAmount}
+                            InputProps={{
+                              readOnly: true,
+                            }}
+                            inputProps={{
+                              style: {
+                                textAlign: 'center',
+                                cursor: 'default',
+                              }
+                            }}
+                            variant='outlined'
+                            size='small'
+                            sx={{ width: 50 }}
+                          />
+                          <IconButton
+                            onClick={() => handleUpdateCart({ item, amount: 1 })}
+                            sx={{
+                              color: 'primary.main'
+                            }}
+                            disabled={cart.find((cartItem) => cartItem.id === item.id)?.cartAmount === cart.find((cartItem) => cartItem.id === item.id)?.quantity}
+                          >
+                            <SvgIcon>
+                              <PlusIcon />
+                            </SvgIcon>
+                          </IconButton>
+                        </Stack>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          startIcon={(
+                            <SvgIcon>
+                              <PlusIcon />
+                            </SvgIcon>
+                          )}
+                          onClick={() => handleUpdateCart({ item, amount: 1 })}
+                        >
+                          Add to Cart
+                        </Button>
+                      )
+                    }
                   </Stack>
                 </Stack>
               </Grid>

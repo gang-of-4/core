@@ -11,10 +11,25 @@ export default function Catalog({ items, filters, title }) {
   const [filteredItems, setFilteredItems] = useState(items)
 
   useEffect(() => {
-    // @TODO: fetch items from the API using searchQuery and appliedFilters
-    console.log('searchQuery:', searchQuery)
-    console.log('appliedFilters:', appliedFilters)
+    fetchItems({ searchQuery, appliedFilters })
   }, [searchQuery, appliedFilters])
+
+
+  async function fetchItems({ searchQuery, appliedFilters }) {
+
+    try {
+      const res = await fetch(`/api/catalog/items?q=${searchQuery}&filters=${JSON.stringify(appliedFilters)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      const data = await res.json()
+      setFilteredItems(data)
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
 
   return (
     <>
