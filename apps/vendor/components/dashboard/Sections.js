@@ -19,7 +19,7 @@ export const getSections = () => [
         //path: `${paths.vendor.dashboard.stores.index}/${id}`,
         icon: (
           <SvgIcon fontSize="small">
-            <HomeSmileIcon />
+            <HomeSmile />
           </SvgIcon>
         )
       },
