@@ -5,12 +5,16 @@ import {
   Post,
   HttpStatus,
   Headers,
+  Body,
 } from '@nestjs/common';
 import { MediaService } from '../services/media.service';
 import { S3Service } from '../../aws/services/s3.service';
 import { ParseFilePipeBuilder } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileMimeTypeValidator } from '../validators/file-mimetype.validator';
+import { MediaEntity } from '../entities/media.entity';
+import { ApiOkResponse, ApiConsumes } from '@nestjs/swagger';
+import { UploadImageDto } from '../dto/upload-image.dto';
 
 @Controller({
   version: '1',
@@ -23,8 +27,11 @@ export class UploadController {
   ) {}
 
   @Post('image')
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiOkResponse({ type: MediaEntity })
+  @UseInterceptors(FileInterceptor('image'))
   imageUpload(
+    @Body() body: UploadImageDto,
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addValidator(
@@ -35,11 +42,11 @@ export class UploadController {
         .addMaxSizeValidator({ maxSize: 2 * 1024 * 1024 })
         .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY }),
     )
-    file: Express.Multer.File,
+    image: Express.Multer.File,
     @Headers() headers: any,
   ) {
     return this.mediaService.create(
-      file,
+      image,
       headers?.authorization?.replace('Bearer ', ''),
     );
   }

@@ -12,7 +12,6 @@ export class MediaEntity implements Media {
   @Exclude()
   ownerId: string;
 
-  @ApiProperty()
   @Exclude()
   extension: string;
 
