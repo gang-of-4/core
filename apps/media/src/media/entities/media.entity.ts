@@ -9,6 +9,20 @@ export class MediaEntity implements Media {
   @ApiProperty()
   name: string;
 
+  @Exclude()
+  ownerId: string;
+
+  @ApiProperty()
+  @Exclude()
+  extension: string;
+
+  @ApiProperty()
+  url: string;
+
+  @ApiProperty()
+  @Type(() => Number)
+  size: bigint;
+
   @ApiProperty()
   createdAt: Date;
 
