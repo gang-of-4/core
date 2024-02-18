@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import PropTypes from 'prop-types';
 import { useAuth } from '../hooks/use-auth';
 import { paths } from '../paths';
 
-export const GuestGuard = (props) => {
+export function GuestGuard(props) {
   const { children } = props;
   const { user, isAuthenticated } = useAuth();
   const router = useRouter();
@@ -25,7 +24,7 @@ export const GuestGuard = (props) => {
   useEffect(() => {
       check();
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     []);
 
   if (!checked) {
@@ -36,8 +35,4 @@ export const GuestGuard = (props) => {
   // not authenticated / authorized.
 
   return <>{children}</>;
-};
-
-GuestGuard.propTypes = {
-  children: PropTypes.node
-};
+}

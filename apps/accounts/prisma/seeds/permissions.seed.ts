@@ -10,7 +10,7 @@ const permissions = [
     roles: ['guest'],
   },
   {
-    name: 'auth.vendor.customer',
+    name: 'auth.register.vendor',
     activities: [
       {
         method: 'POST',

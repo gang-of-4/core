@@ -1,81 +1,37 @@
-# Turborepo starter
+# GECO: A Generic E-Commerce Platform
 
-This is an official starter Turborepo.
+This project is a generic e-commerce platform that can be customized to fit different use cases. It involves developing a platform inspired by the Uberization model, emphasizing customization for different industries. 
 
-## Using this example
 
-Run the following command:
+## Getting Started
 
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+In order to run the project, you need to have docker installed.
+Simply run the following `make` command:
 
 ```
-cd my-turborepo
-pnpm build
+make up
 ```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
+Or type the docker command:
 ```
-cd my-turborepo
-pnpm dev
+docker compose up
 ```
+Please make sure that the environment variables exist in the `.env` in each of the projects. This will be made easier later on.
 
-### Remote Caching
+## Contributions
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+This project is made by:
+- [Albaraa Hasan](https://github.com/Null78)
+- [Abdulrahman Ghubun](https://github.com/Aghaboon)
+- [Ala Eddin Aldoukhi](https://github.com/Alaeddin03)
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+Special thanks to our project supervisor Dr. Khaled Khankan 😊
 
-```
-cd my-turborepo
-npx turbo login
-```
+## Docs
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- [Turbo](https://turbo.build/repo/docs)
+- [Docker](https://www.docker.com)
+- [Nest](https://nestjs.com)
+- [Prisma](https://prisma.io)
+- [Vercel](https://nextjs.org)
+- [Cypress](https://www.cypress.io)
+- [Jest](https://jestjs.io)

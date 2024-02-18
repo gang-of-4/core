@@ -11,15 +11,13 @@ import { AuthService } from '../services/auth.service';
 export class AuthorizationController {
   constructor(private authService: AuthService) {}
 
-  @All()
+  @All('/')
   @ApiOkResponse()
   async authorize(@Query() authorizeDto: AuthorizeDto) {
     const role = await this.authService.getUserRole(authorizeDto.access_token);
 
-    return await this.authService.authorize(
-      authorizeDto.uri,
-      authorizeDto.method,
-      role,
-    );
+    const uri = authorizeDto.uri.replace(/^\/api\/v[0-9]+/, '');
+
+    return await this.authService.authorize(uri, authorizeDto.method, role);
   }
 }

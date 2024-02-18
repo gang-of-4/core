@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 import {
   Box,
@@ -13,7 +12,7 @@ import { useAuth } from '../../../hooks/use-auth';
 import { paths } from '../../../paths';
 import { Issuer } from '../../../utils/auth';
 
-export const AccountPopover = (props) => {
+export function AccountPopover(props) {
   const { anchorEl, onClose, open, listItems, ...other } = props;
   const router = useRouter();
   const auth = useAuth();
@@ -44,19 +43,19 @@ export const AccountPopover = (props) => {
         }
 
         default: {
-          console.warn('Using an unknown Auth Issuer, did not log out');
+          throw new Error('Unsupported issuer');
         }
       }
 
       router.push(paths.index);
     } catch (err) {
-      console.error(err);
       toast.error('Something went wrong!');
     }
   }, [auth, router, onClose]);
 
   return (
     <Popover
+      PaperProps={{ sx: { width: 200 } }}
       anchorEl={anchorEl}
       anchorOrigin={{
         horizontal: 'center',
@@ -64,8 +63,7 @@ export const AccountPopover = (props) => {
       }}
       disableScrollLock
       onClose={onClose}
-      open={!!open}
-      PaperProps={{ sx: { width: 200 } }}
+      open={Boolean(open)}
       {...other}>
       <Box sx={{ p: 2 }}>
         <Typography variant="body1">
@@ -98,10 +96,4 @@ export const AccountPopover = (props) => {
       </Box>
     </Popover>
   );
-};
-
-AccountPopover.propTypes = {
-  anchorEl: PropTypes.any,
-  onClose: PropTypes.func,
-  open: PropTypes.bool
-};
+}

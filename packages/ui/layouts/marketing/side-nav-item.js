@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import ChevronRightIcon from '@untitled-ui/icons-react/build/esm/ChevronRight';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import { Box, ButtonBase, Collapse, SvgIcon } from '@mui/material';
 
-export const SideNavItem = (props) => {
+export function SideNavItem(props) {
   const { active, children, disabled, open: openProp, path, title } = props;
-  const [open, setOpen] = useState(!!openProp);
+  const [open, setOpen] = useState(Boolean(openProp));
 
   const handleToggle = useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
@@ -76,7 +75,7 @@ export const SideNavItem = (props) => {
 
   // Leaf
 
-  let linkProps = undefined;
+  let linkProps;
 
   if (path) {
     const isExternal = path.startsWith('http');
@@ -132,14 +131,4 @@ export const SideNavItem = (props) => {
       </ButtonBase>
     </li>
   );
-};
-
-SideNavItem.propTypes = {
-  active: PropTypes.bool,
-  disabled: PropTypes.bool,
-  depth: PropTypes.number,
-  children: PropTypes.any,
-  open: PropTypes.bool,
-  path: PropTypes.string,
-  title: PropTypes.string.isRequired
-};
+}

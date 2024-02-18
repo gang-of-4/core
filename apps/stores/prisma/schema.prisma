@@ -25,9 +25,9 @@ model Store {
   status                Status  @default(PENDING)
   individualStore       IndividualStore?
   businessStore         BusinessStore?
-  created_at            DateTime @default(now())
-  updated_at            DateTime @default(now())
-  deleted_at            DateTime?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now())
+  deletedAt            DateTime?
 
   @@index([vendorId])
 }
@@ -48,9 +48,9 @@ model BusinessStore {
   store                 Store   @relation(fields: [storeId], references: [id])
   name                  String
   logo                  String
-  vat_number            String
-  cr_number             String
-  owner_national_id     String
+  vatNumber            String
+  crNumber             String
+  ownerNationalId     String
 }
 
 model IndividualStore {

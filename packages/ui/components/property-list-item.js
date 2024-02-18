@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import { Box, ListItem, ListItemText, Typography } from '@mui/material';
 
-export const PropertyListItem = (props) => {
+export function PropertyListItem(props) {
   const { align = 'vertical', children, disableGutters, value, label, ...other } = props;
 
   return (
@@ -46,12 +45,4 @@ export const PropertyListItem = (props) => {
       />
     </ListItem>
   );
-};
-
-PropertyListItem.propTypes = {
-  align: PropTypes.oneOf(['horizontal', 'vertical']),
-  children: PropTypes.node,
-  disableGutters: PropTypes.bool,
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string
-};
+}

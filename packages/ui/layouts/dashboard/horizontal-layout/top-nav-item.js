@@ -1,5 +1,4 @@
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import ChevronRightIcon from '@untitled-ui/icons-react/build/esm/ChevronRight';
 import { Box, ButtonBase, ListItemButton, ListItemText, SvgIcon } from '@mui/material';
@@ -41,11 +40,6 @@ const renderChildItems = ({ items, depth = 0 }) => {
             </ListItemButton>
           </DropdownTrigger>
           <DropdownMenu
-            anchorOrigin={{
-              horizontal: 'right',
-              vertical: 'top'
-            }}
-            disableScrollLock
             PaperProps={{
               elevation: 8,
               sx: {
@@ -55,6 +49,11 @@ const renderChildItems = ({ items, depth = 0 }) => {
                 width: 200
               }
             }}
+            anchorOrigin={{
+              horizontal: 'right',
+              vertical: 'top'
+            }}
+            disableScrollLock
             transformOrigin={{
               horizontal: 'left',
               vertical: 'top'
@@ -66,7 +65,7 @@ const renderChildItems = ({ items, depth = 0 }) => {
       );
     }
 
-    let linkProps = undefined;
+    let linkProps;
 
     if (path) {
       const isExternal = path.startsWith('http');
@@ -109,7 +108,7 @@ const renderChildItems = ({ items, depth = 0 }) => {
   });
 };
 
-export const TopNavItem = (props) => {
+export function TopNavItem(props) {
   const { active, disabled, items, icon, label, path, title } = props;
 
   // With dropdown
@@ -186,7 +185,6 @@ export const TopNavItem = (props) => {
           </li>
         </DropdownTrigger>
         <DropdownMenu
-          disableScrollLock
           PaperProps={{
             elevation: 8,
             sx: {
@@ -195,6 +193,7 @@ export const TopNavItem = (props) => {
               width: 200
             }
           }}
+          disableScrollLock
         >
           {renderChildItems({ items, depth: 0 })}
         </DropdownMenu>
@@ -204,7 +203,7 @@ export const TopNavItem = (props) => {
 
   // Without dropdown
 
-  let linkProps = undefined;
+  let linkProps;
 
   if (path) {
     const isExternal = path.startsWith('http');
@@ -242,8 +241,7 @@ export const TopNavItem = (props) => {
           }
         }}
         {...linkProps}>
-        {icon && (
-          <Box
+        {icon ? <Box
             component="span"
             sx={{
               alignItems: 'center',
@@ -257,8 +255,7 @@ export const TopNavItem = (props) => {
             }}
           >
             {icon}
-          </Box>
-        )}
+          </Box> : null}
         <Box
           component="span"
           sx={{
@@ -279,24 +276,13 @@ export const TopNavItem = (props) => {
         >
           {title}
         </Box>
-        {label && (
-          <Box
+        {label ? <Box
             component="span"
             sx={{ ml: 1 }}
           >
             {label}
-          </Box>
-        )}
+          </Box> : null}
       </ButtonBase>
     </li>
   );
-};
-
-TopNavItem.propTypes = {
-  active: PropTypes.bool,
-  icon: PropTypes.node,
-  items: PropTypes.array,
-  label: PropTypes.node,
-  path: PropTypes.string,
-  title: PropTypes.string.isRequired
-};
+}

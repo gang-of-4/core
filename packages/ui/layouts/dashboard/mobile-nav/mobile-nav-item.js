@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
 import NextLink from 'next/link';
-import PropTypes from 'prop-types';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import ChevronRightIcon from '@untitled-ui/icons-react/build/esm/ChevronRight';
 import { Box, ButtonBase, Collapse, SvgIcon } from '@mui/material';
 
-export const MobileNavItem = (props) => {
+export function MobileNavItem(props) {
   const { active, children, depth = 0, disabled, icon, label, open: openProp, path, title } = props;
-  const [open, setOpen] = useState(!!openProp);
+  const [open, setOpen] = useState(Boolean(openProp));
 
   const handleToggle = useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
@@ -79,8 +78,7 @@ export const MobileNavItem = (props) => {
             }
           }}
         >
-          {startIcon && (
-            <Box
+          {startIcon ? <Box
               component="span"
               sx={{
                 alignItems: 'center',
@@ -94,8 +92,7 @@ export const MobileNavItem = (props) => {
               }}
             >
               {startIcon}
-            </Box>
-          )}
+            </Box> : null}
           <Box
             component="span"
             sx={{
@@ -138,7 +135,7 @@ export const MobileNavItem = (props) => {
 
   // Leaf
 
-  let linkProps = undefined;
+  let linkProps;
 
   if (path) {
     const isExternal = path.startsWith('http');
@@ -179,8 +176,7 @@ export const MobileNavItem = (props) => {
           }
         }}
         {...linkProps}>
-        {startIcon && (
-          <Box
+        {startIcon ? <Box
             component="span"
             sx={{
               alignItems: 'center',
@@ -194,8 +190,7 @@ export const MobileNavItem = (props) => {
             }}
           >
             {startIcon}
-          </Box>
-        )}
+          </Box> : null}
         <Box
           component="span"
           sx={{
@@ -216,26 +211,13 @@ export const MobileNavItem = (props) => {
         >
           {title}
         </Box>
-        {label && (
-          <Box
+        {label ? <Box
             component="span"
             sx={{ ml: 2 }}
           >
             {label}
-          </Box>
-        )}
+          </Box> : null}
       </ButtonBase>
     </li>
   );
-};
-
-MobileNavItem.propTypes = {
-  active: PropTypes.bool,
-  children: PropTypes.node,
-  depth: PropTypes.number,
-  disabled: PropTypes.bool,
-  icon: PropTypes.node,
-  open: PropTypes.bool,
-  path: PropTypes.string,
-  title: PropTypes.string.isRequired
-};
+}

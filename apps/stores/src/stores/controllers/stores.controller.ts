@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { StoresService } from '../services/stores.service';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { StoreEntity } from '../entities/store.entity';
@@ -13,7 +21,7 @@ import { UpdateBusinessStoreDto } from '../dto/update-business-store.dto';
 })
 @ApiTags('Stores')
 export class StoresController {
-  constructor(private readonly storesService: StoresService) { }
+  constructor(private readonly storesService: StoresService) {}
 
   @Post('individual')
   @ApiCreatedResponse({ type: StoreEntity })
@@ -58,7 +66,10 @@ export class StoresController {
 
   @Patch('business/:id')
   @ApiCreatedResponse({ type: StoreEntity })
-  updateBusiness(@Param('id') id: string, @Body() updateBusinessStoreDto: UpdateBusinessStoreDto) {
+  updateBusiness(
+    @Param('id') id: string,
+    @Body() updateBusinessStoreDto: UpdateBusinessStoreDto,
+  ) {
     return this.storesService.updateBusiness(id, updateBusinessStoreDto);
   }
 
