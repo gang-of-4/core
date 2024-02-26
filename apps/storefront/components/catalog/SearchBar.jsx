@@ -1,11 +1,14 @@
 "use client"
 import { Box, InputAdornment, SvgIcon, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
 import { useItems } from '@/contexts/ItemsContext';
+import { useRouter } from 'next/navigation';
 
 
 export default function SearchBar() {
+
+    const router = useRouter();
 
     const { searchQuery,  setSearchQuery } = useItems();
 
@@ -15,8 +18,8 @@ export default function SearchBar() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log('You searched for:');
         console.log(searchQuery);
+        router.push(`/catalog/items`);
     }
 
     return (

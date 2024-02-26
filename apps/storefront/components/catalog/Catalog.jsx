@@ -12,7 +12,14 @@ export default function Catalog({ items, filters, title }) {
 
   useEffect(() => {
     fetchItems({ searchQuery, appliedFilters })
-  }, [searchQuery, appliedFilters])
+  }, [appliedFilters])
+
+  useEffect(() => {
+    const interval = setTimeout(() => {
+        fetchItems({ searchQuery, appliedFilters })
+    }, 500);
+    return () => clearInterval(interval);
+  }, [searchQuery])
 
 
   async function fetchItems({ searchQuery, appliedFilters }) {
