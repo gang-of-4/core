@@ -77,7 +77,6 @@ export default function Header({ children, categories }) {
       <MainLayout
         sideItems={sideItems}
         topItems={topItems}
-        // @TODO: add currency selectors
         topButtons={<CartButton />}
       >
         <Box
