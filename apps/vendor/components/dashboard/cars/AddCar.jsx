@@ -174,12 +174,7 @@ async function getCarType() {
 
 const AddCar = ({ storeId }) => {
 
-    const [attributes, setAttributes] = useState([{ name: '', value: '' }]);
-
-    const addAttribute = () => {
-        setAttributes([...attributes, { name: '', value: '' }]);
-    };
-
+    const [attributes, setAttributes] = useState([{ key: '', value: '' }]);
     const [selectedFileName, setSelectedFileName] = useState('');
     const [currencyOptions, setCurrencyOptions] = useState([]);
     const [carTypeOptions, setCarTypeOptions] = useState([]);
@@ -242,6 +237,17 @@ const AddCar = ({ storeId }) => {
             }
         }
     });
+
+    function handleAddAttribute() {
+        setAttributes([...attributes, { key: '', value: '' }]);
+    };
+
+    function handleAttributeChange({index, e}) {
+        const { name, value } = e.target;
+        const newAttributes = [...attributes];
+        newAttributes[index][name] = value;
+        setAttributes(newAttributes);
+    };
 
     return (
         <>
@@ -456,34 +462,36 @@ const AddCar = ({ storeId }) => {
                                             spacing={3}
                                             sx={{ width: '100%' }}
                                         >
+                                            <Typography
+                                                variant="body2"
+                                                color="textSecondary"
+                                            >
+                                                You can add extra attributes to your item by adding key-value pairs.
+                                            </Typography>
                                             {attributes.map((attribute, index) => (
-                                                <Stack key={index} spacing={3}>
+                                                <Stack key={index} spacing={3} direction={'row'}>
                                                     <TextField
-                                                        fullWidth
-                                                        label={`Attribute Name ${index + 1}`}
-                                                        name={`attributes[${index}].name`}
-                                                        onChange={formik.handleChange}
-                                                        value={formik.values.attributes[index].name}
+                                                        label={`Attribute ${index + 1} Key`}
+                                                        name={`key`}
+                                                        onChange={(e) => handleAttributeChange({index, e})}
+                                                        value={attribute.key}
                                                     />
                                                     <TextField
-                                                        fullWidth
-                                                        label={`Attribute Value ${index + 1}`}
-                                                        name={`attributes[${index}].value`}
-                                                        onChange={formik.handleChange}
-                                                        value={formik.values.attributes[index].value}
+                                                        label={`Attribute ${index + 1} Value`}
+                                                        name={`value`}
+                                                        onChange={(e) => handleAttributeChange({index, e})}
+                                                        value={attribute.value}
                                                     />
                                                 </Stack>
                                             ))}
-
                                             <Button
                                                 variant="contained"
                                                 color="primary"
                                                 startIcon={<AddCircleIcon />}
+                                                onClick={handleAddAttribute}
                                             >
-                                                Add Attribute
+                                                Add Another Attribute
                                             </Button>
-
-                                            {/* Will add the plus button  */}
                                         </Stack>
 
 

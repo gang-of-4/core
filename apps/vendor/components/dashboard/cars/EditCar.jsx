@@ -28,6 +28,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import NextLink from 'next/link';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -134,6 +136,7 @@ const EditCar = ({ storeId, car }) => {
         submit: null
     };
 
+    const [attributes, setAttributes] = useState(car?.attributes || [{ key: '', value: '' }]);
     const [selectedFileName, setSelectedFileName] = useState('');
     const [currencyOptions, setCurrencyOptions] = useState([]);
     const [carTypeOptions, setCarTypeOptions] = useState([]);
@@ -176,6 +179,17 @@ const EditCar = ({ storeId, car }) => {
             }
         }
     });
+
+    function handleAddAttribute() {
+        setAttributes([...attributes, { key: '', value: '' }]);
+    };
+
+    function handleAttributeChange({index, e}) {
+        const { name, value } = e.target;
+        const newAttributes = [...attributes];
+        newAttributes[index][name] = value;
+        setAttributes(newAttributes);
+    };
 
     return (
         <>
@@ -379,7 +393,36 @@ const EditCar = ({ storeId, car }) => {
                                             spacing={3}
                                             sx={{ width: '100%' }}
                                         >
-                                            {/* Will add the plus button  */}
+                                            <Typography
+                                                variant="body2"
+                                                color="textSecondary"
+                                            >
+                                                You can add extra attributes to your item by adding key-value pairs.
+                                            </Typography>
+                                            {attributes.map((attribute, index) => (
+                                                <Stack key={index} spacing={3} direction={'row'}>
+                                                    <TextField
+                                                        label={`Attribute ${index + 1} Key`}
+                                                        name={`key`}
+                                                        onChange={(e) => handleAttributeChange({index, e})}
+                                                        value={attribute.key}
+                                                    />
+                                                    <TextField
+                                                        label={`Attribute ${index + 1} Value`}
+                                                        name={`value`}
+                                                        onChange={(e) => handleAttributeChange({index, e})}
+                                                        value={attribute.value}
+                                                    />
+                                                </Stack>
+                                            ))}
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                startIcon={<AddCircleIcon />}
+                                                onClick={handleAddAttribute}
+                                            >
+                                                Add Another Attribute
+                                            </Button>
                                         </Stack>
 
 
