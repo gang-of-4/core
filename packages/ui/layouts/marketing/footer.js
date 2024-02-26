@@ -63,15 +63,15 @@ export function Footer(props) {
           spacing={3}
         >
           <Grid
-            xs={12}
-            sm={4}
             md={3}
+            sm={4}
             sx={{
               order: {
                 xs: 4,
                 md: 1
               }
             }}
+            xs={12}
           >
             <Stack spacing={1}>
               <Stack
@@ -119,15 +119,15 @@ export function Footer(props) {
           {sections.map((section, index) => (
             <Grid
               key={section.title}
-              xs={12}
-              sm={4}
               md={3}
+              sm={4}
               sx={{
                 order: {
                   md: index + 2,
                   xs: index + 1
                 }
               }}
+              xs={12}
             >
               <Typography
                 color="text.secondary"
@@ -159,8 +159,8 @@ export function Footer(props) {
                       }}
                     />
                     <Link
-                      href={item.path}
                       color="text.primary"
+                      href={item.path}
                       variant="subtitle2"
                     >
                       {item.title}
