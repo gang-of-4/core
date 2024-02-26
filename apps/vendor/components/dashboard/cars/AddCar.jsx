@@ -19,7 +19,13 @@ import {
     Select,
     InputLabel,
     FormControl,
-    MenuItem
+    MenuItem,
+    Checkbox,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow
 } from '@mui/material';
 import { useMounted } from 'ui/hooks/use-mounted';
 import * as React from 'react';
@@ -29,6 +35,21 @@ import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import NextLink from 'next/link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+
+const rows = [
+    { name: 'Variant 1', brand: 'Brand 1', color: 'Red', size: 'XL', price: '', quantity: '' },
+    { name: 'Variant 2', brand: 'Brand 2', color: 'Blue', size: 'M', price: '', quantity: '' },
+    // Add more rows as needed
+];
+
+const handlePriceChange = (index) => (event) => {
+    // Handle price changes here, you can use formik or local state to manage the values
+};
+
+const handleQuantityChange = (index) => (event) => {
+    // Handle quantity changes here, similar to price
+};
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -56,7 +77,7 @@ const initialValues = {
     brandName: '',
     carName: '',
     carYear: '',
-    carColor: '',
+    carColor: [],
     currency: '',
     carPrice: '',
     description: '',
@@ -82,7 +103,7 @@ const validationSchema = Yup.object({
         .max(255)
         .required('Car Year is required'),
     carColor: Yup
-        .string()
+        .array()
         .max(255)
         .required('Car Color is required'),
     currency: Yup
@@ -127,6 +148,18 @@ async function getCurrency() {
     return currency;
 }
 
+async function getCarColor() {
+    const currency = await fetch(
+        `${process.env.CURRENCIES_API_URL}`,
+        { next: { revalidate: 0 } }
+    ).then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch currency');
+        return res.json();
+    });
+
+    return carColor;
+}
+
 async function getCarType() {
     const carType = await fetch(
         `${process.env.carType_API_URL}`,
@@ -150,6 +183,26 @@ const AddCar = ({ storeId }) => {
     const [selectedFileName, setSelectedFileName] = useState('');
     const [currencyOptions, setCurrencyOptions] = useState([]);
     const [carTypeOptions, setCarTypeOptions] = useState([]);
+
+    const [carColorOptions, setCarColorOptions] = useState([]);
+    const [selectedVariants, setSelectedVariants] = useState([]);
+    const handleCheckboxChange = (index) => (event) => {
+        const isChecked = event.target.checked;
+        setSelectedVariants((prevSelected) => {
+            const newSelected = [...prevSelected];
+            if (isChecked) {
+                newSelected.push(index);
+            } else {
+                const indexToRemove = newSelected.indexOf(index);
+                if (indexToRemove !== -1) {
+                    newSelected.splice(indexToRemove, 1);
+                }
+            }
+            return newSelected;
+        });
+    };
+
+    
     const isMounted = useMounted();
     const router = useRouter();
     const { returnTo } = useParams();
@@ -315,17 +368,28 @@ const AddCar = ({ storeId }) => {
                                             <Stack
                                                 spacing={3}
                                             >
-                                                <TextField
-                                                    error={!!(formik.touched.carColor && formik.errors.carColor)}
-                                                    fullWidth
-                                                    helperText={formik.touched.carColor && formik.errors.carColor}
-                                                    label="Car Color"
-                                                    name="carColor"
-                                                    onBlur={formik.handleBlur}
-                                                    onChange={formik.handleChange}
-                                                    type="carColor"
-                                                    value={formik.values.carColor}
-                                                />
+                                                <FormControl variant="filled" sx={{ minWidth: 100, marginRight: 2 }}>
+                                                    <InputLabel id="demo-simple-select-filled-label">Car Color</InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-filled-label"
+                                                        id="demo-simple-select-filled"
+                                                        name="carColor"
+                                                        multiple
+                                                        value={formik.values.carColor}
+                                                        onChange={formik.handleChange}
+                                                    >
+                                                        <MenuItem value="">
+                                                            <em>None</em>
+                                                        </MenuItem>
+                                                        {carColorOptions.map((carColor) => (
+                                                            <MenuItem key={carColor.id} value={carColor.id}>
+                                                                {carColor.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </FormControl>
+
+
                                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                                     <FormControl variant="filled" sx={{ minWidth: 100, marginRight: 2 }}>
                                                         <InputLabel id="demo-simple-select-filled-label">Currency</InputLabel>
@@ -488,6 +552,108 @@ const AddCar = ({ storeId }) => {
 
                                     </Stack>
                                 </Card>
+                                <Card elevation={16} className='p-4 mb-6'>
+
+
+                                    {formik.errors.submit && (
+                                        <FormHelperText
+                                            error
+                                            sx={{ mt: 3 }}
+                                        >
+                                            {formik.errors.submit}
+                                        </FormHelperText>
+                                    )}
+                                    <Stack
+                                        spacing={4}
+                                        direction='row'
+                                        sx={{ width: '100%' }}
+                                    >
+                                        <Stack
+                                            spacing={3}
+                                            sx={{ width: '100%' }}
+                                        >
+                                            <Typography>
+                                                Generate Variant means create for all combination items automatically.
+                                                For example:
+                                            </Typography>
+                                            <Typography
+                                                sx={{ padding: '10px' }}>
+                                                T-shirt - Red - M
+                                                <br />
+                                                T-shirt - Red - L
+                                                <br />
+                                                T-shirt - Blue - M
+                                            </Typography>
+                                        </Stack>
+                                        <Stack
+                                            justifyContent={'space-between'}
+                                            alignItems={'center'}
+                                            sx={{ width: '100%', textAlign: 'center' }}>
+                                            <Button
+                                                disabled={formik.isSubmitting}
+                                                fullWidth
+                                                size="large"
+                                                type="submit"
+                                                variant="contained"
+                                                sx={{ margin: 'auto' }}
+                                            >
+                                                Generate Variant
+                                            </Button>
+                                        </Stack>
+
+                                    </Stack>
+                                </Card>
+
+                                <Card elevation={16} className='p-4 mb-6'>
+                                    <CardHeader
+                                        sx={{ pt: 0 }}
+                                        title="Variant Data "
+                                    />
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Select</TableCell>
+                                                <TableCell>Name</TableCell>
+                                                <TableCell>Brand</TableCell>
+                                                <TableCell>Color</TableCell>
+                                                <TableCell>Size</TableCell>
+                                                <TableCell>Quantity</TableCell>
+                                                <TableCell>Price</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {rows.map((row, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>
+                                                        <Checkbox
+                                                            checked={selectedVariants.includes(index)}
+                                                            onChange={handleCheckboxChange(index)}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell>{row.name}</TableCell>
+                                                    <TableCell>{row.brand}</TableCell>
+                                                    <TableCell>{row.color}</TableCell>
+                                                    <TableCell>{row.size}</TableCell>
+                                                    <TableCell>
+                                                        <TextField
+                                                            type="number"
+                                                            value={row.quantity}
+                                                            onChange={handleQuantityChange(index)}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <TextField
+                                                            type="number"
+                                                            value={row.price}
+                                                            onChange={handlePriceChange(index)}
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </Card>
+
                                 <Card elevation={16} className='p-4 mb-6'>
 
 
