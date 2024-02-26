@@ -6,9 +6,9 @@ import permissions from './seeds/permissions.seed';
 const prisma = new PrismaClient();
 
 async function main() {
-  roles(prisma);
-  users(prisma);
-  permissions(prisma);
+  await roles(prisma);
+  await users(prisma);
+  await permissions(prisma);
 }
 
 main()
