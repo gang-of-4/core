@@ -93,7 +93,7 @@ export const StoresListTable = (props) => {
     return (
         <div {...other}>
             <Scrollbar>
-                <Table sx={{ minWidth: 1200 }}>
+                <Table sx={{ minWidth: 1000 }}>
                     <TableHead>
                         <TableRow>
                             <TableCell />
