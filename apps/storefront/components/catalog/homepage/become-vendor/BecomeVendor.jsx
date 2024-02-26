@@ -24,7 +24,7 @@ export default function BecomeVendor() {
                             color: 'primary.main'
                         },
                         '& a:hover': {
-                            'text-decoration': 'underline'
+                            'textDecoration': 'underline'
                         }
                     }}
                 >
