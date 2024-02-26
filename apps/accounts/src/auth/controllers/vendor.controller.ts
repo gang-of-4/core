@@ -27,7 +27,6 @@ export class VendorAuthController implements AuthController {
   @Post('register')
   @ApiOkResponse({ type: UserEntity })
   async register(@Body() userRegisterDto: UserRegisterDto) {
-    return 200;
     return await this.authService.register(
       userRegisterDto,
       await this.vendorRole,
