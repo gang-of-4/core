@@ -1,8 +1,10 @@
+import { useActiveStore } from '@/contexts/ActiveStoreContext';
 import { SvgIcon } from '@mui/material';
+import { Building02 } from '@untitled-ui/icons-react';
 import { HomeSmile } from 'ui/icons/untitled-ui/duocolor/home-smile';
 import { paths } from 'ui/paths';
 
-export const getSections = () => [
+export const getSections = (activeStore) => [
   {
     items: [
       {
@@ -16,10 +18,12 @@ export const getSections = () => [
       },
       {
         title: 'Overview',
-        //path: `${paths.vendor.dashboard.stores.index}/${id}`,
+        path: activeStore ?
+          `${paths.vendor.dashboard.stores.index}/${activeStore?.id}`
+          : paths.vendor.dashboard.stores.index,
         icon: (
           <SvgIcon fontSize="small">
-            <HomeSmile />
+            <Building02 />
           </SvgIcon>
         )
       },

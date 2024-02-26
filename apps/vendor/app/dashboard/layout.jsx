@@ -11,6 +11,7 @@ import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import NextLink from 'next/link';
 import { getSections } from '@/components/dashboard/Sections'
 import { paths } from 'ui/paths'
+import { useActiveStore } from '@/contexts/ActiveStoreContext';
 
 
 function Layout({ children }) {
@@ -20,6 +21,7 @@ function Layout({ children }) {
 
   const { stores, getStores } = useStores();
   const { user } = useAuth();
+  const { activeStore, setActiveStore } = useActiveStore();
 
   async function initStores(userId){
     const res = await getStores(userId);
@@ -34,6 +36,15 @@ function Layout({ children }) {
       // the redirect is done this way instead to force a hard navigation
       window.location.href = `/vendor${paths.vendor.onboarding.index}`;
     }
+  }
+
+  function getTitle() {
+    if (activeStore?.individualStore) {
+      return `${user?.firstName} ${user?.lastName}'s Store`
+    } else if (activeStore?.businessStore) {
+      return activeStore?.businessStore?.name
+    }
+    return 'Select a Store'
   }
   
   const optionsList = stores?.map(store => {
@@ -57,6 +68,7 @@ function Layout({ children }) {
 
   function handleChange(storeId) {
     router.push(`${paths.vendor.dashboard.stores.index}/${storeId}`)
+    setActiveStore(stores?.find(store => store.id === storeId));
   }
 
   let currentStore = {};
@@ -93,13 +105,13 @@ function Layout({ children }) {
   );
 
   const options = {
-    title: currentStore?.name || 'Select a Store',
+    title: getTitle(),
     list: optionsList,
     handleChange: handleChange,
     firstOption: createStore
   }
 
-  const sections = getSections();
+  const sections = getSections(activeStore);
 
   return (
     <>
