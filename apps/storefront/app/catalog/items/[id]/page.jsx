@@ -90,6 +90,153 @@ function getItem(id) {
                 }]
             },
         ],
+        variants: [
+            {
+                id: "1",
+                quantity: 5,
+                images: [
+                    {
+                        url: "https://via.placeholder.com/500x500",
+                    },
+                    {
+                        url: "https://via.placeholder.com/600x600",
+                    },
+                    {
+                        url: "https://via.placeholder.com/600x600",
+                    },
+                    {
+                        url: "https://via.placeholder.com/600x600",
+                    },
+                    {
+                        url: "https://via.placeholder.com/600x600",
+                    },
+                    {
+                        url: "https://via.placeholder.com/750x750",
+                    },
+                    {
+                        url: "https://via.placeholder.com/100x100",
+                    }
+                ],
+                price: 77000.00,
+                currency: "SAR",
+                options: [
+                    {
+                        id: "1",
+                        title: "Color",
+                        value: {
+                            id: "1",
+                            label: "Red",
+                            value: "red"
+                        }
+                    },
+                    {
+                        id: "2",
+                        title: "Wheel Size",
+                        value: {
+                            id: "1",
+                            label: "Small",
+                            value: "small"
+                        }
+                    }
+                ],
+            },
+            {
+                id: "2",
+                quantity: 2,
+                images: [
+                    {
+                        url: "https://via.placeholder.com/500x500",
+                    },
+                ],
+                price: 75000.50,
+                currency: "SAR",
+                options: [
+                    {
+                        id: "1",
+                        title: "Color",
+                        value: {
+                            id: "2",
+                            label: "Blue",
+                            value: "blue"
+                        }
+                    },
+                    {
+                        id: "2",
+                        title: "Wheel Size",
+                        value: {
+                            id: "2",
+                            label: "Small",
+                            value: "small"
+                        }
+                    }
+                ],
+            },
+            {
+                id: "3",
+                quantity: 2,
+                images: [
+                    {
+                        url: "https://via.placeholder.com/500x500",
+                    },
+                ],
+                price: 75499.99,
+                currency: "SAR",
+                options: [
+                    {
+                        id: "1",
+                        title: "Color",
+                        value: {
+                            id: "2",
+                            label: "Blue",
+                            value: "blue"
+                        }
+                    },
+                    {
+                        id: "2",
+                        title: "Wheel Size",
+                        value: {
+                            id: "2",
+                            label: "Medium",
+                            value: "medium"
+                        }
+                    }
+                ],
+            },
+            {
+                id: "4",
+                quantity:1,
+                images: [
+                    {
+                        url: "https://via.placeholder.com/500x500",
+                    },
+                    {
+                        url: "https://via.placeholder.com/500x500",
+                    },
+                ],
+                price: 75500.00,
+                currency: "SAR",
+                options: [
+                    {
+                        id: "1",
+                        title: "Color",
+                        value: {
+                            id: "2",
+                            label: "Black",
+                            value: "black"
+                        }
+                    },
+                    {
+                        id: "2",
+                        title: "Wheel Size",
+                        value: {
+                            id: "2",
+                            label: "Medium",
+                            value: "medium"
+                        }
+                    }
+                ],
+            }
+        ],
         order: 1,
         isActive: true,
         isTaxable: false

@@ -4,14 +4,15 @@ import Minus from '@untitled-ui/icons-react/build/esm/Minus';
 import { Button, IconButton, Stack, SvgIcon, TextField, Typography } from '@mui/material'
 
 
-export default function AddToCart({ item }) {
+export default function AddToCart({ item, isButtonDisabled }) {
 
     // @TODO: integrate with the cart context
     // to be replaced with the actual cart state using context in sprint 4
     const [cart, setCart] = useState([]);
     const [quantity, setQuantity] = useState(1);
-    const [error, setError] = useState();
     const [inputValue, setInputValue] = useState(1);
+    const [error, setError] = useState();
+
 
     useEffect(() => {
         const newQuantity = parseInt(inputValue);
@@ -65,7 +66,7 @@ export default function AddToCart({ item }) {
                         sx={{ width: 50 }}
                     />
                     <IconButton
-                        onClick={() => { setInputValue(quantity + 1)}}
+                        onClick={() => { setInputValue(quantity + 1) }}
                         sx={{
                             color: 'primary.main'
                         }}
@@ -88,7 +89,7 @@ export default function AddToCart({ item }) {
                             }
                         ])
                     }}
-                    disabled={!!error}
+                    disabled={!!error || isButtonDisabled}
                 >
                     Add to Cart
                 </Button>

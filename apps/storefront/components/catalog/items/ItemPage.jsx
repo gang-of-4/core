@@ -1,9 +1,11 @@
 "use client"
-import { Box, Checkbox, Container, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, Stack, SvgIcon, Typography } from '@mui/material'
+import { Box, Container, Grid, Stack, SvgIcon, Typography } from '@mui/material'
 import NextLink from 'next/link'
 import React, { useState } from 'react'
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import AddToCart from './AddToCart';
+import ItemImages from './ItemImages';
+import OptionGroup from './OptionGroup';
 
 
 
@@ -18,27 +20,35 @@ function formatPrice({ price, currency = 'USD' }) {
 export default function ItemPage({ item }) {
 
   const [appliedOptions, setAppliedOptions] = useState([]);
-  const [activeImage, setActiveImage] = useState(0);
+  const [images, setImages] = useState(item?.images || []);
+  const [activeVariant, setActiveVariant] = useState(item?.variants ? item.variants[0] : item);
+  const [error, setError] = useState();
 
-  function onChange({ index, option, event }) {
-
-    if (event.target.checked) {
-      setAppliedOptions({
-        ...appliedOptions,
-        [index]: option
-      });
-    } else {
-      setAppliedOptions(
-        {
-          ...appliedOptions,
-          [index]: undefined
-        }
-      )
+  function handleOptionChange(event) {
+    const { name, value } = event.target;
+    const newOptions = {
+      ...appliedOptions,
+      [name]: value
     }
+    setAppliedOptions(newOptions);
+
+    updateActiveVariant(newOptions);
   }
 
-  function isChecked({ index, option }) {
-    return appliedOptions[index] === option;
+  function updateActiveVariant(newOptions) {
+    const newActiveVariant = item.variants.find((variant) => {
+      return variant.options.every((option) => {
+        return newOptions[option.title] === option.value.value;
+      });
+    });
+
+    if (newActiveVariant) {
+      setError(null);
+      setActiveVariant(newActiveVariant);
+      setImages(newActiveVariant?.images || item.images);
+    } else {
+      setError('No variant found for selected options. Please select a different combination.')
+    }
   }
 
 
@@ -64,6 +74,7 @@ export default function ItemPage({ item }) {
               container
               spacing={4}
             >
+
               <Grid item xs={12}>
                 <Box
                   component={NextLink}
@@ -88,134 +99,61 @@ export default function ItemPage({ item }) {
                   </Typography>
                 </Box>
               </Grid>
+
               <Grid item xs={12} md={5}>
-                <Stack alignItems='center'>
-                  <Box
-                    borderRadius={2}
-                    component={'img'}
-                    width={500}
-                    height={500}
-                    src={item?.images[activeImage]?.url}
-                    alt={item.name}
-                  />
-                  <Stack
-                    marginTop={2}
-                    direction="row"
-                    justifyContent="space-between"
-                    spacing={1}
+                <ItemImages images={images} />
+              </Grid>
+
+              <Grid item xs={12} md={7}>
+                <Stack spacing={4}>
+
+                  <Typography
+                    variant="h4"
                   >
+                    {activeVariant?.name || item.name}
+                  </Typography>
+
+                  <Typography variant="body1" color='text.secondary'>
+                    {activeVariant?.description || item.description}
+                  </Typography>
+
+                  <Stack spacing={1}>
                     {
-                      item?.images?.map((image, index) => (
-                        <Box
-                          key={index}
-                          borderRadius={2}
-                          component={'img'}
-                          width={100}
-                          height={100}
-                          src={image.url}
-                          alt={item.name}
-                          onClick={() => setActiveImage(index)}
-                          sx={{
-                            cursor: 'pointer',
-                            opacity: activeImage === index ? 1 : 0.5
-                          }}
+                      item.options?.map((group, index) => (
+                        <OptionGroup
+                          key={group.id}
+                          index={index}
+                          group={group}
+                          handleOptionChange={handleOptionChange}
                         />
                       ))
                     }
                   </Stack>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={7}>
-                <Stack spacing={4}>
-                  <Typography
-                    variant="h4"
-                  >
-                    {item.name}
-                  </Typography>
-                  <Typography variant="body1" color='text.secondary'>
-                    {item.description}
-                  </Typography>
 
-                  <Stack spacing={1}>
-                    {
-                      item.options?.map((group) => (
-                        <div key={group.id}>
-                          <Stack
-                            alignItems="center"
-                            direction="row"
-                            justifyContent="space-between"
-                            spacing={1}
-                          >
-                            <Typography
-                              color="text.secondary"
-                              variant="overline"
-                            >
-                              {group.title}
-                            </Typography>
-                          </Stack>
-                          <Stack
-                            alignItems="center"
-                            direction="row"
-                            flexWrap="wrap"
-                            justifyContent={'flex-start'}
-                            columnGap={1}
-                          >
-                            {group?.values?.map((option) => (
-                              <FormControlLabel
-                                key={option.id}
-                                control={(
-                                  <Checkbox
-                                    checked={isChecked({ index: group.title, option })}
-                                    onChange={(event) => onChange({ index: group.title, option, event })}
-                                    value={option.value}
-                                    name={option.label}
-                                  />
-                                )}
-                                label={option.label}
-                              />
-                            ))}
-                          </Stack>
-                        </div>
-                      ))
-                    }
-
-                  </Stack>
-                  <Stack spacing={1}>
-                    {
-                      item.options?.map((group) => (
-                        <FormControl
-                          key={group.id}
-                        >
-                          <FormLabel id="demo-row-radio-buttons-group-label">
-                            {group.title}
-                            </FormLabel>
-                          <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name={group.title}
-                          >
-                            {group?.values?.map((option) => (
-                              <FormControlLabel 
-                                key={option.id}
-                                value={option.value} 
-                                control={<Radio />} 
-                                label={option.label}
-                                />
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                      ))
-                    }
-
-                  </Stack>
                   <Typography
                     variant="h6"
                   >
-                    {formatPrice({ price: item.price, currency: item.currency })}
+                    {formatPrice({ price: activeVariant?.price || item.price, currency: activeVariant?.currency || item.currency })}
                   </Typography>
-                  <AddToCart item={item} />
+
+                  <AddToCart item={item} isButtonDisabled={!!error} />
+
+                  <Stack
+                    spacing={1}
+                  >
+                    {error && (
+                      <Typography
+                        color="error"
+                        variant="body2"
+                      >
+                        {error}
+                      </Typography>
+                    )}
+                  </Stack>
+
                 </Stack>
               </Grid>
+
             </Grid>
           </Grid>
         </Grid>
