@@ -1,21 +1,14 @@
 "use client"
 
+import { GuestGuard } from '@/utils/guards/guest-guard'
 import React from 'react'
-import { IssuerGuard } from 'ui/guards/issuer-guard';
-import { GuestGuard } from 'ui/guards/guest-guard';
-import { Issuer } from 'ui/utils/auth';
-import { withGuestGuard } from 'ui/hocs/with-guest-guard';
 
-function layout({ children }) {
+export default function layout({ children }) {
     return (
         <>
-            <IssuerGuard issuer={Issuer.JWT}>
-                <GuestGuard>
-                    {children}
-                </GuestGuard>
-            </IssuerGuard>
+            <GuestGuard>
+                {children}
+            </GuestGuard>
         </>
     )
-}
-
-export default withGuestGuard(layout);
+};
