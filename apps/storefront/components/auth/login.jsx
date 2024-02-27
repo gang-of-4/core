@@ -58,14 +58,10 @@ export default function Page() {
     onSubmit: async (values, helpers) => {
       try {
 
-        const { error } = await signIn({
+        await signIn({
           email: values.email,
           password: values.password
         });
-
-        if (error) {
-          throw new Error(error);
-        }
 
         if (isMounted()) {
           router.push(returnTo || paths.storefront.index);

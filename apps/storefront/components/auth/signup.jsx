@@ -76,7 +76,7 @@ export default function Page() {
         validationSchema,
         onSubmit: async (values, helpers) => {
             try {
-                const { error } = await signUp({
+                await signUp({
                     email: values.email,
                     firstName: values.firstName,
                     lastName: values.lastName,
@@ -84,10 +84,6 @@ export default function Page() {
                     password: values.password,
                     passwordConfirmation: values.passwordConfirmation
                 });
-
-                if (error) {
-                    throw new Error(error);
-                }
 
                 if (isMounted()) {
                     router.push(returnTo || paths.storefront.index);

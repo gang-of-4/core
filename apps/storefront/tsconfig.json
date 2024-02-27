@@ -15,6 +15,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/**/*.jsx", "components/**/*.js", "app/**/*.jsx", "app/**/*.js", "contexts/**/*.js", "hooks/**/*.js", "hooks/**/*.jsx", "utils/**/*.jsx", "utils/**/*.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/**/*.jsx", "components/**/*.js", "app/**/*.jsx", "app/**/*.js", "contexts/**/*.js", "utils/**/*.jsx", "utils/**/*.js"],
   "exclude": ["node_modules"]
 }

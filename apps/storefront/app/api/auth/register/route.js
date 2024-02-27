@@ -12,7 +12,11 @@ export async function POST(request) {
     let requestBody = {};
 
     phone ? requestBody = {
-        ...request,
+        firstName,
+        lastName,
+        email,
+        password,
+        passwordConfirmation,
         phone
     } : requestBody = {
         firstName,
@@ -22,30 +26,25 @@ export async function POST(request) {
         passwordConfirmation
     };
 
-    try {
-        const res = await fetch(
-            `${process.env.AUTH_API_URL}/customer/register`,
-            {
-                method: 'POST',
-                next: { revalidate: 0 },
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody)
-            });
+    const res = await fetch(
+        `${process.env.AUTH_API_URL}/customer/register`,
+        {
+            method: 'POST',
+            next: { revalidate: 0 },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody)
+        });
 
-        const data = await res.json();
+    const data = await res.json();
 
-        if (!res.ok) {
-            throw new Error(data.message);
-        }
-
-        const user = data.user;
-
-        return Response.json({ user });
-
-    } catch (err) {
-        return Response.error(err.message);
+    if (!res.ok) {
+        return new Response(JSON.stringify({ message: data.message }), { status: data.statusCode });
     }
+
+    const user = data.user;
+
+    return new Response(JSON.stringify({ user }), { status: 200 });
 
 }

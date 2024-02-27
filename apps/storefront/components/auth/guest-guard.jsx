@@ -11,7 +11,7 @@ export function GuestGuard({ children }) {
     // Check if the user is authenticated
     useEffect(() => {
         if (isAuthenticated) {
-            router.back(); // Redirect the user back
+            router.push('/'); // Redirect the user to the home page if they are authenticated
         }
     }, [isAuthenticated, router]);
 

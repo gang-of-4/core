@@ -1,4 +1,4 @@
-import fetchApi from "@/hooks/fetch-api";
+import fetchApi from "@/utils/fetch-api";
 import { decodeUser } from "@/utils/jwt-token";
 import { createContext, useCallback, useContext, useEffect, useReducer } from "react";
 
@@ -128,11 +128,13 @@ export function AuthProvider(props) {
             includeToken: false
         });
 
-        const { accessToken } = data;
-        const user  = await decodeUser(accessToken);
+        let user = null
 
-        if (accessToken) {
+        if (data?.accessToken) {
 
+            const accessToken = data.accessToken;
+
+            user = await decodeUser(accessToken);
             if (window && window.localStorage) {
                 localStorage.setItem('customerAccessToken', accessToken);
             }
@@ -146,7 +148,8 @@ export function AuthProvider(props) {
             });
         }
 
-        return { user, accessToken, loading, error };
+        return { user, accessToken: data?.accessToken, loading, error };
+
     }, [dispatch]);
 
     const signUp = useCallback(async (request) => {
@@ -159,6 +162,18 @@ export function AuthProvider(props) {
             passwordConfirmation
         } = request;
 
+        let requestBody = {
+            firstName,
+            lastName,
+            email,
+            password,
+            passwordConfirmation
+        };
+
+        if (phone) {
+            requestBody.phone = phone;
+        }
+
         await fetchApi({
             url: '/api/auth/register',
             options: {
@@ -166,20 +181,14 @@ export function AuthProvider(props) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    firstName,
-                    lastName,
-                    email,
-                    password,
-                    passwordConfirmation
-                })
+                body: JSON.stringify(requestBody)
             },
             includeToken: false
         });
 
         const { user, accessToken, loading, error } = signIn({ email, password });
-
         return { user, accessToken, loading, error };
+
     }, [dispatch]);
 
     const signOut = useCallback(() => {

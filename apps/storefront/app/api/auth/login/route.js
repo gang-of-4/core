@@ -5,33 +5,27 @@ export async function POST(request) {
         password,
     } = await request.json();
 
-    try {
-        const res = await fetch(
-            `${process.env.AUTH_API_URL}/customer/login`,
-            {
-                method: 'POST',
-                next: { revalidate: 0 },
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-            });
+    const res = await fetch(
+        `${process.env.AUTH_API_URL}/customer/login`,
+        {
+            method: 'POST',
+            next: { revalidate: 0 },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
 
-        const data = await res.json();
+    const data = await res.json();
 
-        if (!res.ok) {
-            throw new Error(data.message);
-        }
-
-        const accessToken = data.access_token;
-
-        return Response.json({ accessToken });
-
-    } catch (err) {
-        return Response.error(err.message);
+    if (!res.ok) {
+        return new Response(JSON.stringify({ message: data.message }), { status: data.statusCode });
     }
+
+    const accessToken = data.access_token;
+    return new Response(JSON.stringify({ accessToken }), { status: 200 });
 
 }
