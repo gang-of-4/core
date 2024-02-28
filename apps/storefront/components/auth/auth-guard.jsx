@@ -30,7 +30,11 @@ export default function AuthGuard({ children, role }) {
 
     // Call the check function when the component mounts
     useEffect(() => {
-        check();
+        const interval = setTimeout(() => {
+            check();
+        }, 3000);
+
+        return () => clearInterval(interval);
     }, []);
 
     // If the check has not been completed, return null
