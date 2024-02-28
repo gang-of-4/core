@@ -6,14 +6,15 @@ import { useEffect } from "react";
 // GuestGuard component is used to protect routes that require the user to be a guest, e.g. login and register pages
 export function GuestGuard({ children }) {
     const router = useRouter(); // Move the useRouter hook inside the GuestGuard component
-    const { isAuthenticated } = useAuth();
+    const { isInitialized, isAuthenticated } = useAuth();
 
     // Check if the user is authenticated
+    // Check if the user is authenticated
     useEffect(() => {
-        if (isAuthenticated) {
-            router.push('/'); // Redirect the user to the home page if they are authenticated
+        if (isInitialized && isAuthenticated) {
+            router.replace('/'); // Redirect the vendor to the dashboard page if they are authenticated
         }
-    }, [isAuthenticated, router]);
+    }, [isInitialized, isAuthenticated, router]);
 
     return children;
 }

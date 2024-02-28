@@ -94,7 +94,8 @@ export function AuthProvider(props) {
                     type: ActionType.INITIALIZE,
                     payload: {
                         isAuthenticated: true,
-                        user: user
+                        isInitialized: true,
+                        user: user,
                     }
                 });
             } else {

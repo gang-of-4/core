@@ -7,7 +7,7 @@ import { paths } from "ui/paths";
 // AuthGuard component is used to protect routes that require authentication
 export default function AuthGuard({ children, role }) {
     const router = useRouter();
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, isInitialized } = useAuth();
     const [checked, setChecked] = useState(false);
 
     const check = useCallback(() => {
@@ -30,12 +30,10 @@ export default function AuthGuard({ children, role }) {
 
     // Call the check function when the component mounts
     useEffect(() => {
-        const interval = setTimeout(() => {
+        if(isInitialized) {
             check();
-        }, 3000);
-
-        return () => clearInterval(interval);
-    }, []);
+        }
+    }, [isInitialized]);
 
     // If the check has not been completed, return null
     if (!checked) {
