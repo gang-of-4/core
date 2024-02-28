@@ -1,41 +1,39 @@
 "use client"
 
-import { useStores } from '@/hooks/useStores'
-import { useAuth } from 'ui/hooks/use-auth';
+
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { withAuthGuard } from 'ui/hocs/with-auth-guard'
 import { Layout as DashboardLayout } from 'ui/layouts/dashboard'
 import { Button, SvgIcon } from '@mui/material';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import NextLink from 'next/link';
 import { getSections } from '@/components/dashboard/Sections'
 import { paths } from 'ui/paths'
+import AuthGuard from '@/components/auth/auth-guard';
+import { useAuth } from '@/contexts/AuthContext'
+import { useStores } from '@/contexts/StoresContext';
 
 
-function Layout({ children }) {
+export default function Layout({ children }) {
 
   const router = useRouter();
   const params = useParams();
 
-  const { stores, getStores } = useStores();
-  const { user } = useAuth();
+  const { stores, isInitialized: isStoresInitialized } = useStores();
+  const auth = useAuth();
+  const user = auth?.user;
 
-  async function initStores(userId){
-    const res = await getStores(userId);
-  }
 
   async function checkStores() {
+
+    console.log('Checking stores for vendor', stores)
+
     if (stores?.length === 0) {
       console.log('No stores found for this vendor, redirecting to onboarding')
-
-      // router.replace(paths.vendor.onboarding.index)
-
-      // the redirect is done this way instead to force a hard navigation
-      window.location.href = `/vendor${paths.vendor.onboarding.index}`;
+      router.replace(paths.vendor.onboarding.index)
     }
   }
-  
+
   const optionsList = stores?.map(store => {
     if (store?.individualStore) {
       return {
@@ -66,14 +64,10 @@ function Layout({ children }) {
   }
 
   useEffect(() => {
-    checkStores();
-  }, [stores])
-
-  useEffect(() => {
-    initStores(user?.id);
-  }, [])
-    
-
+    if (auth.isInitialized && isStoresInitialized) {
+      checkStores();
+    }
+  }, [stores, auth.isInitialized, isStoresInitialized])
 
   const createStore = (
     <>
@@ -103,15 +97,16 @@ function Layout({ children }) {
 
   return (
     <>
-      <DashboardLayout
-        options={options}
-        sections={sections}
-        bgUrl={'/vendor/assets/gradient-bg.svg'}
-      >
-        {children}
-      </DashboardLayout>
+      <AuthGuard role={'vendor'}>
+        <DashboardLayout
+          auth={auth}
+          options={options}
+          sections={sections}
+          bgUrl={'/vendor/assets/gradient-bg.svg'}
+        >
+          {children}
+        </DashboardLayout>
+      </AuthGuard>
     </>
   )
 }
-
-export default withAuthGuard(Layout, { role: 'vendor' });

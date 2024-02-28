@@ -1,20 +1,8 @@
-import { usersApi } from "@/api/usersApi";
 import { getInitials } from "ui/utils/get-initials";
 
-export async function formatStore(store) {
+export function formatStore({store, user}) {
         
-        const vendorId = store?.vendorId;
-        let vendor = {};
-        try {
-            vendor = await usersApi.getUser(vendorId);
-            if (!vendor?.id) throw new Error(`Vendor with id ${vendorId} not found`);
-        } catch (err) {
-            console.error(err);
-            vendor = {
-                firstName: 'Not',
-                lastName: 'Found',
-            };
-        }
+        let vendor = user;
 
         if (store?.individualStore) {
                 return {

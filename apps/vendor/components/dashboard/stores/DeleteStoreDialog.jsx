@@ -13,9 +13,9 @@ import {
 } from '@mui/material';
 import React from 'react'
 import { useState } from 'react';
-import { useStores } from '@/hooks/useStores';
 import { useRouter } from 'next/navigation';
 import { paths } from 'ui/paths';
+import { useStores } from '@/contexts/StoresContext';
 
 export default function DeleteStoreDialog({ store }) {
 

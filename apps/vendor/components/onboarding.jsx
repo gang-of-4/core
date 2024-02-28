@@ -15,9 +15,9 @@ import { blueGrey } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import { paths } from 'ui/paths';
 import Link from 'next/link';
-import { useStores } from '@/hooks/useStores';
-import { useAuth } from 'ui/hooks/use-auth';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { useStores } from '@/contexts/StoresContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +42,7 @@ export default function Page() {
     const classes = useStyles();
 
     const router = useRouter();
-    const { user } = useAuth();
+    const { user, isInitialized } = useAuth();
     const { createIndividualStore, stores } = useStores();
     const [hasIndividual, setHasIndividual] = useState(false);
 
@@ -66,8 +66,10 @@ export default function Page() {
     }
 
     useEffect(() => {
-        checkHasIndividual();
-    }, [stores]);
+        if (isInitialized) {
+            checkHasIndividual();
+        }
+    }, [stores, isInitialized]);
 
     return (
         <>
