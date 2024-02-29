@@ -8,7 +8,6 @@ export async function formatStores(stores) {
         let vendor = {};
         try {
             vendor = await usersApi.getUser(vendorId);
-            // if (!vendor?.id) throw new Error(`Vendor with id ${vendorId} not found`);
         } catch (err) {
             console.error(err);
             vendor = {

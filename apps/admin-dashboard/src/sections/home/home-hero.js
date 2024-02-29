@@ -1,7 +1,5 @@
 import NextLink from 'next/link';
-import EyeIcon from '@untitled-ui/icons-react/build/esm/Eye';
-import LayoutBottomIcon from '@untitled-ui/icons-react/build/esm/LayoutBottom';
-import { Box, Button, Container, Rating, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { paths } from '../../paths';
 
