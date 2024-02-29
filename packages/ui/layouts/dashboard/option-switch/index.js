@@ -57,6 +57,7 @@ export function OptionSwitch(props) {
           </Typography>
         </Box>
         <IconButton
+          data-test="option-switch"
           onClick={handlePopoverOpen}
           ref={anchorRef}
         >

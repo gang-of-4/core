@@ -116,7 +116,7 @@ export default function Store({ unformattedStore }) {
               <Typography variant="h5">
                 {store?.name}
               </Typography>
-              <SeverityPill color={getStatusColor(store?.status)}>
+              <SeverityPill color={getStatusColor(store?.status)} data-test="store-status-pill">
                 {store?.status}
               </SeverityPill>
             </Stack>
@@ -152,6 +152,7 @@ export default function Store({ unformattedStore }) {
                           )}
                           variant="contained"
                           disabled
+                          data-test="edit-store-button"
                         >
                           Edit Store
                         </Button>
@@ -170,6 +171,7 @@ export default function Store({ unformattedStore }) {
                       style={{ backgroundColor: '#2970FF' }}
                       component={NextLink}
                       href={`${store?.id}/edit`}
+                      data-test="edit-store-button"
                     >
                       Edit Store
                     </Button>

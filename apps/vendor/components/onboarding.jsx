@@ -107,6 +107,7 @@ export default function Page() {
                                                         id='individualStoreButton'
                                                         disabled
                                                         style={{ width: '100%' }}
+                                                        data-test='individual-store-button'
                                                     >
                                                         <PersonIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
                                                         <h1 className='text-primary text-xl'>Individual Store</h1>
@@ -127,6 +128,7 @@ export default function Page() {
                                                 onClick={handleCreateIndividual}
                                                 id='individualStoreButton'
                                                 style={{ width: '100%' }}
+                                                data-test='individual-store-button'
                                             >
                                                 <PersonIcon sx={{ fontSize: 100, color: blueGrey[600] }} />
                                                 <h1 className='text-primary text-xl'>Individual Store</h1>
@@ -151,7 +153,9 @@ export default function Page() {
                                 className={classes.card}
                             >
                                 <CardContent>
-                                    <Link href={paths.vendor.dashboard.stores.create}>
+                                    <Link href={paths.vendor.dashboard.stores.create}
+                                        data-test='business-store-button'
+                                    >
                                         <button
                                             id='businessStoreButton'
                                             style={{ width: '100%' }}

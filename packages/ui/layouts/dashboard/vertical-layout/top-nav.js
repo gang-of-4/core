@@ -43,7 +43,10 @@ export function TopNav(props) {
           spacing={2}
         >
           {!lgUp && (
-            <IconButton onClick={onMobileNavOpen}>
+            <IconButton
+              data-test="mobile-nav-open"
+              onClick={onMobileNavOpen}
+            >
               <SvgIcon>
                 <Menu01Icon />
               </SvgIcon>

@@ -51,6 +51,7 @@ export default function DeleteStoreDialog({ store }) {
                         color="error"
                         variant="outlined"
                         onClick={handleOpenDeleteDialog}
+                        data-test="delete-store-button"
                     >
                         Delete Store
                     </Button>
@@ -82,7 +83,7 @@ export default function DeleteStoreDialog({ store }) {
                     <Button onClick={handleCloseDeleteDialog} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleDeleteStore} color="error" variant='contained'>
+                    <Button onClick={handleDeleteStore} color="error" variant='contained' data-test="confirm-delete-store-button">
                         Delete
                     </Button>
                 </DialogActions>
