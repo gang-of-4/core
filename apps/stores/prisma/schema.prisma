@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+  output = "./../node_modules/@prisma/client/stores"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  PENDING
+  INREVIEW
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id                    String @db.Uuid @id @default(uuid())  
+}
+
+model Store {
+  id                    String  @db.Uuid @id @default(uuid())  
+  vendorId             String  @db.Uuid
+  status                Status  @default(PENDING)
+  individualStore       IndividualStore?
+  businessStore         BusinessStore?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @default(now())
+  deleted_at            DateTime?
+
+  @@index([vendorId])
+}
+
+model Media {
+    id                  String  @db.Uuid @id @default(uuid())  
+    name                String
+    ownerId             String  @db.Uuid
+    extension           String
+    size                Int
+
+  @@index([ownerId])
+}
+
+model BusinessStore {
+  id                    String  @db.Uuid @id @default(uuid())  
+  storeId               String  @db.Uuid @unique
+  store                 Store   @relation(fields: [storeId], references: [id])
+  name                  String
+  logo                  String
+  vat_number            String
+  cr_number             String
+  owner_national_id     String
+}
+
+model IndividualStore {
+  id                    String  @db.Uuid @id @default(uuid())  
+  storeId               String  @db.Uuid @unique
+  store                 Store   @relation(fields: [storeId], references: [id])
+}

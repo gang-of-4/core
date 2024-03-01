@@ -6,7 +6,7 @@ class AuthApi {
   async signUp(request, endpoint) {
 
     let requestBody = {};
-    
+
     request.phone ? requestBody = {
       ...request,
       phone: request.phone
@@ -65,12 +65,13 @@ class AuthApi {
             })
           });
 
+        const data = await res.json();
+        
         if (!res.ok) {
           reject(new Error(data.message));
           return;
         }
 
-        const data = await res.json();
         const accessToken = data.access_token;
 
         resolve({ accessToken });

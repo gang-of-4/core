@@ -99,6 +99,9 @@ export const paths = {
       index: '/dashboard/social',
       profile: '/dashboard/social/profile',
       feed: '/dashboard/social/feed'
+    },
+    stores: {
+      index: '/dashboard/stores',
     }
   },
   components: {

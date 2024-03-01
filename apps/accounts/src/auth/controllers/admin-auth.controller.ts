@@ -3,13 +3,14 @@ import { AuthService } from '../services/auth.service';
 import { UserLoginDto } from '../dto/user-login.dto';
 import { JwtTokenDto } from '../dto/jwt-token.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthController } from './auth.controller.interface';
 
 @Controller({
   version: '1',
   path: 'auth/admin',
 })
 @ApiTags('Admin Auth')
-export class AdminAuthController {
+export class AdminAuthController implements AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')

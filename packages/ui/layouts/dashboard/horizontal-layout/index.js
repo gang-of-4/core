@@ -61,7 +61,9 @@ export const HorizontalLayout = (props) => {
         color={navColor}
         onMobileNav={mobileNav.handleOpen}
         sections={sections}
-      />
+      >
+        {/* options under top nav go here */}
+      </TopNav>
       {!lgUp && (
         <MobileNav
           color={navColor}

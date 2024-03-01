@@ -15,7 +15,14 @@ export const paths = {
     index: '/',
     dashboard: {
       index: '/dashboard',
+      stores: {
+        index: '/dashboard/stores',
+        create: 'stores/create',
+      }
     },
+    onboarding: {
+      index: '/onboarding',
+    }
   },
   storefront: {
     index: '/',

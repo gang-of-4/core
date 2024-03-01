@@ -47,5 +47,6 @@ export const de = {
   [tokens.nav.register]: 'Registrieren',
   [tokens.nav.resetPassword]: 'Passwort Zurücksetzen',
   [tokens.nav.socialMedia]: 'Sozialen Medien',
+  [tokens.nav.stores]: 'Geschäfte',
   [tokens.nav.verifyCode]: 'Code Überprüfen'
 };

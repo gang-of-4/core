@@ -2,14 +2,14 @@ import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import File04Icon from '@untitled-ui/icons-react/build/esm/File04';
-import { Box, Button, Drawer, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Drawer, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Logo } from '../../../components/logo';
 import { Scrollbar } from '../../../components/scrollbar';
 import { paths } from '../../../paths';
-import { TenantSwitch } from '../tenant-switch';
+import { OptionSwitch } from '../option-switch';
 import { SideNavSection } from '../vertical-layout/side-nav-section';
+import { organization } from '../../../config';
 
 const MOBILE_NAV_WIDTH = 280;
 
@@ -102,7 +102,7 @@ const useCssVars = (color) => {
 };
 
 export const MobileNav = (props) => {
-  const { color = 'evident', open, onClose, sections = [] } = props;
+  const { color = 'evident', open, onClose, sections = [], options } = props;
   const pathname = usePathname();
   const cssVars = useCssVars(color);
 
@@ -155,7 +155,14 @@ export const MobileNav = (props) => {
             >
               <Logo />
             </Box>
-            <TenantSwitch sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexGrow: 1 }}>
+              <Typography
+                color="inherit"
+                variant="h6"
+              >
+                {organization.name}
+              </Typography>
+            </Box>
           </Stack>
           <Stack
             component="nav"
@@ -165,6 +172,26 @@ export const MobileNav = (props) => {
               px: 2
             }}
           >
+            {
+              options &&
+              <Stack
+                component="ul"
+                spacing={0.5}
+                sx={{
+                  listStyle: 'none',
+                  m: 0,
+                  p: 0,
+                }}>
+                <OptionSwitch
+                  sx={{ flexGrow: 1 }}
+                  options={options.list}
+                  firstOption={options.firstOption}
+                  optionsTitle={options.title}
+                  optionsSubtitle={options.subtitle}
+                  handleOptionsChange={options.handleChange}
+                />
+              </Stack>
+            }
             {sections.map((section, index) => (
               <SideNavSection
                 items={section.items}
@@ -174,34 +201,6 @@ export const MobileNav = (props) => {
               />
             ))}
           </Stack>
-          <Box sx={{ p: 3 }}>
-            <Typography
-              color="neutral.400"
-              variant="subtitle1"
-            >
-              Need help?
-            </Typography>
-            <Typography
-              color="neutral.400"
-              sx={{ mb: 2 }}
-              variant="body2"
-            >
-              Please check our docs.
-            </Typography>
-            <Button
-              component={NextLink}
-              fullWidth
-              href={paths.docs.welcome}
-              startIcon={(
-                <SvgIcon>
-                  <File04Icon />
-                </SvgIcon>
-              )}
-              variant="contained"
-            >
-              Documentation
-            </Button>
-          </Box>
         </Stack>
       </Scrollbar>
     </Drawer>

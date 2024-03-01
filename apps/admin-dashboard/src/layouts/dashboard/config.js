@@ -40,6 +40,15 @@ export const getSections = (t) => [
         )
       },
       {
+        title: t(tokens.nav.stores),
+        path: paths.dashboard.stores.index,
+        icon: (
+          <SvgIcon fontSize="small">
+            <ShoppingBag03Icon />
+          </SvgIcon>
+        ),
+      },
+      {
         title: t(tokens.nav.analytics),
         path: paths.dashboard.analytics,
         icon: (

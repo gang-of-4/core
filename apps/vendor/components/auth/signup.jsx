@@ -92,7 +92,7 @@ const Page = () => {
                 await signUp(userInfo, 'vendor');
 
                 if (isMounted()) {
-                    router.push(returnTo || paths.vendor.dashboard.index);
+                    router.push(returnTo || '/onboarding');
                 }
             } catch (err) {
                 console.error(err);
@@ -110,7 +110,7 @@ const Page = () => {
 
     return (
         <>
-            <div className='flex items-center justify-center w-screen h-screen'>
+            <div className='flex items-center justify-center w-screen h-full'>
                 <div className='w-4/5 max-w-lg'>
                     <Card elevation={16}>
                         <CardHeader
