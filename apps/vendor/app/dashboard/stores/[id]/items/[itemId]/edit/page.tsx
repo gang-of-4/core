@@ -1,5 +1,5 @@
 import React from 'react'
-import EditCar from '@/components/dashboard/cars/EditCar'
+import EditCar from '@/components/dashboard/items/EditCar'
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
 import React from 'react'
-import AddCar from '@/components/dashboard/cars/AddCar'
+import AddCar from '@/components/dashboard/items/AddCar'
 import { Metadata } from 'next';
 
 

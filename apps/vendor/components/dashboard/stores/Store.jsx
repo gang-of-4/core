@@ -126,7 +126,7 @@ export default function Store({ store }) {
                 )}
                 variant="outlined"
                 component={NextLink}
-                href={`${store?.id}/cars/add`}
+                href={`${store?.id}/items/add`}
               >
                 Add Items
               </Button>
