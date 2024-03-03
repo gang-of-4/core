@@ -9,22 +9,14 @@ export async function POST(request) {
         passwordConfirmation,
     } = await request.json();
 
-    let requestBody = {};
-
-    phone ? requestBody = {
-        firstName,
-        lastName,
-        email,
-        password,
-        passwordConfirmation,
-        phone
-    } : requestBody = {
-        firstName,
-        lastName,
-        email,
-        password,
-        passwordConfirmation
-    };
+    const requestBody = {  
+        firstName,  
+        lastName,  
+        email,  
+        password,  
+        passwordConfirmation,  
+    }  
+    phone && (requestBody.phone = phone);
 
     const res = await fetch(
         `${process.env.AUTH_API_URL}/vendor/register`,
