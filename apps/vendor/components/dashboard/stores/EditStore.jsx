@@ -26,6 +26,7 @@ import NextLink from 'next/link';
 import { formatStore } from '@/utils/format-store';
 import { useAuth } from '@/contexts/AuthContext';
 import { useStores } from '@/contexts/StoresContext';
+import { useRouter } from 'next/navigation';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -87,6 +88,7 @@ export default function EditStore({ unformattedStore }) {
     };
 
     const [selectedFileName, setSelectedFileName] = useState('');
+    const router = useRouter();
     const isMounted = useMounted();
     const { updateBusinessStore } = useStores();
     const formik = useFormik({
@@ -108,8 +110,7 @@ export default function EditStore({ unformattedStore }) {
                 });
 
                 if (isMounted()) {
-                    // force a hard navigation to the dashboard
-                    window.location.href = `/vendor/dashboard/stores/${store?.id}`;
+                    router.push(`/vendor/dashboard/stores/${store?.id}`)
                 }
                 setSelectedFileName('');
             } catch (err) {
