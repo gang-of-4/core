@@ -6,6 +6,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { createTheme } from 'ui/theme'
 import { ThemeProvider } from '@mui/material/styles';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ItemsProvider } from '@/contexts/ItemsContext';
 
 
 export function Providers({ children }) {
@@ -26,7 +27,9 @@ export function Providers({ children }) {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <AuthProvider>
           <ThemeProvider theme={theme}>
-            {children}
+            <ItemsProvider>
+              {children}
+            </ItemsProvider>
           </ThemeProvider>
         </AuthProvider>
       </LocalizationProvider>
