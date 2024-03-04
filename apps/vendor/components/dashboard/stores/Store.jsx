@@ -43,13 +43,7 @@ const getStatusColor = (status) => {
 export default function Store({ unformattedStore }) {
 
   const { user } = useAuth();
-  
   const store = formatStore({ store: unformattedStore, user });
-  const [currentTab, setCurrentTab] = useState('overview');
-
-  const handleTabsChange = useCallback((event, value) => {
-    setCurrentTab(value);
-  }, []);
 
   return (
     <>
@@ -181,29 +175,7 @@ export default function Store({ unformattedStore }) {
               }
             </Stack>
           </Stack>
-          <Stack>
-            <Tabs
-              indicatorColor="primary"
-              onChange={handleTabsChange}
-              scrollButtons="auto"
-              sx={{ mt: 3 }}
-              textColor="primary"
-              value={currentTab}
-              variant="scrollable"
-            >
-              {tabs.map((tab) => (
-                <Tab
-                  key={tab.value}
-                  label={tab.label}
-                  value={tab.value}
-                />
-              ))}
-            </Tabs>
-            <Divider />
-          </Stack>
-          {currentTab === 'overview' && (
-            <StoreOverview store={store} />
-          )}
+          <StoreOverview store={store} />
         </Container>
       </Box>
     </>
