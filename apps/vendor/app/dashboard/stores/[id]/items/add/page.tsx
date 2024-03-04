@@ -1,5 +1,5 @@
 import React from 'react'
-import AddCar from '@/components/dashboard/items/AddCar'
+import AddItem from '@/components/dashboard/items/AddItem'
 import { Metadata } from 'next';
 
 
@@ -13,8 +13,8 @@ export default function page({ params }: { params: { id: string } }) {
 
   return (
     <>
-    <AddCar  storeId ={params.id}/>
+      <AddItem storeId={params.id} />
     </>
-    
+
   )
 }
