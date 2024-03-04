@@ -32,3 +32,7 @@ export function useActiveStore() {
     }
     return context;
 }
+
+export function signOutCallback() {
+    localStorage.removeItem('activeStore');
+}

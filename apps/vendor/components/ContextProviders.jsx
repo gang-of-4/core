@@ -7,6 +7,7 @@ import { createTheme } from 'ui/theme'
 import { ThemeProvider } from '@mui/material/styles';
 import { StoresProvider } from '@/contexts/StoresContext';
 import { signOutCallback as storesCallback } from '@/contexts/StoresContext';
+import { signOutCallback as activeStoreCallback } from '@/contexts/ActiveStoreContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ActiveStoreProvider } from '@/contexts/ActiveStoreContext';
 
@@ -24,10 +25,15 @@ export function ContextProviders({ children }) {
     stretch: false
   })
 
+  function signOutCallback() {
+    storesCallback();
+    activeStoreCallback();
+  }
+
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider signOutCallback={storesCallback}>
+        <AuthProvider signOutCallback={signOutCallback}>
           <ThemeProvider theme={theme}>
             <StoresProvider>
               <ActiveStoreProvider>
