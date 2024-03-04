@@ -45,8 +45,6 @@ export const ItemsListTable = (props) => {
         items,
         itemsCount,
         rowsPerPage,
-        hasUpdatedItems,
-        setHasUpdatedItems,
         ...other
     } = props;
     const [currentItem, setCurrentItem] = useState(null);
@@ -209,8 +207,6 @@ export const ItemsListTable = (props) => {
                                             handleItemUpdate={handleItemUpdate}
                                             initialValues={initialValues}
                                             item={item}
-                                            hasUpdatedItems={hasUpdatedItems}
-                                            setHasUpdatedItems={setHasUpdatedItems}
                                         />
                                     )} */}
                                 </Fragment>
