@@ -134,6 +134,8 @@ export default function Store({ unformattedStore }) {
                   </SvgIcon>
                 )}
                 variant="outlined"
+                component={NextLink}
+                href={`${store?.id}/items/add`}
               >
                 Add Items
               </Button>

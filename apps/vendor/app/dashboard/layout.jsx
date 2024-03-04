@@ -12,6 +12,7 @@ import { paths } from 'ui/paths'
 import AuthGuard from '@/components/auth/auth-guard';
 import { useAuth } from '@/contexts/AuthContext'
 import { useStores } from '@/contexts/StoresContext';
+import { useActiveStore } from '@/contexts/ActiveStoreContext';
 
 
 export default function Layout({ children }) {
@@ -22,11 +23,10 @@ export default function Layout({ children }) {
   const { stores, isInitialized: isStoresInitialized } = useStores();
   const auth = useAuth();
   const user = auth?.user;
+  const { activeStore, setActiveStore } = useActiveStore();
 
 
   async function checkStores() {
-
-    console.log('Checking stores for vendor', stores)
 
     if (stores?.length === 0) {
       console.log('No stores found for this vendor, redirecting to onboarding')
@@ -34,6 +34,15 @@ export default function Layout({ children }) {
     }
   }
 
+  function getTitle() {
+    if (activeStore?.individualStore) {
+      return `${user?.firstName} ${user?.lastName}'s Store`
+    } else if (activeStore?.businessStore) {
+      return activeStore?.businessStore?.name
+    }
+    return 'Select a Store'
+  }
+  
   const optionsList = stores?.map(store => {
     if (store?.individualStore) {
       return {
@@ -55,6 +64,7 @@ export default function Layout({ children }) {
 
   function handleChange(storeId) {
     router.push(`${paths.vendor.dashboard.stores.index}/${storeId}`)
+    setActiveStore(stores?.find(store => store.id === storeId));
   }
 
   let currentStore = {};
@@ -87,13 +97,13 @@ export default function Layout({ children }) {
   );
 
   const options = {
-    title: currentStore?.name || 'Select a Store',
+    title: getTitle(),
     list: optionsList,
     handleChange: handleChange,
     firstOption: createStore
   }
 
-  const sections = getSections();
+  const sections = getSections(activeStore);
 
   return (
     <>

@@ -8,6 +8,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { StoresProvider } from '@/contexts/StoresContext';
 import { signOutCallback as storesCallback } from '@/contexts/StoresContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ActiveStoreProvider } from '@/contexts/ActiveStoreContext';
 
 
 export function ContextProviders({ children }) {
@@ -29,7 +30,9 @@ export function ContextProviders({ children }) {
         <AuthProvider signOutCallback={storesCallback}>
           <ThemeProvider theme={theme}>
             <StoresProvider>
-              {children}
+              <ActiveStoreProvider>
+                {children}
+              </ActiveStoreProvider>
             </StoresProvider>
           </ThemeProvider>
         </AuthProvider>
