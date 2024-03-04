@@ -1,10 +1,8 @@
 import NextLink from 'next/link';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { paths } from '../../paths';
 
 export const HomeHero = () => {
-  const theme = useTheme();
 
   return (
     <Box
