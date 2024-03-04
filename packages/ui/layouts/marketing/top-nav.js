@@ -22,7 +22,6 @@ import { TopNavItem } from './top-nav-item';
 const TOP_NAV_HEIGHT = 64;
 
 export function TopNav(props) {
-  const { onMobileNavOpen, items, openSide, app, } = props;
   const { onMobileNavOpen, items, openSide, app, auth, children } = props;
   const pathname = usePathname();
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
