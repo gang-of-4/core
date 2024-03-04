@@ -21,6 +21,7 @@ import { useMounted } from '../../../../hooks/use-mounted';
 import XIcon from '@untitled-ui/icons-react/build/esm/X';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import { paths } from '../../../../paths';
+import { catalogApi } from '../../../../api/catalog';
 
 
 const validationSchema = Yup.object({
@@ -57,11 +58,10 @@ export function OptionCreateForm() {
     validationSchema,
     onSubmit: async (values, helpers) => {
       try {
-        // @NOW-TODO: Implement the API call to create the option group
-        console.log('values', values);
+        await catalogApi.createOptionGroup(values)
 
         if (isMounted()) {
-          // router.push(paths.dashboard.catalog.options.index);
+          router.push(paths.dashboard.catalog.options.index);
         }
       } catch (err) {
         console.error(err);

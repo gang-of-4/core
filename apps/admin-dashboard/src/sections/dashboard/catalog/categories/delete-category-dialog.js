@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { paths } from '../../../../paths';
 import { useMounted } from '../../../../hooks/use-mounted';
 
-export function DeleteOptionDialog({ group, isOpen, setIsOpen }) {
+export function DeleteCategoryDialog({ category, isOpen, setIsOpen }) {
 
     const router = useRouter();
     const isMounted = useMounted();
@@ -19,10 +19,10 @@ export function DeleteOptionDialog({ group, isOpen, setIsOpen }) {
 
     async function handleDelete() {
         try {
-            await catalogApi.deleteOptionGroup(group.id)
+            await catalogApi.deleteCategory(category.id)
 
         if (isMounted()) {
-          router.push(paths.dashboard.catalog.options.index);
+          router.push(paths.dashboard.catalog.categories.index);
         }
         } catch (error) {
             console.error(error);
@@ -37,10 +37,10 @@ export function DeleteOptionDialog({ group, isOpen, setIsOpen }) {
                 open={isOpen}
                 onClose={() => { setIsOpen(false) }}
             >
-                <DialogTitle id='delete-option-dialog'>Confirm Deletion</DialogTitle>
+                <DialogTitle id='delete-category-dialog'>Confirm Deletion</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="delete-option-dialog-description">
-                        Are you sure you want to delete the option group?
+                    <DialogContentText id="delete-category-dialog-description">
+                        Are you sure you want to delete the category?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

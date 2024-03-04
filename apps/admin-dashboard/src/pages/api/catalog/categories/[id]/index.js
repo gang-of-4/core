@@ -5,7 +5,7 @@ export default async function handler(req, res) {
         const id = req.query.id;
         // @TODO: integrate with back
         // const respone = await fetch(
-        //     `${process.env.CATALOG_API_URL}/options`,
+        //     `${process.env.CATALOG_API_URL}/categories`,
         //     {
         //         method: 'GET',
         //         headers: {
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
         const id = req.query.id;
 
         // const respone = await fetch(
-        //     `${process.env.CATALOG_API_URL}/options/${id}`,
+        //     `${process.env.CATALOG_API_URL}/categories/${id}`,
         //     {
         //         method: 'DELETE',
         //         headers: {
@@ -94,7 +94,7 @@ export default async function handler(req, res) {
         const body = req.body;
         // @TODO: integrate with back
         // const respone = await fetch(
-        //     `${process.env.CATALOG_API_URL}/options/${id}`,
+        //     `${process.env.CATALOG_API_URL}/categories/${id}`,
         //     {
         //         method: 'PATCH',
         //         headers: {
