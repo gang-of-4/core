@@ -1,5 +1,6 @@
-import { createBusinessStoreApi, createIndividualStoreApi, deleteStoreApi, getStoresApi, updateBusinessStoreApi } from "@/api/storeApi";
-import { createContext, useCallback, useEffect, useReducer } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import fetchApi from "@/utils/fetch-api";
+import { createContext, useCallback, useContext, useEffect, useReducer } from "react";
 
 const STORAGE_KEY = 'vendorStores';
 
@@ -10,21 +11,10 @@ const ActionType = {
     UPDATE_STORE: 'UPDATE_STORE',
 };
 
-function getInitialState() {
-    if (typeof window !== 'undefined') {
-        const stores = localStorage.getItem(STORAGE_KEY);
-        return stores ?
-            {
-                stores: JSON.parse(stores),
-            }
-            : {
-                stores: [],
-            };
-    }
+const initialState = {
+    stores: [],
+    isInitialized: false,
 };
-
-const initialState = getInitialState();
-
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -32,6 +22,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 stores: action.payload,
+                isInitialized: true,
             };
         case ActionType.ADD_STORE:
             return {
@@ -59,71 +50,163 @@ const reducer = (state, action) => {
 
 export const StoresContext = createContext({
     ...initialState,
-    getStores: (vendorId) => Promise.resolve(),
-    createIndividualStore: (vendorId) => Promise.resolve(),
-    createBusinessStore: (store) => Promise.resolve(),
-    updateBusinessStore: (store) => Promise.resolve(),
-    deleteStore: (storeId) => Promise.resolve(),
+    dispatch: () => { },
 });
 
 export const StoresProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const getStores = useCallback(async (vendorId) => {
+    const { user, isInitialized: isAuthInitialized } = useAuth();
+
+    useEffect(() => {
+        if (isAuthInitialized) {
+            if (user?.id) {
+                initialize(user?.id);
+            }
+        }
+    }, [user, isAuthInitialized]);
+
+    const initialize = useCallback(async (id) => {
+
         try {
-            const res = await getStoresApi(vendorId);
-            dispatch({ type: ActionType.INITIALIZE, payload: res });
-            return res;
-        } catch (err) {
-            console.error(err);
-        };
+            const { data } = await fetchApi({
+                url: `/vendor/api/stores/vendor/${id}`,
+                options: {
+                    method: 'GET',
+                },
+            });
+
+            if (typeof window === 'undefined') {
+                throw new Error('Window is not defined');
+            }
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+            dispatch({ type: ActionType.INITIALIZE, payload: data, isInitialized: true});
+        } catch (error) {
+            console.error('Error initializing stores', error);
+        }
     }, [dispatch]);
 
     const createIndividualStore = useCallback(async (vendorId) => {
-        try {
-            const res = await createIndividualStoreApi(vendorId);
-            dispatch({ type: ActionType.ADD_STORE, payload: res });
-        } catch (err) {
-            console.error(err);
-        };
-    }, [dispatch]);
+        const { data } = await fetchApi({
+            url: `/vendor/api/stores/individual`,
+            options: {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ vendorId }),
+            },
+        });
 
-    const createBusinessStore = useCallback(async (store) => {
-        try {
-            const res = await createBusinessStoreApi(store);
-            dispatch({ type: ActionType.ADD_STORE, payload: res });
-        } catch (err) {
-            console.error(err);
+        if (typeof window === 'undefined') {
+            throw new Error('Window is not defined');
         }
-    }, [dispatch]);
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...state.stores, data]));
+
+        dispatch({ type: ActionType.ADD_STORE, payload: data });
+
+        return data;
+    }, [dispatch, state.stores]);
+
+    const createBusinessStore = useCallback(async ({
+        vendorId,
+        name,
+        logo,
+        vatNumber,
+        crNumber,
+        ownerNationalId,
+    }) => {
+
+        const { data } = await fetchApi({
+            url: `/vendor/api/stores/business`,
+            options: {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    vendorId,
+                    name,
+                    logo: logo ? logo : 'default',
+                    vatNumber,
+                    crNumber,
+                    ownerNationalId,
+                }),
+            },
+        });
+
+        if (typeof window === 'undefined') {
+            throw new Error('Window is not defined');
+        }
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...state.stores, data]));
+
+        dispatch({ type: ActionType.ADD_STORE, payload: data });
+
+        return data;
+    }, [dispatch, state.stores]);
 
     const updateBusinessStore = useCallback(async ({ storeId, store }) => {
-        try {
-            const res = await updateBusinessStoreApi({ storeId, updateBusinessStoreDto: store });
-            dispatch({ type: ActionType.UPDATE_STORE, payload: res });
-        } catch (err) {
-            console.error(err);
+        const { data } = await fetchApi({
+            url: `/vendor/api/stores/business/${storeId}`,
+            options: {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...store,
+                    logo: store.logo ? store.logo : 'default',
+                }),
+            },
+        });
+
+        if (typeof window === 'undefined') {
+            throw new Error('Window is not defined');
         }
-    }, [dispatch]);
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(
+                state.stores.map((s) => (s.id === storeId ? data : s))
+            )
+        );
+
+        dispatch({ type: ActionType.UPDATE_STORE, payload: data });
+
+        return data;
+    }, [dispatch, state.stores]);
 
     const deleteStore = useCallback(async (storeId) => {
-        try {
-            await deleteStoreApi(storeId);
-            dispatch({ type: ActionType.REMOVE_STORE, payload: storeId });
-        } catch (err) {
-            console.error(err);
-        }
-    }, [dispatch]);
+        const { data } = await fetchApi({
+            url: `/vendor/api/stores/${storeId}`,
+            options: {
+                method: 'DELETE',
+            },
+        });
 
-    useEffect(() => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.stores));
-    }, [state.stores]);
+        if (typeof window === 'undefined') {
+            throw new Error('Window is not defined');
+        }
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(state.stores.filter((s) => s.id !== storeId))
+        );
+
+        dispatch({ type: ActionType.REMOVE_STORE, payload: storeId });
+
+        return data;
+    }, [dispatch, state.stores]);
+
 
     return (
         <StoresContext.Provider
             value={{
                 ...state,
-                getStores,
                 createIndividualStore,
                 createBusinessStore,
                 updateBusinessStore,
@@ -135,10 +218,14 @@ export const StoresProvider = ({ children }) => {
     );
 };
 
+export const useStores = () => {
+    const context = useContext(StoresContext);
+    if (!context) {
+        throw new Error('useStores must be used within a StoresProvider');
+    }
+    return context;
+};
 
 export function signOutCallback() {
     localStorage.removeItem(STORAGE_KEY);
-};
-
-
-
+}

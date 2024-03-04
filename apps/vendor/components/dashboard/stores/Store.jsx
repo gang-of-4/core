@@ -4,13 +4,19 @@ import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography,
 import { React, useCallback, useState } from 'react';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
-import StoreLogo from './StoreLogo';
 import StoreOverview from './StoreOverview';
-import { Status } from '@/api/storeApi';
 import { SeverityPill } from 'ui/components/severity-pill';
 import NextLink from 'next/link';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
+import { useAuth } from '@/contexts/AuthContext';
+import { formatStore } from '@/utils/format-store';
 
+const Status = {
+  PENDING: "PENDING",
+  INREVIEW: "INREVIEW",
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED",
+}
 
 const tabs = [
   { label: 'Overview', value: 'overview' },
@@ -34,8 +40,11 @@ const getStatusColor = (status) => {
   }
 };
 
-export default function Store({ store }) {
+export default function Store({ unformattedStore }) {
 
+  const { user } = useAuth();
+  
+  const store = formatStore({ store: unformattedStore, user });
   const [currentTab, setCurrentTab] = useState('overview');
 
   const handleTabsChange = useCallback((event, value) => {
@@ -107,7 +116,7 @@ export default function Store({ store }) {
               <Typography variant="h5">
                 {store?.name}
               </Typography>
-              <SeverityPill color={getStatusColor(store?.status)}>
+              <SeverityPill color={getStatusColor(store?.status)} data-test="store-status-pill">
                 {store?.status}
               </SeverityPill>
             </Stack>
@@ -143,6 +152,7 @@ export default function Store({ store }) {
                           )}
                           variant="contained"
                           disabled
+                          data-test="edit-store-button"
                         >
                           Edit Store
                         </Button>
@@ -161,6 +171,7 @@ export default function Store({ store }) {
                       style={{ backgroundColor: '#2970FF' }}
                       component={NextLink}
                       href={`${store?.id}/edit`}
+                      data-test="edit-store-button"
                     >
                       Edit Store
                     </Button>

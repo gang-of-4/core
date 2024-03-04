@@ -23,7 +23,7 @@ import { TopNavItem } from './top-nav-item';
 const TOP_NAV_HEIGHT = 64;
 
 export function TopNav(props) {
-  const { onMobileNavOpen, items, openSide, app } = props;
+  const { onMobileNavOpen, items, openSide, app, auth } = props;
   const pathname = usePathname();
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const [elevate, setElevate] = useState(false);
@@ -175,7 +175,7 @@ export function TopNav(props) {
             spacing={2}
             sx={{ flexGrow: 1 }}
           >
-            <Account app={app} />
+            <Account app={app} auth={auth} />
             {!mdUp &&
               openSide > 0 &&
               (

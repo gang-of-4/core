@@ -25,7 +25,7 @@ console.log('-------------------')
   return (
     <CacheProvider value={emotionCache}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <AuthProvider STORAGE_KEY={'adminAccessToken'}>
+          <AuthProvider>
             <AuthConsumer>
               {(auth) => (
                 <SettingsProvider>

@@ -142,7 +142,10 @@ export const StoresListTable = (props) => {
                                             }}
                                             width="25%"
                                         >
-                                            <IconButton onClick={() => handleStoreToggle(store.id)}>
+                                            <IconButton 
+                                                onClick={() => handleStoreToggle(store.id)}
+                                                data-test={`store-toggle-${store?.name}`}
+                                            >
                                                 <SvgIcon>
                                                     {isCurrent ? <ChevronDownIcon /> : <ChevronRightIcon />}
                                                 </SvgIcon>

@@ -97,8 +97,8 @@ export const Layout = (props) => {
   return (
     <>
       <TopNav onMobileNavOpen={mobileNav.handleOpen}
-items={topItems}
-openSide={sideItems.length > 0} />
+        items={topItems}
+        openSide={sideItems.length > 0} />
       {!lgUp &&
         sideItems.length > 0 &&
         (

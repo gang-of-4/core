@@ -8,45 +8,16 @@ import {
   Popover,
   Typography
 } from '@mui/material';
-import { useAuth } from '../../../hooks/use-auth';
 import { paths } from '../../../paths';
-import { Issuer } from '../../../utils/auth';
 
 export function AccountPopover(props) {
-  const { anchorEl, onClose, open, listItems, ...other } = props;
+  const { anchorEl, auth, onClose, open, listItems, ...other } = props;
   const router = useRouter();
-  const auth = useAuth();
 
   const handleLogout = useCallback(async () => {
     try {
-      onClose?.();
-
-      switch (auth.issuer) {
-        case Issuer.Amplify: {
-          await auth.signOut();
-          break;
-        }
-
-        case Issuer.Auth0: {
-          await auth.logout();
-          break;
-        }
-
-        case Issuer.Firebase: {
-          await auth.signOut();
-          break;
-        }
-
-        case Issuer.JWT: {
-          await auth.signOut();
-          break;
-        }
-
-        default: {
-          throw new Error('Unsupported issuer');
-        }
-      }
-
+      onClose();
+      await auth.signOut();
       router.push(paths.index);
     } catch (err) {
       toast.error('Something went wrong!');

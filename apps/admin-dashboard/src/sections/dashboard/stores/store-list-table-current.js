@@ -139,11 +139,13 @@ export default function CurrentStore({
                                             name='status'
                                             select
                                             onChange={formik.handleChange}
+                                            data-test="status-select"
                                         >
                                             {statusOptions.map((option) => (
                                                 <MenuItem
                                                     key={option.value}
                                                     value={option.value}
+                                                    data-test={`status-${option.value}`}
                                                 >
                                                     {option.label}
                                                 </MenuItem>

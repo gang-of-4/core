@@ -12,8 +12,6 @@ const NotFound = () => {
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
   const name = organization.name; 
 
-
-
   return (
     <>
       <Head>
