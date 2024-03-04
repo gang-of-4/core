@@ -16,8 +16,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { paths } from 'ui/paths';
 import { useStores } from '@/contexts/StoresContext';
+import { useActiveStore } from '@/contexts/ActiveStoreContext';
 
 export default function DeleteStoreDialog({ store }) {
+
+    const { setActiveStore } = useActiveStore();
 
     const router = useRouter();
     const { deleteStore } = useStores();
@@ -35,6 +38,7 @@ export default function DeleteStoreDialog({ store }) {
     const handleDeleteStore = async () => {
         try {
             await deleteStore(store.id);
+            setActiveStore(null);
             router.push(paths.vendor.dashboard.index);
         } catch (error) {
             console.error(error);
