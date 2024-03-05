@@ -1,9 +1,8 @@
 import { useCallback, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import { Button, Checkbox, FormControlLabel, Menu, MenuItem, SvgIcon } from '@mui/material';
 
-export const MultiSelect = (props) => {
+export function MultiSelect(props) {
   const { label, onChange, options, value = [], ...other } = props;
   const anchorRef = useRef(null);
   const [openMenu, setOpenMenu] = useState(false);
@@ -43,10 +42,10 @@ export const MultiSelect = (props) => {
         {label}
       </Button>
       <Menu
+        PaperProps={{ style: { width: 250 } }}
         anchorEl={anchorRef.current}
         onClose={handleMenuClose}
         open={openMenu}
-        PaperProps={{ style: { width: 250 } }}
       >
         {options.map((option) => (
           <MenuItem key={option.label}>
@@ -69,11 +68,4 @@ export const MultiSelect = (props) => {
       </Menu>
     </>
   );
-};
-
-MultiSelect.propTypes = {
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
-  options: PropTypes.array.isRequired,
-  value: PropTypes.array.isRequired
-};
+}
