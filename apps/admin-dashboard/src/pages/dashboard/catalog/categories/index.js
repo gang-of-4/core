@@ -134,14 +134,6 @@ const Page = () => {
                 >
                   Categories
                 </Typography>
-                <Typography
-                  color="text.secondary"
-                  variant="body2"
-                >
-                  Option groups are used to organize options into logical groups. You can create option groups and then add options to them.
-                  <br />
-                  For example, &quot;Size&quot; is an option group and &quot;Small&quot;, &quot;Medium&quot;, and &quot;Large&quot; are options.
-                </Typography>
               </Stack>
               <CategoryListTable
                 categories={categories}
