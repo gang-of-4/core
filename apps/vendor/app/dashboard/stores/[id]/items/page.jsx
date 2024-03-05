@@ -32,7 +32,11 @@ async function getItems(storeId) {
 
 export default async function page({ params }) {
 
-  const items = await getItems(params.id);
+  let items = [];
+
+  if (params.id) {
+    items = await getItems(params.id);
+  }
 
   return (
     <>
