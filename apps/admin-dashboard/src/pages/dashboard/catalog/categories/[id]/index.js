@@ -14,23 +14,25 @@ import {
     CardHeader
 } from '@mui/material';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
-import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { paths } from '../../../../../../paths';
-import { OptionDetails } from '../../../../../../sections/dashboard/catalog/options/details-option';
-import { useMounted } from '../../../../../../hooks/use-mounted';
-import { Layout as DashboardLayout } from '../../../../../../layouts/dashboard';
-import { BreadcrumbsSeparator } from '../../../../../../components/breadcrumbs-separator';
-import { catalogApi } from '../../../../../../api/catalog';
-import { DeleteOption } from '../../../../../../sections/dashboard/catalog/options/delete-option';
+import { paths } from '../../../../../paths';
+import { Layout as DashboardLayout } from '../../../../../layouts/dashboard';
+import { BreadcrumbsSeparator } from '../../../../../components/breadcrumbs-separator';
+import { catalogApi } from '../../../../../api/catalog';
+import { CategoryDetails } from '../../../../../sections/dashboard/catalog/categories/details-category';
+import { useMounted } from '../../../../../hooks/use-mounted';
+import { useCallback, useEffect, useState } from 'react';
+import { DeleteCategory } from '../../../../../sections/dashboard/catalog/categories/delete-category';
 
-const useOptions = (id) => {
+
+const useCategories = (id) => {
     const isMounted = useMounted();
     const [state, setState] = useState({});
 
-    const getOptionsGroup = useCallback(async (id) => {
+    const getCategory = useCallback(async (id) => {
         try {
-            const response = await catalogApi.getOptionGroup(id);
+            const response = await catalogApi.getCategory(id);
+
             if (isMounted()) {
                 setState(response);
             }
@@ -40,7 +42,7 @@ const useOptions = (id) => {
     }, [isMounted]);
 
     useEffect(() => {
-        getOptionsGroup(id);
+        getCategory(id);
     }, [id]);
 
     return state;
@@ -50,13 +52,13 @@ const Page = () => {
 
     const router = useRouter();
     const id = router.query.id;
-    const group = useOptions(id);
+    const category = useCategories(id);
 
     return (
         <>
             <Head>
                 <title>
-                    {group?.title} Options | Admin
+                    {category?.name} Categories | Admin
                 </title>
             </Head>
             <Box
@@ -75,7 +77,7 @@ const Page = () => {
                         >
                             <Stack spacing={1}>
                                 <Typography variant="h4">
-                                    {group?.title} Options
+                                    {category?.name} Category
                                 </Typography>
                                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                                     <Link
@@ -97,16 +99,16 @@ const Page = () => {
                                     <Link
                                         color="text.primary"
                                         component={NextLink}
-                                        href={paths.dashboard.catalog.options.index}
+                                        href={paths.dashboard.catalog.categories.index}
                                         variant="subtitle2"
                                     >
-                                        Options
+                                        Categories
                                     </Link>
                                     <Typography
                                         color="text.secondary"
                                         variant="subtitle2"
                                     >
-                                        {group?.title}
+                                        {category?.name}
                                     </Typography>
                                 </Breadcrumbs>
                             </Stack>
@@ -117,7 +119,7 @@ const Page = () => {
                             >
                                 <Button
                                     component={NextLink}
-                                    href={`${paths.dashboard.catalog.options.groups.index}/${id}/edit`}
+                                    href={`${paths.dashboard.catalog.categories.index}/${id}/edit`}
                                     startIcon={(
                                         <SvgIcon>
                                             <Edit02Icon />
@@ -134,16 +136,16 @@ const Page = () => {
                         <Card elevation={16}>
                             <CardContent>
                                 {
-                                    group && (
-                                        <OptionDetails group={group} />
+                                    category && (
+                                        <CategoryDetails category={category} />
                                     )
                                 }
                             </CardContent>
                         </Card>
                         <Card elevation={16}>
-                            <CardHeader title='Manage Group' />
+                            <CardHeader title='Manage category' />
                             <CardContent sx={{ pt: 1 }}>
-                                <DeleteOption group={group}/>
+                                <DeleteCategory category={category}/>
                             </CardContent>
                         </Card>
 

@@ -17,19 +17,19 @@ import {
 } from '@mui/material';
 import { Scrollbar } from '../../../../components/scrollbar';
 import { paths } from '../../../../paths';
-import { DeleteOptionDialog } from './delete-option-dialog';
+import { DeleteCategoryDialog } from './delete-category-dialog';
 import { useState } from 'react';
 
 
-export const OptionListTable = (props) => {
+export const CategoryListTable = (props) => {
     const {
-        options,
-        optionsCount,
+        categories,
+        categoriesCount,
         ...other
     } = props;
 
     const [isOpen, setIsOpen] = useState(false);
-    const [activeGroup, setActiveGroup] = useState(null)
+    const [activeCategory, setActiveCategory] = useState(null)
 
     return (
         <div {...other}>
@@ -38,11 +38,8 @@ export const OptionListTable = (props) => {
                     <TableHead>
                         <TableRow>
                             <TableCell />
-                            <TableCell width="35%">
-                                Group Title
-                            </TableCell>
-                            <TableCell width="25%">
-                                Type
+                            <TableCell width="50%">
+                                Categories
                             </TableCell>
                             <TableCell align="center">
                                 Actions
@@ -50,21 +47,21 @@ export const OptionListTable = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {options?.map((group) => {
+                        {categories?.map((category) => {
 
                             return (
                                 <TableRow
                                     hover
-                                    key={group.id}
+                                    key={category.id}
                                 >
                                     <TableCell
                                         padding="checkbox"
                                         width="25%"
                                     >
-                                        <Tooltip title="View Option Group">
+                                        <Tooltip title="View category">
                                             <IconButton
                                                 component={NextLink}
-                                                href={`${paths.dashboard.catalog.options.groups.index}/${group.id}`}
+                                                href={`${paths.dashboard.catalog.categories.index}/${category.id}`}
                                             >
                                                 <SvgIcon>
                                                     <ArrowRightIcon />
@@ -76,16 +73,11 @@ export const OptionListTable = (props) => {
                                         <Link
                                             color="inherit"
                                             component={NextLink}
-                                            href={`${paths.dashboard.catalog.options.groups.index}/${group.id}`}
+                                            href={`${paths.dashboard.catalog.categories.index}/${category.id}`}
                                             variant="subtitle2"
                                         >
-                                            {group.title}
+                                            {category.name}
                                         </Link>
-                                    </TableCell>
-                                    <TableCell width="25%">
-                                        <Typography variant="subtitle2">
-                                            {group.type}
-                                        </Typography>
                                     </TableCell>
                                     <TableCell>
                                         <Stack
@@ -95,7 +87,7 @@ export const OptionListTable = (props) => {
                                         >
                                             <IconButton
                                                 onClick={() => {
-                                                    setActiveGroup(group);
+                                                    setActiveCategory(category);
                                                     setIsOpen(true);
                                                 }}
                                             >
@@ -105,7 +97,7 @@ export const OptionListTable = (props) => {
                                             </IconButton>
                                             <IconButton
                                                 component={NextLink}
-                                                href={`${paths.dashboard.catalog.options.groups.index}/${group.id}/edit`}
+                                                href={`${paths.dashboard.catalog.categories.index}/${category.id}/edit`}
                                             >
                                                 <SvgIcon>
                                                     <Edit02Icon />
@@ -119,7 +111,7 @@ export const OptionListTable = (props) => {
                     </TableBody>
                 </Table>
             </Scrollbar>
-            <DeleteOptionDialog group={activeGroup} isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <DeleteCategoryDialog category={activeCategory} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     );
 };

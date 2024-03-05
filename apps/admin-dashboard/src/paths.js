@@ -18,6 +18,7 @@ export const paths = {
       },
       categories: {
         index: '/dashboard/catalog/categories',
+        add:'/dashboard/catalog/categories/add',
       },
       options: {
         index: '/dashboard/catalog/options',

@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import { Scrollbar } from '../../../../components/scrollbar';
 
-// @NOW-TODO fix looks 
 export function OptionDetails({ group }) {
 
   return (
