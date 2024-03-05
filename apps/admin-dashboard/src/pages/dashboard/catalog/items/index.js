@@ -9,14 +9,14 @@ import {
   Link,
   Card
 } from '@mui/material';
-import { Layout as DashboardLayout } from '../../../layouts/dashboard';
-import { useMounted } from '../../../hooks/use-mounted';
+import { Layout as DashboardLayout } from '../../../../layouts/dashboard';
+import { useMounted } from '../../../../hooks/use-mounted';
 import { useCallback, useEffect, useState } from 'react';
-import { storesApi } from '../../../api/stores';
-import { CarsListSearch } from '../../../sections/dashboard/cars/cars-list-search'; // Cars
-import { CarsListTable } from '../../../sections/dashboard/cars/cars-list-table'; //Cars
-import { BreadcrumbsSeparator } from '../../../components/breadcrumbs-separator';
-import { paths } from '../../../paths';
+import { storesApi } from '../../../../api/stores';
+import { CarsListSearch } from '../../../../sections/dashboard/cars/cars-list-search'; // Cars
+import { CarsListTable } from '../../../../sections/dashboard/cars/cars-list-table'; //Cars
+import { BreadcrumbsSeparator } from '../../../../components/breadcrumbs-separator';
+import { paths } from '../../../../paths';
 
 const useSearch = () => {
   const [search, setSearch] = useState({
