@@ -41,7 +41,7 @@ export const CarsListTable = (props) => {
         onPageChange,
         onRowsPerPageChange,
         page,
-        carss,
+        cars,
         carsCount,
         rowsPerPage,
         hasUpdatedCars,
@@ -73,7 +73,7 @@ export const CarsListTable = (props) => {
             await carsApi.updateCar({
                 id: values.id,
                 status: values.status
-            }); 
+            });
         } else {
             await carsApi.updateCar({
                 id: values.id,
@@ -87,7 +87,6 @@ export const CarsListTable = (props) => {
     const handleCarDelete = useCallback(() => {
         toast.error('Car cannot be deleted');
     }, []);
-
 
 
     return (
@@ -109,7 +108,7 @@ export const CarsListTable = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Cars.map((car) => {
+                        {cars.map((car) => {
                             const isCurrent = car.id === currentCar;
                             const statusColor = getStatusColor(car.status);
 
@@ -177,7 +176,7 @@ export const CarsListTable = (props) => {
                                                     }}
                                                 >
                                                     <Typography variant="subtitle2">
-                                                        {car.name} 
+                                                        {car.name}
                                                     </Typography>
                                                 </Box>
                                             </Box>
