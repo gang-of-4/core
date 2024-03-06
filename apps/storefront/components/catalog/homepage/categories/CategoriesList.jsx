@@ -12,56 +12,67 @@ export default function CategoriesList({ categories }) {
             <Card>
                 <CardHeader title="Browse Categories" />
                 <CardContent>
-                    <Stack
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{
-                            flexWrap: 'wrap'
-                        }}
-                    >
-                        {categories.map((category) => (
-                            <CategoryCard
-                                key={category.id}
-                                id={category.id}
-                                name={category.name}
-                                image={category.banner}
-                            />
-                        ))}
-                        <Button
-                            component={NextLink}
-                            href={`/catalog/items`}
-                            variant="outlined"
-                            sx={{
-                                height: 200,
-                                width: 150,
-                                marginRight: 2,
-                                marginLeft: 0,
-                                marginBottom: 2,
-                                marginTop: 0,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'space-around',
-                                borderRadius: '20px'
-                            }}
-                        >
-                            <SvgIcon
+
+                    {
+                        categories.length === 0 ?
+                            <Typography
+                                variant="subtitle1"
+                                align="center"
+                            >
+                                No categories found.
+                            </Typography>
+                            :
+                            <Stack
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
                                 sx={{
-                                    fontSize: 75
+                                    flexWrap: 'wrap'
                                 }}
                             >
-                                <ArrowCircleRight />
-                            </SvgIcon>
-                            <Typography
-                                gutterBottom
-                                variant="h6"
-                                align='center'
-                            >
-                                Browse All Cars
-                            </Typography>
-                        </Button>
-                    </Stack>
+                                {categories.map((category) => (
+                                    <CategoryCard
+                                        key={category.id}
+                                        id={category.id}
+                                        name={category.name}
+                                        image={category.banner}
+                                    />
+                                ))}
+                                <Button
+                                    component={NextLink}
+                                    href={`/catalog/items`}
+                                    variant="outlined"
+                                    sx={{
+                                        height: 200,
+                                        width: 150,
+                                        marginRight: 2,
+                                        marginLeft: 0,
+                                        marginBottom: 2,
+                                        marginTop: 0,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-around',
+                                        borderRadius: '20px'
+                                    }}
+                                >
+                                    <SvgIcon
+                                        sx={{
+                                            fontSize: 75
+                                        }}
+                                    >
+                                        <ArrowCircleRight />
+                                    </SvgIcon>
+                                    <Typography
+                                        gutterBottom
+                                        variant="h6"
+                                        align='center'
+                                    >
+                                        Browse All Cars
+                                    </Typography>
+                                </Button>
+                            </Stack>
+                    }
                 </CardContent>
             </Card>
         </>
