@@ -5,7 +5,7 @@ import React from 'react'
 import { Layout as MainLayout } from 'ui/layouts/marketing'
 import { Box } from '@mui/material'
 import { PagesPopover } from 'ui/layouts/marketing/pages-popover';
-import { CartButton } from './CartButton';
+import { CartButton } from './cart/CartButton';
 import { Footer } from 'ui/layouts/marketing/footer';
 
 
