@@ -3,7 +3,7 @@ import { Box, Container, Grid, Stack, SvgIcon, Typography } from '@mui/material'
 import NextLink from 'next/link'
 import React, { useState } from 'react'
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
-import AddToCart from './AddToCart';
+import AddToCart from '../../cart/AddToCart';
 import ItemImages from './ItemImages';
 import OptionGroup from './OptionGroup';
 
@@ -136,7 +136,7 @@ export default function ItemPage({ item }) {
                     {formatPrice({ price: activeVariant?.price || item.price, currency: activeVariant?.currency || item.currency })}
                   </Typography>
 
-                  <AddToCart item={item} isButtonDisabled={!!error} />
+                  <AddToCart item={activeVariant} isButtonDisabled={!!error} />
 
                   <Stack
                     spacing={1}

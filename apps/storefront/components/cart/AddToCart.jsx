@@ -1,14 +1,22 @@
+"use client"
 import React, { useEffect, useState } from 'react'
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import Minus from '@untitled-ui/icons-react/build/esm/Minus';
-import { Button, IconButton, Stack, SvgIcon, TextField, Typography } from '@mui/material'
-
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, SvgIcon, TextField, Typography } from '@mui/material'
+import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { usePathname } from 'next/navigation';
+import NextLink from 'next/link';
 
 export default function AddToCart({ item, isButtonDisabled }) {
 
-    // @TODO: integrate with the cart context
-    // to be replaced with the actual cart state using context in sprint 4
-    const [cart, setCart] = useState([]);
+    const pathname = usePathname();
+
+    const { setCart } = useCart();
+    const { isAuthenticated } = useAuth();
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [inputValue, setInputValue] = useState(1);
     const [error, setError] = useState();
@@ -27,6 +35,30 @@ export default function AddToCart({ item, isButtonDisabled }) {
         setQuantity(newQuantity);
 
     }, [inputValue]);
+
+    async function handleAddToCart() {
+        if (error || isButtonDisabled) {
+            return;
+        }
+
+        if (!isAuthenticated) {
+            setIsDialogOpen(true);
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await setCart({
+                item: item,
+                quantity: quantity
+            });
+            setInputValue(1);
+        } catch (error) {
+            console.error('Error adding to cart', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
     return (
@@ -78,20 +110,16 @@ export default function AddToCart({ item, isButtonDisabled }) {
                     </IconButton>
                 </Stack>
                 <Button
-                    variant="contained"
+                    disabled={!!error || isButtonDisabled || loading}
+                    onClick={handleAddToCart}
+                    variant="outlined"
                     color="primary"
-                    onClick={() => {
-                        setCart([
-                            ...cart,
-                            {
-                                ...item,
-                                quantity
-                            }
-                        ])
-                    }}
-                    disabled={!!error || isButtonDisabled}
                 >
-                    Add to Cart
+                    {
+                        loading
+                            ? 'Adding...'
+                            : 'Add to Cart'
+                    }
                 </Button>
             </Stack>
             <Stack
@@ -106,6 +134,43 @@ export default function AddToCart({ item, isButtonDisabled }) {
                     </Typography>
                 )}
             </Stack>
+            <Dialog
+                open={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+            >
+                <DialogTitle>
+                    Sign In Required
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Sorry. You must be signed in to add items to your cart
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Stack
+                        direction='row'
+                        spacing={2}
+                        
+                    >
+
+                    <Button
+                        onClick={() => setIsDialogOpen(false)}
+                        color="error"
+                        variant='outlined'
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        component={NextLink}
+                        href={`/auth/login?returnTo=${pathname}`}
+                        variant='contained'
+                    >
+                        Sign In
+                    </Button>
+
+                    </Stack>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }
