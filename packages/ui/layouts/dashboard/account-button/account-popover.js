@@ -8,7 +8,6 @@ import {
   Popover,
   Typography
 } from '@mui/material';
-import { paths } from '../../../paths';
 
 export function AccountPopover(props) {
   const { anchorEl, auth, onClose, open, listItems, ...other } = props;
@@ -18,7 +17,6 @@ export function AccountPopover(props) {
     try {
       onClose();
       await auth.signOut();
-      router.push(paths.index);
     } catch (err) {
       toast.error('Something went wrong!');
     }

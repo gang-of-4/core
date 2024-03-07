@@ -1,5 +1,6 @@
 import fetchApi from "@/utils/fetch-api";
 import { decodeUser } from "@/utils/jwt-token";
+import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useReducer } from "react";
 
 
@@ -70,6 +71,7 @@ export const AuthContext = createContext({
 
 export function AuthProvider(props) {
 
+    const router = useRouter();    
     const { children, signOutCallback } = props;
     const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -194,6 +196,7 @@ export function AuthProvider(props) {
     }, [dispatch]);
 
     const signOut = useCallback(() => {
+        router.push('/');
         localStorage.removeItem('vendorAccessToken');
         if (signOutCallback) {
             signOutCallback();
