@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-const ItemsConetext = createContext();
+const ItemsContext = createContext();
 
 export function ItemsProvider({ children }) {
 
@@ -8,19 +8,19 @@ export function ItemsProvider({ children }) {
     const [appliedFilters, setAppliedFilters] = useState([]);
 
     return (
-        <ItemsConetext.Provider value={{
+        <ItemsContext.Provider value={{
             searchQuery,
             setSearchQuery,
             appliedFilters,
             setAppliedFilters
         }}>
             {children}
-        </ItemsConetext.Provider>
+        </ItemsContext.Provider>
     );
 }
 
 export function useItems() {
-    const context = useContext(ItemsConetext);
+    const context = useContext(ItemsContext);
     if (!context) {
         throw new Error('useItems must be used within an ItemsProvider');
     }
