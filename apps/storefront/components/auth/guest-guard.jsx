@@ -9,12 +9,11 @@ export function GuestGuard({ children }) {
     const { isInitialized, isAuthenticated } = useAuth();
 
     // Check if the user is authenticated
-    // Check if the user is authenticated
     useEffect(() => {
         if (isInitialized && isAuthenticated) {
-            router.replace('/'); // Redirect the vendor to the dashboard page if they are authenticated
+            router.replace('/'); // Redirect the user to the home page if they are authenticated
         }
-    }, [isInitialized, isAuthenticated, router]);
+    }, [isInitialized, router]);
 
     return children;
 }

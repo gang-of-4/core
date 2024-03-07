@@ -92,7 +92,7 @@ function getItem(id) {
         ],
         variants: [
             {
-                id: "1",
+                id: `${id}.v1`,
                 quantity: 5,
                 images: [
                     {
@@ -141,7 +141,7 @@ function getItem(id) {
                 ],
             },
             {
-                id: "2",
+                id: `${id}.v2`,
                 quantity: 2,
                 images: [
                     {
@@ -172,7 +172,7 @@ function getItem(id) {
                 ],
             },
             {
-                id: "3",
+                id: `${id}.v3`,
                 quantity: 2,
                 images: [
                     {
@@ -203,7 +203,7 @@ function getItem(id) {
                 ],
             },
             {
-                id: "4",
+                id: `${id}.v4`,
                 quantity:1,
                 images: [
                     {
