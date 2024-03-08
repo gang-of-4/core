@@ -1,14 +1,8 @@
-import { PrismaClient } from '@prisma/client/accounts';
-import roles from './seeds/roles.seed';
-import users from './seeds/users.seed';
-import permissions from './seeds/permissions.seed';
+import { PrismaClient } from '@prisma/client/catalog';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  roles(prisma);
-  users(prisma);
-  permissions(prisma);
 }
 
 main()

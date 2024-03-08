@@ -6,37 +6,42 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ItemsService } from '../services/items.service';
-import { CreateItemDto } from '../dto/create-item.dto';
-import { UpdateItemDto } from '../dto/update-item.dto';
+import { CreateItemDto } from '../dto/items/create-item.dto';
+import { UpdateItemDto } from '../dto/items/update-item.dto';
+import { ListItemsDto } from '../dto/items/list-items.dto';
 
-@Controller('items')
+@Controller({
+  path: 'catalog/items',
+  version: '1',
+})
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
   @Post()
-  create(@Body() createItemDto: CreateItemDto) {
-    return this.itemsService.create(createItemDto);
+  async create(@Body() createItemDto: CreateItemDto) {
+    return await this.itemsService.create(createItemDto);
   }
 
   @Get()
-  findAll() {
-    return this.itemsService.findAll();
+  async findAll(@Query() listItemsDto: ListItemsDto) {
+    return await this.itemsService.findAll(listItemsDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.itemsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.itemsService.findOneOrFail(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
-    return this.itemsService.update(+id, updateItemDto);
+  async update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
+    return await this.itemsService.update(id, updateItemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.itemsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.itemsService.remove(id);
   }
 }

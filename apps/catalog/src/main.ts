@@ -4,9 +4,19 @@ import { ClassSerializerInterceptor, VersioningType } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // app.connectMicroservice({
+  //   transport: Transport.GRPC,
+  //   options: {
+  //     package: 'hero',
+  //     protoPath: 'hero/hero.proto',
+  //     url: '0.0.0.0:50051',
+  //   },
+  // });
 
   app.enableVersioning({
     type: VersioningType.URI,
@@ -27,6 +37,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/docs/catalog', app, document);
 
-  await app.listen(3000);
+  await app.startAllMicroservices();
+  await app.listen(3006);
 }
 bootstrap();

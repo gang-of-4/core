@@ -9,86 +9,121 @@ datasource db {
 }
 
 enum Status {
+  DRAFT
   PENDING
   INREVIEW
   APPROVED
   REJECTED
 }
 
-enum ItemType {
-  PHYSICAL
-}
-
-model Currency {
-    id              String @db.Uuid @id @default(uuid())  
-    name            String @unique
-    code            String @unique
-    symbol          String
-    exchangeRate    Decimal @db.Decimal(10, 6)
-    isActive        Boolean @default(true)
-    isDefault       Boolean @default(false)
-    items           Item[]
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @default(now())
-    deletedAt       DateTime?
-}
-
 model Item {
-    id                  String @db.Uuid @id @default(uuid())  
-    type                ItemType @default(PHYSICAL)
-    name                String
-    slug                String  @unique
-    quantity            Int?
-    images              ItemImages[]
-    price               Decimal? @db.Decimal(10, 2)
-    currencyId          String @db.Uuid
-    currency            Currency @relation(fields: [currencyId], references: [id])
-    description         String
-    categories          ItemCategories[]
-    storeId             String @db.Uuid
-    status              Status @default(PENDING)
-    order               Int
-    isActive            Boolean @default(true)
-    isTaxable           Boolean @default(true)
-    createdAt           DateTime @default(now())
-    updatedAt           DateTime @default(now())
-    deletedAt           DateTime?
+  id                  String @db.Uuid @id @default(uuid())  
+  name                String?
+  slug                String?
+  quantity            Int?
+  images              ItemImages[]
+  price               Decimal? @db.Decimal(10, 2)
+  description         String?
+  categories          Cateogry[]
+  storeId             String @db.Uuid
+  status              Status @default(DRAFT)
+  order               Int?
+  isActive            Boolean? @default(true)
+  attributes          AttributeValue[]
+  options             Option[]
+  variants            Variant[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  deletedAt           DateTime?
+
+  @@unique([storeId, slug])
+}
+
+model Variant {
+  id                  String @db.Uuid @id @default(uuid())  
+  sku                 String?
+  price               Decimal? @db.Decimal(10, 2)
+  quantity            Int?
+  parentId            String @db.Uuid
+  parent              Item @relation(fields: [parentId], references: [id])
+  options             Option[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  deletedAt           DateTime?
 }
 
 model ItemImages {
-    itemId              String @db.Uuid
-    item                Item @relation(fields: [itemId], references: [id])
-    mediaId             String @db.Uuid
-    createdAt           DateTime @default(now())
-    updatedAt           DateTime @default(now())
-    @@id([itemId])
-}
-
-model ItemCategories {
-    itemId              String @db.Uuid
-    categoryId          String @db.Uuid
-    item                Item @relation(fields: [itemId], references: [id])
-    category            Cateogry @relation(fields: [categoryId], references: [id])
-    createdAt           DateTime @default(now())
-    updatedAt           DateTime @default(now())
-    @@id([itemId, categoryId])
-
+  itemId              String @db.Uuid
+  item                Item @relation(fields: [itemId], references: [id])
+  mediaId             String @db.Uuid
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  @@id([itemId])
 }
 
 model Cateogry {
-    id                  String @db.Uuid @id @default(uuid())  
-    name                String
-    slug                String @unique
-    banner              String @db.Uuid
-    logo                String @db.Uuid
-    description         String
-    isActive            Boolean @default(true)
-    order               Int
-    items               ItemCategories[]
-    childCategories     Cateogry[] @relation(name: "CompositeCategory")
-    parentId            String @db.Uuid
-    parent              Cateogry? @relation(name: "CompositeCategory", fields: [parentId], references: [id])
-    createdAt           DateTime @default(now())
-    updatedAt           DateTime @default(now())
-    deletedAt           DateTime?
+  id                  String @db.Uuid @id @default(uuid())  
+  name                String
+  slug                String @unique
+  banner              String?
+  description         String
+  isActive            Boolean @default(true)
+  order               Int
+  items               Item[]
+  childCategories     Cateogry[] @relation(name: "CompositeCategory")
+  parentId            String? @db.Uuid
+  parent              Cateogry? @relation(name: "CompositeCategory", fields: [parentId], references: [id])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  deletedAt           DateTime?
+}
+
+model Option {
+  id                  String @db.Uuid @id @default(uuid())  
+  label               String
+  value               String
+  group_id            String @db.Uuid
+  group               OptionGroup @relation(fields: [group_id], references: [id])
+  items               Item[]
+  variantOptions      Variant[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  deletedAt           DateTime?
+}
+
+enum OptionType {
+  TEXT
+  COLOR
+}
+
+model OptionGroup {
+  id                  String @db.Uuid @id @default(uuid())  
+  title               String
+  type                OptionType @default(TEXT)
+  order               DateTime @default(now())
+  options             Option[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  deletedAt           DateTime?
+}
+
+model Attribute {
+  id                  String @db.Uuid @id @default(uuid())  
+  title               String
+  values              AttributeValue[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  deletedAt           DateTime?
+}
+
+model AttributeValue {
+  id                  String @db.Uuid @id @default(uuid())  
+  value               String
+  attribute_id        String @db.Uuid
+  attribute           Attribute @relation(fields: [attribute_id], references: [id])
+  item_id             String @db.Uuid
+  item                Item @relation(fields: [item_id], references: [id])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  deletedAt           DateTime?
 }

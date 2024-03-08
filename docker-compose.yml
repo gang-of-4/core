@@ -24,9 +24,13 @@ services:
             - core-network
         ports:
             - '5555:5555'
+            - '50051:50051'
         volumes:
             - .:/app
             - .pnpm:/root/.local/share/pnpm/store
+        depends_on:
+            db:
+                condition: service_healthy
     db:
         container_name: db
         restart: unless-stopped
@@ -38,6 +42,10 @@ services:
             - ./config/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
         networks:
             - core-network
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -d accountsdb'"]
+            retries: 3
+            timeout: 3s
 networks:
     core-network:
         driver: bridge

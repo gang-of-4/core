@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Cateogry } from '@prisma/client/catalog';
 import { Exclude, Expose, Type } from 'class-transformer';
+import { ItemEntity } from './item.entity';
 
 export class CategoryEntity implements Cateogry {
   @ApiProperty()
@@ -16,9 +17,6 @@ export class CategoryEntity implements Cateogry {
   banner: string;
 
   @ApiProperty()
-  logo: string;
-
-  @ApiProperty()
   description: string;
 
   @ApiProperty()
@@ -29,7 +27,10 @@ export class CategoryEntity implements Cateogry {
 
   @ApiProperty({ type: CategoryEntity })
   @Type(() => CategoryEntity)
-  parent: CategoryEntity;
+  parent?: CategoryEntity;
+
+  @ApiProperty({ type: ItemEntity, isArray: true, nullable: true })
+  items?: ItemEntity[];
 
   @ApiProperty()
   isActive: boolean;

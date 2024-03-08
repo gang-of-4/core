@@ -1,32 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { $Enums, Currency, Item } from '@prisma/client/catalog';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { $Enums, Item } from '@prisma/client/catalog';
+import { Expose, Type } from 'class-transformer';
 import { Decimal } from '@prisma/client/catalog/runtime/library';
-import { CurrencyEntity } from './currency.entity';
+import { CategoryEntity } from './category.entity';
+import { OptionGroupEntity } from './option-group.entity';
 
 export class ItemEntity implements Item {
   @ApiProperty()
   id: string;
 
   @ApiProperty()
-  type: $Enums.ItemType;
+  name: string;
 
   @ApiProperty()
-  name: string;
+  slug: string;
 
   @ApiProperty()
   quantity: number;
 
   @ApiProperty({ type: Decimal })
-  @Type(() => Decimal)
+  @Type(() => String)
   price: Decimal;
-
-  @Exclude()
-  currencyId: Currency['id'];
-
-  @ApiProperty({ type: CurrencyEntity })
-  @Type(() => CurrencyEntity)
-  currency: CurrencyEntity;
 
   @ApiProperty()
   description: string;
@@ -44,13 +38,16 @@ export class ItemEntity implements Item {
   isActive: boolean;
 
   @ApiProperty()
-  isTaxable: boolean;
-
-  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty({ type: CategoryEntity, isArray: true, nullable: true })
+  categories?: CategoryEntity[];
+
+  @ApiProperty({ type: OptionGroupEntity, isArray: true, nullable: true })
+  groups?: OptionGroupEntity[];
 
   @ApiProperty({ nullable: true, default: null })
   @Expose({ groups: ['item.delete', 'self'] })
