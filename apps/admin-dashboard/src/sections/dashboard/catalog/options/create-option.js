@@ -129,8 +129,11 @@ export function OptionCreateForm() {
                   value={formik.values.type}
                   onChange={formik.handleChange}
                 >
-                  <FormControlLabel value="radio" control={<Radio />} label="Radio" />
+                  <FormControlLabel value="radio" control={<Radio />} label="Text only" />
                   <FormControlLabel value="color" control={<Radio />} label="Color" />
+                  <Tooltip title="To be added in future releases" arrow>
+                    <FormControlLabel value="image" control={<Radio />} label="Image" disabled />
+                  </Tooltip>
                 </RadioGroup>
               </FormControl>
 
