@@ -40,6 +40,26 @@ const permissions = [
     roles: ['guest'],
   },
   {
+    name: 'auth.login.vendor',
+    activities: [
+      {
+        method: 'POST',
+        url: '/auth/vendor/login',
+      },
+    ],
+    roles: ['guest'],
+  },
+  {
+    name: 'auth.login.admin',
+    activities: [
+      {
+        method: 'POST',
+        url: '/auth/admin/login',
+      },
+    ],
+    roles: ['guest'],
+  },
+  {
     name: 'stores.list',
     activities: [
       {

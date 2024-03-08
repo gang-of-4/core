@@ -1,7 +1,8 @@
-import { Controller, All, Query } from '@nestjs/common';
+import { Controller, Query, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthorizeDto } from '../dto/authorize.dto';
 import { AuthService } from '../services/auth.service';
+import { plainToInstance } from 'class-transformer';
 
 @Controller({
   version: '1',
@@ -11,9 +12,11 @@ import { AuthService } from '../services/auth.service';
 export class AuthorizationController {
   constructor(private authService: AuthService) {}
 
-  @All('/')
+  @Get('/')
   @ApiOkResponse()
-  async authorize(@Query() authorizeDto: AuthorizeDto) {
+  async authorize(@Query() authorizeDto: any) {
+    authorizeDto = plainToInstance(AuthorizeDto, authorizeDto);
+
     const role = await this.authService.getUserRole(authorizeDto.access_token);
 
     const uri = authorizeDto.uri.replace(/^\/api\/v[0-9]+/, '');
