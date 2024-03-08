@@ -62,31 +62,31 @@ export default function CartItem({
                         </Typography>
                     )}
                 />
-                <ListItemSecondaryAction>
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                    >
-                        <Stack
-                            alignItems={'center'}
-                            justifyContent={'center'}
-                        >
-                            <Typography variant="subtitle2">
-                                x {cartItem.quantity}
-                            </Typography>
-                        </Stack>
-                        <Tooltip title="Remove">
-                            <IconButton
-                                onClick={() => { handleRemoveItem(cartItem.id) }}
-                            >
-                                <SvgIcon>
-                                    <Trash01Icon />
-                                </SvgIcon>
-                            </IconButton>
-                        </Tooltip>
-                    </Stack>
-                </ListItemSecondaryAction>
             </ListItemButton>
+            <ListItemSecondaryAction>
+                <Stack
+                    direction="row"
+                    spacing={2}
+                >
+                    <Stack
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                    >
+                        <Typography variant="subtitle2">
+                            x {cartItem.quantity}
+                        </Typography>
+                    </Stack>
+                    <Tooltip title="Remove">
+                        <IconButton
+                            onClick={() => { handleRemoveItem(cartItem.id) }}
+                        >
+                            <SvgIcon>
+                                <Trash01Icon />
+                            </SvgIcon>
+                        </IconButton>
+                    </Tooltip>
+                </Stack>
+            </ListItemSecondaryAction>
         </ListItem>
     )
 }

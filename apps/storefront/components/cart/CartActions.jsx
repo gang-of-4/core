@@ -5,7 +5,7 @@ import { Button, OutlinedInput, Stack, SvgIcon, Tooltip } from '@mui/material'
 import NextLink from 'next/link'
 
 
-export default function CartActions() {
+export default function CartActions({ disabled }) {
     return (
         <Stack
             direction="row"
@@ -36,6 +36,7 @@ export default function CartActions() {
 
             <Button
                 component={NextLink}
+                disabled={disabled}
                 href="/checkout"
                 endIcon={(
                     <SvgIcon>

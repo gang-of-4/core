@@ -1,8 +1,6 @@
 "use client"
 import { useCart } from '@/contexts/CartContext';
-import { Box, Button, Card, CardHeader, Container, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, OutlinedInput, Stack, SvgIcon, Tooltip, Typography } from '@mui/material'
-import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
-import Trash01Icon from '@untitled-ui/icons-react/build/esm/Trash01';
+import { Box, Card, CardHeader, Container, Divider, Grid, List, Stack, SvgIcon, Typography } from '@mui/material'
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import React from 'react'
 import NextLink from 'next/link'
@@ -80,7 +78,9 @@ export default function CartPage() {
 
               <Divider />
 
-              <CartActions />
+              <CartActions 
+                disabled={cartItems.length === 0}
+              />
 
             </Card>
           </Grid>
