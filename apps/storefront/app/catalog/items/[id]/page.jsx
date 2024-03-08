@@ -58,18 +58,19 @@ function getItem(id) {
             {
                 id: "1",
                 title: "Color",
+                type: "color",
                 values: [{
                     id: "1",
                     label: "Red",
-                    value: "red"
+                    value: "#801204"
                 }, {
                     id: "2",
                     label: "Blue",
-                    value: "blue"
+                    value: "#0b3d87"
                 }, {
                     id: "3",
                     label: "Black",
-                    value: "black"
+                    value: "#1a1a1a"
                 }]
             },
             {
@@ -126,7 +127,7 @@ function getItem(id) {
                         value: {
                             id: "1",
                             label: "Red",
-                            value: "red"
+                            value: "#801204"
                         }
                     },
                     {
@@ -157,7 +158,7 @@ function getItem(id) {
                         value: {
                             id: "2",
                             label: "Blue",
-                            value: "blue"
+                            value: "#0b3d87"
                         }
                     },
                     {
@@ -188,7 +189,7 @@ function getItem(id) {
                         value: {
                             id: "2",
                             label: "Blue",
-                            value: "blue"
+                            value: "#0b3d87"
                         }
                     },
                     {
@@ -222,7 +223,7 @@ function getItem(id) {
                         value: {
                             id: "2",
                             label: "Black",
-                            value: "black"
+                            value: "#1a1a1a"
                         }
                     },
                     {
