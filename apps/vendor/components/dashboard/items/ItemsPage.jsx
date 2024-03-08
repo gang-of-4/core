@@ -16,8 +16,8 @@ import { BreadcrumbsSeparator } from 'ui/components/breadcrumbs-separator';
 import { ItemsListSearch } from '@/components/dashboard/items/items-list-search';
 import { ItemsListTable } from '@/components/dashboard/items/items-list-table';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
-import { useActiveStore } from '@/contexts/ActiveStoreContext';
 import { paths } from 'ui/paths';
+import fetchApi from '@/utils/fetch-api';
 
 const useSearch = () => {
   const [search, setSearch] = useState({
@@ -26,7 +26,7 @@ const useSearch = () => {
       status: [],
     },
     page: 0,
-    rowsPerPage: 5
+    rowsPerPage: 25
   });
 
   return {
@@ -38,7 +38,6 @@ const useSearch = () => {
 
 const Page = ({ items }) => {
 
-  const { activeStore: store } = useActiveStore();
   const { search, updateSearch } = useSearch();
   const [filteredItems, setFilteredItems] = useState(items);
   const [itemsCount, setItemsCount] = useState(items.length);
@@ -48,13 +47,32 @@ const Page = ({ items }) => {
   }, [items]);
 
   useEffect(() => {
-    console.log('search', search);
+    const interval = setTimeout(() => {
+      fetchItems(search)
+    }, 500);
+    return () => clearInterval(interval);
   }, [search]);
+
+  async function fetchItems(search) {
+    console.log(search);
+    try {
+      const { data } = await fetchApi({
+        url: `/vendor/api/catalog/items?q=${search.filters.name}&status=${search.filters.status}`,
+        method: 'GET'
+      });
+      setFilteredItems(data);
+    } catch (error) {
+      console.error('Error fetching items', error);
+    }
+  }
 
   const handleFiltersChange = useCallback((filters) => {
     updateSearch((prevState) => ({
       ...prevState,
-      filters
+      filters: {
+        ...prevState.filters,
+        ...filters
+      }
     }));
   }, [updateSearch]);
 

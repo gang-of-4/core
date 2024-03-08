@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
 import { Box, Chip, Divider, Input, Stack, SvgIcon, Typography } from '@mui/material';
 import { MultiSelect } from 'ui/components/multi-select';
@@ -33,7 +32,6 @@ export const ItemsListSearch = (props) => {
 
     const handleChipsUpdate = useCallback(() => {
         const filters = {
-            name: undefined,
             status: [],
         };
 
@@ -70,9 +68,9 @@ export const ItemsListSearch = (props) => {
         });
     }, []);
 
-    const handleQueryChange = useCallback((event) => {
-        event.preventDefault();
+    const handleQueryChange = useCallback(() => {
         setQuery(queryRef.current?.value || '');
+        onFiltersChange({ name: queryRef.current?.value });
     }, []);
 
     const handleStatusChange = useCallback((values) => {
@@ -143,6 +141,7 @@ export const ItemsListSearch = (props) => {
                     sx={{ flexGrow: 1 }}
                     value={query}
                     onChange={handleQueryChange}
+                    onSubmit={(event) => event.preventDefault()}
                 />
             </Stack>
             <Divider />
@@ -212,7 +211,3 @@ export const ItemsListSearch = (props) => {
         </div>
     );
 };
-
-// ItemsListSearch.propTypes = {
-//     onFiltersChange: PropTypes.func
-// };
