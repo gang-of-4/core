@@ -20,9 +20,9 @@ function formatPrice({ price, currency = 'USD' }) {
 export default function ItemPage({ item }) {
 
   const [appliedOptions, setAppliedOptions] = useState([]);
-  const [images, setImages] = useState(item?.images || []);
-  const [activeVariant, setActiveVariant] = useState(item?.variants ? item.variants[0] : item);
+  const [activeVariant, setActiveVariant] = useState(initActiveVariant());
   const [error, setError] = useState();
+  const [changed, setChanged] = useState(false);
 
   function handleOptionChange(event) {
     const { name, value } = event.target;
@@ -35,6 +35,25 @@ export default function ItemPage({ item }) {
     updateActiveVariant(newOptions);
   }
 
+
+  function initActiveVariant() {
+    if (item?.variants) {
+      const newActiveVariant = item.variants[0];
+      return {
+        id: newActiveVariant.id,
+        name: newActiveVariant.name ? newActiveVariant.name : item.name,
+        description: newActiveVariant.description ? newActiveVariant.description : item.description,
+        price: newActiveVariant.price ? newActiveVariant.price : item.price,
+        currency: newActiveVariant.currency ? newActiveVariant.currency : item.currency,
+        quantity: newActiveVariant.quantity,
+        images: newActiveVariant.images ? newActiveVariant.images : item.images,
+        options: newActiveVariant.options
+      };
+    } else {
+      return item;
+    }
+  }
+
   function updateActiveVariant(newOptions) {
     const newActiveVariant = item.variants.find((variant) => {
       return variant.options.every((option) => {
@@ -44,8 +63,17 @@ export default function ItemPage({ item }) {
 
     if (newActiveVariant) {
       setError(null);
-      setActiveVariant(newActiveVariant);
-      setImages(newActiveVariant?.images || item.images);
+      setActiveVariant({
+        id: newActiveVariant.id,
+        name: newActiveVariant.name ? newActiveVariant.name : item.name,
+        description: newActiveVariant.description ? newActiveVariant.description : item.description,
+        price: newActiveVariant.price ? newActiveVariant.price : item.price,
+        currency: newActiveVariant.currency ? newActiveVariant.currency : item.currency,
+        quantity: newActiveVariant.quantity,
+        images: newActiveVariant.images ? newActiveVariant.images : item.images,
+        options: newActiveVariant.options
+      });
+      setChanged(true);
     } else {
       setError('No variant found for selected options. Please select a different combination.')
     }
@@ -101,7 +129,7 @@ export default function ItemPage({ item }) {
               </Grid>
 
               <Grid item xs={12} md={5}>
-                <ItemImages images={images} />
+                <ItemImages images={activeVariant?.images} />
               </Grid>
 
               <Grid item xs={12} md={7}>
@@ -136,7 +164,10 @@ export default function ItemPage({ item }) {
                     {formatPrice({ price: activeVariant?.price || item.price, currency: activeVariant?.currency || item.currency })}
                   </Typography>
 
-                  <AddToCart item={activeVariant} isButtonDisabled={!!error} />
+                  <AddToCart 
+                    item={activeVariant} 
+                    isButtonDisabled={!!error || !changed}
+                  />
 
                   <Stack
                     spacing={1}
