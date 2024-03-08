@@ -30,6 +30,7 @@ export class CategoryEntity implements Cateogry {
   parent?: CategoryEntity;
 
   @ApiProperty({ type: ItemEntity, isArray: true, nullable: true })
+  @Type(() => ItemEntity)
   items?: ItemEntity[];
 
   @ApiProperty()

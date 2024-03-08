@@ -4,9 +4,12 @@ import { UpdateItemDto } from '../dto/items/update-item.dto';
 import { ItemEntity } from '../entities/item.entity';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Status } from '@prisma/client/catalog';
-import { SlugExistsException } from '../exceptions/slug-exists.exception';
+import { SlugUsedException } from '../exceptions/slug-used.exception';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { ListItemsDto } from '../dto/items/list-items.dto';
+import { CreateVariantsDto } from '../dto/items/create-variants.dto';
+import { VariantEntity } from '../entities/variant.entity';
+import { VariantsException } from '../exceptions/variants.exception';
 
 @Injectable()
 export class ItemsService {
@@ -44,7 +47,7 @@ export class ItemsService {
       .catch((e) => {
         switch (e.code) {
           case 'P2002':
-            throw new SlugExistsException();
+            throw new SlugUsedException();
           default:
             throw e;
         }
@@ -61,10 +64,15 @@ export class ItemsService {
     });
   }
 
-  async findAll(listItemsDto: ListItemsDto): Promise<ItemEntity[]> {
+  async findAll(
+    listItemsDto: ListItemsDto,
+    role: string = 'guest',
+  ): Promise<ItemEntity[]> {
     const items = await this.prisma.item.findMany({
       where: {
         storeId: listItemsDto.store_id,
+        deletedAt: null,
+        ...(role === 'guest' && { status: Status.APPROVED }),
       },
       orderBy: {
         order: 'asc',
@@ -76,15 +84,24 @@ export class ItemsService {
     return items.map((item) => new ItemEntity(item));
   }
 
-  async findOneOrFail(id: string): Promise<ItemEntity> {
+  async findOneOrFail(id: string, role: string = 'guest'): Promise<ItemEntity> {
     const { options, ...item } = await this.prisma.item
       .findUniqueOrThrow({
-        where: { id, deletedAt: null },
+        where: {
+          id,
+          deletedAt: null,
+          ...(role === 'guest' && { status: Status.APPROVED }),
+        },
         include: {
           categories: true,
           options: {
             include: {
               group: true,
+            },
+          },
+          variants: {
+            include: {
+              options: true,
             },
           },
         },
@@ -120,6 +137,11 @@ export class ItemsService {
             group: true,
           },
         },
+        variants: {
+          include: {
+            options: true,
+          },
+        },
       },
     });
 
@@ -141,7 +163,63 @@ export class ItemsService {
   }
 
   async update(id: string, updateItemDto: UpdateItemDto) {
-    return `This action updates a #${id} item`;
+    await this.prisma.$transaction(async (tx) => {
+      await tx.item
+        .update({
+          where: {
+            id,
+          },
+          data: {
+            name: updateItemDto.name,
+            quantity: updateItemDto.quantity,
+            price: updateItemDto.price,
+            description: updateItemDto.description,
+            storeId: updateItemDto.store_id,
+            status: Status.PENDING,
+            slug: updateItemDto.name?.toLowerCase().replace(' ', '-'),
+            isActive: false,
+            categories: {
+              connect: [
+                ...(updateItemDto.categories?.map((category) => ({
+                  id: category,
+                })) ?? []),
+              ],
+            },
+            options: {
+              connect: [
+                ...(updateItemDto.options?.map((option) => ({
+                  id: option,
+                })) ?? []),
+              ],
+            },
+          },
+        })
+        .catch((e) => {
+          switch (e.code) {
+            case 'P2002':
+              throw e;
+              throw new SlugUsedException();
+            default:
+              throw e;
+          }
+        });
+      await Promise.all(
+        updateItemDto.variants.map(async (variant) => {
+          await tx.variant.update({
+            where: {
+              id: variant.id,
+            },
+            data: {
+              sku: variant.sku,
+              price: variant.price,
+              quantity: variant.quantity,
+            },
+          });
+        }),
+      );
+    });
+
+    return await this.findOne(id);
   }
 
   async remove(id: string): Promise<ItemEntity> {
@@ -152,5 +230,82 @@ export class ItemsService {
         },
       }),
     );
+  }
+
+  async createVariants(itemId: string, createVariantsDto: CreateVariantsDto) {
+    const combinations = this.generateCombinations(createVariantsDto.options);
+
+    return await Promise.all(
+      combinations.map(async (combination) => {
+        const { options, ...variant } = await this.prisma.variant.create({
+          data: {
+            parentId: itemId,
+            options: {
+              connect: [
+                ...(combination?.map((option) => ({
+                  id: option,
+                })) ?? []),
+              ],
+            },
+          },
+          include: {
+            options: {
+              include: {
+                group: true,
+              },
+            },
+          },
+        });
+        return new VariantEntity({
+          ...variant,
+          groups: Object.values(
+            options.reduce((acc, option) => {
+              if (option.group) {
+                if (!acc[option.group.id]) {
+                  acc[option.group.id] = option.group;
+                }
+                const { group, ...data } = option;
+                acc[group.id].options = [
+                  ...(acc[group.id].options || []),
+                  data,
+                ];
+              }
+              return acc;
+            }, {}),
+          ),
+        });
+      }),
+    ).catch(() => {
+      throw new VariantsException();
+    });
+  }
+
+  private generateCombinations(options) {
+    const result = [];
+    const stack = [];
+
+    // Initialize stack with first group of options
+    // e.g. [[1], [2], [3]]
+    options[0].forEach((item) => stack.push([item]));
+
+    while (stack.length > 0) {
+      // Pop the last set from the stack
+      const currentSet = stack.pop();
+      const currentIndex = currentSet.length;
+
+      // If the set is complete, add it to the result
+      if (currentIndex === options.length) {
+        result.push(currentSet);
+      } else {
+        // Otherwise, add the next group of options to the stack
+        // by creating a new set for each option in the group using current set
+        // e.g. [[1, 4], [1, 5], [2, 4], [2, 5], [3, 4], [3, 5]]
+        options[currentIndex].forEach((item) => {
+          stack.push([...currentSet, item]);
+        });
+      }
+    }
+
+    return result;
   }
 }

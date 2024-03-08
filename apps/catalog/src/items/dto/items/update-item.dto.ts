@@ -18,6 +18,11 @@ export class UpdateItemDto {
   name: string;
 
   @ApiProperty()
+  @IsString()
+  @MinLength(3)
+  sku: string;
+
+  @ApiProperty()
   @IsNumber()
   @Min(0)
   quantity: number;
@@ -25,12 +30,12 @@ export class UpdateItemDto {
   @ApiProperty()
   @IsNumber()
   @Min(0)
-  price: string;
+  price: number;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  description?: string = '';
+  description?: string;
 
   @ApiProperty()
   @IsOptional()
@@ -49,7 +54,14 @@ export class UpdateItemDto {
   @IsString({ each: true })
   options?: string[];
 
-  variants?;
+  @ApiProperty()
+  @IsArray()
+  variants?: Array<{
+    id: string;
+    sku: string;
+    price: number;
+    quantity: number;
+  }>;
 
   @ApiProperty()
   @IsString()

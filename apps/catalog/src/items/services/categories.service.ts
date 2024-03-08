@@ -3,7 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { CreateCategoryDto } from '../dto/categories/create-category.dto';
 import { CategoryEntity } from '../entities/category.entity';
-import { SlugExistsException } from '../exceptions/slug-exists.exception';
+import { SlugUsedException } from '../exceptions/slug-used.exception';
 
 @Injectable()
 export class CategoriesService {
@@ -28,7 +28,7 @@ export class CategoriesService {
         })
         .catch((e) => {
           if (e.code === 'P2002') {
-            throw new SlugExistsException();
+            throw new SlugUsedException();
           }
           throw e;
         }),

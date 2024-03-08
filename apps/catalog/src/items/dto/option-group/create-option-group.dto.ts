@@ -18,3 +18,6 @@ export class CreateOptionGroupDto {
     Object.assign(this, partial);
   }
 }
+// b5133e06-f1fb-4453-9b81-bad2e02d3b1e
+// 47c4b08d-3d36-46cf-b700-c33c6def26df
+// ecd42baa-74f0-463c-8019-caea3961e538

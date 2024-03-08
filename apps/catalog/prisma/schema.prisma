@@ -19,6 +19,7 @@ enum Status {
 model Item {
   id                  String @db.Uuid @id @default(uuid())  
   name                String?
+  sku                 String?
   slug                String?
   quantity            Int?
   images              ItemImages[]

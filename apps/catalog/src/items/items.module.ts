@@ -10,9 +10,10 @@ import { CategoriesController } from './controllers/categories.controller';
 import { CategoriesService } from './services/categories.service';
 import { CategoryExistsRule } from './rules/category-exist.rule';
 import { GroupExistsRule } from './rules/group-exist.rule';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, JwtModule],
   controllers: [
     ItemsController,
     OptionsController,
