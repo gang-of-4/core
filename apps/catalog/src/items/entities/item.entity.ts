@@ -23,7 +23,7 @@ export class ItemEntity implements Item {
   quantity: number;
 
   @ApiProperty({ type: Decimal })
-  @Transform(({ value }) => value.toNumber())
+  @Transform(({ value }) => value?.toNumber())
   @Type(() => Number)
   price: Decimal;
 
