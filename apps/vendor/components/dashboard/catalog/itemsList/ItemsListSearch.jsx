@@ -21,6 +21,10 @@ const statusOptions = [
     {
         label: 'In Review',
         value: 'INREVIEW'
+    },
+    {
+        label: 'Draft',
+        value: 'DRAFT'
     }
 ];
 
