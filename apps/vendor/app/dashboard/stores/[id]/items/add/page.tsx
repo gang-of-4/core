@@ -1,5 +1,5 @@
 import React from 'react'
-import AddItem from '@/components/dashboard/items/AddItem'
+import AddItem from '@/components/dashboard/catalog/AddItem'
 import { Metadata } from 'next';
 
 

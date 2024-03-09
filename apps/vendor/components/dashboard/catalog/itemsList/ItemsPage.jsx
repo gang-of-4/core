@@ -9,24 +9,24 @@ import {
   Link,
   Card,
   Button,
-  SvgIcon
+  SvgIcon,
+  Divider
 } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { BreadcrumbsSeparator } from 'ui/components/breadcrumbs-separator';
-import { ItemsListSearch } from '@/components/dashboard/items/items-list-search';
-import { ItemsListTable } from '@/components/dashboard/items/items-list-table';
+import { ItemsListSearch } from '@/components/dashboard/catalog/itemsList/ItemsListSearch';
+import { ItemsListTable } from '@/components/dashboard/catalog/itemsList/ItemsListTable';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import { paths } from 'ui/paths';
 import fetchApi from '@/utils/fetch-api';
+import ImportItems from './ImportItems';
 
 const useSearch = () => {
   const [search, setSearch] = useState({
     filters: {
       name: undefined,
       status: [],
-    },
-    page: 0,
-    rowsPerPage: 25
+    }
   });
 
   return {
@@ -36,15 +36,10 @@ const useSearch = () => {
 };
 
 
-const Page = ({ items }) => {
+const Page = ({ items, storeId }) => {
 
   const { search, updateSearch } = useSearch();
   const [filteredItems, setFilteredItems] = useState(items);
-  const [itemsCount, setItemsCount] = useState(items.length);
-
-  useEffect(() => {
-    setItemsCount(items.length);
-  }, [items]);
 
   useEffect(() => {
     const interval = setTimeout(() => {
@@ -54,10 +49,9 @@ const Page = ({ items }) => {
   }, [search]);
 
   async function fetchItems(search) {
-    console.log(search);
     try {
       const { data } = await fetchApi({
-        url: `/vendor/api/catalog/items?q=${search.filters.name}&status=${search.filters.status}`,
+        url: `/vendor/api/catalog/items?store_id=${storeId}&q=${search.filters.name}&status=${search.filters.status}`,
         method: 'GET'
       });
       setFilteredItems(data);
@@ -73,20 +67,6 @@ const Page = ({ items }) => {
         ...prevState.filters,
         ...filters
       }
-    }));
-  }, [updateSearch]);
-
-  const handlePageChange = useCallback((event, page) => {
-    updateSearch((prevState) => ({
-      ...prevState,
-      page
-    }));
-  }, [updateSearch]);
-
-  const handleRowsPerPageChange = useCallback((event) => {
-    updateSearch((prevState) => ({
-      ...prevState,
-      rowsPerPage: parseInt(event.target.value, 10)
     }));
   }, [updateSearch]);
 
@@ -133,26 +113,17 @@ const Page = ({ items }) => {
               <Stack>
                 <ItemsListSearch onFiltersChange={handleFiltersChange} />
               </Stack>
+              <Divider />
               <Stack
-                sx={{ alignContent: 'flex', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', gap: '6px' }}
+                direction="row"
+                alignItems={'center'}
+                justifyContent={'flex-end'}
+                spacing={2}
+                p={2}
               >
-                <Button
-                  sx={{ width: '15%', margin: '10px' }}
-                  size="small"
-                  startIcon={(
-                    <SvgIcon>
-                      <PlusIcon />
-                    </SvgIcon>
-                  )}
-                  variant="contained"
-                  component={NextLink}
-                  href={`items/add`}
-                >
-                  Upload Items
-                </Button>
+                <ImportItems />
                 <Button
                   sx={{ width: '15%', margin: '10px', marginRight: '10px' }}
-                  size="small"
                   startIcon={(
                     <SvgIcon>
                       <PlusIcon />
@@ -167,14 +138,7 @@ const Page = ({ items }) => {
               </Stack>
 
               <Stack>
-                <ItemsListTable
-                  onPageChange={handlePageChange}
-                  onRowsPerPageChange={handleRowsPerPageChange}
-                  page={search.page}
-                  items={items}
-                  itemsCount={itemsCount}
-                  rowsPerPage={search.rowsPerPage}
-                />
+                <ItemsListTable items={filteredItems} />
               </Stack>
 
             </Card>

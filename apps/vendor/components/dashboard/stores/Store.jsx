@@ -1,7 +1,7 @@
 'use client'
 
-import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography, Avatar, Tooltip } from '@mui/material';
-import { React, useCallback, useState } from 'react';
+import { Box, Button, Container, Stack, SvgIcon, Typography, Avatar, Tooltip } from '@mui/material';
+import { React } from 'react';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import StoreOverview from './StoreOverview';
@@ -17,13 +17,6 @@ const Status = {
   APPROVED: "APPROVED",
   REJECTED: "REJECTED",
 }
-
-const tabs = [
-  { label: 'Overview', value: 'overview' },
-  { label: 'Items', value: 'items' },
-  { label: 'Orders', value: 'orders' },
-  { label: 'Settings', value: 'settings' }
-];
 
 const getStatusColor = (status) => {
   switch (status) {

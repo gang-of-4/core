@@ -121,7 +121,7 @@ async function getCarType() {
     return carType;
 }
 
-const EditItem = ({ storeId, car }) => {
+const EditItem = ({ storeId, item }) => {
 
     const initialValues = {
         carType: car?.carType,
@@ -536,4 +536,4 @@ const EditItem = ({ storeId, car }) => {
     );
 };
 
-export default EditCar;
+export default EditItem;
