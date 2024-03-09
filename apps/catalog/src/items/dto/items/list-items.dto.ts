@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class ListItemsDto {
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   @IsOptional()
   @IsString()
   @IsUUID()
