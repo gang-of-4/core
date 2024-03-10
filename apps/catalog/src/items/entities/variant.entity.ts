@@ -16,7 +16,7 @@ export class VariantEntity implements Variant {
   quantity: number;
 
   @ApiProperty({ type: Decimal })
-  @Transform(({ value }) => value.toNumber())
+  @Transform(({ value }) => value?.toNumber())
   @Type(() => Number)
   price: Decimal;
 
