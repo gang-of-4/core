@@ -4,7 +4,6 @@ export async function GET(request, { params }) {
         id
     } = params;
 
-    // @TODO integrate with the catalog API
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`, {
         method: 'GET',
@@ -33,20 +32,16 @@ export async function PATCH(request, { params }) {
 
     const {
         name,
+        sku,
         quantity,
-        images,
         price,
         description,
-        category,
-        storeId,
-        attributes,
+        categories,
         options,
-        order,
-        isActive,
-        isTaxable
+        variants,
+        store_id,
     } = await request.json();
 
-    // @TODO integrate with the catalog API
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`,
         {
@@ -58,17 +53,14 @@ export async function PATCH(request, { params }) {
             },
             body: JSON.stringify({
                 name,
+                sku,
                 quantity,
-                images,
                 price,
                 description,
-                category,
-                storeId,
-                attributes,
+                categories,
                 options,
-                order,
-                isActive,
-                isTaxable
+                variants,
+                store_id,
             })
         });
 
@@ -88,7 +80,6 @@ export async function DELETE(request, { params }) {
         id
     } = params;
 
-    // @TODO integrate with the catalog API
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`, {
         method: 'DELETE',
