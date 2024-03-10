@@ -63,11 +63,6 @@ export class UpdateItemDto {
     quantity: number;
   }>;
 
-  @ApiProperty()
-  @IsString()
-  @IsUUID()
-  store_id: string;
-
   constructor(partial: Partial<UpdateItemDto>) {
     Object.assign(this, partial);
   }
