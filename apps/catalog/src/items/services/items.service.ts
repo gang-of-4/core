@@ -72,7 +72,9 @@ export class ItemsService {
       where: {
         storeId: listItemsDto.store_id,
         deletedAt: null,
-        ...(role === 'guest' && { status: Status.APPROVED }),
+        ...(['guest', 'customer'].includes(role) && {
+          status: Status.APPROVED,
+        }),
       },
       orderBy: {
         order: 'asc',
