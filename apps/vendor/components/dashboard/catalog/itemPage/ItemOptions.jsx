@@ -33,16 +33,16 @@ export default function ItemOptions({ item }) {
                     spacing={3}
                     sx={{ width: '100%' }}
                 >
-                    {item?.options.map((group) => (
+                    {item?.groups.map((group) => (
                         <Stack key={group.id} spacing={3} direction={'row'} alignItems={'center'}>
                             <Typography variant="subtitle1">
                                 {group.title}:
                             </Typography>
                             <Stack spacing={1} direction={'row'}>
-                                {group.values.map((option, index) => (
+                                {group.options.map((option, index) => (
                                     <FormControl key={index} component="fieldset">
                                         {
-                                            group.type === 'color' ? (
+                                            group.type === 'COLOR' ? (
                                                 <Stack
                                                     alignItems={'center'}
                                                     justifyContent={'center'}

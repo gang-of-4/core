@@ -1,7 +1,9 @@
 import { Fragment } from 'react';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
+import Trash01Icon from '@untitled-ui/icons-react/build/esm/Trash01';
 import {
     Box,
+    IconButton,
     SvgIcon,
     Table,
     TableBody,
@@ -13,6 +15,7 @@ import {
 import { Scrollbar } from 'ui/components/scrollbar';
 import { SeverityPill } from 'ui/components/severity-pill';
 import NextLink from 'next/link';
+import fetchApi from '@/utils/fetch-api';
 
 
 const getStatusColor = (status) => {
@@ -37,21 +40,39 @@ export const ItemsListTable = ({
     ...other
 }) => {
 
+    async function handleDelete(itemId) {
+        const { error } = await fetchApi({
+            url: `/vendor/api/catalog/items/${itemId}`,
+            options: {
+                method: 'DELETE'
+            }
+        });
+
+        if (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div {...other}>
             <Scrollbar>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell width="35%" >
+                            <TableCell
+                                sx={{
+                                    textAlign: 'center'
+                                }}
+                            >
                                 Name
                             </TableCell>
-                            <TableCell width="30%">
-                                Quantity
+                            <TableCell>
+                                SKU
                             </TableCell>
-                            <TableCell width="35%">
+                            <TableCell>
                                 Status
                             </TableCell>
+                            <TableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -64,7 +85,7 @@ export const ItemsListTable = ({
                                         hover
                                         key={item.id}
                                     >
-                                        <TableCell width="35%">
+                                        <TableCell>
                                             <Box
                                                 component={NextLink}
                                                 href={`items/${item.id}`}
@@ -85,7 +106,7 @@ export const ItemsListTable = ({
                                                     }}
                                                 >
                                                     {
-                                                        item?.images[0].url ?
+                                                        item?.images?.[0].url ?
                                                             <Box
                                                                 component="img"
                                                                 alt={item.name}
@@ -107,16 +128,26 @@ export const ItemsListTable = ({
                                                 </Box>
                                             </Box>
                                         </TableCell>
-                                        <TableCell width="30%">
+                                        <TableCell>
                                             <Typography variant="subtitle2">
-                                                {item?.quantity}
+                                                {item?.sku}
                                             </Typography>
                                         </TableCell>
-                                        <TableCell width="35%">
+                                        <TableCell>
                                             <SeverityPill color={statusColor}>
                                                 {item.status}
                                             </SeverityPill>
                                         </TableCell>
+                                        <TableCell>
+                                            <IconButton
+                                                onClick={() => { handleDelete(item.id) }}
+                                            >
+                                                <SvgIcon>
+                                                    <Trash01Icon />
+                                                </SvgIcon>
+                                            </IconButton>
+                                        </TableCell>
+
                                     </TableRow>
                                 </Fragment>
                             );

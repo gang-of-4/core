@@ -20,6 +20,7 @@ import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import { paths } from 'ui/paths';
 import fetchApi from '@/utils/fetch-api';
 import ImportItems from './ImportItems';
+import { useRouter } from 'next/navigation';
 
 const useSearch = () => {
   const [search, setSearch] = useState({
@@ -38,8 +39,10 @@ const useSearch = () => {
 
 const Page = ({ items, storeId }) => {
 
+  const router = useRouter();
   const { search, updateSearch } = useSearch();
   const [filteredItems, setFilteredItems] = useState(items);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const interval = setTimeout(() => {
@@ -52,9 +55,15 @@ const Page = ({ items, storeId }) => {
     try {
       const { data } = await fetchApi({
         url: `/vendor/api/catalog/items?store_id=${storeId}&q=${search.filters.name}&status=${search.filters.status}`,
-        method: 'GET'
+        options: {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       });
       setFilteredItems(data);
+      console.log('data', data);
     } catch (error) {
       console.error('Error fetching items', error);
     }
@@ -69,6 +78,31 @@ const Page = ({ items, storeId }) => {
       }
     }));
   }, [updateSearch]);
+
+  async function handleAddItem() {
+    setLoading(true);
+    const { data } = await fetchApi({
+      url: `/vendor/api/catalog/items`,
+      options: {
+        method: 'POST',
+        body: JSON.stringify({
+          store_id: storeId
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    });
+
+    if (data.id) {
+      router.push(`/dashboard/stores/${storeId}/items/${data.id}/add`);
+    } else {
+      console.error('Error creating draft item');
+    }
+
+    setLoading(false);
+
+  }
 
 
   return (
@@ -130,15 +164,17 @@ const Page = ({ items, storeId }) => {
                     </SvgIcon>
                   )}
                   variant="outlined"
-                  component={NextLink}
-                  href={`items/add`}
+                  onClick={handleAddItem}
+                  disabled={loading}
                 >
-                  Add Item
+                  {loading ? 'Adding...' : 'Add Car'}
                 </Button>
               </Stack>
 
               <Stack>
-                <ItemsListTable items={filteredItems} />
+                {filteredItems.length !== 0 && (
+                  <ItemsListTable items={filteredItems} />
+                )}
               </Stack>
 
             </Card>

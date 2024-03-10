@@ -10,7 +10,6 @@ import {
     SvgIcon,
     Typography,
 } from '@mui/material';
-import * as React from 'react';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import NextLink from 'next/link';
@@ -19,6 +18,8 @@ import ItemBasicInfo from './ItemBasicInfo';
 import ItemOptions from './ItemOptions';
 import ItemAttributes from './ItemAttributes';
 import ItemVariants from './ItemVariants';
+import { useEffect, useState } from 'react';
+import fetchApi from '@/utils/fetch-api';
 
 const Status = {
     PENDING: "PENDING",
@@ -45,7 +46,34 @@ const getStatusColor = (status) => {
     }
 };
 
-const ViewItem = ({ storeId, item }) => {
+const ViewItem = ({ storeId, itemId }) => {
+
+    const [item, setItem] = useState(null);
+
+    useEffect(() => {
+        fetchItem(itemId);
+    }, [itemId]);
+
+    async function fetchItem(itemId) {
+        const { data, error } = await fetchApi({
+            url: `/vendor/api/catalog/items/${itemId}`,
+            options: {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        });
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        console.log('data', data);
+
+        setItem(data);
+    }
 
     return (
         <>
@@ -57,102 +85,106 @@ const ViewItem = ({ storeId, item }) => {
                 }}
             >
                 <Container maxWidth="lg">
-                    <Card
-                        elevation={16}
-                        sx={{
-                            pb: 0
-                        }}
-                    >
-                        <Box sx={{
-                            alignItems: 'center',
-                            display: 'flex',
-                            justifyContent: 'flex-start',
-                            px: 2,
-                            pt: 4
-                        }}>
-                            <Link
-                                color="primary"
-                                component={NextLink}
-                                href={`/dashboard/stores/${storeId}/items`}
-                                sx={{
-                                    alignItems: 'center',
-                                    display: 'inline-flex'
-                                }}
-                                underline="hover"
-                            >
-                                <SvgIcon sx={{ mr: 1 }}>
-                                    <ArrowLeftIcon />
-                                </SvgIcon>
-                                <Typography variant="subtitle2">
-                                    Back to Cars
-                                </Typography>
-                            </Link>
-                        </Box>
-
-                        <Stack
-                            alignItems="center"
-                            direction="row"
-                            spacing={2}
-                            sx={{ mt: 2, px: 6 }}
-                        >
-                            <Stack
-                                alignItems="center"
-                                direction="row"
-                                spacing={2}
-                            >
-                                <Typography variant="h6">
-                                    View Item: {item?.id}
-                                </Typography>
-                                <SeverityPill color={getStatusColor(item?.status)}>
-                                    {item?.status}
-                                </SeverityPill>
-                            </Stack>
-                            <Box sx={{ flexGrow: 1 }} />
-                            <Stack
-                                alignItems="center"
-                                direction="row"
-                                spacing={2}
-                            >
-                                <Button
-                                    startIcon={(
-                                        <SvgIcon>
-                                            <Edit02Icon />
-                                        </SvgIcon>
-                                    )}
-                                    size='small'
-                                    variant="outlined"
-                                    component={NextLink}
-                                    href={`/dashboard/stores/${storeId}/items/${item.id}/edit`}
-                                >
-                                    Edit Car
-                                </Button>
-                            </Stack>
-                        </Stack>
-
-                        <CardContent
+                    {item && (
+                        <Card
+                            elevation={16}
                             sx={{
-                                pt: 2,
                                 pb: 0
                             }}
                         >
+                            <Box sx={{
+                                alignItems: 'center',
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                px: 2,
+                                pt: 4
+                            }}>
+                                <Link
+                                    color="primary"
+                                    component={NextLink}
+                                    href={`/dashboard/stores/${storeId}/items`}
+                                    sx={{
+                                        alignItems: 'center',
+                                        display: 'inline-flex'
+                                    }}
+                                    underline="hover"
+                                >
+                                    <SvgIcon sx={{ mr: 1 }}>
+                                        <ArrowLeftIcon />
+                                    </SvgIcon>
+                                    <Typography variant="subtitle2">
+                                        Back to Cars
+                                    </Typography>
+                                </Link>
+                            </Box>
 
-                            <ItemBasicInfo item={item} />
+                            <Stack
+                                alignItems="center"
+                                direction="row"
+                                spacing={2}
+                                sx={{ mt: 2, px: 6 }}
+                            >
+                                <Stack
+                                    alignItems="center"
+                                    direction="row"
+                                    spacing={2}
+                                >
+                                    <Typography variant="h6">
+                                        View Item: {item?.id}
+                                    </Typography>
+                                    <SeverityPill color={getStatusColor(item?.status)}>
+                                        {item?.status}
+                                    </SeverityPill>
+                                </Stack>
+                                <Box sx={{ flexGrow: 1 }} />
+                                <Stack
+                                    alignItems="center"
+                                    direction="row"
+                                    spacing={2}
+                                >
+                                    <Button
+                                        startIcon={(
+                                            <SvgIcon>
+                                                <Edit02Icon />
+                                            </SvgIcon>
+                                        )}
+                                        size='small'
+                                        variant="outlined"
+                                        component={NextLink}
+                                        href={`/dashboard/stores/${storeId}/items/${item.id}/edit`}
+                                        // @TODO fix edit item page
+                                        disabled
+                                    >
+                                        Edit Car
+                                    </Button>
+                                </Stack>
+                            </Stack>
 
-                            {item?.options?.length > 0 && (
-                                <ItemOptions item={item} />
-                            )}
+                            <CardContent
+                                sx={{
+                                    pt: 2,
+                                    pb: 0
+                                }}
+                            >
 
-                            {item?.attributes?.length > 0 && (
-                                <ItemAttributes item={item} />
-                            )}
+                                <ItemBasicInfo item={item} />
 
-                            {/* @TODO: item images similar to storefront */}
+                                {item?.groups?.length > 0 && (
+                                    <ItemOptions item={item} />
+                                )}
 
-                            {item?.variants?.length > 0 && (
-                                <ItemVariants item={item} />
-                            )}
-                        </CardContent>
-                    </Card>
+                                {item?.attributes?.length > 0 && (
+                                    <ItemAttributes item={item} />
+                                )}
+
+                                {/* @TODO: item images similar to storefront */}
+
+                                {item?.variants?.length > 0 && (
+                                    <ItemVariants item={item} />
+                                )}
+                            </CardContent>
+                        </Card>
+                    )}
                 </Container>
             </Box>
         </>

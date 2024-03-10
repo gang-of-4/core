@@ -30,6 +30,7 @@ export default function ItemVariants({ item }) {
                 <TableHead>
                     <TableRow>
                         <TableCell>Name</TableCell>
+                        <TableCell>SKU</TableCell>
                         <TableCell>Options</TableCell>
                         <TableCell>Quantity</TableCell>
                         <TableCell>Price</TableCell>
@@ -44,30 +45,16 @@ export default function ItemVariants({ item }) {
                             </TableCell>
 
                             <TableCell>
+                                {variant.sku ? variant.sku : item.sku}
+                            </TableCell>
+
+                            <TableCell>
                                 <Stack spacing={1}>
-                                    {
-                                        variant?.options?.map((option, index) => {
-                                            if (option.type === 'color') {
-                                                return (
-                                                    <Box
-                                                        key={index}
-                                                        sx={{
-                                                            borderRadius: 1,
-                                                            width: 25,
-                                                            height: 25,
-                                                            bgcolor: option.value.value,
-                                                        }}
-                                                    />
-                                                )
-                                            } else {
-                                                return (
-                                                    <Typography key={index} variant="body1">
-                                                        {option.title}: {option.value.label}
-                                                    </Typography>
-                                                )
-                                            }
-                                        })
-                                    }
+                                    {variant?.options?.map((option, index) => (
+                                        <Typography key={index} variant="body1">
+                                            {option.label}
+                                        </Typography>
+                                    ))}
                                 </Stack>
                             </TableCell>
 
