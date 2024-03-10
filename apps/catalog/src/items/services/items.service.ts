@@ -176,7 +176,6 @@ export class ItemsService {
             quantity: updateItemDto.quantity,
             price: updateItemDto.price,
             description: updateItemDto.description,
-            storeId: updateItemDto.store_id,
             status: Status.PENDING,
             slug: updateItemDto.name?.toLowerCase().replace(' ', '-'),
             isActive: false,
@@ -199,7 +198,6 @@ export class ItemsService {
         .catch((e) => {
           switch (e.code) {
             case 'P2002':
-              throw e;
               throw new SlugUsedException();
             default:
               throw e;
