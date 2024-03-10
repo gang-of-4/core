@@ -35,6 +35,9 @@ export class OptionGroupsService {
       await this.prisma.optionGroup
         .findUniqueOrThrow({
           where: { id, deletedAt: null },
+          include: {
+            options: true,
+          },
         })
         .catch(() => {
           throw new NotFoundException();
@@ -46,6 +49,9 @@ export class OptionGroupsService {
     return new OptionGroupEntity(
       await this.prisma.optionGroup.findUniqueOrThrow({
         where: { id, deletedAt: null },
+        include: {
+          options: true,
+        },
       }),
     );
   }

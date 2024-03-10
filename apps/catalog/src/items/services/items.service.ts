@@ -224,9 +224,12 @@ export class ItemsService {
 
   async remove(id: string): Promise<ItemEntity> {
     return new ItemEntity(
-      await this.prisma.item.delete({
+      await this.prisma.item.update({
         where: {
           id,
+        },
+        data: {
+          deletedAt: new Date(),
         },
       }),
     );
