@@ -1,6 +1,6 @@
 'use client'
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
@@ -25,7 +25,9 @@ import {
     TableBody,
     TableCell,
     TableHead,
-    TableRow
+    TableRow,
+    InputAdornment,
+    Tooltip
 } from '@mui/material';
 import { useMounted } from 'ui/hooks/use-mounted';
 import * as React from 'react';
@@ -34,22 +36,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import NextLink from 'next/link';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import fetchApi from '@/utils/fetch-api';
 
-
-const rows = [
-    { name: 'Variant 1', brand: 'Brand 1', color: 'Red', size: 'XL', price: '', quantity: '' },
-    { name: 'Variant 2', brand: 'Brand 2', color: 'Blue', size: 'M', price: '', quantity: '' },
-    // Add more rows as needed
-];
-
-const handlePriceChange = (index) => (event) => {
-    // Handle price changes here, you can use formik or local state to manage the values
-};
-
-const handleQuantityChange = (index) => (event) => {
-    // Handle quantity changes here, similar to price
-};
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -63,167 +51,101 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-const useParams = () => {
-    const searchParams = useSearchParams();
-    const returnTo = searchParams.get('returnTo') || undefined;
-
-    return {
-        returnTo
-    };
-};
-
 const initialValues = {
-    carType: '',
-    brandName: '',
-    carName: '',
-    carYear: '',
-    carColor: [],
-    currency: '',
-    carPrice: '',
+    name: '',
+    sku: '',
+    price: 0,
     description: '',
+    quantity: 0,
+    categories: [],
+    options: [],
+    variants: [],
     images: [],
-    attributes: [{ name: '', value: '' }],
     submit: null
 };
 
 const validationSchema = Yup.object({
-    carType: Yup
-        .string()
-        .required('Car type is required'),
-    brandName: Yup
+    name: Yup
         .string()
         .max(255)
-        .required('Brand Name is required'),
-    carName: Yup
+        .required('Name is required'),
+    sku: Yup
         .string()
-        .max(255)
-        .required('Car Name is required'),
-    carYear: Yup
+        .required('SKU is required'),
+    price: Yup
         .number()
-        .max(255)
-        .required('Car Year is required'),
-    carColor: Yup
-        .array()
-        .max(255)
-        .required('Car Color is required'),
-    currency: Yup
-        .string()
-        .required('Currency is required'),
-    carPrice: Yup
-        .number()
-        .max(255)
-        .required('Car Price is required'),
+        .required('Price is required'),
     description: Yup
         .string()
         .max(1000)
         .required('Car Price is required'),
+    quantity: Yup
+        .number()
+        .notRequired(),
+    categories: Yup.array().of(
+        Yup.string().required('Category is required')
+    ),
+    options: Yup.array().of(
+        Yup.string().required('Option is required')
+    ),
+    variants: Yup.array().of(
+        Yup.object().shape({
+            id: Yup.string().notRequired(),
+        })
+    ),
     images: Yup
         .array()
         .notRequired()
-        .test('fileFormat', 'Invalid file format. Only images are allowed.', (value) => {
-            if (!value) return true;
-            return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-        })
-        .test('fileSize', 'File size is too large. Maximum size is 2MB.', (value) => {
-            if (!value) return true;
-            return value && value.size <= 2 * 1024 * 1024; // 2MB
-        }),
-    attributes: Yup.array().of(
-        Yup.object().shape({
-            name: Yup.string().required('Attribute Name is required'),
-            value: Yup.string().required('Attribute Value is required')
-        })
-    )
+    // .test('fileFormat', 'Invalid file format. Only images are allowed.', (value) => {
+    //     if (!value) return true;
+    //     return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+    // })
+    // .test('fileSize', 'File size is too large. Maximum size is 2MB.', (value) => {
+    //     if (!value) return true;
+    //     return value && value.size <= 2 * 1024 * 1024; // 2MB
+    // })
 });
 
-async function getCurrency() {
-    const currency = await fetch(
-        `${process.env.CURRENCIES_API_URL}`,
-        { next: { revalidate: 0 } }
-    ).then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch currency');
-        return res.json();
-    });
+const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
 
-    return currency;
-}
-
-async function getCarColor() {
-    const currency = await fetch(
-        `${process.env.CURRENCIES_API_URL}`,
-        { next: { revalidate: 0 } }
-    ).then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch currency');
-        return res.json();
-    });
-
-    return carColor;
-}
-
-async function getCarType() {
-    const carType = await fetch(
-        `${process.env.carType_API_URL}`,
-        { next: { revalidate: 0 } }
-    ).then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch car type');
-        return res.json();
-    });
-
-    return carType;
-}
-
-const AddItem = ({ storeId }) => {
-
-    const [attributes, setAttributes] = useState([{ key: '', value: '' }]);
     const [selectedFileName, setSelectedFileName] = useState('');
-    const [currencyOptions, setCurrencyOptions] = useState([]);
-    const [carTypeOptions, setCarTypeOptions] = useState([]);
 
-    const [carColorOptions, setCarColorOptions] = useState([]);
+    const [generateVariantsLoading, setGenerateVariantsLoading] = useState(false);
+
+    const [variants, setVariants] = useState([]);
     const [selectedVariants, setSelectedVariants] = useState([]);
-    const handleCheckboxChange = (index) => (event) => {
-        const isChecked = event.target.checked;
-        setSelectedVariants((prevSelected) => {
-            const newSelected = [...prevSelected];
-            if (isChecked) {
-                newSelected.push(index);
-            } else {
-                const indexToRemove = newSelected.indexOf(index);
-                if (indexToRemove !== -1) {
-                    newSelected.splice(indexToRemove, 1);
-                }
-            }
-            return newSelected;
-        });
-    };
-
 
     const isMounted = useMounted();
     const router = useRouter();
-    const { returnTo } = useParams();
-    // const { addCar } = useCars();
     const formik = useFormik({
         initialValues,
         validationSchema,
         onSubmit: async (values, helpers) => {
             try {
-                const car = {
-                    carType: values.carType,
-                    brandName: values.brandName,
-                    carName: values.carName,
-                    carYear: values.carYear,
-                    carColor: values.carColor,
-                    currency: values.currency,
-                    carPrice: values.carPrice,
-                    description: values.description,
-                    images: formik.values.images,
-                };
+                const { data, error } = await fetchApi({
+                    url: `/vendor/api/catalog/items/${draftItemId}`,
+                    options: {
+                        method: 'PATCH',
+                        body: JSON.stringify({
+                            name: values.name,
+                            sku: values.sku,
+                            quantity: +values.quantity,
+                            price: +values.price,
+                            description: values.description,
+                            categories: values.categories,
+                            options: values.options,
+                            variants: values.variants,
+                            store_id: storeId
+                        })
+                    }
+                });
 
-                await addCar(car);
-
+                if (error) {
+                    console.error(error);
+                }
+                console.log('data', data);
                 if (isMounted()) {
-                    // force a hard navigation to the dashboard
-                    window.location.href = `/vendor/dashboard/stores/${storeId}`;
+                    router.push(`/dashboard/stores/${storeId}/items`);
                 }
                 setSelectedFileName('');
             } catch (err) {
@@ -238,16 +160,60 @@ const AddItem = ({ storeId }) => {
         }
     });
 
-    function handleAddAttribute() {
-        setAttributes([...attributes, { key: '', value: '' }]);
-    };
+    async function handleGenerateVariants() {
 
-    function handleAttributeChange({ index, e }) {
-        const { name, value } = e.target;
-        const newAttributes = [...attributes];
-        newAttributes[index][name] = value;
-        setAttributes(newAttributes);
-    };
+        setGenerateVariantsLoading(true);
+
+        const { values } = formik;
+        const { options } = values;
+        let optionsToSend = [];
+        optionGroups.forEach((optionGroup, index) => {
+
+            optionsToSend[index] = [];
+
+            optionGroup.options.forEach((option) => {
+                if (options.includes(option.id)) {
+                    optionsToSend[index].push(option.id);
+                }
+            });
+        });
+
+        const filteredArray = optionsToSend.filter(item => item !== undefined && item !== null && item?.length > 0);
+
+
+        console.log('optionsToSend', filteredArray);
+
+
+        const { data } = await fetchApi({
+            url: `/vendor/api/catalog/items/${draftItemId}/generate-variants`,
+            options: {
+                method: 'POST',
+                body: JSON.stringify({
+                    options: filteredArray,
+                    draftItemId: draftItemId
+                })
+            }
+        });
+
+        console.log('data', data);
+
+        setVariants(data);
+        setGenerateVariantsLoading(false);
+    }
+
+    function handleVariantChange(variantId) {
+        const { values, setFieldValue } = formik;
+        const { variants } = values;
+
+        if (variants.includes(variantId)) {
+            setFieldValue('variants', variants.filter((id) => id !== variantId));
+            setSelectedVariants(selectedVariants.filter((id) => id !== variantId));
+        } else {
+            setFieldValue('variants', [...variants, variantId]);
+            setSelectedVariants([...selectedVariants, variantId]);
+        }
+    }
+        
 
     return (
         <>
@@ -270,7 +236,7 @@ const AddItem = ({ storeId }) => {
                             <Link
                                 color="primary"
                                 component={NextLink}
-                                href={`/dashboard/stores/${storeId}`}
+                                href={`/dashboard/stores/${storeId}/items`}
                                 sx={{
                                     alignItems: 'center',
                                     display: 'inline-flex'
@@ -281,7 +247,7 @@ const AddItem = ({ storeId }) => {
                                     <ArrowLeftIcon />
                                 </SvgIcon>
                                 <Typography variant="subtitle2">
-                                    Back to Store
+                                    Back to Cars
                                 </Typography>
                             </Link>
                         </Box>
@@ -309,192 +275,179 @@ const AddItem = ({ storeId }) => {
                                             spacing={3}
                                             sx={{ width: '100%' }}
                                         >
-                                            <FormControl variant="filled" sx={{ minWidth: 120 }}>
-                                                <InputLabel id="demo-simple-select-filled-label">Car Type</InputLabel>
-                                                <Select
-                                                    labelId="demo-simple-select-filled-label"
-                                                    id="demo-simple-select-filled"
-                                                    name="carType"
-                                                    value={formik.values.carType}
-                                                    onChange={formik.handleChange}
-                                                >
-                                                    <MenuItem value="">
-                                                        <em>None</em>
-                                                    </MenuItem>
-                                                    {carTypeOptions.map((carType) => (
-                                                        <MenuItem key={carType.id} value={carType.id}>
-                                                            {carType.name}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </FormControl>
-
                                             <TextField
-                                                error={!!(formik.touched.brandName && formik.errors.brandName)}
+                                                error={!!(formik.touched.name && formik.errors.name)}
                                                 fullWidth
-                                                helperText={formik.touched.brandName && formik.errors.brandName}
-                                                label="Brand Name"
-                                                name="brandName"
+                                                helperText={formik.touched.name && formik.errors.name}
+                                                label="Name"
+                                                name="name"
                                                 onBlur={formik.handleBlur}
                                                 onChange={formik.handleChange}
-                                                type="brandName"
-                                                value={formik.values.brandName}
-                                            />
-                                            <TextField
-                                                error={!!(formik.touched.carName && formik.errors.carName)}
-                                                fullWidth
-                                                helperText={formik.touched.carName && formik.errors.carName}
-                                                label="Car Name"
-                                                name="carName"
-                                                onBlur={formik.handleBlur}
-                                                onChange={formik.handleChange}
-                                                type="carName"
-                                                value={formik.values.carName}
-                                            />
-                                            <TextField
-                                                error={!!(formik.touched.carYear && formik.errors.carYear)}
-                                                fullWidth
-                                                helperText={formik.touched.carYear && formik.errors.carYear}
-                                                label="Car Year"
-                                                name="carYear"
-                                                onBlur={formik.handleBlur}
-                                                onChange={formik.handleChange}
-                                                type="carYear"
-                                                value={formik.values.carYear}
+                                                type="name"
+                                                value={formik.values.name}
                                             />
 
+                                            <TextField
+                                                error={!!(formik.touched.sku && formik.errors.sku)}
+                                                fullWidth
+                                                helperText={formik.touched.sku && formik.errors.sku}
+                                                label="SKU"
+                                                name="sku"
+                                                onBlur={formik.handleBlur}
+                                                onChange={formik.handleChange}
+                                                type="sku"
+                                                value={formik.values.sku}
+                                            />
+
+                                            <TextField
+                                                error={!!(formik.touched.price && formik.errors.price)}
+                                                fullWidth
+                                                helperText={formik.touched.price && formik.errors.price}
+                                                label="Price"
+                                                name="price"
+                                                onBlur={formik.handleBlur}
+                                                onChange={formik.handleChange}
+                                                type="price"
+                                                value={formik.values.price}
+                                                InputProps={{
+                                                    startAdornment: <InputAdornment position="start">SAR</InputAdornment>,
+                                                }}
+                                            />
                                         </Stack>
 
+                                        <Stack spacing={3}>
+                                            <Tooltip title="Quantity can be added later for each variant">
+                                                <TextField
+                                                    error={!!(formik.touched.quantity && formik.errors.quantity)}
+                                                    fullWidth
+                                                    helperText={formik.touched.quantity && formik.errors.quantity}
+                                                    label="Quantity (optional)"
+                                                    name="quantity"
+                                                    onBlur={formik.handleBlur}
+                                                    onChange={formik.handleChange}
+                                                    type="quantity"
+                                                    value={formik.values.quantity}
+                                                />
+                                            </Tooltip>
 
-                                        <Stack
-                                            justifyContent={'space-between'}
-                                            sx={{ width: '100%' }}
+                                            <TextField
+                                                error={!!(formik.touched.description && formik.errors.description)}
+                                                fullWidth
+                                                helperText={formik.touched.description && formik.errors.description}
+                                                label="Description"
+                                                name="description"
+                                                multiline
+                                                onBlur={formik.handleBlur}
+                                                onChange={formik.handleChange}
+                                                type="description"
+                                                value={formik.values.description}
+                                            />
+                                        </Stack>
+                                    </Stack>
 
-                                        >
+                                    <Stack
+                                        paddingTop={3}
+                                        spacing={4}
+                                        direction='row'
+                                        sx={{ width: '100%' }}
+                                    >
+                                        {categories && (
                                             <Stack
                                                 spacing={3}
+                                                sx={{ width: '100%' }}
                                             >
-                                                <FormControl variant="filled" sx={{ minWidth: 100, marginRight: 2 }}>
-                                                    <InputLabel id="demo-simple-select-filled-label">Car Color</InputLabel>
+                                                <FormControl
+                                                    fullWidth
+                                                    error={!!(formik.touched.categories && formik.errors.categories)}
+                                                >
+                                                    <InputLabel id="categories-label">Categories</InputLabel>
                                                     <Select
-                                                        labelId="demo-simple-select-filled-label"
-                                                        id="demo-simple-select-filled"
-                                                        name="carColor"
+                                                        labelId="categories-label"
                                                         multiple
-                                                        value={formik.values.carColor}
+                                                        name="categories"
+                                                        onBlur={formik.handleBlur}
                                                         onChange={formik.handleChange}
+                                                        value={formik.values.categories}
                                                     >
-                                                        <MenuItem value="">
-                                                            <em>None</em>
-                                                        </MenuItem>
-                                                        {carColorOptions.map((carColor) => (
-                                                            <MenuItem key={carColor.id} value={carColor.id}>
-                                                                {carColor.name}
+                                                        {categories?.map((category) => (
+                                                            <MenuItem key={category.id} value={category.id}>
+                                                                {category.name}
                                                             </MenuItem>
                                                         ))}
                                                     </Select>
+                                                    {formik.touched.categories && formik.errors.categories && (
+                                                        <FormHelperText error>
+                                                            {formik.errors.categories}
+                                                        </FormHelperText>
+                                                    )}
                                                 </FormControl>
-
-
-                                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                    <FormControl variant="filled" sx={{ minWidth: 100, marginRight: 2 }}>
-                                                        <InputLabel id="demo-simple-select-filled-label">Currency</InputLabel>
-                                                        <Select
-                                                            labelId="demo-simple-select-filled-label"
-                                                            id="demo-simple-select-filled"
-                                                            name="currency"
-                                                            value={formik.values.currency}
-                                                            onChange={formik.handleChange}
-                                                        >
-                                                            <MenuItem value="">
-                                                                <em>None</em>
-                                                            </MenuItem>
-                                                            {currencyOptions.map((currency) => (
-                                                                <MenuItem key={currency.id} value={currency.id}>
-                                                                    {currency.name}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
-                                                    </FormControl>
-
-                                                    <TextField
-                                                        error={!!(formik.touched.carPrice && formik.errors.carPrice)}
-                                                        fullWidth
-                                                        helperText={formik.touched.carPrice && formik.errors.carPrice}
-                                                        label="Car Price"
-                                                        name="carPrice"
-                                                        onBlur={formik.handleBlur}
-                                                        onChange={formik.handleChange}
-                                                        type="carPrice"
-                                                        value={formik.values.carPrice}
-                                                    />
-                                                </div>
-                                                <TextField
-                                                    error={!!(formik.touched.description && formik.errors.description)}
-                                                    fullWidth
-                                                    helperText={formik.touched.description && formik.errors.description}
-                                                    label="Description"
-                                                    name="description"
-                                                    multiline
-                                                    onBlur={formik.handleBlur}
-                                                    onChange={formik.handleChange}
-                                                    type="description"
-                                                    value={formik.values.description}
-                                                />
                                             </Stack>
+                                        )}
 
-                                        </Stack>
-
+                                        {optionGroups && (
+                                            <Stack
+                                                spacing={3}
+                                                sx={{ width: '100%' }}
+                                            >
+                                                {optionGroups?.map((optionGroup, index) => (
+                                                    <FormControl
+                                                        fullWidth
+                                                        key={optionGroup.id}
+                                                        error={!!(formik.touched.options && formik.errors.options)}
+                                                    >
+                                                        <InputLabel id="options-label">{optionGroup.title}</InputLabel>
+                                                        <Select
+                                                            labelId="options-label"
+                                                            multiple
+                                                            name="options"
+                                                            onBlur={formik.handleBlur}
+                                                            onChange={formik.handleChange}
+                                                            value={formik.values.options}
+                                                        >
+                                                            {optionGroup?.options?.map((option) => {
+                                                                if (optionGroup.type === 'COLOR') {
+                                                                    return (
+                                                                        <MenuItem key={option.id} value={option.id}>
+                                                                            <Box
+                                                                                sx={{
+                                                                                    backgroundColor: option.value,
+                                                                                    height: 24,
+                                                                                    width: 24
+                                                                                }}
+                                                                            />
+                                                                        </MenuItem>
+                                                                    );
+                                                                } else {
+                                                                    return (
+                                                                        <MenuItem key={option.id} value={option.id}>
+                                                                            {option.label}
+                                                                        </MenuItem>
+                                                                    );
+                                                                }
+                                                            })}
+                                                        </Select>
+                                                        {formik.touched.options && formik.errors.options && (
+                                                            <FormHelperText error>
+                                                                {formik.errors.options}
+                                                            </FormHelperText>
+                                                        )}
+                                                    </FormControl>
+                                                ))}
+                                            </Stack>
+                                        )}
                                     </Stack>
                                 </Card>
 
                                 <Card elevation={16} className='p-4 mb-6'>
                                     <CardHeader
                                         sx={{ pt: 0 }}
-                                        title="Extra Information"
+                                        title="Images"
                                     />
                                     <Stack
                                         spacing={4}
                                         direction='row'
                                         sx={{ width: '100%' }}
                                     >
-                                        <Stack
-                                            spacing={3}
-                                            sx={{ width: '100%' }}
-                                        >
-                                            <Typography
-                                                variant="body2"
-                                                color="textSecondary"
-                                            >
-                                                You can add extra attributes to your item by adding key-value pairs.
-                                            </Typography>
-                                            {attributes.map((attribute, index) => (
-                                                <Stack key={index} spacing={3} direction={'row'}>
-                                                    <TextField
-                                                        label={`Attribute ${index + 1} Key`}
-                                                        name={`key`}
-                                                        onChange={(e) => handleAttributeChange({ index, e })}
-                                                        value={attribute.key}
-                                                    />
-                                                    <TextField
-                                                        label={`Attribute ${index + 1} Value`}
-                                                        name={`value`}
-                                                        onChange={(e) => handleAttributeChange({ index, e })}
-                                                        value={attribute.value}
-                                                    />
-                                                </Stack>
-                                            ))}
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                startIcon={<AddCircleIcon />}
-                                                onClick={handleAddAttribute}
-                                            >
-                                                Add Another Attribute
-                                            </Button>
-                                        </Stack>
-
-
                                         <Stack
                                             justifyContent={'space-between'}
                                             sx={{ width: '100%' }}
@@ -557,11 +510,14 @@ const AddItem = ({ storeId }) => {
                                             </Stack>
 
                                         </Stack>
-
                                     </Stack>
                                 </Card>
-                                <Card elevation={16} className='p-4 mb-6'>
 
+                                <Card elevation={16} className='p-4 mb-6'>
+                                    <CardHeader
+                                        sx={{ pt: 0 }}
+                                        title="Variants"
+                                    />
 
                                     {formik.errors.submit && (
                                         <FormHelperText
@@ -581,16 +537,8 @@ const AddItem = ({ storeId }) => {
                                             sx={{ width: '100%' }}
                                         >
                                             <Typography>
-                                                Generate Variant means create for all combination items automatically.
-                                                For example:
-                                            </Typography>
-                                            <Typography
-                                                sx={{ padding: '10px' }}>
-                                                T-shirt - Red - M
-                                                <br />
-                                                T-shirt - Red - L
-                                                <br />
-                                                T-shirt - Blue - M
+                                                By generating variants, you will create a variant for each combination of your options.
+                                                Then you can set each variant's information.
                                             </Typography>
                                         </Stack>
                                         <Stack
@@ -598,68 +546,69 @@ const AddItem = ({ storeId }) => {
                                             alignItems={'center'}
                                             sx={{ width: '100%', textAlign: 'center' }}>
                                             <Button
-                                                disabled={formik.isSubmitting}
                                                 fullWidth
                                                 size="large"
-                                                type="submit"
-                                                variant="contained"
+                                                variant="outlined"
                                                 sx={{ margin: 'auto' }}
+                                                onClick={handleGenerateVariants}
+                                                disabled={generateVariantsLoading}
                                             >
-                                                Generate Variant
+                                                {generateVariantsLoading ? 'Generating...' : 'Generate Variants'}
                                             </Button>
                                         </Stack>
 
+                                        {variants.length > 0 && (
+                                            <Table>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Select</TableCell>
+                                                        <TableCell>Name</TableCell>
+                                                        <TableCell>SKU</TableCell>
+                                                        <TableCell>Options</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {variants.map((variant, index) => (
+                                                        <TableRow key={index}>
+                                                            <TableCell>
+                                                                <Checkbox
+                                                                    checked={selectedVariants.includes(variant.id)}
+                                                                    onChange={() => handleVariantChange(variant.id)}
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell>{variant.name}</TableCell>
+                                                            <TableCell>{variant.sku}</TableCell>
+                                                            <TableCell>
+                                                                <Stack spacing={1}>
+                                                                    {variant?.groups?.map((group, index) => {
+                                                                        if (group.type === 'COLOR') {
+                                                                            return (
+                                                                                <Box
+                                                                                    key={index}
+                                                                                    sx={{
+                                                                                        borderRadius: 1,
+                                                                                        width: 25,
+                                                                                        height: 25,
+                                                                                        bgcolor: group.options?.[0].value
+                                                                                    }}
+                                                                                />
+                                                                            )
+                                                                        } else {
+                                                                            return (
+                                                                                <Typography key={index} variant="body1">
+                                                                                    {group.title}: {group.options?.[0].label}
+                                                                                </Typography>
+                                                                            )
+                                                                        }
+                                                                    })}
+                                                                </Stack>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        )}
                                     </Stack>
-                                </Card>
-
-                                <Card elevation={16} className='p-4 mb-6'>
-                                    <CardHeader
-                                        sx={{ pt: 0 }}
-                                        title="Variant Data "
-                                    />
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Select</TableCell>
-                                                <TableCell>Name</TableCell>
-                                                <TableCell>Brand</TableCell>
-                                                <TableCell>Color</TableCell>
-                                                <TableCell>Size</TableCell>
-                                                <TableCell>Quantity</TableCell>
-                                                <TableCell>Price</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {rows.map((row, index) => (
-                                                <TableRow key={index}>
-                                                    <TableCell>
-                                                        <Checkbox
-                                                            checked={selectedVariants.includes(index)}
-                                                            onChange={handleCheckboxChange(index)}
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell>{row.name}</TableCell>
-                                                    <TableCell>{row.brand}</TableCell>
-                                                    <TableCell>{row.color}</TableCell>
-                                                    <TableCell>{row.size}</TableCell>
-                                                    <TableCell>
-                                                        <TextField
-                                                            type="number"
-                                                            value={row.quantity}
-                                                            onChange={handleQuantityChange(index)}
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <TextField
-                                                            type="number"
-                                                            value={row.price}
-                                                            onChange={handlePriceChange(index)}
-                                                        />
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
                                 </Card>
 
                                 <Card elevation={16} className='p-4 mb-6'>
@@ -694,18 +643,18 @@ const AddItem = ({ storeId }) => {
                                             type="submit"
                                             variant="contained"
                                         >
-                                            Submit
+                                            {formik.isSubmitting ? 'Submitting...' : 'Submit'}
                                         </Button>
                                     </Stack>
                                 </Card>
 
                             </form>
                         </CardContent>
-                    </Card>
+                    </Card >
                 </Container >
             </Box >
         </>
     );
 };
 
-export default AddCar;
+export default AddItem;
