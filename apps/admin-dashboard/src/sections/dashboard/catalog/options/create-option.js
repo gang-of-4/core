@@ -199,7 +199,7 @@ export function OptionCreateForm() {
                               Option {index + 1} Value
                             </FormLabel>
                             <input
-                              type="COLOR"
+                              type="color"
                               name='value'
                               value={option.value}
                               onChange={(e) => handleOptionChange({ index, e })}
