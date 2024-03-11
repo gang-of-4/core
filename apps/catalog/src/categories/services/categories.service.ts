@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { NotFoundException } from '../exceptions/not-found.exception';
-import { CreateCategoryDto } from '../dto/categories/create-category.dto';
+import { NotFoundException } from '../../items/exceptions/not-found.exception';
+import { CreateCategoryDto } from '../dto/create-category.dto';
 import { CategoryEntity } from '../entities/category.entity';
-import { SlugUsedException } from '../exceptions/slug-used.exception';
+import { SlugUsedException } from '../../items/exceptions/slug-used.exception';
+import { UpdateCategoryDto } from '../dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
@@ -41,6 +42,18 @@ export class CategoriesService {
         deletedAt: null,
       },
     });
+  }
+
+  async update(id: string, updateCategory: UpdateCategoryDto) {
+    return new CategoryEntity(
+      await this.prisma.cateogry.update({
+        where: { id },
+        data: updateCategory,
+        include: {
+          parent: true,
+        },
+      }),
+    );
   }
 
   async findAll(): Promise<CategoryEntity[]> {

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Cateogry } from '@prisma/client/catalog';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { ItemEntity } from './item.entity';
+import { ItemEntity } from '../../items/entities/item.entity';
 
 export class CategoryEntity implements Cateogry {
   @ApiProperty()

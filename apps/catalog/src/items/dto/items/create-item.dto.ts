@@ -10,7 +10,7 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { CategoryExists } from 'src/items/rules/category-exist.rule';
+import { CategoryExists } from '../../../categories/rules/category-exist.rule';
 
 export class CreateItemDto {
   @ApiProperty()
