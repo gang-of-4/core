@@ -16,10 +16,10 @@ export function CategoryDetails({ category }) {
   return (
     <>
       <Stack
-        spacing={3}
+        spacing={4}
         sx={{ width: '100%' }}
       >
-        <Stack>
+        <Stack spacing={2}>
           <Typography color="textPrimary" variant='h6'>
             Name
           </Typography>
@@ -31,15 +31,15 @@ export function CategoryDetails({ category }) {
           >
             {category?.name}
           </Typography>
+        </Stack>
+        
+        <Stack spacing={2}>
           <Typography color="textPrimary" variant='h6'>
             Description
           </Typography>
-          <Typography color="textPrimary" variant='h6'>
-            {category?.description }
+          <Typography color="textPrimary">
+            {category?.description}
           </Typography>
-        </Stack>
-        <Stack>
-
         </Stack>
 
       </Stack>

@@ -68,9 +68,9 @@ export function OptionDetails({ group }) {
                           </Typography>
                         ) : (
                           <Box
+                            borderRadius={1}
                             sx={{
                               backgroundColor: option.value,
-                              borderRadius: 8,
                               height: 24,
                               width: 24,
                             }}

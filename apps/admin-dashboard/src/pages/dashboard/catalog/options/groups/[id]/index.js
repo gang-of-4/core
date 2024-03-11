@@ -111,12 +111,12 @@ const Page = () => {
                                     </Typography>
                                 </Breadcrumbs>
                             </Stack>
-                            <Stack
-                                alignItems="center"
-                                direction="row"
-                                spacing={3}
-                            >
-                                <Tooltip title="Will be added later in a future release">
+                            <Tooltip title="Will be added later in a future release" arrow>
+                                <Stack
+                                    alignItems="center"
+                                    direction="row"
+                                    spacing={3}
+                                >
                                     <Button
                                         component={NextLink}
                                         href={`${paths.dashboard.catalog.options.groups.index}/${id}/edit`}
@@ -131,8 +131,8 @@ const Page = () => {
                                     >
                                         Edit
                                     </Button>
-                                </Tooltip>
-                            </Stack>
+                                </Stack>
+                            </Tooltip>
                         </Stack>
 
                         <Card elevation={16}>

@@ -104,7 +104,6 @@ export const OptionListTable = (props) => {
                                                 </SvgIcon>
                                             </IconButton>
                                             <Tooltip title="Will be added later in a future release">
-
                                                 <IconButton
                                                     component={NextLink}
                                                     href={`${paths.dashboard.catalog.options.groups.index}/${group.id}/edit`}

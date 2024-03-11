@@ -3,7 +3,7 @@ export default async function handler(req, res) {
         const token = req.headers.authorization;
         const id = req.query.id;
 
-        // @TODO change api endpoint to update status
+        // @TODO-IMP change api endpoint to update status
         const response = await fetch(
             `${process.env.CATALOG_API_URL}/items/${id}`,
             {
