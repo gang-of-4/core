@@ -6,16 +6,8 @@ import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import AddToCart from './AddToCart';
 import ItemImages from './ItemImages';
 import OptionGroup from './OptionGroup';
+import { formatPrice } from '@/utils/format-price';
 
-
-
-function formatPrice({ price, currency = 'USD' }) {
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-  })
-  return formatter.format(price)
-}
 
 export default function ItemPage({ item }) {
 
@@ -55,7 +47,7 @@ export default function ItemPage({ item }) {
   }
 
   function updateActiveVariant(newOptions) {
-    const newActiveVariant = item.variants.find((variant) => {
+    const newActiveVariant = item.variants?.find((variant) => {
       return variant.options.every((option) => {
         return newOptions[option.title] === option.value.value;
       });
@@ -128,9 +120,9 @@ export default function ItemPage({ item }) {
                 </Box>
               </Grid>
 
-              <Grid item xs={12} md={5}>
-                <ItemImages images={activeVariant?.images} />
-              </Grid>
+                <Grid item xs={12} md={5}>
+                  <ItemImages images={activeVariant?.images} />
+                </Grid>
 
               <Grid item xs={12} md={7}>
                 <Stack spacing={4}>
@@ -145,18 +137,21 @@ export default function ItemPage({ item }) {
                     {activeVariant?.description || item.description}
                   </Typography>
 
-                  <Stack spacing={1}>
-                    {
-                      item.options?.map((group, index) => (
-                        <OptionGroup
-                          key={group.id}
-                          index={index}
-                          group={group}
-                          handleOptionChange={handleOptionChange}
-                        />
-                      ))
-                    }
-                  </Stack>
+
+                  {item.groups?.length > 0 && (
+                    <Stack spacing={1}>
+                      {
+                        item.groups?.map((group, index) => (
+                          <OptionGroup
+                            key={group.id}
+                            index={index}
+                            group={group}
+                            handleOptionChange={handleOptionChange}
+                          />
+                        ))
+                      }
+                    </Stack>
+                  )}
 
                   <Typography
                     variant="h6"
@@ -164,8 +159,8 @@ export default function ItemPage({ item }) {
                     {formatPrice({ price: activeVariant?.price || item.price, currency: activeVariant?.currency || item.currency })}
                   </Typography>
 
-                  <AddToCart 
-                    item={activeVariant} 
+                  <AddToCart
+                    item={activeVariant}
                     isButtonDisabled={!!error || !changed}
                   />
 

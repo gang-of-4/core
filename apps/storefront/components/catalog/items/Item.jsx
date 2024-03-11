@@ -3,16 +3,7 @@ import { Box, Card, CardActionArea, CardActions, CardMedia, SvgIcon, Typography,
 import Link from 'next/link'
 import React, { useState } from 'react'
 import Share07Icon from '@untitled-ui/icons-react/build/esm/Share07';
-
-
-function formatPrice({ price, currency = 'USD' }) {
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-  })
-  return formatter.format(price)
-}
-
+import { formatPrice } from '@/utils/format-price';
 
 export default function Item({ item, ...props }) {
 
@@ -32,19 +23,28 @@ export default function Item({ item, ...props }) {
 
   return (
     <>
-      <Card 
+      <Card
         sx={{ maxWidth: 250 }}
         {...props}
       >
 
         <CardActionArea>
           <Link href={`/catalog/items/${item.id}`}>
-            <CardMedia
-              component="img"
-              height="140"
-              image={item?.images[0]?.url}
-              alt={item.name}
-            />
+            {item?.images?.[0]?.url ? (
+              <CardMedia
+                component="img"
+                height="140"
+                image={item?.images?.[0]?.url}
+                alt={item.name}
+              />
+            ) : (
+              <Box
+                sx={{
+                  height: 140,
+                  backgroundColor: 'grey.300'
+                }}
+              />
+            )}
             <Box
               sx={{
                 pt: 2,
@@ -52,15 +52,18 @@ export default function Item({ item, ...props }) {
                 px: 3
               }}
             >
-              <Typography  variant="h6" component="div"
+              <Typography variant="h6" component="div"
                 sx={{
                   mb: 2
                 }}
               >
-                {item.name}
+                {item.name ? item.name : 'No name'}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {formatPrice({ price: item.price, currency: item.currency })}
+                {item.price ?
+                  formatPrice({ price: item.price, currency: item.currency })
+                  : 'No price'
+                }
               </Typography>
             </Box>
           </Link>

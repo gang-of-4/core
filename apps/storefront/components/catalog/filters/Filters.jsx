@@ -113,7 +113,7 @@ export default function Filters({ filtersList }) {
           />
           <OptionsFilterSet
             onChange={handleFilterChange}
-            options={filtersList?.options}
+            groups={filtersList?.optionGroups}
             isChecked={isChecked}
           />
         </Stack>

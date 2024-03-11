@@ -1,5 +1,5 @@
 "use client"
-import { Stack, Card, CardActionArea, CardContent, Typography, SvgIcon, CardHeader, CardActions, Button } from '@mui/material'
+import { Stack, Card, CardContent, Typography, SvgIcon, CardHeader, CardActions, Button } from '@mui/material'
 import NextLink from 'next/link'
 import React from 'react'
 import { ArrowCircleRight } from '@untitled-ui/icons-react'

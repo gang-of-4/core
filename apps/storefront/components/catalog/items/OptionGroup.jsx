@@ -1,6 +1,6 @@
 "use client"
 import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack, Tooltip } from '@mui/material'
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 
 export default function OptionGroup({
     group,
@@ -27,11 +27,11 @@ export default function OptionGroup({
                     onChange={handleChange}
                     value={value}
                 >
-                    {group?.values?.map((option) => {
+                    {group?.options?.map((option) => {
 
-                        if (group.type === 'color') {
+                        if (group.type === 'COLOR') {
                             return (
-                                <>
+                                <Fragment key={option.id}>
                                     <FormControlLabel
                                         key={option.id}
                                         value={option.value}
@@ -56,7 +56,7 @@ export default function OptionGroup({
                                             />
                                         </Tooltip>
                                     </Stack>
-                                </>
+                                </Fragment>
                             )
                         } else {
                             return (

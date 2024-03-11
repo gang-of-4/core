@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react'
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import Minus from '@untitled-ui/icons-react/build/esm/Minus';
@@ -19,7 +20,7 @@ export default function AddToCart({ item, isButtonDisabled }) {
         if (isNaN(newQuantity) || newQuantity < 1) {
             return setError('Quantity must be a number and at least 1');
         }
-        if (newQuantity > item.quantity) {
+        if (item.quantity && newQuantity > item.quantity) {
             return setError(`Quantity must be less than or equal to ${item.quantity}`);
         }
 
@@ -78,7 +79,7 @@ export default function AddToCart({ item, isButtonDisabled }) {
                     </IconButton>
                 </Stack>
                 <Button
-                    variant="contained"
+                    variant="outlined"
                     color="primary"
                     onClick={() => {
                         setCart([
