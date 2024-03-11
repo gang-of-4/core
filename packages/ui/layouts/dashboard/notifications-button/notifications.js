@@ -2,7 +2,6 @@
 // const now = new Date();
 
 export const notifications = [
-  // @todo notifications
   // {
   //   id: '5e8883f1b51cc1956a5a1ec0',
   //   author: 'Jie Yang Song',
