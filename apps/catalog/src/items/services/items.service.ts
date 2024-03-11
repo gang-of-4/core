@@ -164,7 +164,7 @@ export class ItemsService {
     });
   }
 
-  async update(id: string, updateItemDto: UpdateItemDto) {
+  async update(id: string, updateItemDto: UpdateItemDto, role: string) {
     await this.prisma.$transaction(async (tx) => {
       await tx.item
         .update({
@@ -176,7 +176,7 @@ export class ItemsService {
             quantity: updateItemDto.quantity,
             price: updateItemDto.price,
             description: updateItemDto.description,
-            status: Status.PENDING,
+            status: role === 'admin' ? updateItemDto.status : Status.PENDING,
             slug: updateItemDto.name?.toLowerCase().replace(' ', '-'),
             isActive: false,
             categories: {
@@ -203,20 +203,22 @@ export class ItemsService {
               throw e;
           }
         });
-      await Promise.all(
-        updateItemDto.variants.map(async (variant) => {
-          await tx.variant.update({
-            where: {
-              id: variant.id,
-            },
-            data: {
-              sku: variant.sku,
-              price: variant.price,
-              quantity: variant.quantity,
-            },
-          });
-        }),
-      );
+      if (updateItemDto.variants && updateItemDto.variants?.length > 0) {
+        await Promise.all(
+          updateItemDto.variants?.map(async (variant) => {
+            await tx.variant.update({
+              where: {
+                id: variant.id,
+              },
+              data: {
+                sku: variant.sku,
+                price: variant.price,
+                quantity: variant.quantity,
+              },
+            });
+          }),
+        );
+      }
     });
 
     return await this.findOne(id);
