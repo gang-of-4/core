@@ -129,8 +129,8 @@ export function OptionCreateForm() {
                   value={formik.values.type}
                   onChange={formik.handleChange}
                 >
-                  <FormControlLabel value="radio" control={<Radio />} label="Text only" />
-                  <FormControlLabel value="color" control={<Radio />} label="Color" />
+                  <FormControlLabel value="TEXT" control={<Radio />} label="Text only" />
+                  <FormControlLabel value="COLOR" control={<Radio />} label="Color" />
                   <Tooltip title="To be added in future releases" arrow>
                     <FormControlLabel value="image" control={<Radio />} label="Image" disabled />
                   </Tooltip>
@@ -176,7 +176,7 @@ export function OptionCreateForm() {
                       value={option.label}
                     />
                     {
-                      formik.values.type === 'radio' ?
+                      formik.values.type === 'TEXT' ?
                         <TextField
                           error={!!(formik.touched.options?.[index]?.value && formik.errors.options?.[index]?.value)}
                           helperText={formik.touched.options?.[index]?.value && formik.errors.options?.[index]?.value}
@@ -199,7 +199,7 @@ export function OptionCreateForm() {
                               Option {index + 1} Value
                             </FormLabel>
                             <input
-                              type="color"
+                              type="COLOR"
                               name='value'
                               value={option.value}
                               onChange={(e) => handleOptionChange({ index, e })}

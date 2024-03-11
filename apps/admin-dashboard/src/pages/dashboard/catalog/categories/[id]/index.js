@@ -11,7 +11,8 @@ import {
     Button,
     SvgIcon,
     CardContent,
-    CardHeader
+    CardHeader,
+    Tooltip
 } from '@mui/material';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import { useRouter } from 'next/router';
@@ -117,7 +118,8 @@ const Page = () => {
                                 direction="row"
                                 spacing={3}
                             >
-                                <Button
+                                <Tooltip title="Will be added later in a future release">
+                                    <Button
                                     component={NextLink}
                                     href={`${paths.dashboard.catalog.categories.index}/${id}/edit`}
                                     startIcon={(
@@ -127,9 +129,12 @@ const Page = () => {
                                     )}
                                     variant="contained"
                                     color='inherit'
+                                    disabled={true} 
                                 >
                                     Edit
                                 </Button>
+                                </Tooltip>
+                                
                             </Stack>
                         </Stack>
 

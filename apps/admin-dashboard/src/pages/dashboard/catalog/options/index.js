@@ -29,8 +29,7 @@ const useOptions = () => {
 
   const getOptions = useCallback(async () => {
     try {
-      const response = await catalogApi.getOptions();
-
+      const response = await catalogApi.getOptionGroups();
       if (isMounted()) {
         setState({
           options: response.options,

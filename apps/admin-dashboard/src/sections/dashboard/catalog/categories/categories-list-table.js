@@ -13,7 +13,6 @@ import {
     TableHead,
     TableRow,
     Tooltip,
-    Typography,
 } from '@mui/material';
 import { Scrollbar } from '../../../../components/scrollbar';
 import { paths } from '../../../../paths';
@@ -95,14 +94,17 @@ export const CategoryListTable = (props) => {
                                                     <Trash01Icon />
                                                 </SvgIcon>
                                             </IconButton>
-                                            <IconButton
-                                                component={NextLink}
-                                                href={`${paths.dashboard.catalog.categories.index}/${category.id}/edit`}
-                                            >
-                                                <SvgIcon>
-                                                    <Edit02Icon />
-                                                </SvgIcon>
-                                            </IconButton>
+                                            <Tooltip title="Will be added later in a future release">
+                                                <IconButton
+                                                    component={NextLink}
+                                                    href={`${paths.dashboard.catalog.categories.index}/${category.id}/edit`}
+                                                    disabled={true}
+                                                >
+                                                    <SvgIcon>
+                                                        <Edit02Icon />
+                                                    </SvgIcon>
+                                                </IconButton>
+                                            </Tooltip>
                                         </Stack>
                                     </TableCell>
                                 </TableRow>

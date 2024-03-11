@@ -103,14 +103,18 @@ export const OptionListTable = (props) => {
                                                     <Trash01Icon />
                                                 </SvgIcon>
                                             </IconButton>
-                                            <IconButton
-                                                component={NextLink}
-                                                href={`${paths.dashboard.catalog.options.groups.index}/${group.id}/edit`}
-                                            >
-                                                <SvgIcon>
-                                                    <Edit02Icon />
-                                                </SvgIcon>
-                                            </IconButton>
+                                            <Tooltip title="Will be added later in a future release">
+
+                                                <IconButton
+                                                    component={NextLink}
+                                                    href={`${paths.dashboard.catalog.options.groups.index}/${group.id}/edit`}
+                                                    disabled
+                                                >
+                                                    <SvgIcon>
+                                                        <Edit02Icon />
+                                                    </SvgIcon>
+                                                </IconButton>
+                                            </Tooltip>
                                         </Stack>
                                     </TableCell>
                                 </TableRow>
@@ -119,7 +123,7 @@ export const OptionListTable = (props) => {
                     </TableBody>
                 </Table>
             </Scrollbar>
-            <DeleteOptionDialog group={activeGroup} isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <DeleteOptionDialog group={activeGroup} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     );
 };

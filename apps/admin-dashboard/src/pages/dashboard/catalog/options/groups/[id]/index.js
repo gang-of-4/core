@@ -11,7 +11,8 @@ import {
     Button,
     SvgIcon,
     CardContent,
-    CardHeader
+    CardHeader,
+    Tooltip
 } from '@mui/material';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import { useCallback, useEffect, useState } from 'react';
@@ -115,19 +116,22 @@ const Page = () => {
                                 direction="row"
                                 spacing={3}
                             >
-                                <Button
-                                    component={NextLink}
-                                    href={`${paths.dashboard.catalog.options.groups.index}/${id}/edit`}
-                                    startIcon={(
-                                        <SvgIcon>
-                                            <Edit02Icon />
-                                        </SvgIcon>
-                                    )}
-                                    variant="contained"
-                                    color='inherit'
-                                >
-                                    Edit
-                                </Button>
+                                <Tooltip title="Will be added later in a future release">
+                                    <Button
+                                        component={NextLink}
+                                        href={`${paths.dashboard.catalog.options.groups.index}/${id}/edit`}
+                                        startIcon={(
+                                            <SvgIcon>
+                                                <Edit02Icon />
+                                            </SvgIcon>
+                                        )}
+                                        variant="contained"
+                                        color='inherit'
+                                        disabled
+                                    >
+                                        Edit
+                                    </Button>
+                                </Tooltip>
                             </Stack>
                         </Stack>
 
@@ -143,7 +147,7 @@ const Page = () => {
                         <Card elevation={16}>
                             <CardHeader title='Manage Group' />
                             <CardContent sx={{ pt: 1 }}>
-                                <DeleteOption group={group}/>
+                                <DeleteOption group={group} />
                             </CardContent>
                         </Card>
 

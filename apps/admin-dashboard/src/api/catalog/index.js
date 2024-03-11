@@ -97,12 +97,12 @@ class CatalogApi {
     }
 
     // Options
-    async getOptions() {
+    async getOptionGroups() {
 
         let options;
         try {
             const { data } = await fetchApi({
-                url: '/admin/api/catalog/options',
+                url: '/admin/api/catalog/options/group',
                 options: {
                     method: 'GET',
                 }
@@ -134,7 +134,6 @@ class CatalogApi {
         } catch (err) {
             console.error(err);
         }
-
         return Promise.resolve(option);
     }
 
@@ -261,6 +260,7 @@ class CatalogApi {
 
     async createCategory({
         name,
+        slug,
         description,
         banner,
         logo
@@ -276,9 +276,10 @@ class CatalogApi {
                     },
                     body: JSON.stringify({
                         name,
+                        slug,
                         description,
-                        banner,
-                        logo
+                        // banner,
+                        // logo
                     })
                 }
             });
@@ -294,7 +295,7 @@ class CatalogApi {
         let categories;
         try {
             const { data } = await fetchApi({
-                url: `/admin/api/catalog/category/${id}`,
+                url: `/admin/api/catalog/categories/${id}`,
                 options: {
                     method: 'DELETE',
                     headers: {
@@ -320,7 +321,7 @@ class CatalogApi {
         let data;
         try {
             const { data: returnedData } = await fetchApi({
-                url: `/admin/api/catalog/category/${id}`,
+                url: `/admin/api/catalog/categories/${id}`,
                 options: {
                     method: 'PATCH',
                     headers: {
