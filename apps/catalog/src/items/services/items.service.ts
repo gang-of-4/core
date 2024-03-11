@@ -10,6 +10,7 @@ import { ListItemsDto } from '../dto/items/list-items.dto';
 import { CreateVariantsDto } from '../dto/items/create-variants.dto';
 import { VariantEntity } from '../entities/variant.entity';
 import { VariantsException } from '../exceptions/variants.exception';
+import { UpdateItemStatusDto } from '../dto/items/update-item-status.dto';
 
 @Injectable()
 export class ItemsService {
@@ -222,11 +223,27 @@ export class ItemsService {
     return await this.findOne(id);
   }
 
-  async remove(id: string): Promise<ItemEntity> {
+  async updateStatus(id: string, updateItemStatusDto: UpdateItemStatusDto) {
     return new ItemEntity(
-      await this.prisma.item.delete({
+      await this.prisma.item.update({
         where: {
           id,
+        },
+        data: {
+          status: updateItemStatusDto.status,
+        },
+      }),
+    );
+  }
+
+  async remove(id: string): Promise<ItemEntity> {
+    return new ItemEntity(
+      await this.prisma.item.update({
+        where: {
+          id,
+        },
+        data: {
+          deletedAt: new Date(),
         },
       }),
     );
