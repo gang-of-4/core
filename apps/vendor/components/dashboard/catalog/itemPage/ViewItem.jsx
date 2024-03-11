@@ -70,8 +70,6 @@ const ViewItem = ({ storeId, itemId }) => {
             return;
         }
 
-        console.log('data', data);
-
         setItem(data);
     }
 
@@ -130,7 +128,7 @@ const ViewItem = ({ storeId, itemId }) => {
                                     spacing={2}
                                 >
                                     <Typography variant="h6">
-                                        View Item: {item?.id}
+                                        View Item: {item.name ? item.name : 'Not Named Yet'}
                                     </Typography>
                                     <SeverityPill color={getStatusColor(item?.status)}>
                                         {item?.status}
@@ -152,8 +150,6 @@ const ViewItem = ({ storeId, itemId }) => {
                                         variant="outlined"
                                         component={NextLink}
                                         href={`/dashboard/stores/${storeId}/items/${item.id}/edit`}
-                                        // @TODO fix edit item page
-                                        disabled
                                     >
                                         Edit Car
                                     </Button>

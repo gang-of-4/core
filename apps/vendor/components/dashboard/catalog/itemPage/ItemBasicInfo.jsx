@@ -35,13 +35,10 @@ export default function ItemBasicInfo({ item }) {
                     spacing={3}
                     sx={{ width: '100%' }}
                 >
-                    <Stack
-                        spacing={3}
-                        direction={'row'}
-                    >
-                        <Typography variant="subtitle1">Name:</Typography>
+                    <Stack>
+                        <Typography variant="subtitle1">SKU:</Typography>
                         <Typography variant="body1">
-                            {item.name}
+                            {item.sku ? item.sku : 'N/A'}
                         </Typography>
                     </Stack>
 
@@ -68,16 +65,15 @@ export default function ItemBasicInfo({ item }) {
                     <Stack
                         spacing={3}
                     >
-                        <Stack
-                            spacing={3}
-                            direction={'row'}
-                        >
+                        <Stack>
                             <Typography variant="subtitle1">Price:</Typography>
                             <Typography variant="body1">
-                                {formatPrice({
-                                    price: item.price,
-                                    currency: item.currency
-                                })}
+                                {item.price ?
+                                    formatPrice({
+                                        price: item.price,
+                                        currency: item.currency
+                                    }) : 'N/A'
+                                }
                             </Typography>
                         </Stack>
 

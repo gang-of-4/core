@@ -1,5 +1,4 @@
 'use client'
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -30,6 +29,7 @@ import {
     Tooltip
 } from '@mui/material';
 import { useMounted } from 'ui/hooks/use-mounted';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
@@ -49,19 +49,6 @@ const VisuallyHiddenInput = styled('input')({
     whiteSpace: 'nowrap',
     width: 1,
 });
-
-const initialValues = {
-    name: '',
-    sku: '',
-    price: 0,
-    description: '',
-    quantity: 0,
-    categories: [],
-    options: [],
-    variants: [],
-    images: [],
-    submit: null
-};
 
 const validationSchema = Yup.object({
     name: Yup
@@ -105,24 +92,44 @@ const validationSchema = Yup.object({
     // })
 });
 
-const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
+
+export default function EditItemForm({
+    storeId,
+    item,
+    categories,
+    optionGroups
+}) {
 
     const [selectedFileName, setSelectedFileName] = useState('');
 
     const [generateVariantsLoading, setGenerateVariantsLoading] = useState(false);
 
-    const [variants, setVariants] = useState([]);
-    const [selectedVariants, setSelectedVariants] = useState([]);
+    const [variants, setVariants] = useState(item.variants || []);
+    const [selectedVariants, setSelectedVariants] = useState(item.variants?.map((variant) => variant.id) || []);
 
     const isMounted = useMounted();
     const router = useRouter();
+
+    const initialValues = {
+        name: item.name || '',
+        sku: item.sku || '',
+        price: item.price || 0,
+        description: item.description || '',
+        quantity: item.quantity || 0,
+        categories: (item.categories && item.categories?.length > 0) ? item.categories.map((category) => category.id) : [],
+        options: (item.options && item.options?.length > 0) ? item.options.map((option) => option.id) : [],
+        variants: (item.variants && item.variants?.length > 0) ? item.variants.map((variant) => variant.id) : [],
+        images: [],
+        submit: null
+    };
+
     const formik = useFormik({
         initialValues,
         validationSchema,
         onSubmit: async (values, helpers) => {
             try {
                 const { data, error } = await fetchApi({
-                    url: `/vendor/api/catalog/items/${draftItemId}`,
+                    url: `/vendor/api/catalog/items/${item.id}`,
                     options: {
                         method: 'PATCH',
                         body: JSON.stringify({
@@ -158,6 +165,8 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
         }
     });
 
+
+
     async function handleGenerateVariants() {
 
         setGenerateVariantsLoading(true);
@@ -179,12 +188,12 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
         const filteredArray = optionsToSend.filter(item => item !== undefined && item !== null && item?.length > 0);
 
         const { data } = await fetchApi({
-            url: `/vendor/api/catalog/items/${draftItemId}/generate-variants`,
+            url: `/vendor/api/catalog/items/${item.id}/generate-variants`,
             options: {
                 method: 'POST',
                 body: JSON.stringify({
                     options: filteredArray,
-                    draftItemId: draftItemId
+                    draftItemId: item.id
                 })
             }
         });
@@ -245,7 +254,7 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
                         </Box>
                         <CardHeader
                             sx={{ pb: 0 }}
-                            title="Add Car"
+                            title="Edit Car"
                         />
                         <CardContent>
                             <form
@@ -643,5 +652,3 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
         </>
     );
 };
-
-export default AddItem;

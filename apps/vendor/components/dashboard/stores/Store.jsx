@@ -3,7 +3,6 @@
 import { Box, Button, Container, Stack, SvgIcon, Typography, Avatar, Tooltip } from '@mui/material';
 import { React } from 'react';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
-import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import StoreOverview from './StoreOverview';
 import { SeverityPill } from 'ui/components/severity-pill';
 import NextLink from 'next/link';
@@ -113,19 +112,6 @@ export default function Store({ unformattedStore }) {
               direction="row"
               spacing={2}
             >
-              <Button
-                size="small"
-                startIcon={(
-                  <SvgIcon>
-                    <PlusIcon />
-                  </SvgIcon>
-                )}
-                variant="outlined"
-                component={NextLink}
-                href={`${store?.id}/items/add`}
-              >
-                Add Items
-              </Button>
               {
                 store.type === 'individual' ?
                   (
