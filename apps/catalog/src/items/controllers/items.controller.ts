@@ -57,6 +57,14 @@ export class ItemsController {
     return await this.itemsService.update(id, updateItemDto);
   }
 
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: string,
+    @Body() updateItemStatusDto: UpdateIteStatusmDto,
+  ) {
+    return await this.itemsService.updateStatus(id, updateItemStatusDto);
+  }
+
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.itemsService.remove(id);
