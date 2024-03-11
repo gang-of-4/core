@@ -2,7 +2,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
 
         const token = req.headers.authorization;
-        // @TODO: integrate with back
+
         const respone = await fetch(
             `${process.env.CATALOG_API_URL}/options`,
             {
