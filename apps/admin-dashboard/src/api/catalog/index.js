@@ -96,6 +96,26 @@ class CatalogApi {
         return Promise.resolve(data);
     }
 
+    async deleteItem(id) {
+        let item;
+        try {
+            const { data } = await fetchApi({
+                url: `/admin/api/catalog/items/${id}`,
+                options: {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            });
+            item = data;
+        } catch (err) {
+            console.error(err);
+        }
+
+        return Promise.resolve(item);
+    }
+
     // Options
     async getOptionGroups() {
 

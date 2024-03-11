@@ -59,6 +59,24 @@ class StoresApi {
     });
   }
 
+  async getStore(id) {
+
+    let store;
+    try {
+      const { data } = await fetchApi({
+        url: `/admin/api/stores/${id}`,
+        options: {
+          method: 'GET',
+        }
+      });
+      store = await formatStores([data]);
+    } catch (err) {
+      console.error(err);
+    }
+
+    return Promise.resolve(store[0]);
+  }
+
   async updateStore(store) {
     const { id } = store;
 

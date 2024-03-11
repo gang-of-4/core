@@ -70,15 +70,18 @@ export const ItemsListTable = (props) => {
         toast.success('Car updated');
     }, []);
 
-    const handleItemDelete = useCallback(() => {
-        toast.error('Car cannot be deleted');
+    const handleItemDelete = useCallback(async (id) => {
+        await catalogApi.deleteItem(id);
+        setHasUpdatedItems(!hasUpdatedItems);
+        setCurrentItem(null);
+        toast.success('Car deleted');
     }, []);
 
 
     return (
         <div {...other}>
             <Scrollbar>
-                <Table sx={{ maxWidth: 1000 }}>
+                <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell />

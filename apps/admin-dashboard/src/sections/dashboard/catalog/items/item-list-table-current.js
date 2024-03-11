@@ -1,7 +1,8 @@
 import { Button, CardContent, Divider, Grid, MenuItem, Stack, TableCell, TableRow, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { storesApi } from '../../../../api/stores';
 
 const statusOptions = [
     {
@@ -40,6 +41,8 @@ export default function CurrentItem({
     setHasUpdatedItems
 }) {
 
+    const [store, setStore] = useState(null);
+
     const formik = useFormik({
         initialValues,
         validationSchema,
@@ -55,6 +58,21 @@ export default function CurrentItem({
             }
         }
     });
+
+    useEffect(() => {
+        if (item) {
+            fetchStore(item?.storeId);
+        }
+    }, [item]);
+
+    async function fetchStore(storeId) {
+        try {
+            const data = await storesApi.getStore(storeId);
+            setStore(data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <TableRow>
@@ -85,7 +103,6 @@ export default function CurrentItem({
                         >
                             <Grid
                                 item
-                                md={6}
                                 xs={12}
                             >
                                 <Typography variant="h6">
@@ -96,20 +113,16 @@ export default function CurrentItem({
                                     container
                                     spacing={3}
                                 >
-                                    {/* <Grid
+                                    <Grid
                                         item
                                         md={6}
                                         xs={12}
                                     >
                                         <TextField
-                                            error={!!(formik.touched.carType && formik.errors.carType)}
-                                            helperText={formik.touched.carType && formik.errors.carType}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.carType}
+                                            defaultValue={item.name ? item.name : 'N/A'}
                                             fullWidth
-                                            label="Car Type"
-                                            name="carType"
+                                            label="Name"
+                                            name="name"
                                             disabled
                                         />
                                     </Grid>
@@ -119,14 +132,10 @@ export default function CurrentItem({
                                         xs={12}
                                     >
                                         <TextField
-                                            error={!!(formik.touched.brandName && formik.errors.brandName)}
-                                            helperText={formik.touched.brandName && formik.errors.brandName}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.brandName}
+                                            defaultValue={item.sku ? item.sku : 'N/A'}
                                             fullWidth
-                                            label="Brand Name"
-                                            name="brandName"
+                                            label="SKU"
+                                            name="sku"
                                             disabled
                                         />
                                     </Grid>
@@ -136,14 +145,10 @@ export default function CurrentItem({
                                         xs={12}
                                     >
                                         <TextField
-                                            error={!!(formik.touched.carName && formik.errors.carName)}
-                                            helperText={formik.touched.carName && formik.errors.carName}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.carName}
+                                            defaultValue={item.quantity ? item.quantity : 'N/A'}
                                             fullWidth
-                                            label="Car Name"
-                                            name="carName"
+                                            label="Quantity"
+                                            name="quantity"
                                             disabled
                                         />
                                     </Grid>
@@ -153,14 +158,10 @@ export default function CurrentItem({
                                         xs={12}
                                     >
                                         <TextField
-                                            error={!!(formik.touched.carYear && formik.errors.carYear)}
-                                            helperText={formik.touched.carYear && formik.errors.carYear}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.name}
+                                            defaultValue={item.price ? item.price : 'N/A'}
                                             fullWidth
-                                            label="Car Year"
-                                            name="carYear"
+                                            label="Price"
+                                            name="price"
                                             disabled
                                         />
                                     </Grid>
@@ -170,78 +171,11 @@ export default function CurrentItem({
                                         xs={12}
                                     >
                                         <TextField
-                                            error={!!(formik.touched.carColor && formik.errors.carColor)}
-                                            helperText={formik.touched.carColor && formik.errors.carColor}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.carColor}
-                                            fullWidth
-                                            label="Car Color"
-                                            name="carColor"
+                                            defaultValue={item.description ? item.description : 'N/A'}
                                             disabled
-                                        />
-                                    </Grid>
-                                    <Grid
-                                        item
-                                        md={6}
-                                        xs={12}
-                                        style={{ display: 'flex', alignItems: 'center'}}
-                                    >
-                                        <TextField
-                                            error={!!(formik.touched.currency && formik.errors.currency)}
-                                            helperText={formik.touched.currency && formik.errors.currency}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.currency}
-                                            fullWidth
-                                            label="Currency"
-                                            name="currency"
-                                            disabled
-                                            sx={{ maxWidth: 100, marginRight: 2}}
-                                        />
-                                        
-                                        <TextField
-                                            error={!!(formik.touched.carPrice && formik.errors.carPrice)}
-                                            helperText={formik.touched.carPrice && formik.errors.carPrice}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.carPrice}
-                                            fullWidth
-                                            label="Car Price"
-                                            name="carPrice"
-                                            disabled
-                                        />
-
-                                    </Grid>
-                                    <Grid
-                                        item
-                                        md={6}
-                                        xs={12}
-                                    >
-                                        <TextField
-                                            defaultValue={Car.id}
-                                            disabled
-                                            fullWidth
-                                            label="Car id"
-                                            name="carId"
-                                        />
-                                    </Grid>
-                                    <Grid
-                                        item
-                                        md={6}
-                                        xs={12}
-                                    >
-                                        <TextField
-                                            error={!!(formik.touched.description && formik.errors.description)}
-                                            helperText={formik.touched.description && formik.errors.description}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.description}
                                             fullWidth
                                             label="Description"
                                             name="description"
-                                            multiline
-                                            disabled
                                         />
                                     </Grid>
                                     <Grid
@@ -250,26 +184,17 @@ export default function CurrentItem({
                                         xs={12}
                                     >
                                         <TextField
-                                            defaultValue={`${store?.vendor?.firstName} ${store?.vendor?.lastName}`}
+                                            defaultValue={
+                                                item.categories?.length > 0 ?
+                                                    item.categories.map(category => category.name).join(', ') :
+                                                    'N/A'
+                                            }
                                             disabled
                                             fullWidth
-                                            label="Owner"
-                                            name="owner"
+                                            label="Categories"
+                                            name="categories"
                                         />
                                     </Grid>
-                                    <Grid
-                                        item
-                                        md={6}
-                                        xs={12}
-                                    >
-                                        <TextField
-                                            defaultValue={`${store?.vendor?.firstName} ${store?.vendor?.lastName}`}
-                                            disabled
-                                            fullWidth
-                                            label="Store Name"
-                                            name="storeName"
-                                        />
-                                    </Grid> */}
                                     <Grid
                                         item
                                         md={6}
@@ -295,6 +220,21 @@ export default function CurrentItem({
                                                 </MenuItem>
                                             ))}
                                         </TextField>
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        md={6}
+                                        xs={12}
+                                    >
+                                        <TextField
+                                            defaultValue={
+                                                store ? store.name : 'N/A'
+                                            }
+                                            disabled
+                                            fullWidth
+                                            label="Store Name"
+                                            name="storeName"
+                                        />
                                     </Grid>
 
                                 </Grid>
@@ -329,7 +269,7 @@ export default function CurrentItem({
                         </Stack>
                         <div>
                             <Button
-                                onClick={handleItemDelete}
+                                onClick={() => handleItemDelete(item.id)}
                                 color="error"
                             >
                                 Delete Car
