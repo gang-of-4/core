@@ -1,5 +1,4 @@
 import { Fragment, useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
 import { toast } from 'react-hot-toast';
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import ChevronRightIcon from '@untitled-ui/icons-react/build/esm/ChevronRight';
@@ -12,14 +11,14 @@ import {
     TableBody,
     TableCell,
     TableHead,
-    TablePagination,
     TableRow,
     Typography
 } from '@mui/material';
-import { Scrollbar } from '../../../components/scrollbar';
-import { SeverityPill } from '../../../components/severity-pill';
-import CurrentCar from './car-list-table-current';
-import { storesApi } from '../../../api/stores';
+import { Scrollbar } from '../../../../components/scrollbar';
+import { SeverityPill } from '../../../../components/severity-pill';
+import { catalogApi } from '../../../../api/catalog';
+import CurrentItem from './item-list-table-current';
+
 
 const getStatusColor = (status) => {
     switch (status) {
@@ -31,60 +30,47 @@ const getStatusColor = (status) => {
             return 'info';
         case 'REJECTED':
             return 'error';
+        case 'DRAFT':
+            return 'info';
         default:
             return 'info';
     }
 };
 
-export const CarsListTable = (props) => {
+export const ItemsListTable = (props) => {
     const {
-        onPageChange,
-        onRowsPerPageChange,
-        page,
-        cars,
-        carsCount,
-        rowsPerPage,
-        hasUpdatedCars,
-        setHasUpdatedCars,
+        items,
+        hasUpdatedItems,
+        setHasUpdatedItems,
         ...other
     } = props;
-    const [currentCar, setCurrentCar] = useState(null);
+    const [currentItem, setCurrentItem] = useState(null);
 
-    const handleCarToggle = useCallback((carId) => {
-        setCurrentCar((prevCarId) => {
-            if (prevCarId === carId) {
+    const handleItemToggle = useCallback((itemId) => {
+        setCurrentItem((prevItemId) => {
+            if (prevItemId === itemId) {
                 return null;
             }
 
-            return carId;
+            return itemId;
         });
     }, []);
 
-    const handleCarClose = useCallback(() => {
-        setCurrentCar(null);
+    const handleItemClose = useCallback(() => {
+        setCurrentItem(null);
     }, []);
 
-    const handleCarUpdate = useCallback(async (values) => {
-        if (values.type === 'business') {
-            await carsApi.updateBusinessCar({
-                id: values.id,
-                name: values.name,
-            });
-            await carsApi.updateCar({
-                id: values.id,
-                status: values.status
-            });
-        } else {
-            await carsApi.updateCar({
-                id: values.id,
-                status: values.status
-            });
-        }
-        setCurrentCar(null);
+    const handleItemUpdate = useCallback(async (values) => {
+
+        await catalogApi.editSatatus({
+            id: values.id,
+            status: values.status
+        });
+        setCurrentItem(null);
         toast.success('Car updated');
     }, []);
 
-    const handleCarDelete = useCallback(() => {
+    const handleItemDelete = useCallback(() => {
         toast.error('Car cannot be deleted');
     }, []);
 
@@ -96,11 +82,11 @@ export const CarsListTable = (props) => {
                     <TableHead>
                         <TableRow>
                             <TableCell />
-                            <TableCell width="35%">
+                            <TableCell>
                                 Name
                             </TableCell>
-                            <TableCell width="35%">
-                                Owner
+                            <TableCell>
+                                SKU
                             </TableCell>
                             <TableCell>
                                 Status
@@ -108,20 +94,19 @@ export const CarsListTable = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {cars.map((car) => {
-                            const isCurrent = car.id === currentCar;
-                            const statusColor = getStatusColor(car.status);
+                        {items.map((item) => {
+                            const isCurrent = item.id === currentItem;
+                            const statusColor = getStatusColor(item.status);
 
                             const initialValues = {
-                                name: car.name,
-                                status: car.status,
+                                status: item.status,
                             };
 
                             return (
-                                <Fragment key={car.id}>
+                                <Fragment key={item.id}>
                                     <TableRow
                                         hover
-                                        key={car.id}
+                                        key={item.id}
                                     >
                                         <TableCell
                                             padding="checkbox"
@@ -141,13 +126,13 @@ export const CarsListTable = (props) => {
                                             }}
                                             width="25%"
                                         >
-                                            <IconButton onClick={() => handleCarToggle(car.id)}>
+                                            <IconButton onClick={() => handleItemToggle(item.id)}>
                                                 <SvgIcon>
                                                     {isCurrent ? <ChevronDownIcon /> : <ChevronRightIcon />}
                                                 </SvgIcon>
                                             </IconButton>
                                         </TableCell>
-                                        <TableCell width="35%">
+                                        <TableCell>
                                             <Box
                                                 sx={{
                                                     alignItems: 'center',
@@ -165,49 +150,49 @@ export const CarsListTable = (props) => {
                                                         width: 80
                                                     }}
                                                 >
-                                                    <SvgIcon>
-                                                        <Image01Icon />
-                                                    </SvgIcon>
+                                                    {
+                                                        item?.images?.[0].url ?
+                                                            <Box
+                                                                component="img"
+                                                                alt={item.name}
+                                                                src={item.images[0].url}
+                                                                sx={{
+                                                                    borderRadius: 1,
+                                                                }}
+                                                            />
+                                                            :
+                                                            <SvgIcon>
+                                                                <Image01Icon />
+                                                            </SvgIcon>
+                                                    }
                                                 </Box>
-                                                <Box
-                                                    sx={{
-                                                        cursor: 'pointer',
-                                                        ml: 2
-                                                    }}
-                                                >
+                                                <Box sx={{ ml: 2 }}>
                                                     <Typography variant="subtitle2">
-                                                        {car.name}
+                                                        {item.name}
                                                     </Typography>
                                                 </Box>
                                             </Box>
                                         </TableCell>
-                                        <TableCell width="35%">
+                                        <TableCell>
                                             <Typography variant="subtitle2">
-                                                {`${store?.vendor?.firstName} ${store?.vendor?.lastName}`}
+                                                {item?.sku}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
                                             <SeverityPill color={statusColor}>
-                                                {car.status}
+                                                {item.status}
                                             </SeverityPill>
                                         </TableCell>
-                                        {/* <TableCell align="right">
-                                            <IconButton>
-                                                <SvgIcon>
-                                                    <DotsHorizontalIcon />
-                                                </SvgIcon>
-                                            </IconButton>
-                                        </TableCell> */}
                                     </TableRow>
                                     {isCurrent && (
-                                        <CurrentCar
-                                            handleCarClose={handleCarClose}
-                                            handleCarDelete={handleCarDelete}
-                                            handleCarUpdate={handleCarUpdate}
+                                        <CurrentItem
+                                            handleItemClose={handleItemClose}
+                                            handleItemDelete={handleItemDelete}
+                                            handleItemUpdate={handleItemUpdate}
                                             initialValues={initialValues}
-                                            car={car}
-                                            hasUpdatedCars={hasUpdatedCars}
-                                            setHasUpdatedCars={setHasUpdatedCars}
+                                            item={item}
+                                            hasUpdatedItems={hasUpdatedItems}
+                                            setHasUpdatedItems={setHasUpdatedItems}
                                         />
                                     )}
                                 </Fragment>
@@ -216,24 +201,6 @@ export const CarsListTable = (props) => {
                     </TableBody>
                 </Table>
             </Scrollbar>
-            <TablePagination
-                component="div"
-                count={carsCount}
-                onPageChange={onPageChange}
-                onRowsPerPageChange={onRowsPerPageChange}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[5, 10, 25]}
-            />
         </div>
     );
-};
-
-CarsListTable.propTypes = {
-    cars: PropTypes.array.isRequired,
-    carsCount: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    onRowsPerPageChange: PropTypes.func,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired
 };

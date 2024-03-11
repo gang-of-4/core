@@ -2,6 +2,100 @@ import fetchApi from '../../utils/fetch-api';
 
 class CatalogApi {
 
+    // Items
+    async getItems({
+        q, status
+    }) {
+        let items;
+        let url = '/admin/api/catalog/items';
+
+        (q) && (url += `?q=${q}`);
+        (q) && (status) && (url += `&status=${status}`);
+        (!q) && (status) && (url += `?status=${status}`);
+
+        try {
+            const { data } = await fetchApi({
+                url: url,
+                options: {
+                    method: 'GET',
+                }
+            });
+            items = data;
+        } catch (err) {
+            console.error(err);
+        }
+
+        return Promise.resolve(items);
+    }
+
+    async editItem({
+        id,
+        name,
+        sku,
+        quantity,
+        price,
+        description,
+        categories,
+        options,
+        variants,
+        store_id
+    }) {
+        let data;
+        try {
+            const { data: returnedData } = await fetchApi({
+                url: `/admin/api/catalog/items/${id}`,
+                options: {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name,
+                        sku,
+                        quantity,
+                        price,
+                        description,
+                        categories,
+                        options,
+                        variants,
+                        store_id
+                    })
+                }
+            });
+            data = returnedData;
+        } catch (err) {
+            console.error(err);
+        }
+
+        return Promise.resolve(data);
+    }
+
+    async editSatatus({
+        id,
+        status
+    }) {
+        let data;
+        try {
+            const { data: returnedData } = await fetchApi({
+                url: `/admin/api/catalog/items/${id}/status`,
+                options: {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status
+                    })
+                }
+            });
+            data = returnedData;
+        } catch (err) {
+            console.error(err);
+        }
+
+        return Promise.resolve(data);
+    }
+
     // Options
     async getOptions() {
 

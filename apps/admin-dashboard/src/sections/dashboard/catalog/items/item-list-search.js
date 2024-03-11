@@ -1,10 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
-import { Box, Chip, Divider, Input, Stack, SvgIcon, Typography } from '@mui/material';
-import { MultiSelect } from '../../../components/multi-select';
-import { useUpdateEffect } from '../../../hooks/use-update-effect';
-
+import { Box, Chip, Divider, Input, Stack, SvgIcon, Typography } from '@mui/material'; 
+import { MultiSelect } from '../../../../components/multi-select';
+import { useUpdateEffect } from '../../../../hooks/use-update-effect';
 
 const statusOptions = [
     {
@@ -22,10 +20,14 @@ const statusOptions = [
     {
         label: 'In Review',
         value: 'INREVIEW'
+    },
+    {
+        label: 'Draft',
+        value: 'DRAFT'
     }
 ];
 
-export const CarsListSearch = (props) => {
+export const ItemsListSearch = (props) => {
     const { onFiltersChange, ...other } = props;
     const queryRef = useRef(null);
     const [query, setQuery] = useState('');
@@ -33,7 +35,6 @@ export const CarsListSearch = (props) => {
 
     const handleChipsUpdate = useCallback(() => {
         const filters = {
-            name: undefined,
             status: [],
         };
 
@@ -70,9 +71,9 @@ export const CarsListSearch = (props) => {
         });
     }, []);
 
-    const handleQueryChange = useCallback((event) => {
-        event.preventDefault();
+    const handleQueryChange = useCallback(() => {
         setQuery(queryRef.current?.value || '');
+        onFiltersChange({ name: queryRef.current?.value });
     }, []);
 
     const handleStatusChange = useCallback((values) => {
@@ -143,6 +144,7 @@ export const CarsListSearch = (props) => {
                     sx={{ flexGrow: 1 }}
                     value={query}
                     onChange={handleQueryChange}
+                    onSubmit={(event) => event.preventDefault()}
                 />
             </Stack>
             <Divider />
@@ -211,8 +213,4 @@ export const CarsListSearch = (props) => {
             </Stack>
         </div>
     );
-};
-
-CarsListSearch.propTypes = {
-    onFiltersChange: PropTypes.func
 };

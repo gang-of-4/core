@@ -19,22 +19,25 @@ const statusOptions = [
     {
         label: 'In Review',
         value: 'INREVIEW'
+    },
+    {
+        label: 'Draft',
+        value: 'DRAFT'
     }
 ];
 
 const validationSchema = Yup.object({
-    name: Yup.string().required('Required'),
     status: Yup.string().required('Required')
 });
 
-export default function CurrentCar({
-    car,
-    handleCarClose,
-    handleCarDelete,
-    handleCarUpdate,
+export default function CurrentItem({
+    item,
+    handleItemClose,
+    handleItemDelete,
+    handleItemUpdate,
     initialValues,
-    hasUpdatedCars,
-    setHasUpdatedCars
+    hasUpdatedItems,
+    setHasUpdatedItems
 }) {
 
     const formik = useFormik({
@@ -42,12 +45,11 @@ export default function CurrentCar({
         validationSchema,
         onSubmit: async (values) => {
             try {
-                await handleCarUpdate({
-                    ...values,
-                    type: Car.type,
-                    id: Car.id,
+                await handleItemUpdate({
+                    id: item.id,
+                    status: values.status
                 });
-                setHasUpdatedCars(!hasUpdatedCars);
+                setHasUpdatedItems(!hasUpdatedItems);
             } catch (err) {
                 console.error(err);
             }
@@ -78,6 +80,7 @@ export default function CurrentCar({
                 >
                     <CardContent>
                         <Grid
+                            container
                             spacing={3}
                         >
                             <Grid
@@ -93,7 +96,7 @@ export default function CurrentCar({
                                     container
                                     spacing={3}
                                 >
-                                    <Grid
+                                    {/* <Grid
                                         item
                                         md={6}
                                         xs={12}
@@ -266,7 +269,7 @@ export default function CurrentCar({
                                             label="Store Name"
                                             name="storeName"
                                         />
-                                    </Grid>
+                                    </Grid> */}
                                     <Grid
                                         item
                                         md={6}
@@ -319,14 +322,14 @@ export default function CurrentCar({
                             </Button>
                             <Button
                                 color="inherit"
-                                onClick={handleCarClose}
+                                onClick={handleItemClose}
                             >
                                 Cancel
                             </Button>
                         </Stack>
                         <div>
                             <Button
-                                onClick={handleCarDelete}
+                                onClick={handleItemDelete}
                                 color="error"
                             >
                                 Delete Car
