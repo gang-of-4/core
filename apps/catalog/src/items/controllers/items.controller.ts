@@ -15,6 +15,7 @@ import { UpdateItemDto } from '../dto/items/update-item.dto';
 import { ListItemsDto } from '../dto/items/list-items.dto';
 import { JwtService } from '@nestjs/jwt';
 import { CreateVariantsDto } from '../dto/items/create-variants.dto';
+import { UpdateItemStatusDto } from '../dto/items/update-item-status.dto';
 
 @Controller({
   path: 'catalog/items',
@@ -60,7 +61,7 @@ export class ItemsController {
   @Patch(':id/status')
   async updateStatus(
     @Param('id') id: string,
-    @Body() updateItemStatusDto: UpdateIteStatusmDto,
+    @Body() updateItemStatusDto: UpdateItemStatusDto,
   ) {
     return await this.itemsService.updateStatus(id, updateItemStatusDto);
   }
