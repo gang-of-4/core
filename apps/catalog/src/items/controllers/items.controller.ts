@@ -53,17 +53,8 @@ export class ItemsController {
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Headers('Authorization') authorization: string,
-    @Body() updateItemDto: UpdateItemDto,
-  ) {
-    const token = this.jwtService.decode(authorization?.split(' ')[1]) as any;
-    return await this.itemsService.update(
-      id,
-      updateItemDto,
-      token?.user?.role?.name,
-    );
+  async update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
+    return await this.itemsService.update(id, updateItemDto);
   }
 
   @Delete(':id')

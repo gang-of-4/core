@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Status } from '@prisma/client/catalog';
 import {
   ArrayUnique,
   IsArray,
@@ -14,25 +13,21 @@ import { CategoryExists } from 'src/items/rules/category-exist.rule';
 
 export class UpdateItemDto {
   @ApiProperty()
-  @IsOptional()
   @IsString()
   @MinLength(3)
   name: string;
 
   @ApiProperty()
-  @IsOptional()
   @IsString()
   @MinLength(3)
   sku: string;
 
   @ApiProperty()
-  @IsOptional()
   @IsNumber()
   @Min(0)
   quantity: number;
 
   @ApiProperty()
-  @IsOptional()
   @IsNumber()
   @Min(0)
   price: number;
@@ -41,11 +36,6 @@ export class UpdateItemDto {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @ApiProperty({ default: Status.PENDING })
-  @IsOptional()
-  @IsString()
-  status?: Status;
 
   @ApiProperty()
   @IsOptional()
@@ -65,7 +55,6 @@ export class UpdateItemDto {
   options?: string[];
 
   @ApiProperty()
-  @IsOptional()
   @IsArray()
   variants?: Array<{
     id: string;
