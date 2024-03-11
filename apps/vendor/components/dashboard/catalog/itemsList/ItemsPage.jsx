@@ -63,7 +63,6 @@ const Page = ({ items, storeId }) => {
         }
       });
       setFilteredItems(data);
-      console.log('data', data);
     } catch (error) {
       console.error('Error fetching items', error);
     }

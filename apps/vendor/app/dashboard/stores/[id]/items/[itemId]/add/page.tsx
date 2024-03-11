@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Add car'
 };
 
-async function getCategoires() {
+async function getCategories() {
   const res = await fetch(
     `${process.env.CATALOG_API_URL}/categories`,
     { next: { revalidate: 0 } }
@@ -40,7 +40,7 @@ async function getOptionGroups() {
 
 export default async function page({ params }: { params: { id: string, itemId: string } }) {
 
-  const categories = await getCategoires();
+  const categories = await getCategories();
   const optionGroups = await getOptionGroups();
 
   return (

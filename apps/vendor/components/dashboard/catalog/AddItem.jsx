@@ -27,7 +27,8 @@ import {
     TableHead,
     TableRow,
     InputAdornment,
-    Tooltip
+    Tooltip,
+    Divider,
 } from '@mui/material';
 import { useMounted } from 'ui/hooks/use-mounted';
 import { styled } from '@mui/material/styles';
@@ -110,6 +111,7 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
     const [selectedFileName, setSelectedFileName] = useState('');
 
     const [generateVariantsLoading, setGenerateVariantsLoading] = useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false);
 
     const [variants, setVariants] = useState([]);
     const [selectedVariants, setSelectedVariants] = useState([]);
@@ -120,6 +122,8 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
         initialValues,
         validationSchema,
         onSubmit: async (values, helpers) => {
+            setSubmitLoading(true);
+            console.log('formik submitting', values);
             try {
                 const { data, error } = await fetchApi({
                     url: `/vendor/api/catalog/items/${draftItemId}`,
@@ -155,6 +159,7 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
                     helpers.setSubmitting(false);
                 }
             }
+            setSubmitLoading(false);
         }
     });
 
@@ -189,6 +194,8 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
             }
         });
 
+        console.log(data);
+
         setVariants(data);
         setGenerateVariantsLoading(false);
     }
@@ -197,13 +204,51 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
         const { values, setFieldValue } = formik;
         const { variants } = values;
 
-        if (variants.includes(variantId)) {
-            setFieldValue('variants', variants.filter((id) => id !== variantId));
-            setSelectedVariants(selectedVariants.filter((id) => id !== variantId));
-        } else {
-            setFieldValue('variants', [...variants, variantId]);
-            setSelectedVariants([...selectedVariants, variantId]);
+        variants.forEach(variant => {
+            if (variant.id === variantId) {
+                setFieldValue('variants', variants.filter((v) => v.id !== variantId));
+                setSelectedVariants(selectedVariants.filter((v) => v !== variantId));
+            } else {
+                setFieldValue('variants', [...variants, { id: variantId }]);
+                setSelectedVariants([...selectedVariants, variantId]);
+            }
+        });
+    }
+
+    async function handleSubmit() {
+        const { values } = formik;
+        setSubmitLoading(true);
+        console.log('formik submitting', values);
+        try {
+            const { data, error } = await fetchApi({
+                url: `/vendor/api/catalog/items/${draftItemId}`,
+                options: {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        name: values.name,
+                        sku: values.sku,
+                        quantity: +values.quantity,
+                        price: +values.price,
+                        description: values.description,
+                        categories: values.categories,
+                        options: values.options,
+                        variants: values.variants,
+                        store_id: storeId
+                    })
+                }
+            });
+
+            if (error) {
+                console.error(error);
+            }
+            if (isMounted()) {
+                router.push(`/dashboard/stores/${storeId}/items`);
+            }
+            setSelectedFileName('');
+        } catch (err) {
+            console.error(err);
         }
+        setSubmitLoading(false);
     }
 
 
@@ -250,7 +295,6 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
                         <CardContent>
                             <form
                                 noValidate
-                                onSubmit={formik.handleSubmit}
                             >
                                 <Card elevation={16} className='p-4 mb-6'>
                                     <CardHeader
@@ -292,22 +336,23 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
                                             />
 
                                             <TextField
-                                                error={!!(formik.touched.price && formik.errors.price)}
+                                                error={!!(formik.touched.description && formik.errors.description)}
                                                 fullWidth
-                                                helperText={formik.touched.price && formik.errors.price}
-                                                label="Price"
-                                                name="price"
+                                                helperText={formik.touched.description && formik.errors.description}
+                                                label="Description"
+                                                name="description"
+                                                multiline
                                                 onBlur={formik.handleBlur}
                                                 onChange={formik.handleChange}
-                                                type="price"
-                                                value={formik.values.price}
-                                                InputProps={{
-                                                    startAdornment: <InputAdornment position="start">SAR</InputAdornment>,
-                                                }}
+                                                type="description"
+                                                value={formik.values.description}
                                             />
                                         </Stack>
 
-                                        <Stack spacing={3}>
+                                        <Stack
+                                            spacing={3}
+                                            sx={{ width: '100%' }}
+                                        >
                                             <Tooltip title="Quantity can be added later for each variant">
                                                 <TextField
                                                     error={!!(formik.touched.quantity && formik.errors.quantity)}
@@ -322,19 +367,68 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
                                                 />
                                             </Tooltip>
 
+
                                             <TextField
-                                                error={!!(formik.touched.description && formik.errors.description)}
+                                                error={!!(formik.touched.price && formik.errors.price)}
                                                 fullWidth
-                                                helperText={formik.touched.description && formik.errors.description}
-                                                label="Description"
-                                                name="description"
-                                                multiline
+                                                helperText={formik.touched.price && formik.errors.price}
+                                                label="Price"
+                                                name="price"
                                                 onBlur={formik.handleBlur}
                                                 onChange={formik.handleChange}
-                                                type="description"
-                                                value={formik.values.description}
+                                                type="price"
+                                                value={formik.values.price}
+                                                InputProps={{
+                                                    startAdornment: <InputAdornment position="start">SAR</InputAdornment>,
+                                                }}
                                             />
+
+                                            {categories && (
+                                                <Stack
+                                                    spacing={3}
+                                                    sx={{ width: '100%' }}
+                                                >
+                                                    <FormControl
+                                                        fullWidth
+                                                        error={!!(formik.touched.categories && formik.errors.categories)}
+                                                    >
+                                                        <InputLabel id="categories-label">Categories</InputLabel>
+                                                        <Select
+                                                            labelId="categories-label"
+                                                            multiple
+                                                            name="categories"
+                                                            onBlur={formik.handleBlur}
+                                                            onChange={formik.handleChange}
+                                                            value={formik.values.categories}
+                                                        >
+                                                            {categories?.map((category) => (
+                                                                <MenuItem key={category.id} value={category.id}>
+                                                                    {category.name}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                        {formik.touched.categories && formik.errors.categories && (
+                                                            <FormHelperText error>
+                                                                {formik.errors.categories}
+                                                            </FormHelperText>
+                                                        )}
+                                                    </FormControl>
+                                                </Stack>
+                                            )}
                                         </Stack>
+                                    </Stack>
+
+                                    <Divider sx={{ my: 3 }} />
+
+                                    <Stack spacing={1} direction={'column'}>
+                                        <Typography variant="subtitle2">
+                                            Options
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary">
+                                            Options are used to define the different variations of your item.
+                                            <br />
+                                            You don&apos;t need to add values for all options below. Choose what you need and leave the rest empty.
+                                        </Typography>
                                     </Stack>
 
                                     <Stack
@@ -343,39 +437,6 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
                                         direction='row'
                                         sx={{ width: '100%' }}
                                     >
-                                        {categories && (
-                                            <Stack
-                                                spacing={3}
-                                                sx={{ width: '100%' }}
-                                            >
-                                                <FormControl
-                                                    fullWidth
-                                                    error={!!(formik.touched.categories && formik.errors.categories)}
-                                                >
-                                                    <InputLabel id="categories-label">Categories</InputLabel>
-                                                    <Select
-                                                        labelId="categories-label"
-                                                        multiple
-                                                        name="categories"
-                                                        onBlur={formik.handleBlur}
-                                                        onChange={formik.handleChange}
-                                                        value={formik.values.categories}
-                                                    >
-                                                        {categories?.map((category) => (
-                                                            <MenuItem key={category.id} value={category.id}>
-                                                                {category.name}
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
-                                                    {formik.touched.categories && formik.errors.categories && (
-                                                        <FormHelperText error>
-                                                            {formik.errors.categories}
-                                                        </FormHelperText>
-                                                    )}
-                                                </FormControl>
-                                            </Stack>
-                                        )}
-
                                         {optionGroups && (
                                             <Stack
                                                 spacing={3}
@@ -574,19 +635,51 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
                                                                 />
                                                             </TableCell>
                                                             <TableCell>
-                                                                {variant.name ? variant.name : item.name}
+                                                                {variant.name ? variant.name : formik.values.name}
                                                             </TableCell>
 
                                                             <TableCell>
-                                                                {variant.sku ? variant.sku : item.sku}
+                                                                {variant.sku ? variant.sku : formik.values.sku}
                                                             </TableCell>
 
                                                             <TableCell>
                                                                 <Stack spacing={1}>
-                                                                    {variant?.options?.map((option, index) => (
-                                                                        <Typography key={index} variant="body1">
-                                                                            {option.label}
-                                                                        </Typography>
+                                                                    {variant?.groups?.map((group, index) => (
+                                                                        <Stack key={group.id} spacing={1} direction={'row'}>
+                                                                            <Typography variant="subtitle2">
+                                                                                {group.title}:
+                                                                            </Typography>
+                                                                            <Stack spacing={1} direction={'row'}>
+                                                                                {group.options.map((option, index) => (
+                                                                                    <FormControl key={index} component="fieldset">
+                                                                                        {
+                                                                                            group.type === 'COLOR' ? (
+                                                                                                <Stack
+                                                                                                    alignItems={'center'}
+                                                                                                    justifyContent={'center'}
+                                                                                                    marginRight={2}
+                                                                                                >
+                                                                                                    <Tooltip title={option.label} arrow>
+                                                                                                        <Box
+                                                                                                            sx={{
+                                                                                                                borderRadius: 1,
+                                                                                                                width: 25,
+                                                                                                                height: 25,
+                                                                                                                bgcolor: option.value,
+                                                                                                            }}
+                                                                                                        />
+                                                                                                    </Tooltip>
+                                                                                                </Stack>
+                                                                                            ) : (
+                                                                                                <Typography variant="subtitle2">
+                                                                                                    {option.label}
+                                                                                                </Typography>
+                                                                                            )
+                                                                                        }
+                                                                                    </FormControl>
+                                                                                ))}
+                                                                            </Stack>
+                                                                        </Stack>
                                                                     ))}
                                                                 </Stack>
                                                             </TableCell>
@@ -619,18 +712,18 @@ const AddItem = ({ storeId, draftItemId, categories, optionGroups }) => {
                                             variant="contained"
                                             color="inherit"
                                             component={NextLink}
-                                            href={`/dashboard/stores/${storeId}`}
+                                            href={`/dashboard/stores/${storeId}/items`}
                                         >
                                             Cancel
                                         </Button>
                                         <Button
-                                            disabled={formik.isSubmitting}
+                                            disabled={formik.isSubmitting || submitLoading}
                                             fullWidth
                                             size="large"
-                                            type="submit"
                                             variant="contained"
+                                            onClick={handleSubmit}
                                         >
-                                            {formik.isSubmitting ? 'Submitting...' : 'Submit'}
+                                            {submitLoading ? 'Submitting...' : 'Submit'}
                                         </Button>
                                     </Stack>
                                 </Card>

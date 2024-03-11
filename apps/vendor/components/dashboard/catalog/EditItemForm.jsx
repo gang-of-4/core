@@ -26,7 +26,8 @@ import {
     TableHead,
     TableRow,
     InputAdornment,
-    Tooltip
+    Tooltip,
+    Divider
 } from '@mui/material';
 import { useMounted } from 'ui/hooks/use-mounted';
 import { useState } from 'react';
@@ -301,22 +302,23 @@ export default function EditItemForm({
                                             />
 
                                             <TextField
-                                                error={!!(formik.touched.price && formik.errors.price)}
+                                                error={!!(formik.touched.description && formik.errors.description)}
                                                 fullWidth
-                                                helperText={formik.touched.price && formik.errors.price}
-                                                label="Price"
-                                                name="price"
+                                                helperText={formik.touched.description && formik.errors.description}
+                                                label="Description"
+                                                name="description"
+                                                multiline
                                                 onBlur={formik.handleBlur}
                                                 onChange={formik.handleChange}
-                                                type="price"
-                                                value={formik.values.price}
-                                                InputProps={{
-                                                    startAdornment: <InputAdornment position="start">SAR</InputAdornment>,
-                                                }}
+                                                type="description"
+                                                value={formik.values.description}
                                             />
                                         </Stack>
 
-                                        <Stack spacing={3}>
+                                        <Stack
+                                            spacing={3}
+                                            sx={{ width: '100%' }}
+                                        >
                                             <Tooltip title="Quantity can be added later for each variant">
                                                 <TextField
                                                     error={!!(formik.touched.quantity && formik.errors.quantity)}
@@ -332,18 +334,66 @@ export default function EditItemForm({
                                             </Tooltip>
 
                                             <TextField
-                                                error={!!(formik.touched.description && formik.errors.description)}
+                                                error={!!(formik.touched.price && formik.errors.price)}
                                                 fullWidth
-                                                helperText={formik.touched.description && formik.errors.description}
-                                                label="Description"
-                                                name="description"
-                                                multiline
+                                                helperText={formik.touched.price && formik.errors.price}
+                                                label="Price"
+                                                name="price"
                                                 onBlur={formik.handleBlur}
                                                 onChange={formik.handleChange}
-                                                type="description"
-                                                value={formik.values.description}
+                                                type="price"
+                                                value={formik.values.price}
+                                                InputProps={{
+                                                    startAdornment: <InputAdornment position="start">SAR</InputAdornment>,
+                                                }}
                                             />
+
+                                            {categories && (
+                                                <Stack
+                                                    spacing={3}
+                                                    sx={{ width: '100%' }}
+                                                >
+                                                    <FormControl
+                                                        fullWidth
+                                                        error={!!(formik.touched.categories && formik.errors.categories)}
+                                                    >
+                                                        <InputLabel id="categories-label">Categories</InputLabel>
+                                                        <Select
+                                                            labelId="categories-label"
+                                                            multiple
+                                                            name="categories"
+                                                            onBlur={formik.handleBlur}
+                                                            onChange={formik.handleChange}
+                                                            value={formik.values.categories}
+                                                        >
+                                                            {categories?.map((category) => (
+                                                                <MenuItem key={category.id} value={category.id}>
+                                                                    {category.name}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                        {formik.touched.categories && formik.errors.categories && (
+                                                            <FormHelperText error>
+                                                                {formik.errors.categories}
+                                                            </FormHelperText>
+                                                        )}
+                                                    </FormControl>
+                                                </Stack>
+                                            )}
                                         </Stack>
+                                    </Stack>
+
+                                    <Divider sx={{ my: 3 }} />
+
+                                    <Stack spacing={1} direction={'column'}>
+                                        <Typography variant="subtitle2">
+                                            Options
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary">
+                                            Options are used to define the different variations of your item.
+                                            <br />
+                                            You don&apos;t need to add values for all options below. Choose what you need and leave the rest empty.
+                                        </Typography>
                                     </Stack>
 
                                     <Stack
@@ -352,38 +402,7 @@ export default function EditItemForm({
                                         direction='row'
                                         sx={{ width: '100%' }}
                                     >
-                                        {categories && (
-                                            <Stack
-                                                spacing={3}
-                                                sx={{ width: '100%' }}
-                                            >
-                                                <FormControl
-                                                    fullWidth
-                                                    error={!!(formik.touched.categories && formik.errors.categories)}
-                                                >
-                                                    <InputLabel id="categories-label">Categories</InputLabel>
-                                                    <Select
-                                                        labelId="categories-label"
-                                                        multiple
-                                                        name="categories"
-                                                        onBlur={formik.handleBlur}
-                                                        onChange={formik.handleChange}
-                                                        value={formik.values.categories}
-                                                    >
-                                                        {categories?.map((category) => (
-                                                            <MenuItem key={category.id} value={category.id}>
-                                                                {category.name}
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
-                                                    {formik.touched.categories && formik.errors.categories && (
-                                                        <FormHelperText error>
-                                                            {formik.errors.categories}
-                                                        </FormHelperText>
-                                                    )}
-                                                </FormControl>
-                                            </Stack>
-                                        )}
+
 
                                         {optionGroups && (
                                             <Stack
@@ -592,10 +611,42 @@ export default function EditItemForm({
 
                                                             <TableCell>
                                                                 <Stack spacing={1}>
-                                                                    {variant?.options?.map((option, index) => (
-                                                                        <Typography key={index} variant="body1">
-                                                                            {option.label}
-                                                                        </Typography>
+                                                                    {variant?.groups?.map((group, index) => (
+                                                                        <Stack key={group.id} spacing={1} direction={'row'}>
+                                                                            <Typography variant="subtitle2">
+                                                                                {group.title}:
+                                                                            </Typography>
+                                                                            <Stack spacing={1} direction={'row'}>
+                                                                                {group.options.map((option, index) => (
+                                                                                    <FormControl key={index} component="fieldset">
+                                                                                        {
+                                                                                            group.type === 'COLOR' ? (
+                                                                                                <Stack
+                                                                                                    alignItems={'center'}
+                                                                                                    justifyContent={'center'}
+                                                                                                    marginRight={2}
+                                                                                                >
+                                                                                                    <Tooltip title={option.label} arrow>
+                                                                                                        <Box
+                                                                                                            sx={{
+                                                                                                                borderRadius: 1,
+                                                                                                                width: 25,
+                                                                                                                height: 25,
+                                                                                                                bgcolor: option.value,
+                                                                                                            }}
+                                                                                                        />
+                                                                                                    </Tooltip>
+                                                                                                </Stack>
+                                                                                            ) : (
+                                                                                                <Typography variant="body1">
+                                                                                                    {option.label}
+                                                                                                </Typography>
+                                                                                            )
+                                                                                        }
+                                                                                    </FormControl>
+                                                                                ))}
+                                                                            </Stack>
+                                                                        </Stack>
                                                                     ))}
                                                                 </Stack>
                                                             </TableCell>
@@ -628,7 +679,7 @@ export default function EditItemForm({
                                             variant="contained"
                                             color="inherit"
                                             component={NextLink}
-                                            href={`/dashboard/stores/${storeId}`}
+                                            href={`/dashboard/stores/${storeId}/items`}
                                         >
                                             Cancel
                                         </Button>

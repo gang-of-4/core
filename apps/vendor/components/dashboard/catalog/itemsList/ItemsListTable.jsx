@@ -61,13 +61,10 @@ export const ItemsListTable = ({
                         <TableRow>
                             <TableCell
                                 sx={{
-                                    textAlign: 'center'
+                                    pl: 15
                                 }}
                             >
                                 Name
-                            </TableCell>
-                            <TableCell>
-                                SKU
                             </TableCell>
                             <TableCell>
                                 Status
@@ -127,11 +124,6 @@ export const ItemsListTable = ({
                                                     </Typography>
                                                 </Box>
                                             </Box>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="subtitle2">
-                                                {item?.sku}
-                                            </Typography>
                                         </TableCell>
                                         <TableCell>
                                             <SeverityPill color={statusColor}>

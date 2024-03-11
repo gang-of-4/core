@@ -42,6 +42,8 @@ export async function PATCH(request, { params }) {
         store_id,
     } = await request.json();
 
+    console.log('PATCH', name, sku, quantity, price, description, categories, options, variants, store_id, id);
+
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`,
         {
@@ -65,6 +67,8 @@ export async function PATCH(request, { params }) {
         });
 
     const data = await res.json();
+
+    console.log('PATCH', data);
 
     if (!res.ok) {
         return new Response(JSON.stringify({ message: data.message }), { status: data.statusCode });
