@@ -6,26 +6,16 @@ import { OptionsController } from './controllers/options.controller';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { OptionGroupsController } from './controllers/option-groups.controller';
 import { OptionGroupsService } from './services/option-groups.service';
-import { CategoriesController } from './controllers/categories.controller';
-import { CategoriesService } from './services/categories.service';
-import { CategoryExistsRule } from './rules/category-exist.rule';
 import { GroupExistsRule } from './rules/group-exist.rule';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [PrismaModule, JwtModule],
-  controllers: [
-    ItemsController,
-    OptionsController,
-    OptionGroupsController,
-    CategoriesController,
-  ],
+  controllers: [ItemsController, OptionsController, OptionGroupsController],
   providers: [
     ItemsService,
     OptionsService,
     OptionGroupsService,
-    CategoriesService,
-    CategoryExistsRule,
     GroupExistsRule,
   ],
 })

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Cateogry } from '@prisma/client/catalog';
 import { IsOptional, IsString, IsUUID, MinLength } from 'class-validator';
-import { CategoryExists } from 'src/items/rules/category-exist.rule';
+import { CategoryExists } from '../rules/category-exist.rule';
 
 export class CreateCategoryDto {
   @ApiProperty()
