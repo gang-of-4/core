@@ -19,24 +19,11 @@ import { useMounted } from 'ui/hooks/use-mounted';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import NextLink from 'next/link';
 import fetchApi from '@/utils/fetch-api';
-import OptionsForm from './itemForms/OptionsForm';
-import BasicInfoForm from './itemForms/BasicInfoForm';
-import ImagesForm from './itemForms/ImagesForm';
-import VariantsForm from './itemForms/VariantsForm';
+import OptionsForm from './OptionsForm';
+import BasicInfoForm from './BasicInfoForm';
+import ImagesForm from './ImagesForm';
+import VariantsForm from './VariantsForm';
 
-
-const initialValues = {
-    name: '',
-    sku: '',
-    price: 0,
-    description: '',
-    quantity: 0,
-    categories: [],
-    options: [],
-    variants: [],
-    images: [],
-    submit: null
-};
 
 const validationSchema = Yup.object({
     name: Yup
@@ -83,10 +70,23 @@ const validationSchema = Yup.object({
     // })
 });
 
-export default function AddItem({ storeId, draftItemId, categories, optionGroups }) {
+export default function EditItemForm({ storeId, item, categories, optionGroups }) {
 
     const [selectedFileName, setSelectedFileName] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const initialValues = {
+        name: item.name || '',
+        sku: item.sku || '',
+        price: item.price || 0,
+        description: item.description || '',
+        quantity: item.quantity || 0,
+        categories: (item.categories && item.categories?.length > 0) ? item.categories.map((category) => category.id) : [],
+        options: (item.options && item.options?.length > 0) ? item.options.map((option) => option.id) : [],
+        variants: (item.variants && item.variants?.length > 0) ? item.variants : [],
+        images: [],
+        submit: null
+    };
 
     const isMounted = useMounted();
     const router = useRouter();
@@ -101,8 +101,8 @@ export default function AddItem({ storeId, draftItemId, categories, optionGroups
         setLoading(true);
         console.log('Submitting values ...', values);
         try {
-            const { error } = await fetchApi({
-                url: `/vendor/api/catalog/items/${draftItemId}`,
+            await fetchApi({
+                url: `/vendor/api/catalog/items/${item.id}`,
                 options: {
                     method: 'PATCH',
                     body: JSON.stringify({
@@ -220,10 +220,10 @@ export default function AddItem({ storeId, draftItemId, categories, optionGroups
                                         <Typography variant="body1" color="textPrimary">
                                             Variants
                                         </Typography>
-                                        <VariantsForm 
+                                        <VariantsForm
                                             formik={formik}
                                             optionGroups={optionGroups}
-                                            draftItemId={draftItemId}
+                                            draftItemId={item.id}
                                         />
                                     </Stack>
 
