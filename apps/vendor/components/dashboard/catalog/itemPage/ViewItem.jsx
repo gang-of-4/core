@@ -1,17 +1,16 @@
 'use client'
 import {
     Box,
+    Breadcrumbs,
     Button,
-    Card,
-    CardContent,
     Container,
     Link,
     Stack,
     SvgIcon,
     Typography,
 } from '@mui/material';
+import { BreadcrumbsSeparator } from 'ui/components/breadcrumbs-separator';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import NextLink from 'next/link';
 import { SeverityPill } from 'ui/components/severity-pill';
 import ItemBasicInfo from './ItemBasicInfo';
@@ -84,56 +83,61 @@ const ViewItem = ({ storeId, itemId }) => {
             >
                 <Container maxWidth="lg">
                     {item && (
-                        <Card
-                            elevation={16}
-                            sx={{
-                                pb: 0
-                            }}
-                        >
-                            <Box sx={{
-                                alignItems: 'center',
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                px: 2,
-                                pt: 4
-                            }}>
-                                <Link
-                                    color="primary"
-                                    component={NextLink}
-                                    href={`/dashboard/stores/${storeId}/items`}
-                                    sx={{
-                                        alignItems: 'center',
-                                        display: 'inline-flex'
-                                    }}
-                                    underline="hover"
-                                >
-                                    <SvgIcon sx={{ mr: 1 }}>
-                                        <ArrowLeftIcon />
-                                    </SvgIcon>
-                                    <Typography variant="subtitle2">
-                                        Back to Cars
-                                    </Typography>
-                                </Link>
-                            </Box>
-
+                        <Stack spacing={4}>
                             <Stack
                                 alignItems="center"
                                 direction="row"
                                 spacing={2}
-                                sx={{ mt: 2, px: 6 }}
                             >
-                                <Stack
-                                    alignItems="center"
-                                    direction="row"
-                                    spacing={2}
-                                >
-                                    <Typography variant="h6">
-                                        View Item: {item.name ? item.name : 'Not Named Yet'}
-                                    </Typography>
-                                    <SeverityPill color={getStatusColor(item?.status)}>
-                                        {item?.status}
-                                    </SeverityPill>
+                                <Stack spacing={1}>
+                                    <Stack
+                                        alignItems="center"
+                                        direction="row"
+                                        spacing={2}
+                                    >
+                                        <Typography variant="h5">
+                                            {item.name ? item.name : 'Not Named Yet'}
+                                        </Typography>
+                                        <SeverityPill color={getStatusColor(item?.status)}>
+                                            {item?.status}
+                                        </SeverityPill>
+                                    </Stack>
+                                    <Breadcrumbs separator={<BreadcrumbsSeparator />}>
+                                        <Link
+                                            color="text.primary"
+                                            component={NextLink}
+                                            href='/dashboard'
+                                            variant="subtitle2"
+                                        >
+                                            Dashboard
+                                        </Link>
+                                        <Link
+                                            color="text.primary"
+                                            component={NextLink}
+                                            href={`/dashboard/stores/${storeId}`}
+                                            variant="subtitle2"
+                                        >
+                                            Store
+                                        </Link>
+                                        <Link
+                                            color="text.primary"
+                                            component={NextLink}
+                                            href={`/dashboard/stores/${storeId}/items`}
+                                            variant="subtitle2"
+                                        >
+                                            Cars
+                                        </Link>
+                                        {item.name && (
+                                            <Typography
+                                                color="text.secondary"
+                                                variant="subtitle2"
+                                            >
+                                                {item.name}
+                                            </Typography>
+                                        )}
+                                    </Breadcrumbs>
                                 </Stack>
+
                                 <Box sx={{ flexGrow: 1 }} />
                                 <Stack
                                     alignItems="center"
@@ -156,11 +160,8 @@ const ViewItem = ({ storeId, itemId }) => {
                                 </Stack>
                             </Stack>
 
-                            <CardContent
-                                sx={{
-                                    pt: 2,
-                                    pb: 0
-                                }}
+                            <Stack
+                                direction={'column'}
                             >
 
                                 <ItemBasicInfo item={item} />
@@ -178,8 +179,8 @@ const ViewItem = ({ storeId, itemId }) => {
                                 {item?.variants?.length > 0 && (
                                     <ItemVariants item={item} />
                                 )}
-                            </CardContent>
-                        </Card>
+                            </Stack>
+                        </Stack>
                     )}
                 </Container>
             </Box>
