@@ -43,13 +43,14 @@ const Page = ({ items, storeId }) => {
   const { search, updateSearch } = useSearch();
   const [filteredItems, setFilteredItems] = useState(items);
   const [loading, setLoading] = useState(false);
+  const [hasUpdatedItems, setHasUpdatedItems] = useState(false);
 
   useEffect(() => {
     const interval = setTimeout(() => {
       fetchItems(search)
     }, 500);
     return () => clearInterval(interval);
-  }, [search]);
+  }, [search, hasUpdatedItems]);
 
   async function fetchItems(search) {
     try {
@@ -66,6 +67,10 @@ const Page = ({ items, storeId }) => {
     } catch (error) {
       console.error('Error fetching items', error);
     }
+  }
+
+  function handleUpdateItems() {
+    setHasUpdatedItems((prevState) => !prevState);
   }
 
   const handleFiltersChange = useCallback((filters) => {
@@ -172,7 +177,7 @@ const Page = ({ items, storeId }) => {
 
               <Stack>
                 {filteredItems.length !== 0 && (
-                  <ItemsListTable items={filteredItems} />
+                  <ItemsListTable items={filteredItems} handleUpdateItems={handleUpdateItems}/>
                 )}
               </Stack>
 

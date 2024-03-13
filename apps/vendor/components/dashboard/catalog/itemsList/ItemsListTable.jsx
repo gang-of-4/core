@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
 import Trash01Icon from '@untitled-ui/icons-react/build/esm/Trash01';
 import {
@@ -16,6 +16,7 @@ import { Scrollbar } from 'ui/components/scrollbar';
 import { SeverityPill } from 'ui/components/severity-pill';
 import NextLink from 'next/link';
 import fetchApi from '@/utils/fetch-api';
+import DeleteItemDialog from './DeleteItemDialog';
 
 
 const getStatusColor = (status) => {
@@ -37,19 +38,34 @@ const getStatusColor = (status) => {
 
 export const ItemsListTable = ({
     items,
+    handleUpdateItems,
     ...other
 }) => {
 
-    async function handleDelete(itemId) {
-        const { error } = await fetchApi({
-            url: `/vendor/api/catalog/items/${itemId}`,
-            options: {
-                method: 'DELETE'
-            }
-        });
+    const [activeItem, setActiveItem] = useState(null);
+    const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-        if (error) {
+    function handleOpenDeleteDialog() {
+        setDeleteDialogOpen(true);
+    }
+
+    function handleCloseDeleteDialog() {
+        setDeleteDialogOpen(false);
+    }
+
+    async function handleDelete(itemId) {
+        try {
+            await fetchApi({
+                url: `/vendor/api/catalog/items/${itemId}`,
+                options: {
+                    method: 'DELETE'
+                }
+            });
+            handleUpdateItems();
+        } catch (error) {
             console.log(error);
+        } finally {
+            handleCloseDeleteDialog();
         }
     }
 
@@ -132,7 +148,10 @@ export const ItemsListTable = ({
                                         </TableCell>
                                         <TableCell>
                                             <IconButton
-                                                onClick={() => { handleDelete(item.id) }}
+                                                onClick={() => {
+                                                    setActiveItem(item);
+                                                    handleOpenDeleteDialog();
+                                                }}
                                             >
                                                 <SvgIcon>
                                                     <Trash01Icon />
@@ -147,6 +166,12 @@ export const ItemsListTable = ({
                     </TableBody>
                 </Table>
             </Scrollbar>
+            <DeleteItemDialog
+                isOpen={isDeleteDialogOpen}
+                handleClose={handleCloseDeleteDialog}
+                handleDelete={handleDelete}
+                itemId={activeItem?.id}
+            />
         </div>
     );
 };
