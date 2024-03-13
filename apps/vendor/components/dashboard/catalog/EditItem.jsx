@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import fetchApi from '@/utils/fetch-api';
-import EditItemForm from './EditItemForm';
+import EditItemForm from './itemForms/EditItemForm';
 import { Box, Container, Stack } from '@mui/material';
 import AtomicSpinner from "atomic-spinner";
 
