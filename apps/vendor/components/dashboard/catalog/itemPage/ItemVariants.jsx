@@ -1,11 +1,8 @@
 "use client"
 import React from 'react'
 import {
-    Box,
     Card,
     CardHeader,
-    Stack,
-    Typography,
     Table,
     TableBody,
     TableCell,
@@ -13,8 +10,10 @@ import {
     TableRow,
 } from '@mui/material';
 import { formatPrice } from '@/utils/format-price';
+import VariantOptions from './VariantOptions';
 
 export default function ItemVariants({ item }) {
+
     return (
         <Card
             elevation={16}
@@ -29,7 +28,6 @@ export default function ItemVariants({ item }) {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Name</TableCell>
                         <TableCell>SKU</TableCell>
                         <TableCell>Options</TableCell>
                         <TableCell>Quantity</TableCell>
@@ -41,25 +39,15 @@ export default function ItemVariants({ item }) {
                         <TableRow key={index}>
 
                             <TableCell>
-                                {variant.name ? variant.name : item.name}
-                            </TableCell>
-
-                            <TableCell>
                                 {variant.sku ? variant.sku : item.sku}
                             </TableCell>
 
                             <TableCell>
-                                <Stack spacing={1}>
-                                    {variant?.options?.map((option, index) => (
-                                        <Typography key={index} variant="body1">
-                                            {option.label}
-                                        </Typography>
-                                    ))}
-                                </Stack>
+                                <VariantOptions options={variant?.options} />
                             </TableCell>
 
                             <TableCell>
-                                {variant.quantity}
+                                {variant.quantity ? variant.quantity : '0'}
                             </TableCell>
 
                             <TableCell>
