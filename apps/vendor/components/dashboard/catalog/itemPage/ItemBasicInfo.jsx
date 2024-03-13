@@ -44,16 +44,20 @@ export default function ItemBasicInfo({ item }) {
 
                     <Stack>
                         <Typography variant="subtitle1">Categories:</Typography>
-                        <Typography variant="body1">
-                            {item?.categories[0]?.name}
-                            {
-                                item.categories.slice(1).map((category, index) => (
-                                    <Fragment key={index}>
-                                        &nbsp;&nbsp;&gt;&nbsp;&nbsp;{category.name}
-                                    </Fragment>
-                                ))
-                            }
-                        </Typography>
+                        {
+                            item?.categories?.length !== 0 ?
+                                <Typography variant="body1">
+                                    {item?.categories[0]?.name}
+                                    {
+                                        item.categories.slice(1).map((category, index) => (
+                                            <Fragment key={index}>
+                                                , {category.name}
+                                            </Fragment>
+                                        ))
+                                    }
+                                </Typography>
+                                : <Typography variant="body1">N/A</Typography>
+                        }
                     </Stack>
                 </Stack>
 
