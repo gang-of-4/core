@@ -174,6 +174,7 @@ export class ItemsService {
           },
           data: {
             name: updateItemDto.name,
+            sku: updateItemDto.sku,
             quantity: updateItemDto.quantity,
             price: updateItemDto.price,
             description: updateItemDto.description,
