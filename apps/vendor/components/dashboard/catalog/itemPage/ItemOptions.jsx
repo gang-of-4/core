@@ -62,6 +62,7 @@ export default function ItemOptions({ item }) {
                                             ) : (
                                                 <Typography variant="body1">
                                                     {option.label}
+                                                    {index !== group.options.length - 1 && ','}
                                                 </Typography>
                                             )
                                         }
