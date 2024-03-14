@@ -80,7 +80,7 @@ export default function VariantsForm({ formik, optionGroups, draftItemId }) {
                     >
                         <Typography variant="body2" color="textSecondary">
                             By generating variants, you will create a variant for each combination of your options.
-                            Then you can set each variant's information.
+                            Then you can set each variant&apos;s information.
                         </Typography>
                     </Stack>
                     <Stack
