@@ -5,6 +5,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    Tooltip,
 } from '@mui/material';
 import { catalogApi } from '../../../../api/catalog';
 import { useRouter } from 'next/navigation';
@@ -21,9 +22,9 @@ export function DeleteOptionDialog({ group, isOpen, setIsOpen }) {
         try {
             await catalogApi.deleteOptionGroup(group.id)
 
-        if (isMounted()) {
-          router.push(paths.dashboard.catalog.options.index);
-        }
+            if (isMounted()) {
+                router.push(paths.dashboard.catalog.options.index);
+            }
         } catch (error) {
             console.error(error);
         } finally {
@@ -50,13 +51,18 @@ export function DeleteOptionDialog({ group, isOpen, setIsOpen }) {
                     >
                         Cancel
                     </Button>
-                    <Button
-                        onClick={handleDelete}
-                        color="error"
-                        variant='contained'
-                    >
-                        Delete
-                    </Button>
+                    <Tooltip title="This action will be added in a future release">
+                        <div>
+                            <Button
+                                onClick={handleDelete}
+                                color="error"
+                                variant='contained'
+                                disabled
+                            >
+                                Delete
+                            </Button>
+                        </div>
+                    </Tooltip>
                 </DialogActions>
             </Dialog>
         </>

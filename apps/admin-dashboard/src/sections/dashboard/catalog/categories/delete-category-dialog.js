@@ -6,30 +6,8 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import { catalogApi } from '../../../../api/catalog';
-import { useRouter } from 'next/navigation';
-import { paths } from '../../../../paths';
-import { useMounted } from '../../../../hooks/use-mounted';
 
-export function DeleteCategoryDialog({ category, isOpen, setIsOpen }) {
-
-    const router = useRouter();
-    const isMounted = useMounted();
-
-
-    async function handleDelete() {
-        try {
-            await catalogApi.deleteCategory(category.id)
-
-        if (isMounted()) {
-          router.push(paths.dashboard.catalog.categories.index);
-        }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsOpen(false)
-        }
-    }
+export function DeleteCategoryDialog({ category, isOpen, setIsOpen, handleDelete }) {
 
     return (
         <>
@@ -51,7 +29,7 @@ export function DeleteCategoryDialog({ category, isOpen, setIsOpen }) {
                         Cancel
                     </Button>
                     <Button
-                        onClick={handleDelete}
+                        onClick={() => handleDelete(category.id)}
                         color="error"
                         variant='contained'
                     >

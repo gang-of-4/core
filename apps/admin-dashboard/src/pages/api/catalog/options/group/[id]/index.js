@@ -1,27 +1,4 @@
 export default async function handler(req, res) {
-    // if (req.method === 'GET') {
-
-    //     const token = req.headers.authorization;
-    //     const id = req.query.id;
-    //     // @TODO: integrate with back
-    //     const respone = await fetch(
-    //         `${process.env.CATALOG_API_URL}/option-groups/${id}`,
-    //         {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 Authorization: `${token}`
-    //             },
-    //         }
-    //     );
-
-    //     const data = await respone.json();
-        
-    //     if (!respone.ok) {
-    //         return res.status(data.statusCode).json({ message: data.message });
-    //     }
-    //     return res.status(200).json(data);
-    // }
 
     if (req.method === 'GET') {
         const token = req.headers.authorization;
@@ -59,12 +36,13 @@ export default async function handler(req, res) {
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }
+
     // if (req.method === 'DELETE') {
     //     const token = req.headers.authorization;
     //     const id = req.query.id;
 
     //     const respone = await fetch(
-    //         `${process.env.CATALOG_API_URL}/options/${id}`,
+    //         `${process.env.CATALOG_API_URL}/option-groups/${id}`,
     //         {
     //             method: 'DELETE',
     //             headers: {
@@ -75,8 +53,6 @@ export default async function handler(req, res) {
     //     );
 
     //     const data = await respone.json();
-
-    //     // const data = id;
 
     //     if (!respone.ok) {
     //         return res.status(data.statusCode).json({ message: data.message });
@@ -112,5 +88,6 @@ export default async function handler(req, res) {
     //     }
     //     return res.status(200).json(data);
     // }
+    
     return res.status(405).json({ message: 'Method not allowed' });
 }

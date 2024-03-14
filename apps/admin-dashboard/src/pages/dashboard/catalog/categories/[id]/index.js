@@ -118,23 +118,24 @@ const Page = () => {
                                 direction="row"
                                 spacing={3}
                             >
-                                <Tooltip title="Will be added later in a future release">
-                                    <Button
-                                    component={NextLink}
-                                    href={`${paths.dashboard.catalog.categories.index}/${id}/edit`}
-                                    startIcon={(
-                                        <SvgIcon>
-                                            <Edit02Icon />
-                                        </SvgIcon>
-                                    )}
-                                    variant="contained"
-                                    color='inherit'
-                                    disabled={true} 
-                                >
-                                    Edit
-                                </Button>
+                                <Tooltip title="This action will be added in a future release" arrow>
+                                    <div>
+                                        <Button
+                                            component={NextLink}
+                                            href={`${paths.dashboard.catalog.categories.index}/${id}/edit`}
+                                            startIcon={(
+                                                <SvgIcon>
+                                                    <Edit02Icon />
+                                                </SvgIcon>
+                                            )}
+                                            variant="contained"
+                                            color='inherit'
+                                            disabled={true}
+                                        >
+                                            Edit
+                                        </Button>
+                                    </div>
                                 </Tooltip>
-                                
                             </Stack>
                         </Stack>
 
@@ -150,7 +151,7 @@ const Page = () => {
                         <Card elevation={16}>
                             <CardHeader title='Manage category' />
                             <CardContent sx={{ pt: 1 }}>
-                                <DeleteCategory category={category}/>
+                                <DeleteCategory category={category} />
                             </CardContent>
                         </Card>
 

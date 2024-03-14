@@ -236,6 +236,35 @@ class CatalogApi {
         return Promise.resolve(data);
     }
 
+    async addOption({
+        groupId,
+        label,
+        value,
+    }) {
+        let data;
+        try {
+            const { data: returnedData } = await fetchApi({
+                url: '/admin/api/catalog/options',
+                options: {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        label,
+                        value,
+                        group_id: groupId
+                    })
+                }
+            });
+            data = returnedData;
+        } catch (err) {
+            console.error(err);
+        }
+
+        return Promise.resolve(data);
+    }
+
     // Categories
     async getCategories() {
 

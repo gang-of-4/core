@@ -12,7 +12,6 @@ import {
     SvgIcon,
     CardContent,
     CardHeader,
-    Tooltip
 } from '@mui/material';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import { useCallback, useEffect, useState } from 'react';
@@ -111,28 +110,25 @@ const Page = () => {
                                     </Typography>
                                 </Breadcrumbs>
                             </Stack>
-                            <Tooltip title="Will be added later in a future release" arrow>
-                                <Stack
-                                    alignItems="center"
-                                    direction="row"
-                                    spacing={3}
+                            <Stack
+                                alignItems="center"
+                                direction="row"
+                                spacing={3}
+                            >
+                                <Button
+                                    component={NextLink}
+                                    href={`${paths.dashboard.catalog.options.groups.index}/${id}/edit`}
+                                    startIcon={(
+                                        <SvgIcon>
+                                            <Edit02Icon />
+                                        </SvgIcon>
+                                    )}
+                                    variant="contained"
+                                    color='inherit'
                                 >
-                                    <Button
-                                        component={NextLink}
-                                        href={`${paths.dashboard.catalog.options.groups.index}/${id}/edit`}
-                                        startIcon={(
-                                            <SvgIcon>
-                                                <Edit02Icon />
-                                            </SvgIcon>
-                                        )}
-                                        variant="contained"
-                                        color='inherit'
-                                        disabled
-                                    >
-                                        Edit
-                                    </Button>
-                                </Stack>
-                            </Tooltip>
+                                    Edit
+                                </Button>
+                            </Stack>
                         </Stack>
 
                         <Card elevation={16}>

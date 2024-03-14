@@ -1,16 +1,8 @@
 import {
-  Box,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
 } from '@mui/material';
-import { Scrollbar } from '../../../../components/scrollbar';
 
-// @NOW-TODO fix looks 
 export function CategoryDetails({ category }) {
 
   return (

@@ -5,11 +5,22 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { DeleteCategoryDialog } from './delete-category-dialog';
+import { catalogApi } from '../../../../api/catalog';
 
 
 export function DeleteCategory({ category }) {
 
     const [isOpen, setIsOpen] = useState(false);
+
+    async function handleDelete(categoryId) {
+        try {
+            await catalogApi.deleteCategory(categoryId);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsOpen(false)
+        }
+    }
 
     return (
         <>
@@ -30,11 +41,16 @@ export function DeleteCategory({ category }) {
                     color="text.secondary"
                     variant="body2"
                 >
-                    Remove this option group,
+                    Remove this category,
                     please be aware that what has been deleted can not be brought back.
                 </Typography>
             </Box>
-             <DeleteCategoryDialog category={category} isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <DeleteCategoryDialog
+                category={category}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                handleDelete={handleDelete}
+            />
         </>
     )
 }

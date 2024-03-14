@@ -24,7 +24,8 @@ const useCategories = () => {
   const isMounted = useMounted();
   const [state, setState] = useState({
     categories: [],
-    categoriesCount: 0
+    categoriesCount: 0,
+    hasUpdated: false
   });
 
   const getCategories = useCallback(async () => {
@@ -42,16 +43,23 @@ const useCategories = () => {
     }
   }, [isMounted]);
 
+  function handleUpdate() {
+    setState((prevState) => ({
+      ...prevState,
+      hasUpdated: !prevState.hasUpdated
+    }));
+  }
+
   useEffect(() => {
     getCategories();
-  }, []);
+  }, [state.hasUpdated]);
 
-  return state;
+  return {...state, handleUpdate};
 };
 
 const Page = () => {
 
-  const { categories, categoriesCount } = useCategories();
+  const { categories, categoriesCount, handleUpdate } = useCategories();
 
   return (
     <>
@@ -138,6 +146,7 @@ const Page = () => {
               <CategoryListTable
                 categories={categories}
                 categoriesCount={categoriesCount}
+                handleUpdate={handleUpdate}
               />
             </Card>
 

@@ -93,27 +93,29 @@ export const OptionListTable = (props) => {
                                             direction="row"
                                             spacing={1}
                                         >
+                                            <Tooltip title="This action will be added in a future release" arrow>
+                                                <div>
+                                                    <IconButton
+                                                        onClick={() => {
+                                                            setActiveGroup(group);
+                                                            setIsOpen(true);
+                                                        }}
+                                                    >
+                                                        <SvgIcon>
+                                                            <Trash01Icon />
+                                                        </SvgIcon>
+                                                    </IconButton>
+                                                </div>
+                                            </Tooltip>
+
                                             <IconButton
-                                                onClick={() => {
-                                                    setActiveGroup(group);
-                                                    setIsOpen(true);
-                                                }}
+                                                component={NextLink}
+                                                href={`${paths.dashboard.catalog.options.groups.index}/${group.id}/edit`}
                                             >
                                                 <SvgIcon>
-                                                    <Trash01Icon />
+                                                    <Edit02Icon />
                                                 </SvgIcon>
                                             </IconButton>
-                                            <Tooltip title="Will be added later in a future release">
-                                                <IconButton
-                                                    component={NextLink}
-                                                    href={`${paths.dashboard.catalog.options.groups.index}/${group.id}/edit`}
-                                                    disabled
-                                                >
-                                                    <SvgIcon>
-                                                        <Edit02Icon />
-                                                    </SvgIcon>
-                                                </IconButton>
-                                            </Tooltip>
                                         </Stack>
                                     </TableCell>
                                 </TableRow>
