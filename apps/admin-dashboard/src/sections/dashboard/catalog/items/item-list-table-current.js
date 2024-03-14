@@ -221,21 +221,23 @@ export default function CurrentItem({
                                             ))}
                                         </TextField>
                                     </Grid>
-                                    <Grid
-                                        item
-                                        md={6}
-                                        xs={12}
-                                    >
-                                        <TextField
-                                            defaultValue={
-                                                store ? store.name : 'N/A'
-                                            }
-                                            disabled
-                                            fullWidth
-                                            label="Store Name"
-                                            name="storeName"
-                                        />
-                                    </Grid>
+                                    {store && (
+                                        <Grid
+                                            item
+                                            md={6}
+                                            xs={12}
+                                        >
+                                            <TextField
+                                                defaultValue={
+                                                    store ? store.name : 'N/A'
+                                                }
+                                                disabled
+                                                fullWidth
+                                                label="Store Name"
+                                                name="storeName"
+                                            />
+                                        </Grid>
+                                    )}
 
                                 </Grid>
                             </Grid>
