@@ -30,17 +30,46 @@ export async function PATCH(request, { params }) {
         id
     } = params;
 
-    const {
-        name,
-        sku,
-        quantity,
-        price,
-        description,
-        categories,
-        options,
-        variants,
-        store_id,
-    } = await request.json();
+    const formData = await request.formData();
+    const name = formData.get('name');
+    const sku = formData.get('sku');
+    const quantity = formData.get('quantity');
+    const price = formData.get('price');
+    const description = formData.get('description');
+    const categories = JSON.parse(formData.get('categories'));
+    const options = JSON.parse(formData.get('options'));
+    const variants = JSON.parse(formData.get('variants'));
+    const storeId = formData.get('storeId');
+    const images = formData.getAll('images');
+
+    const mediaIds = [];
+
+    images.forEach(async (image) => {
+
+        const mediaFormData = new FormData();
+        mediaFormData.append('image', image);
+
+        const mediaRes = await fetch(
+            `${process.env.MEDIA_API_URL}/upload/image`, {
+            method: 'POST',
+            next: { revalidate: 0 },
+            headers: {
+                'Authorization': `${request.headers.get('Authorization')}`
+            },
+            body: mediaFormData
+        });
+
+        const mediaData = await mediaRes.json();
+
+        if (!mediaRes.ok) {
+            return new Response(JSON.stringify({ message: mediaData.message }), { status: mediaData.statusCode });
+        }
+
+        console.log('mediaData', mediaData);
+
+        mediaIds.push(mediaData.id);
+
+    });
 
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`,
@@ -54,13 +83,14 @@ export async function PATCH(request, { params }) {
             body: JSON.stringify({
                 name,
                 sku,
-                quantity,
-                price,
+                quantity: +quantity,
+                price: +price,
                 description,
                 categories,
                 options,
                 variants,
-                store_id,
+                store_id: storeId,
+                images: mediaIds
             })
         });
 

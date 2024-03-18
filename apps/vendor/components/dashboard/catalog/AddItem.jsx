@@ -71,21 +71,21 @@ const validationSchema = Yup.object({
         })
     ),
     images: Yup
-        .array()
+        .array().of(
+            Yup.object()
+                .test('fileFormat', 'Invalid file format. Only images are allowed.', (value) => {
+                    if (!value) return true;
+                    return value && ['image/jpeg', 'image/png'].includes(value.type);
+                })
+                .test('fileSize', 'File too large', value => {
+                    return value && value.size <= 2 * 1024 * 1024; // 2MB
+                })
+        )
         .notRequired()
-    // .test('fileFormat', 'Invalid file format. Only images are allowed.', (value) => {
-    //     if (!value) return true;
-    //     return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-    // })
-    // .test('fileSize', 'File size is too large. Maximum size is 2MB.', (value) => {
-    //     if (!value) return true;
-    //     return value && value.size <= 2 * 1024 * 1024; // 2MB
-    // })
 });
 
 export default function AddItem({ storeId, draftItemId, categories, optionGroups }) {
 
-    const [selectedFileName, setSelectedFileName] = useState('');
     const [loading, setLoading] = useState(false);
 
     const isMounted = useMounted();
@@ -99,30 +99,34 @@ export default function AddItem({ storeId, draftItemId, categories, optionGroups
     async function handleSubmit() {
         const { values } = formik;
         setLoading(true);
-        console.log('Submitting values ...', values);
+
+        const formData = new FormData();
+        values.images.forEach((image) => {
+            formData.append('images', image);
+        });
+
+        formData.append('name', values.name);
+        formData.append('sku', values.sku);
+        formData.append('quantity', +values.quantity);
+        formData.append('price', +values.price);
+        formData.append('description', values.description);
+        formData.append('categories', JSON.stringify(values.categories));
+        formData.append('options', JSON.stringify(values.options));
+        formData.append('variants', JSON.stringify(values.variants));
+        formData.append('storeId', storeId);
+
         try {
             const { error } = await fetchApi({
                 url: `/vendor/api/catalog/items/${draftItemId}`,
                 options: {
                     method: 'PATCH',
-                    body: JSON.stringify({
-                        name: values.name,
-                        sku: values.sku,
-                        quantity: +values.quantity,
-                        price: +values.price,
-                        description: values.description,
-                        categories: values.categories,
-                        options: values.options,
-                        variants: values.variants,
-                        store_id: storeId
-                    })
+                    body: formData
                 }
             });
 
             if (isMounted()) {
                 router.push(`/dashboard/stores/${storeId}/items`);
             }
-            setSelectedFileName('');
         } catch (err) {
             console.error(err);
         }
@@ -208,8 +212,6 @@ export default function AddItem({ storeId, draftItemId, categories, optionGroups
                                         </Typography>
                                         <ImagesForm
                                             formik={formik}
-                                            selectedFileName={selectedFileName}
-                                            setSelectedFileName={setSelectedFileName}
                                         />
                                     </Stack>
 
@@ -220,7 +222,7 @@ export default function AddItem({ storeId, draftItemId, categories, optionGroups
                                         <Typography variant="body1" color="textPrimary">
                                             Variants
                                         </Typography>
-                                        <VariantsForm 
+                                        <VariantsForm
                                             formik={formik}
                                             optionGroups={optionGroups}
                                             draftItemId={draftItemId}
