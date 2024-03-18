@@ -1,15 +1,35 @@
 export async function POST(request) {
 
-    const {
-        vendorId,
-        name,
-        logo,
-        vatNumber,
-        crNumber,
-        ownerNationalId,
-    } = await request.json();
+    const formData = await request.formData();
+    const vendorId = formData.get('vendorId');
+    const name = formData.get('name');
+    const logo = formData.get('logo');
+    const vatNumber = formData.get('vatNumber');
+    const crNumber = formData.get('crNumber');
+    const ownerNationalId = formData.get('ownerNationalId');
 
-    const res = await fetch(
+    const mediaFormData = new FormData();
+    mediaFormData.append('image', logo);
+
+    const mediaRes = await fetch(
+        `${process.env.MEDIA_API_URL}/upload/image`, {
+        method: 'POST',
+        next: { revalidate: 0 },
+        headers: {
+            'Authorization': `${request.headers.get('Authorization')}`
+        },
+        body: mediaFormData
+    });
+
+    const mediaData = await mediaRes.json();
+
+    if (!mediaRes.ok) {
+        return new Response(JSON.stringify({ message: mediaData.message }), { status: mediaData.statusCode });
+    }
+
+    const mediaId = mediaData.id;
+
+    const storesRes = await fetch(
         `${process.env.STORES_API_URL}/business`, {
         method: 'POST',
         next: { revalidate: 0 },
@@ -20,19 +40,19 @@ export async function POST(request) {
         body: JSON.stringify({
             vendorId,
             name,
-            logo,
+            logo: mediaId,
             vatNumber,
             crNumber,
-            ownerNationalId
+            ownerNationalId,
         })
     });
 
-    const data = await res.json();
+    const storesData = await storesRes.json();
 
-    if (!res.ok) {
-        return new Response(JSON.stringify({ message: data.message }), { status: data.statusCode });
+    if (!storesRes.ok) {
+        return new Response(JSON.stringify({ message: storesData.message }), { status: storesData.statusCode });
     }
 
-    return new Response(JSON.stringify(data), { status: 200 });
+    return new Response(JSON.stringify(storesData), { status: 200 });
 
 }
