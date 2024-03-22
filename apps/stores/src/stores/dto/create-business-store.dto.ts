@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateBusinessStoreDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  @IsUUID()
   vendorId: string;
 
   @ApiProperty()
@@ -13,9 +14,10 @@ export class CreateBusinessStoreDto {
   name: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  logo: string;
+  @IsUUID()
+  logo?: string;
 
   @ApiProperty()
   @IsNotEmpty()
