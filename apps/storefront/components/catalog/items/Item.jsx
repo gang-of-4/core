@@ -33,9 +33,13 @@ export default function Item({ item, ...props }) {
             {item?.images?.[0]?.url ? (
               <CardMedia
                 component="img"
-                height="140"
                 image={item?.images?.[0]?.url}
                 alt={item.name}
+                sx={{
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  height: 140
+                }}
               />
             ) : (
               <Box

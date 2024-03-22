@@ -14,7 +14,6 @@ export default function ItemPage({ item }) {
   const [appliedOptions, setAppliedOptions] = useState([]);
   const [activeVariant, setActiveVariant] = useState(initActiveVariant());
   const [error, setError] = useState();
-  const [changed, setChanged] = useState(false);
 
   function handleOptionChange(event) {
     const { name, value } = event.target;
@@ -29,7 +28,7 @@ export default function ItemPage({ item }) {
 
 
   function initActiveVariant() {
-    if (item?.variants) {
+    if (item?.variants && item.variants.length > 0) {
       const newActiveVariant = item.variants[0];
       return {
         id: newActiveVariant.id,
@@ -65,9 +64,9 @@ export default function ItemPage({ item }) {
         images: newActiveVariant.images ? newActiveVariant.images : item.images,
         options: newActiveVariant.options
       });
-      setChanged(true);
     } else {
       setError('No variant found for selected options. Please select a different combination.')
+      setActiveVariant(initActiveVariant());
     }
   }
 
@@ -161,7 +160,6 @@ export default function ItemPage({ item }) {
 
                   <AddToCart
                     item={activeVariant}
-                    isButtonDisabled={!!error || !changed}
                   />
 
                   <Stack
