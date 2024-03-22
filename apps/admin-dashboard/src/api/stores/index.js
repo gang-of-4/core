@@ -118,6 +118,21 @@ class StoresApi {
       console.error(err);
     }
   }
+
+  async deletStore(id) {
+    try {
+      await fetchApi({
+        url: `/admin/api/stores/${id}`,
+        options: {
+          method: 'DELETE',
+        }
+      });
+
+      return Promise.resolve();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }
 
 export const storesApi = new StoresApi();
