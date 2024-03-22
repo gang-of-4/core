@@ -1,9 +1,11 @@
+import { mediaApi } from "../api/media";
 import { usersApi } from "../api/users";
+import fetchApi from "./fetch-api";
 import { getInitials } from './get-initials';
 
 export async function formatStores(stores) {
     const formattedStoresPromises = stores.map(async (store) => {
-        
+
         const vendorId = store?.vendorId;
         let vendor = {};
         try {
@@ -17,16 +19,28 @@ export async function formatStores(stores) {
         }
 
         if (store?.individualStore) {
-                return {
-                    id: store?.id,
-                    vendor: vendor,
-                    name: `${vendor?.firstName} ${vendor?.lastName}'s Store`,
-                    status: store?.status,
-                    logo: vendor?.avatar || getInitials(`${vendor?.firstName} ${vendor?.lastName}`),
-                    type: 'individual'
-                }
+            return {
+                id: store?.id,
+                vendor: vendor,
+                name: `${vendor?.firstName} ${vendor?.lastName}'s Store`,
+                status: store?.status,
+                logo: vendor?.avatar || getInitials(`${vendor?.firstName} ${vendor?.lastName}`),
+                type: 'individual'
+            }
 
         } else if (store?.businessStore) {
+
+            if (store?.businessStore?.logo) {
+                let media = {};
+                try {
+                    media = await mediaApi.getMedia(store.businessStore.logo);
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    store.businessStore.logo = media;
+                }
+            }
+
             return {
                 id: store?.id,
                 vendor: vendor,

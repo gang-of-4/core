@@ -154,13 +154,17 @@ export const ItemsListTable = (props) => {
                                                     }}
                                                 >
                                                     {
-                                                        item?.images?.[0].url ?
+                                                        item?.images?.[0]?.url ?
                                                             <Box
                                                                 component="img"
                                                                 alt={item.name}
                                                                 src={item.images[0].url}
                                                                 sx={{
                                                                     borderRadius: 1,
+                                                                    height: '100%',
+                                                                    width: '100%',
+                                                                    objectFit: 'cover',
+                                                                    
                                                                 }}
                                                             />
                                                             :
