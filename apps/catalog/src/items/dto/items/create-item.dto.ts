@@ -70,6 +70,14 @@ export class CreateItemDto {
   @IsIn(['DRAFT', 'PENDING'])
   status?: string = 'DRAFT';
 
+  @ApiProperty()
+  @IsOptional()
+  @IsArray()
+  @ArrayUnique()
+  @IsUUID(4, { each: true })
+  @IsString({ each: true })
+  images?: string[];
+
   constructor(partial: Partial<CreateItemDto>) {
     Object.assign(this, partial);
   }
