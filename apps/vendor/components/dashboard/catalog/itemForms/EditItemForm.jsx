@@ -21,7 +21,6 @@ import NextLink from 'next/link';
 import fetchApi from '@/utils/fetch-api';
 import OptionsForm from './OptionsForm';
 import BasicInfoForm from './BasicInfoForm';
-import ImagesForm from './ImagesForm';
 import VariantsForm from './VariantsForm';
 
 
@@ -103,7 +102,6 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
     async function handleSubmit() {
         const { values } = formik;
         setLoading(true);
-        console.log('Submitting values ...', values);
 
         const formData = new FormData();
         values.images.forEach((image) => {
@@ -215,9 +213,11 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
                                         <Typography variant="body1" color="textPrimary">
                                             Images
                                         </Typography>
-                                        <ImagesForm
-                                            formik={formik}
-                                        />
+                                        <Typography variant="body2" color="textSecondary">
+                                            Images cannot be edited at this time. If you need to change the images, please delete this item and create a new one.
+                                            <br />
+                                            We are working on adding this feature soon.
+                                        </Typography>
                                     </Stack>
 
                                     <Stack

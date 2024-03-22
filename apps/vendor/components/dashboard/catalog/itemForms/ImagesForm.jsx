@@ -56,7 +56,6 @@ export default function ImagesForm({
             sx={{ width: '100%' }}
         >
             <Stack
-                sx={{ width: '100%' }}
                 spacing={3}
             >
                 {formik.values.images.length > 0 && (
@@ -111,10 +110,8 @@ export default function ImagesForm({
                 <Button
                     variant="contained"
                     component="label"
-                    fullWidth
                     size="large"
                     sx={{ mt: 2 }}
-                    style={{ backgroundColor: '#2970FF' }}
                     startIcon={<CloudUploadIcon />}
                 >
                     Upload Images
@@ -125,7 +122,6 @@ export default function ImagesForm({
                         onChange={(event) => handleAddFiles(event)}
                         inputProps={{ accept: 'image/jpeg, image/png', multiple: true }}
                     />
-
                 </Button>
                 {formik.touched.images && formik.errors.images && (
                     <FormHelperText error sx={{ mt: 1 }}>

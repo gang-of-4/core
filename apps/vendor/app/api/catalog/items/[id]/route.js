@@ -20,6 +20,25 @@ export async function GET(request, { params }) {
         return new Response(JSON.stringify({ message: data.message }), { status: data.statusCode });
     }
 
+    let itemImages = [];
+
+    await Promise.all(data.images?.map(async (image) => {
+
+        const mediaRes = await fetch(`${process.env.MEDIA_API_URL}/${image.mediaId}`, {
+            next: { revalidate: 60 },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${request.headers.get('Authorization')}`
+            }
+        });
+
+        const mediaData = await mediaRes.json();
+
+        itemImages.push(mediaData);
+    }));
+
+    data.images = itemImages;
+
     return new Response(JSON.stringify(data), { status: 200 });
 
 };
@@ -44,7 +63,7 @@ export async function PATCH(request, { params }) {
 
     const mediaIds = [];
 
-    images.forEach(async (image) => {
+    await Promise.all(images.map(async (image) => {
 
         const mediaFormData = new FormData();
         mediaFormData.append('image', image);
@@ -65,11 +84,9 @@ export async function PATCH(request, { params }) {
             return new Response(JSON.stringify({ message: mediaData.message }), { status: mediaData.statusCode });
         }
 
-        console.log('mediaData', mediaData);
-
         mediaIds.push(mediaData.id);
 
-    });
+    }));
 
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`,

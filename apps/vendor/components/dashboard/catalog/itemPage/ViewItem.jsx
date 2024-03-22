@@ -19,6 +19,7 @@ import ItemAttributes from './ItemAttributes';
 import ItemVariants from './ItemVariants';
 import { useEffect, useState } from 'react';
 import fetchApi from '@/utils/fetch-api';
+import ItemImages from './ItemImages';
 
 const Status = {
     PENDING: "PENDING",
@@ -166,6 +167,10 @@ const ViewItem = ({ storeId, itemId }) => {
 
                                 <ItemBasicInfo item={item} />
 
+                                {item?.images?.length > 0 && (
+                                    <ItemImages images={item.images} />
+                                )}
+
                                 {item?.groups?.length > 0 && (
                                     <ItemOptions item={item} />
                                 )}
@@ -173,8 +178,6 @@ const ViewItem = ({ storeId, itemId }) => {
                                 {item?.attributes?.length > 0 && (
                                     <ItemAttributes item={item} />
                                 )}
-
-                                {/* @TODO: item images similar to storefront */}
 
                                 {item?.variants?.length > 0 && (
                                     <ItemVariants item={item} />

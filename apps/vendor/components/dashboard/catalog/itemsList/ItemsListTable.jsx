@@ -118,20 +118,22 @@ export const ItemsListTable = ({
                                                         width: 80
                                                     }}
                                                 >
-                                                    {
-                                                        item?.images?.[0].url ?
-                                                            <Box
-                                                                component="img"
-                                                                alt={item.name}
-                                                                src={item.images[0].url}
-                                                                sx={{
-                                                                    borderRadius: 1,
-                                                                }}
-                                                            />
-                                                            :
-                                                            <SvgIcon>
-                                                                <Image01Icon />
-                                                            </SvgIcon>
+                                                    {item?.images?.[0]?.url ?
+                                                        <Box
+                                                            component="img"
+                                                            alt={item.name}
+                                                            src={item.images[0].url}
+                                                            sx={{
+                                                                borderRadius: 1,
+                                                                height: '100%',
+                                                                width: '100%',
+                                                                objectFit: 'cover',
+                                                            }}
+                                                        />
+                                                        :
+                                                        <SvgIcon>
+                                                            <Image01Icon />
+                                                        </SvgIcon>
                                                     }
                                                 </Box>
                                                 <Box sx={{ ml: 2 }}>
