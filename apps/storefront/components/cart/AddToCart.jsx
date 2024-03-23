@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 
-export default function AddToCart({ item, isButtonDisabled }) {
+export default function AddToCart({ activeItem }) {
 
     const pathname = usePathname();
 
@@ -24,12 +24,10 @@ export default function AddToCart({ item, isButtonDisabled }) {
 
     useEffect(() => {
         const newQuantity = parseInt(inputValue);
-        if (isNaN(newQuantity) || newQuantity < 1) {
-            return setError('Quantity must be a number and at least 1');
-        }
-        if (newQuantity > item.quantity) {
-            return setError(`Quantity must be less than or equal to ${item.quantity}`);
-        }
+
+        if (isNaN(newQuantity)) return setError('Quantity must be a number');
+        if (newQuantity < 1) return setError('Quantity must be at least 1');
+        if (newQuantity > activeItem?.quantity) return setError(`Sorry. Only ${activeItem?.quantity} are available`);
 
         setError(null);
         setQuantity(newQuantity);
@@ -37,9 +35,7 @@ export default function AddToCart({ item, isButtonDisabled }) {
     }, [inputValue]);
 
     async function handleAddToCart() {
-        if (error || isButtonDisabled) {
-            return;
-        }
+        if (error) return;
 
         if (!isAuthenticated) {
             setIsDialogOpen(true);
@@ -49,7 +45,7 @@ export default function AddToCart({ item, isButtonDisabled }) {
         setLoading(true);
         try {
             await setCart({
-                item: item,
+                item: activeItem,
                 quantity: quantity
             });
             setInputValue(1);
@@ -95,14 +91,14 @@ export default function AddToCart({ item, isButtonDisabled }) {
                         error={!!error}
                         variant='outlined'
                         size='small'
-                        sx={{ width: 50 }}
+                        sx={{ width: 150 }}
                     />
                     <IconButton
                         onClick={() => { setInputValue(quantity + 1) }}
                         sx={{
                             color: 'primary.main'
                         }}
-                        disabled={quantity === item.quantity}
+                        disabled={quantity === activeItem?.quantity}
                     >
                         <SvgIcon>
                             <PlusIcon />
@@ -110,10 +106,10 @@ export default function AddToCart({ item, isButtonDisabled }) {
                     </IconButton>
                 </Stack>
                 <Button
-                    disabled={!!error || isButtonDisabled || loading}
-                    onClick={handleAddToCart}
                     variant="outlined"
                     color="primary"
+                    onClick={handleAddToCart}
+                    disabled={!!error || !activeItem || loading}
                 >
                     {
                         loading
@@ -150,24 +146,21 @@ export default function AddToCart({ item, isButtonDisabled }) {
                     <Stack
                         direction='row'
                         spacing={2}
-                        
                     >
-
-                    <Button
-                        onClick={() => setIsDialogOpen(false)}
-                        color="error"
-                        variant='outlined'
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        component={NextLink}
-                        href={`/auth/login?returnTo=${pathname}`}
-                        variant='contained'
-                    >
-                        Sign In
-                    </Button>
-
+                        <Button
+                            onClick={() => setIsDialogOpen(false)}
+                            color="error"
+                            variant='outlined'
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            component={NextLink}
+                            href={`/auth/login?returnTo=${pathname}`}
+                            variant='contained'
+                        >
+                            Sign In
+                        </Button>
                     </Stack>
                 </DialogActions>
             </Dialog>
