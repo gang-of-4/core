@@ -28,7 +28,7 @@ export default function CartItem({
             >
                 <ListItemAvatar sx={{ pr: 2 }}>
                     {
-                        cartItem?.item?.images[0]?.url ?
+                        cartItem?.item?.images?.[0]?.url ?
                             <Box
                                 borderRadius={2}
                                 component={'img'}
@@ -38,9 +38,18 @@ export default function CartItem({
                                 alt={cartItem.item.name}
                             />
                             :
-                            <SvgIcon>
-                                <Image01Icon />
-                            </SvgIcon>
+                            <Stack
+                                borderRadius={2}
+                                width={100}
+                                height={100}
+                                sx={{ bgcolor: 'grey.100' }}
+                                alignItems={'center'}
+                                justifyContent={'center'}
+                            >
+                                <SvgIcon>
+                                    <Image01Icon />
+                                </SvgIcon>
+                            </Stack>
                     }
                 </ListItemAvatar>
                 <ListItemText
