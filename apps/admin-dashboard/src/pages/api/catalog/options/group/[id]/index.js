@@ -1,118 +1,93 @@
 export default async function handler(req, res) {
+
     if (req.method === 'GET') {
-
         const token = req.headers.authorization;
-        const id = req.query.id;
-        // @TODO: integrate with back
-        // const respone = await fetch(
-        //     `${process.env.CATALOG_API_URL}/options`,
-        //     {
-        //         method: 'GET',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `${token}`
-        //         },
-        //     }
-        // );
+        const requestedId = req.query.id;
 
-        // const data = await respone.json();
+        try {
+            
+            const response = await fetch(
+                `${process.env.CATALOG_API_URL}/option-groups`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `${token}`
+                    },
+                }
+            );
 
-        const data = {
-            id: id,
-            title: "Wheel Size",
-            type: "radio",
-            values: [{
-                id: "1",
-                label: "Small",
-                value: "small"
-            }, {
-                id: "2",
-                label: "Medium",
-                value: "medium"
-            }, {
-                id: "3",
-                label: "Large",
-                value: "large"
-            }]
-        };
+            const data = await response.json();
 
-        // {
-        //     id: id,
-        //     title: "Color",
-        //     type: "Color",
-        //     values: [{
-        //         id: "1",
-        //         label: "Red",
-        //         value: "#ff0000"
-        //     }, {
-        //         id: "2",
-        //         label: "Blue",
-        //         value: "#0000ff"
-        //     }, {
-        //         id: "3",
-        //         label: "Black",
-        //         value: "#000000"
-        //     }]
-        // };
+            if (!response.ok) {
+                return res.status(data.statusCode).json({ message: data.message });
+            }
 
-        // if (!respone.ok) {
-        //     return res.status(data.statusCode).json({ message: data.message });
-        // }
-        return res.status(200).json(data);
+            // Find the option group with the requested ID
+            const requestedOptionGroup = data.find(optionGroup => optionGroup.id === requestedId);
+
+            if (!requestedOptionGroup) {
+                return res.status(404).json({ message: 'Option group not found' });
+            }
+
+            return res.status(200).json(requestedOptionGroup);
+        } catch (error) {
+            console.error('Error:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
     }
 
-    if (req.method === 'DELETE') {
-        const token = req.headers.authorization;
-        const id = req.query.id;
+    // if (req.method === 'DELETE') {
+    //     const token = req.headers.authorization;
+    //     const id = req.query.id;
 
-        // const respone = await fetch(
-        //     `${process.env.CATALOG_API_URL}/options/${id}`,
-        //     {
-        //         method: 'DELETE',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `${token}`
-        //         },
-        //     }
-        // );
+    //     const respone = await fetch(
+    //         `${process.env.CATALOG_API_URL}/option-groups/${id}`,
+    //         {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: `${token}`
+    //             },
+    //         }
+    //     );
 
-        // const data = await respone.json();
+    //     const data = await respone.json();
 
-        const data = id;
+    //     if (!respone.ok) {
+    //         return res.status(data.statusCode).json({ message: data.message });
+    //     }
 
-        // if (!respone.ok) {
-        //     return res.status(data.statusCode).json({ message: data.message });
-        // }
+    //     return res.status(200).json(data);
+    // }
 
-        return res.status(200).json(data);
-    }
+    // if (req.method === 'PATCH') {
 
-    if (req.method === 'PATCH') {
+    //     const token = req.headers.authorization;
+    //     const id = req.query.id;
+    //     const body = req.body;
+    //     // @TODO: integrate with back
+    //     const respone = await fetch(
+    //         `${process.env.CATALOG_API_URL}/options/${id}`,
+    //         {
+    //             method: 'PATCH',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: `${token}`
+    //             },
+    //             body: JSON.stringify(body)
+    //         }
+    //     );
 
-        const token = req.headers.authorization;
-        const id = req.query.id;
-        const body = req.body;
-        // @TODO: integrate with back
-        // const respone = await fetch(
-        //     `${process.env.CATALOG_API_URL}/options/${id}`,
-        //     {
-        //         method: 'PATCH',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `${token}`
-        //         },
-        //         body: JSON.stringify(body)
-        //     }
-        // );
+    //     const data = await respone.json();
 
-        // const data = await respone.json();
-
-        const data = body;
+    //     // const data = body;
         
-        // if (!respone.ok) {
-        //     return res.status(data.statusCode).json({ message: data.message });
-        // }
-        return res.status(200).json(data);
-    }
+    //     if (!respone.ok) {
+    //         return res.status(data.statusCode).json({ message: data.message });
+    //     }
+    //     return res.status(200).json(data);
+    // }
+    
     return res.status(405).json({ message: 'Method not allowed' });
 }

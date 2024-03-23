@@ -1,9 +1,8 @@
 'use client'
 
-import { Box, Button, Container, Divider, Stack, SvgIcon, Tab, Tabs, Typography, Avatar, Tooltip } from '@mui/material';
-import { React, useCallback, useState } from 'react';
+import { Box, Button, Container, Stack, SvgIcon, Typography, Avatar, Tooltip } from '@mui/material';
+import { React, useEffect, useState } from 'react';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
-import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import StoreOverview from './StoreOverview';
 import { SeverityPill } from 'ui/components/severity-pill';
 import NextLink from 'next/link';
@@ -17,13 +16,6 @@ const Status = {
   APPROVED: "APPROVED",
   REJECTED: "REJECTED",
 }
-
-const tabs = [
-  { label: 'Overview', value: 'overview' },
-  { label: 'Items', value: 'items' },
-  { label: 'Orders', value: 'orders' },
-  { label: 'Settings', value: 'settings' }
-];
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -43,7 +35,21 @@ const getStatusColor = (status) => {
 export default function Store({ unformattedStore }) {
 
   const { user } = useAuth();
-  const store = formatStore({ store: unformattedStore, user });
+  const [store, setStore] = useState(null);
+
+  useEffect(() => {
+    getFormattedStore();
+  }, []);
+
+  async function getFormattedStore() {
+    try {
+      const formattedStore = await formatStore({ store: unformattedStore, user });
+      console.log(formattedStore);
+      setStore(formattedStore);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <>
@@ -54,27 +60,9 @@ export default function Store({ unformattedStore }) {
           py: 8
         }}
       >
-        <Container maxWidth="lg">
-          {store?.type === 'individual' ?
-            <Box
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
-              <Avatar
-                sx={{
-                  height: 128,
-                  width: 128,
-                  fontSize: 64,
-                }}
-                src={store?.logo}
-              >
-                {store?.logo}
-              </Avatar>
-            </Box>
-            : (
+        {store &&
+          <Container maxWidth="lg">
+            {store?.type !== 'individual' ?
               <Box
                 sx={{
                   alignItems: 'center',
@@ -88,95 +76,102 @@ export default function Store({ unformattedStore }) {
                     width: 128,
                     fontSize: 64,
                   }}
+                  src={store?.logo?.url}
                 >
-                  <SvgIcon>
-                    <Image01Icon />
-                  </SvgIcon>
+                  {store?.logo?.name}
                 </Avatar>
               </Box>
-            )
-          }
-          <Stack
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            sx={{ mt: 5 }}
-          >
+              : (
+                <Box
+                  sx={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
+                  <Avatar
+                    sx={{
+                      height: 128,
+                      width: 128,
+                      fontSize: 64,
+                    }}
+                  >
+                    <SvgIcon>
+                      <Image01Icon />
+                    </SvgIcon>
+                  </Avatar>
+                </Box>
+              )
+            }
             <Stack
               alignItems="center"
               direction="row"
               spacing={2}
+              sx={{ mt: 5 }}
             >
-              <Typography variant="h5">
-                {store?.name}
-              </Typography>
-              <SeverityPill color={getStatusColor(store?.status)} data-test="store-status-pill">
-                {store?.status}
-              </SeverityPill>
-            </Stack>
-            <Box sx={{ flexGrow: 1 }} />
-            <Stack
-              alignItems="center"
-              direction="row"
-              spacing={2}
-            >
-              <Button
-                size="small"
-                startIcon={(
-                  <SvgIcon>
-                    <PlusIcon />
-                  </SvgIcon>
-                )}
-                variant="outlined"
-                component={NextLink}
-                href={`${store?.id}/items/add`}
+              <Stack
+                alignItems="center"
+                direction="row"
+                spacing={2}
               >
-                Add Items
-              </Button>
-              {
-                store.type === 'individual' ?
-                  (
-                    <Tooltip title="Individual stores cannot be edited">
-                      <span>
+                <Typography variant="h5">
+                  {store?.name}
+                </Typography>
+                <SeverityPill color={getStatusColor(store?.status)} data-test="store-status-pill">
+                  {store?.status}
+                </SeverityPill>
+              </Stack>
+              <Box sx={{ flexGrow: 1 }} />
+              <Stack
+                alignItems="center"
+                direction="row"
+                spacing={2}
+              >
+                {
+                  store.type === 'individual' ?
+                    (
+                      <Tooltip title="Individual stores cannot be edited">
+                        <span>
 
-                        <Button
-                          size="small"
-                          startIcon={(
-                            <SvgIcon>
-                              <Edit02Icon />
-                            </SvgIcon>
-                          )}
-                          variant="contained"
-                          disabled
-                          data-test="edit-store-button"
-                        >
-                          Edit Store
-                        </Button>
-                      </span>
-                    </Tooltip>
-                  ) : (
+                          <Button
+                            size="small"
+                            startIcon={(
+                              <SvgIcon>
+                                <Edit02Icon />
+                              </SvgIcon>
+                            )}
+                            variant="contained"
+                            disabled
+                            data-test="edit-store-button"
+                          >
+                            Edit Store
+                          </Button>
+                        </span>
+                      </Tooltip>
+                    ) : (
 
-                    <Button
-                      size="small"
-                      startIcon={(
-                        <SvgIcon>
-                          <Edit02Icon />
-                        </SvgIcon>
-                      )}
-                      variant="contained"
-                      style={{ backgroundColor: '#2970FF' }}
-                      component={NextLink}
-                      href={`${store?.id}/edit`}
-                      data-test="edit-store-button"
-                    >
-                      Edit Store
-                    </Button>
-                  )
-              }
+                      <Button
+                        size="small"
+                        startIcon={(
+                          <SvgIcon>
+                            <Edit02Icon />
+                          </SvgIcon>
+                        )}
+                        variant="contained"
+                        style={{ backgroundColor: '#2970FF' }}
+                        component={NextLink}
+                        href={`${store?.id}/edit`}
+                        data-test="edit-store-button"
+                      >
+                        Edit Store
+                      </Button>
+                    )
+                }
+              </Stack>
             </Stack>
-          </Stack>
-          <StoreOverview store={store} />
-        </Container>
+            <StoreOverview store={store} />
+          </Container>
+        }
       </Box>
     </>
   )

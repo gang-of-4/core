@@ -1,4 +1,3 @@
-import { useActiveStore } from '@/contexts/ActiveStoreContext';
 import { SvgIcon } from '@mui/material';
 import { Building02, Package } from '@untitled-ui/icons-react';
 import { HomeSmile } from 'ui/icons/untitled-ui/duocolor/home-smile';

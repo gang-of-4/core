@@ -26,23 +26,23 @@ const validationSchema = Yup.object({
     .max(255)
     .required('Description is required'),
   banner: Yup
-    .mixed()
+    .mixed(),
     // .required('Banner is required')
-    .test('fileFormat', 'Invalid file format', (value) => {
-      return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-    })
-    .test('fileSize', 'File size is too large', (value) => {
-      return value && value.size <= 2 * 1024 * 1024; // 2MB in bytes
-    }),
+    // .test('fileFormat', 'Invalid file format', (value) => {
+    //   return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+    // })
+    // .test('fileSize', 'File size is too large', (value) => {
+    //   return value && value.size <= 2 * 1024 * 1024; // 2MB in bytes
+    // }),
   logo: Yup
     .mixed()
     // .required('Logo is required')
-    .test('fileFormat', 'Invalid file format', (value) => {
-      return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-    })
-    .test('fileSize', 'File size is too large', (value) => {
-      return value && value.size <= 2 * 1024 * 1024; // 2MB in bytes
-    }),
+    // .test('fileFormat', 'Invalid file format', (value) => {
+    //   return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+    // })
+    // .test('fileSize', 'File size is too large', (value) => {
+    //   return value && value.size <= 2 * 1024 * 1024; // 2MB in bytes
+    // }),
 });
 
 const VisuallyHiddenInput = styled('input')({
@@ -77,7 +77,7 @@ export function CatecoryCreateForm() {
     validationSchema,
     onSubmit: async (values, helpers) => {
       try {
-        await catalogApi.createCategory(values)
+        await catalogApi.createCategory({name: values.name, slug: values.name.toLocaleLowerCase(), description: values.description})
 
         if (isMounted()) {
           router.push(paths.dashboard.catalog.categories.index);

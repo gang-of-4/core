@@ -11,7 +11,8 @@ import {
     Button,
     SvgIcon,
     CardContent,
-    CardHeader
+    CardHeader,
+    Tooltip
 } from '@mui/material';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import { useRouter } from 'next/router';
@@ -117,19 +118,24 @@ const Page = () => {
                                 direction="row"
                                 spacing={3}
                             >
-                                <Button
-                                    component={NextLink}
-                                    href={`${paths.dashboard.catalog.categories.index}/${id}/edit`}
-                                    startIcon={(
-                                        <SvgIcon>
-                                            <Edit02Icon />
-                                        </SvgIcon>
-                                    )}
-                                    variant="contained"
-                                    color='inherit'
-                                >
-                                    Edit
-                                </Button>
+                                <Tooltip title="This action will be added in a future release" arrow>
+                                    <div>
+                                        <Button
+                                            component={NextLink}
+                                            href={`${paths.dashboard.catalog.categories.index}/${id}/edit`}
+                                            startIcon={(
+                                                <SvgIcon>
+                                                    <Edit02Icon />
+                                                </SvgIcon>
+                                            )}
+                                            variant="contained"
+                                            color='inherit'
+                                            disabled={true}
+                                        >
+                                            Edit
+                                        </Button>
+                                    </div>
+                                </Tooltip>
                             </Stack>
                         </Stack>
 
@@ -145,7 +151,7 @@ const Page = () => {
                         <Card elevation={16}>
                             <CardHeader title='Manage category' />
                             <CardContent sx={{ pt: 1 }}>
-                                <DeleteCategory category={category}/>
+                                <DeleteCategory category={category} />
                             </CardContent>
                         </Card>
 

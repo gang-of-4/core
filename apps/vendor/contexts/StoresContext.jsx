@@ -120,21 +120,19 @@ export const StoresProvider = ({ children }) => {
         ownerNationalId,
     }) => {
 
+        const formData = new FormData();
+        formData.append('vendorId', vendorId);
+        formData.append('name', name);
+        formData.append('logo', logo);
+        formData.append('vatNumber', vatNumber);
+        formData.append('crNumber', crNumber);
+        formData.append('ownerNationalId', ownerNationalId);
+
         const { data } = await fetchApi({
             url: `/vendor/api/stores/business`,
             options: {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    vendorId,
-                    name,
-                    logo: logo ? logo : 'default',
-                    vatNumber,
-                    crNumber,
-                    ownerNationalId,
-                }),
+                body: formData,
             },
         });
 

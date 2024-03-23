@@ -1,4 +1,5 @@
-import Page from "@/components/dashboard/items/ItemsPage";
+import Page from "@/components/dashboard/catalog/itemsList/ItemsPage";
+import SelectStore from "@/components/dashboard/catalog/SelectStore";
 import React from "react";
 
 export const metadata = {
@@ -7,28 +8,20 @@ export const metadata = {
 
 async function getItems(storeId) {
 
-  // @TODO integrate with the catalog API
-  // const res = await fetch(
-  //   `${process.env.CATALOG_API_URL}/items/store/${storeId}`,
-  //   {
-  //     method: "GET",
-  //     next: { revalidate: 0 },
-  //   }
-  // );
+  const res = await fetch(
+    `${process.env.CATALOG_API_URL}/items?store_id=${storeId}`,
+    { next: { revalidate: 0 } }
+  );
 
-  // const data = await res.json();
+  const data = await res.json();
 
-  // if (!res.ok) {
-  //   throw new Error("Failed to fetch");
-  // }
-
-  const data = [
-    { id: 1, name: 'Car 1', status: 'Active' },
-    { id: 2, name: 'Car 2', status: 'Inactive' },
-  ];
+  if (!res.ok) {
+    throw new Error("Failed to fetch");
+  }
 
   return data;
 }
+
 
 export default async function page({ params }) {
 
@@ -40,7 +33,14 @@ export default async function page({ params }) {
 
   return (
     <>
-      <Page items={items} />
+      {!params.id ?
+        <SelectStore />
+        :
+        <Page
+          items={items}
+          storeId={params.id}
+        />
+      }
     </>
   );
 }

@@ -4,7 +4,6 @@ export async function GET(request, { params }) {
         id
     } = params;
 
-    // @TODO integrate with the catalog API
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`, {
         method: 'GET',
@@ -21,6 +20,25 @@ export async function GET(request, { params }) {
         return new Response(JSON.stringify({ message: data.message }), { status: data.statusCode });
     }
 
+    let itemImages = [];
+
+    await Promise.all(data.images?.map(async (image) => {
+
+        const mediaRes = await fetch(`${process.env.MEDIA_API_URL}/${image.mediaId}`, {
+            next: { revalidate: 60 },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${request.headers.get('Authorization')}`
+            }
+        });
+
+        const mediaData = await mediaRes.json();
+
+        itemImages.push(mediaData);
+    }));
+
+    data.images = itemImages;
+
     return new Response(JSON.stringify(data), { status: 200 });
 
 };
@@ -31,22 +49,45 @@ export async function PATCH(request, { params }) {
         id
     } = params;
 
-    const {
-        name,
-        quantity,
-        images,
-        price,
-        description,
-        category,
-        storeId,
-        attributes,
-        options,
-        order,
-        isActive,
-        isTaxable
-    } = await request.json();
+    const formData = await request.formData();
+    const name = formData.get('name');
+    const sku = formData.get('sku');
+    const quantity = formData.get('quantity');
+    const price = formData.get('price');
+    const description = formData.get('description');
+    const categories = JSON.parse(formData.get('categories'));
+    const options = JSON.parse(formData.get('options'));
+    const variants = JSON.parse(formData.get('variants'));
+    const storeId = formData.get('storeId');
+    const images = formData.getAll('images');
 
-    // @TODO integrate with the catalog API
+    const mediaIds = [];
+
+    await Promise.all(images.map(async (image) => {
+
+        const mediaFormData = new FormData();
+        mediaFormData.append('image', image);
+
+        const mediaRes = await fetch(
+            `${process.env.MEDIA_API_URL}/upload/image`, {
+            method: 'POST',
+            next: { revalidate: 0 },
+            headers: {
+                'Authorization': `${request.headers.get('Authorization')}`
+            },
+            body: mediaFormData
+        });
+
+        const mediaData = await mediaRes.json();
+
+        if (!mediaRes.ok) {
+            return new Response(JSON.stringify({ message: mediaData.message }), { status: mediaData.statusCode });
+        }
+
+        mediaIds.push(mediaData.id);
+
+    }));
+
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`,
         {
@@ -58,17 +99,15 @@ export async function PATCH(request, { params }) {
             },
             body: JSON.stringify({
                 name,
-                quantity,
-                images,
-                price,
+                sku,
+                quantity: +quantity,
+                price: +price,
                 description,
-                category,
-                storeId,
-                attributes,
+                categories,
                 options,
-                order,
-                isActive,
-                isTaxable
+                variants,
+                store_id: storeId,
+                images: mediaIds
             })
         });
 
@@ -88,7 +127,6 @@ export async function DELETE(request, { params }) {
         id
     } = params;
 
-    // @TODO integrate with the catalog API
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/items/${id}`, {
         method: 'DELETE',

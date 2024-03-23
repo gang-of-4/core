@@ -1,6 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next';
-import ViewItem from '@/components/dashboard/items/ViewItem';
+import ViewItem from '@/components/dashboard/catalog/itemPage/ViewItem';
 
 
 
@@ -9,12 +9,15 @@ export const metadata: Metadata = {
   description: 'View car'
 };
 
-export default function page({ params }: { params: { id: string } }) {
+export default function page({ params }: { params: { id: string, itemId: string } }) {
 
   return (
     <>
-    <ViewItem />
+      <ViewItem
+        itemId={params.itemId}
+        storeId={params.id}
+      />
     </>
-    
+
   )
 }

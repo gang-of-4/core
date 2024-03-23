@@ -13,23 +13,35 @@ import {
     TableHead,
     TableRow,
     Tooltip,
-    Typography,
 } from '@mui/material';
 import { Scrollbar } from '../../../../components/scrollbar';
 import { paths } from '../../../../paths';
 import { DeleteCategoryDialog } from './delete-category-dialog';
 import { useState } from 'react';
+import { catalogApi } from '../../../../api/catalog';
 
 
 export const CategoryListTable = (props) => {
     const {
         categories,
         categoriesCount,
+        handleUpdate,
         ...other
     } = props;
 
     const [isOpen, setIsOpen] = useState(false);
     const [activeCategory, setActiveCategory] = useState(null)
+
+    async function handleDelete(categoryId) {
+        try {
+            await catalogApi.deleteCategory(categoryId);
+            handleUpdate();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsOpen(false)
+        }
+    }
 
     return (
         <div {...other}>
@@ -95,14 +107,19 @@ export const CategoryListTable = (props) => {
                                                     <Trash01Icon />
                                                 </SvgIcon>
                                             </IconButton>
-                                            <IconButton
-                                                component={NextLink}
-                                                href={`${paths.dashboard.catalog.categories.index}/${category.id}/edit`}
-                                            >
-                                                <SvgIcon>
-                                                    <Edit02Icon />
-                                                </SvgIcon>
-                                            </IconButton>
+                                            <Tooltip title="This action will be added in a future release" arrow>
+                                                <div>
+                                                    <IconButton
+                                                        component={NextLink}
+                                                        href={`${paths.dashboard.catalog.categories.index}/${category.id}/edit`}
+                                                        disabled
+                                                    >
+                                                        <SvgIcon>
+                                                            <Edit02Icon />
+                                                        </SvgIcon>
+                                                    </IconButton>
+                                                </div>
+                                            </Tooltip>
                                         </Stack>
                                     </TableCell>
                                 </TableRow>
@@ -111,7 +128,12 @@ export const CategoryListTable = (props) => {
                     </TableBody>
                 </Table>
             </Scrollbar>
-            <DeleteCategoryDialog category={activeCategory} isOpen={isOpen} setIsOpen={setIsOpen} />
+            <DeleteCategoryDialog
+                category={activeCategory}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                handleDelete={handleDelete}
+            />
         </div>
     );
 };

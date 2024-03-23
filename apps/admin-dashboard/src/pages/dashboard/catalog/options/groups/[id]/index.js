@@ -11,7 +11,7 @@ import {
     Button,
     SvgIcon,
     CardContent,
-    CardHeader
+    CardHeader,
 } from '@mui/material';
 import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
 import { useCallback, useEffect, useState } from 'react';
@@ -143,7 +143,7 @@ const Page = () => {
                         <Card elevation={16}>
                             <CardHeader title='Manage Group' />
                             <CardContent sx={{ pt: 1 }}>
-                                <DeleteOption group={group}/>
+                                <DeleteOption group={group} />
                             </CardContent>
                         </Card>
 

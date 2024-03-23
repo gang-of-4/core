@@ -59,6 +59,24 @@ class StoresApi {
     });
   }
 
+  async getStore(id) {
+
+    let store;
+    try {
+      const { data } = await fetchApi({
+        url: `/admin/api/stores/${id}`,
+        options: {
+          method: 'GET',
+        }
+      });
+      store = await formatStores([data]);
+    } catch (err) {
+      console.error(err);
+    }
+
+    return Promise.resolve(store[0]);
+  }
+
   async updateStore(store) {
     const { id } = store;
 
@@ -96,6 +114,21 @@ class StoresApi {
       });
 
       return Promise.resolve(updatedStore);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async deletStore(id) {
+    try {
+      await fetchApi({
+        url: `/admin/api/stores/${id}`,
+        options: {
+          method: 'DELETE',
+        }
+      });
+
+      return Promise.resolve();
     } catch (err) {
       console.error(err);
     }

@@ -36,10 +36,9 @@ export default function CategoriesFilterSet({ onChange, categories, isChecked })
                     </Stack>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Stack
-                            alignItems="center"
-                            direction="row"
-                            flexWrap="wrap"
-                            columnGap={1}
+                            alignItems="start"
+                            direction="column"
+                            paddingLeft={1}
                         >
                             {
                                 categories?.map((category) => (

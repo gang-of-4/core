@@ -22,7 +22,9 @@ export default function CategoryCard({
                 <Link href={`catalog/categories/${id}`}>
                     <CardContent
                         sx={{
-                            background: `linear-gradient( rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) ), url(${image. url})`,
+                            background: image ? 
+                            `linear-gradient( rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) ), url(${image?.url})`
+                            : 'linear-gradient( rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) )',
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',

@@ -61,7 +61,7 @@ const validationSchema = Yup.object({
         .notRequired()
         .test('fileFormat', 'Invalid file format. Only images are allowed.', (value) => {
             if (!value) return true;
-            return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+            return value && ['image/jpeg', 'image/png'].includes(value.type);
         })
         .test('fileSize', 'File size is too large. Maximum size is 2MB.', (value) => {
             if (!value) return true;
@@ -180,7 +180,7 @@ export default function Page() {
                                         value={formik.values.ownerNationalId}
                                     />
                                     <Typography variant="body2" color="textSecondary" sx={{ pl: 1 }}>
-                                        Accepted formats: JPEG, PNG, GIF.
+                                        Accepted formats: JPEG, PNG.
                                         <br />
                                         Maximum size: 2MB
                                     </Typography>
@@ -201,7 +201,7 @@ export default function Page() {
                                                 formik.setFieldValue('logo', selectedFile);
                                                 setSelectedFileName(selectedFile ? selectedFile.name : '');
                                             }}
-                                            inputProps={{ accept: 'image/jpeg, image/png, image/gif' }}
+                                            inputProps={{ accept: 'image/jpeg, image/png' }}
                                         />
                                     </Button>
                                     {formik.touched.logo && formik.errors.logo && (

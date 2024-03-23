@@ -24,8 +24,8 @@ export default function Category({ category }) {
             <Grid item xs={12}>
                 <Box
                     component={'img'}
-                    src={category.banner.url}
-                    alt={category.banner.alt}
+                    src={category.banner?.url}
+                    alt={category.banner?.alt}
                     sx={{
                         width: '100%',
                         height: 'auto',
@@ -50,13 +50,14 @@ export default function Category({ category }) {
                         </Typography>
                         <Button
                             variant="contained"
-                            color="primary"
                             onClick={handleClick}
                             endIcon={
                                 <SvgIcon>
                                     <ArrowCircleRight />
                                 </SvgIcon>
                             }
+                            style={{ backgroundColor: '#2970FF' }}
+
                         >
                             Browse {category.name} Cars
                         </Button>

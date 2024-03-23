@@ -2,31 +2,23 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
 
         const token = req.headers.authorization;
-        // @TODO: integrate with back
-        // const respone = await fetch(
-        //     `${process.env.CATALOG_API_URL}/categories`,
-        //     {
-        //         method: 'GET',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `${token}`
-        //         },
-        //     }
-        // );
-
-        // const data = await respone.json();
-
-        const data = [
+        
+        const response = await fetch(
+            `${process.env.CATALOG_API_URL}/categories`,
             {
-                id: "1",
-                name: "Color",
-                description: "color",
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${token}`
+                },
             }
-        ];
+        );
+    
+        const data = await response.json();
 
-        // if (!respone.ok) {
-        //     return res.status(data.statusCode).json({ message: data.message });
-        // }
+        if (!response.ok) {
+            return res.status(data.statusCode).json({ message: data.message });
+        }
         return res.status(200).json(data);
     }
 
@@ -34,26 +26,24 @@ export default async function handler(req, res) {
 
         const token = req.headers.authorization;
         const body = req.body;
-        // @TODO: integrate with back
-        // const respone = await fetch(
-        //     `${process.env.CATALOG_API_URL}/categories`,
-        //     {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `${token}`
-        //         },
-        //         body: JSON.stringify(body)
-        //     }
-        // );
+        
+        const response = await fetch(
+            `${process.env.CATALOG_API_URL}/categories`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${token}`
+                },
+                body: JSON.stringify(body)
+            }
+        );
+        
+        const data = await response.json();
 
-        // const data = await respone.json();
-
-        const data = body;
-
-        // if (!respone.ok) {
-        //     return res.status(data.statusCode).json({ message: data.message });
-        // }
+        if (!response.ok) {
+            return res.status(data.statusCode).json({ message: data.message });
+        }
         return res.status(200).json(data);
     }
 

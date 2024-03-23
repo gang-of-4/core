@@ -12,20 +12,19 @@ import {
 import { Layout as DashboardLayout } from '../../../../layouts/dashboard';
 import { useMounted } from '../../../../hooks/use-mounted';
 import { useCallback, useEffect, useState } from 'react';
-import { storesApi } from '../../../../api/stores';
-import { CarsListSearch } from '../../../../sections/dashboard/cars/cars-list-search'; // Cars
-import { CarsListTable } from '../../../../sections/dashboard/cars/cars-list-table'; //Cars
 import { BreadcrumbsSeparator } from '../../../../components/breadcrumbs-separator';
 import { paths } from '../../../../paths';
+import { ItemsListTable } from '../../../../sections/dashboard/catalog/items/item-list-table';
+import { ItemsListSearch } from '../../../../sections/dashboard/catalog/items/item-list-search';
+import { catalogApi } from '../../../../api/catalog';
+
 
 const useSearch = () => {
   const [search, setSearch] = useState({
     filters: {
       name: undefined,
       status: [],
-    },
-    page: 0,
-    rowsPerPage: 5
+    }
   });
 
   return {
@@ -34,20 +33,21 @@ const useSearch = () => {
   };
 };
 
-const useCars = (search, hasUpdatedCars) => {
+const useItems = (search, hasUpdatedItems) => {
   const isMounted = useMounted();
   const [state, setState] = useState({
-    cars: [],
-    carsCount: 0
+    items: []
   });
 
-  const getCars = useCallback(async () => {
+  const getItems = useCallback(async () => {
     try {
-      const response = await carsApi.getCars(search);
+      const data = await catalogApi.getItems({
+        q: search.filters.name,
+        status: search.filters.status
+      });
       if (isMounted()) {
         setState({
-          cars: response.data,
-          carsCount: response.count
+          items: data,
         });
       }
     } catch (err) {
@@ -56,35 +56,26 @@ const useCars = (search, hasUpdatedCars) => {
   }, [search, isMounted]);
 
   useEffect(() => {
-    getCars();
-  }, [search, hasUpdatedCars]);
+    getItems();
+  }, [search, hasUpdatedItems]);
 
   return state;
 };
 
 const Page = () => {
+
   const { search, updateSearch } = useSearch();
-  const [hasUpdatedCars, setHasUpdatedCars] = useState(false);
-  const { cars, carsCount } = useCars(search, hasUpdatedCars);
+  const [hasUpdatedItems, setHasUpdatedItems] = useState(false);
+
+  const { items } = useItems(search, hasUpdatedItems);
 
   const handleFiltersChange = useCallback((filters) => {
     updateSearch((prevState) => ({
       ...prevState,
-      filters
-    }));
-  }, [updateSearch]);
-
-  const handlePageChange = useCallback((event, page) => {
-    updateSearch((prevState) => ({
-      ...prevState,
-      page
-    }));
-  }, [updateSearch]);
-
-  const handleRowsPerPageChange = useCallback((event) => {
-    updateSearch((prevState) => ({
-      ...prevState,
-      rowsPerPage: parseInt(event.target.value, 10)
+      filters: {
+        ...prevState.filters,
+        ...filters
+      }
     }));
   }, [updateSearch]);
 
@@ -132,16 +123,11 @@ const Page = () => {
               </Stack>
             </Stack>
             <Card>
-              <CarsListSearch onFiltersChange={handleFiltersChange} />
-              <CarsListTable
-                onPageChange={handlePageChange}
-                onRowsPerPageChange={handleRowsPerPageChange}
-                page={search.page}
-                cars={cars}
-                carsCount={carsCount}
-                rowsPerPage={search.rowsPerPage}
-                hasUpdatedCars={hasUpdatedCars}
-                setHasUpdatedCars={setHasUpdatedCars}
+              <ItemsListSearch onFiltersChange={handleFiltersChange} />
+              <ItemsListTable
+                items={items}
+                hasUpdatedItems={hasUpdatedItems}
+                setHasUpdatedItems={setHasUpdatedItems}
               />
             </Card>
           </Stack>

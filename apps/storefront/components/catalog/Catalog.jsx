@@ -16,16 +16,23 @@ export default function Catalog({ items, filters, title }) {
 
   useEffect(() => {
     const interval = setTimeout(() => {
-        fetchItems({ searchQuery, appliedFilters })
+      fetchItems({ searchQuery, appliedFilters })
     }, 500);
     return () => clearInterval(interval);
   }, [searchQuery])
 
-
   async function fetchItems({ searchQuery, appliedFilters }) {
 
+    let filters = [];
+
+    for (const group in appliedFilters) {
+      appliedFilters[group].forEach(option => {
+        filters.push(option.id)
+      })
+    }
+    const query = filters.join(',')
     try {
-      const res = await fetch(`/api/catalog/items?q=${searchQuery}&filters=${JSON.stringify(appliedFilters)}`, {
+      const res = await fetch(`/api/catalog/items?${searchQuery ? `search=${searchQuery}&` : ''}${query ? `filter=${query}` : ''}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

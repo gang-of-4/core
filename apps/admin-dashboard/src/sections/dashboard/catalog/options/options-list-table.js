@@ -93,16 +93,21 @@ export const OptionListTable = (props) => {
                                             direction="row"
                                             spacing={1}
                                         >
-                                            <IconButton
-                                                onClick={() => {
-                                                    setActiveGroup(group);
-                                                    setIsOpen(true);
-                                                }}
-                                            >
-                                                <SvgIcon>
-                                                    <Trash01Icon />
-                                                </SvgIcon>
-                                            </IconButton>
+                                            <Tooltip title="This action will be added in a future release" arrow>
+                                                <div>
+                                                    <IconButton
+                                                        onClick={() => {
+                                                            setActiveGroup(group);
+                                                            setIsOpen(true);
+                                                        }}
+                                                    >
+                                                        <SvgIcon>
+                                                            <Trash01Icon />
+                                                        </SvgIcon>
+                                                    </IconButton>
+                                                </div>
+                                            </Tooltip>
+
                                             <IconButton
                                                 component={NextLink}
                                                 href={`${paths.dashboard.catalog.options.groups.index}/${group.id}/edit`}
@@ -119,7 +124,7 @@ export const OptionListTable = (props) => {
                     </TableBody>
                 </Table>
             </Scrollbar>
-            <DeleteOptionDialog group={activeGroup} isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <DeleteOptionDialog group={activeGroup} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     );
 };

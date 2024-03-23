@@ -1,6 +1,5 @@
 export async function GET(request) {
 
-    // @TODO integrate with the catalog API
     const res = await fetch(
         `${process.env.CATALOG_API_URL}/categories`, {
         method: 'GET',

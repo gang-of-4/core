@@ -1,6 +1,6 @@
 "use client"
-import React, { useState } from 'react'
-import { Checkbox, Collapse, FormControlLabel, IconButton, Stack, SvgIcon, Typography } from '@mui/material'
+import React, { Fragment, useState } from 'react'
+import { Box, Checkbox, Collapse, FormControlLabel, IconButton, Stack, SvgIcon, Typography } from '@mui/material'
 import ChevronDownIcon from '@untitled-ui/icons-react/build/esm/ChevronDown';
 import ChevronRightIcon from '@untitled-ui/icons-react/build/esm/ChevronRight';
 
@@ -33,29 +33,64 @@ export default function FilterGroup({ group, onChange, isChecked }) {
             </Stack>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <Stack
-                    alignItems="center"
-                    direction="row"
-                    flexWrap="wrap"
-                    columnGap={1}
+                    alignItems="start"
+                    direction="column"
+                    paddingLeft={1}
                 >
-                    {group?.values?.map((option) => (
-                        <FormControlLabel
-                            key={option.id}
-                            control={(
-                                <Checkbox
-                                    checked={isChecked({ index: group.title, option })}
-                                    onChange={(event) => onChange({ index: group.title, option, event })}
-                                    value={option.value}
-                                    name={option.label}
+                    {group?.options?.map((option, index) => {
+                        if (group.type === 'COLOR') {
+                            return (
+                                <Stack
+                                    key={option.id}
+                                    direction="row"
+                                    alignItems="center"
+                                    justifyContent={'start'}
+                                    width={'100%'}
+                                >
+                                    <FormControlLabel
+                                        control={(
+                                            <Checkbox
+                                                checked={isChecked({ index: group.title, option })}
+                                                onChange={(event) => onChange({ index: group.title, option, event })}
+                                                value={option.value}
+                                                name={option.label}
+                                            />
+                                        )}
+                                        sx={{
+                                            mr: 0,
+                                        }}
+                                    />
+                                    <Box
+                                        sx={{
+                                            backgroundColor: option.value,
+                                            borderRadius: 1,
+                                            height: 24,
+                                            width: 24,
+                                        }}
+                                    />
+                                </Stack>
+                            )
+                        } else {
+                            return (
+                                <FormControlLabel
+                                    key={option.id}
+                                    control={(
+                                        <Checkbox
+                                            checked={isChecked({ index: group.title, option })}
+                                            onChange={(event) => onChange({ index: group.title, option, event })}
+                                            value={option.value}
+                                            name={option.label}
+                                        />
+                                    )}
+                                    label={option.label}
+                                    sx={{
+                                        flexGrow: 1,
+                                        mr: 0,
+                                    }}
                                 />
-                            )}
-                            label={option.label}
-                            sx={{
-                                flexGrow: 1,
-                                mr: 0,
-                            }}
-                        />
-                    ))}
+                            )
+                        }
+                    })}
                 </Stack>
             </Collapse>
         </>

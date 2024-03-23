@@ -75,12 +75,9 @@ const Page = () => {
                             title={`Edit Option Group: ${optionGroup?.title}`}
                         />
                         <CardContent>
-                            {
-                                optionGroup && (
-
-                                    <OptionEditForm group={optionGroup} />
-                                )
-                            }
+                            {optionGroup && (
+                                <OptionEditForm group={optionGroup} />
+                            )}
                         </CardContent>
                     </Card>
                 </Container>

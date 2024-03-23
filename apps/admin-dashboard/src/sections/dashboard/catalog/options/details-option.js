@@ -47,7 +47,7 @@ export function OptionDetails({ group }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {group?.values?.map((option) => {
+                {group?.options?.map((option) => {
 
                   return (
                     <TableRow
@@ -55,7 +55,6 @@ export function OptionDetails({ group }) {
                       key={option.id}
                     >
                       <TableCell />
-
                       <TableCell>
 
                         <Typography variant="subtitle2">
@@ -63,15 +62,15 @@ export function OptionDetails({ group }) {
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        {group.type === 'radio' ? (
+                        {group.type === 'TEXT' ? (
                           <Typography variant="subtitle2">
                             {option.value}
                           </Typography>
                         ) : (
                           <Box
+                            borderRadius={1}
                             sx={{
                               backgroundColor: option.value,
-                              borderRadius: 8,
                               height: 24,
                               width: 24,
                             }}
