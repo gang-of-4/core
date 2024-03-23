@@ -24,7 +24,6 @@ export default function ItemPage({ item }) {
     updateActiveVariant(newOptions);
   }
 
-
   function initActiveVariant() {
     if (item?.variants && item.variants.length > 0) {
       return null;
