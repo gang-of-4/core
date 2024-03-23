@@ -15,23 +15,9 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import { GuestGuard } from 'ui/guards/guest-guard';
-import { IssuerGuard } from 'ui/guards/issuer-guard';
-import { useAuth } from 'ui/hooks/use-auth';
 import { useMounted } from 'ui/hooks/use-mounted';
-import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
 import { paths } from 'ui/paths';
-// import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
-import { Issuer } from 'ui/utils/auth';
-
-const useParams = () => {
-    const searchParams = useSearchParams();
-    const returnTo = searchParams.get('returnTo') || undefined;
-
-    return {
-        returnTo
-    };
-};
+import { useAuth } from '@/contexts/AuthContext';
 
 const initialValues = {
     email: '',
@@ -70,11 +56,10 @@ const validationSchema = Yup.object({
         .required('Password confirmation is required')
 });
 
-const Page = () => {
+export default function Page() {
     const isMounted = useMounted();
     const router = useRouter();
-    const { returnTo } = useParams();
-    const { issuer, signUp } = useAuth();
+    const { signUp } = useAuth();
     const formik = useFormik({
         initialValues,
         validationSchema,
@@ -91,7 +76,7 @@ const Page = () => {
                 await signUp(userInfo, 'vendor');
 
                 if (isMounted()) {
-                    router.push(returnTo || '/onboarding');
+                    router.push('/onboarding');
                 }
             } catch (err) {
                 console.error(err);
@@ -227,24 +212,8 @@ const Page = () => {
                             </form>
                         </CardContent>
                     </Card>
-                    {/* @todo: API to get issuers */}
-                    {/* <Box sx={{ mt: 3 }}>
-                        <AuthIssuer issuer={issuer} />
-                    </Box> */}
                 </div>
             </div>
         </>
     );
 };
-
-Page.getLayout = (page) => (
-    <IssuerGuard issuer={Issuer.JWT}>
-        <GuestGuard>
-            <AuthLayout>
-                {page}
-            </AuthLayout>
-        </GuestGuard>
-    </IssuerGuard>
-);
-
-export default Page;

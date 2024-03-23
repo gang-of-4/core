@@ -73,6 +73,9 @@ export const StoresListSearch = (props) => {
     const handleQueryChange = useCallback((event) => {
         event.preventDefault();
         setQuery(queryRef.current?.value || '');
+        onFiltersChange?.({
+            name: queryRef.current?.value || '',
+        });
     }, []);
 
     const handleStatusChange = useCallback((values) => {

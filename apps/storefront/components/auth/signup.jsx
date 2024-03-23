@@ -15,14 +15,10 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import { GuestGuard } from 'ui/guards/guest-guard';
-import { IssuerGuard } from 'ui/guards/issuer-guard';
-import { useAuth } from 'ui/hooks/use-auth';
 import { useMounted } from 'ui/hooks/use-mounted';
-import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
 import { paths } from 'ui/paths';
-// import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
-import { Issuer } from 'ui/utils/auth';
+import { useAuth } from '@/contexts/AuthContext';
+import { GuestGuard } from '@/components/auth/guest-guard';
 
 const useParams = () => {
     const searchParams = useSearchParams();
@@ -70,25 +66,24 @@ const validationSchema = Yup.object({
         .required('Password confirmation is required')
 });
 
-const Page = () => {
+export default function Page() {
     const isMounted = useMounted();
     const router = useRouter();
     const { returnTo } = useParams();
-    const { issuer, signUp } = useAuth();
+    const { signUp } = useAuth();
     const formik = useFormik({
         initialValues,
         validationSchema,
         onSubmit: async (values, helpers) => {
             try {
-                const userInfo = {
+                await signUp({
                     email: values.email,
                     firstName: values.firstName,
                     lastName: values.lastName,
                     phone: values?.phone,
                     password: values.password,
                     passwordConfirmation: values.passwordConfirmation
-                }
-                await signUp(userInfo, 'customer');
+                });
 
                 if (isMounted()) {
                     router.push(returnTo || paths.storefront.index);
@@ -107,144 +102,130 @@ const Page = () => {
 
     return (
         <>
-            <div className='flex items-center justify-center w-screen h-screen'>
-                <div className='w-4/5 max-w-lg'>
-                    <Card elevation={16}>
-                        <CardHeader
-                            subheader={(
-                                <Typography
-                                    color="text.secondary"
-                                    variant="body2"
-                                >
-                                    Already have an account?
-                                    &nbsp;
-                                    <Link
-                                        component={NextLink}
-                                        href={paths.auth.login}
-                                        underline="hover"
-                                        variant="subtitle2"
+            <GuestGuard>
+                <div className='flex items-center justify-center w-screen h-screen'>
+                    <div className='w-4/5 max-w-lg'>
+                        <Card elevation={16}>
+                            <CardHeader
+                                subheader={(
+                                    <Typography
+                                        color="text.secondary"
+                                        variant="body2"
                                     >
-                                        Login
-                                    </Link>
-                                </Typography>
-                            )}
-                            sx={{ pb: 0 }}
-                            title="Customer Sign up"
-                        />
-                        <CardContent>
-                            <form
-                                noValidate
-                                onSubmit={formik.handleSubmit}
-                            >
-                                <Stack spacing={3}>
-                                    <TextField
-                                        error={!!(formik.touched.firstName && formik.errors.firstName)}
-                                        fullWidth
-                                        helperText={formik.touched.firstName && formik.errors.firstName}
-                                        label="First Name"
-                                        name="firstName"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="firstName"
-                                        value={formik.values.firstName}
-                                    />
-                                    <TextField
-                                        error={!!(formik.touched.lastName && formik.errors.lastName)}
-                                        fullWidth
-                                        helperText={formik.touched.lastName && formik.errors.lastName}
-                                        label="Last Name"
-                                        name="lastName"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="lastName"
-                                        value={formik.values.lastName}
-                                    />
-                                    <TextField
-                                        error={!!(formik.touched.email && formik.errors.email)}
-                                        fullWidth
-                                        helperText={formik.touched.email && formik.errors.email}
-                                        label="Email Address"
-                                        name="email"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="email"
-                                        value={formik.values.email}
-                                    />
-                                    <TextField
-                                        error={!!(formik.touched.phone && formik.errors.phone)}
-                                        fullWidth
-                                        helperText={formik.touched.phone && formik.errors.phone}
-                                        label="Phone Number (optional)"
-                                        name="phone"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="phone"
-                                        value={formik.values.phone}
-                                    />
-                                    <TextField
-                                        error={!!(formik.touched.password && formik.errors.password)}
-                                        fullWidth
-                                        helperText={formik.touched.password && formik.errors.password}
-                                        label="Password"
-                                        name="password"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="password"
-                                        value={formik.values.password}
-                                    />
-                                    <TextField
-                                        error={!!(formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)}
-                                        fullWidth
-                                        helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
-                                        label="Password Confirmation"
-                                        name="passwordConfirmation"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="password"
-                                        value={formik.values.passwordConfirmation}
-                                    />
-                                </Stack>
-
-                                {formik.errors.submit && (
-                                    <FormHelperText
-                                        error
-                                        sx={{ mt: 3 }}
-                                    >
-                                        {formik.errors.submit}
-                                    </FormHelperText>
+                                        Already have an account?
+                                        &nbsp;
+                                        <Link
+                                            component={NextLink}
+                                            href={paths.auth.login}
+                                            underline="hover"
+                                            variant="subtitle2"
+                                        >
+                                            Login
+                                        </Link>
+                                    </Typography>
                                 )}
-                                <Button
-                                    disabled={formik.isSubmitting}
-                                    fullWidth
-                                    size="large"
-                                    sx={{ mt: 2 }}
-                                    type="submit"
-                                    variant="contained"
-                                    style={{ backgroundColor: '#2970FF' }}
+                                sx={{ pb: 0 }}
+                                title="Customer Sign up"
+                            />
+                            <CardContent>
+                                <form
+                                    noValidate
+                                    onSubmit={formik.handleSubmit}
                                 >
-                                    Sign up
-                                </Button>
-                            </form>
-                        </CardContent>
-                    </Card>
-                    {/* @todo: API to get issuers */}
-                    {/* <Box sx={{ mt: 3 }}>
-                        <AuthIssuer issuer={issuer} />
-                    </Box> */}
+                                    <Stack spacing={3}>
+                                        <TextField
+                                            error={!!(formik.touched.firstName && formik.errors.firstName)}
+                                            fullWidth
+                                            helperText={formik.touched.firstName && formik.errors.firstName}
+                                            label="First Name"
+                                            name="firstName"
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            type="firstName"
+                                            value={formik.values.firstName}
+                                        />
+                                        <TextField
+                                            error={!!(formik.touched.lastName && formik.errors.lastName)}
+                                            fullWidth
+                                            helperText={formik.touched.lastName && formik.errors.lastName}
+                                            label="Last Name"
+                                            name="lastName"
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            type="lastName"
+                                            value={formik.values.lastName}
+                                        />
+                                        <TextField
+                                            error={!!(formik.touched.email && formik.errors.email)}
+                                            fullWidth
+                                            helperText={formik.touched.email && formik.errors.email}
+                                            label="Email Address"
+                                            name="email"
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            type="email"
+                                            value={formik.values.email}
+                                        />
+                                        <TextField
+                                            error={!!(formik.touched.phone && formik.errors.phone)}
+                                            fullWidth
+                                            helperText={formik.touched.phone && formik.errors.phone}
+                                            label="Phone Number (optional)"
+                                            name="phone"
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            type="phone"
+                                            value={formik.values.phone}
+                                        />
+                                        <TextField
+                                            error={!!(formik.touched.password && formik.errors.password)}
+                                            fullWidth
+                                            helperText={formik.touched.password && formik.errors.password}
+                                            label="Password"
+                                            name="password"
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            type="password"
+                                            value={formik.values.password}
+                                        />
+                                        <TextField
+                                            error={!!(formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)}
+                                            fullWidth
+                                            helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
+                                            label="Password Confirmation"
+                                            name="passwordConfirmation"
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            type="password"
+                                            value={formik.values.passwordConfirmation}
+                                        />
+                                    </Stack>
+
+                                    {formik.errors.submit && (
+                                        <FormHelperText
+                                            error
+                                            sx={{ mt: 3 }}
+                                        >
+                                            {formik.errors.submit}
+                                        </FormHelperText>
+                                    )}
+                                    <Button
+                                        disabled={formik.isSubmitting}
+                                        fullWidth
+                                        size="large"
+                                        sx={{ mt: 2 }}
+                                        type="submit"
+                                        variant="contained"
+                                        style={{ backgroundColor: '#2970FF' }}
+                                    >
+                                        Sign up
+                                    </Button>
+                                </form>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
-            </div>
+            </GuestGuard>
         </>
     );
 };
-
-Page.getLayout = (page) => (
-    <IssuerGuard issuer={Issuer.JWT}>
-        <GuestGuard>
-            <AuthLayout>
-                {page}
-            </AuthLayout>
-        </GuestGuard>
-    </IssuerGuard>
-);
-
-export default Page;

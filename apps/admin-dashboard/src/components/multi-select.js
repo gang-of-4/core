@@ -39,6 +39,7 @@ export const MultiSelect = (props) => {
         )}
         onClick={handleMenuOpen}
         ref={anchorRef}
+        data-test={`multi-select-${label}`}
         {...other}>
         {label}
       </Button>
@@ -58,6 +59,7 @@ export const MultiSelect = (props) => {
                   value={option.value}
                 />
               )}
+              data-test={`multi-select-${label}-${option.value}`}
               label={option.label}
               sx={{
                 flexGrow: 1,

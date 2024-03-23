@@ -73,7 +73,7 @@ export const StoresListTable = (props) => {
             await storesApi.updateStore({
                 id: values.id,
                 status: values.status
-            }); 
+            });
         } else {
             await storesApi.updateStore({
                 id: values.id,
@@ -84,16 +84,23 @@ export const StoresListTable = (props) => {
         toast.success('Store updated');
     }, []);
 
-    const handleStoreDelete = useCallback(() => {
-        toast.error('Store cannot be deleted');
-    }, []);
+    async function handleStoreDelete(id) {
+        try {
+            await storesApi.deletStore(id);
+            setHasUpdatedStores(!hasUpdatedStores);
+            toast.success('Store deleted');
+        } catch (err) {
+            console.error(err);
+            toast.error('Something went wrong');
+        }
+    }
 
 
 
     return (
         <div {...other}>
             <Scrollbar>
-                <Table sx={{ minWidth: 1200 }}>
+                <Table sx={{ minWidth: 1000 }}>
                     <TableHead>
                         <TableRow>
                             <TableCell />
@@ -142,7 +149,10 @@ export const StoresListTable = (props) => {
                                             }}
                                             width="25%"
                                         >
-                                            <IconButton onClick={() => handleStoreToggle(store.id)}>
+                                            <IconButton
+                                                onClick={() => handleStoreToggle(store.id)}
+                                                data-test={`store-toggle-${store?.name}`}
+                                            >
                                                 <SvgIcon>
                                                     {isCurrent ? <ChevronDownIcon /> : <ChevronRightIcon />}
                                                 </SvgIcon>
@@ -155,21 +165,38 @@ export const StoresListTable = (props) => {
                                                     display: 'flex'
                                                 }}
                                             >
-                                                <Box
-                                                    sx={{
-                                                        alignItems: 'center',
-                                                        backgroundColor: 'neutral.50',
-                                                        borderRadius: 1,
-                                                        display: 'flex',
-                                                        height: 80,
-                                                        justifyContent: 'center',
-                                                        width: 80
-                                                    }}
-                                                >
-                                                    <SvgIcon>
-                                                        <Image01Icon />
-                                                    </SvgIcon>
-                                                </Box>
+                                                {store.logo ?
+                                                    <Box
+                                                        sx={{
+                                                            alignItems: 'center',
+                                                            borderRadius: 1,
+                                                            display: 'flex',
+                                                            height: 80,
+                                                            justifyContent: 'center',
+                                                            width: 80,
+                                                            objectFit: 'cover',
+                                                            overflow: 'hidden'
+                                                        }}
+                                                        component="img"
+                                                        src={store.logo?.url}
+                                                        alt={store.logo?.name}
+                                                    />
+                                                    :
+                                                    <Box
+                                                        sx={{
+                                                            alignItems: 'center',
+                                                            backgroundColor: 'neutral.50',
+                                                            borderRadius: 1,
+                                                            display: 'flex',
+                                                            height: 80,
+                                                            justifyContent: 'center',
+                                                            width: 80
+                                                        }}
+                                                    >
+                                                        <SvgIcon>
+                                                            <Image01Icon />
+                                                        </SvgIcon>
+                                                    </Box>}
                                                 <Box
                                                     sx={{
                                                         cursor: 'pointer',
@@ -192,13 +219,6 @@ export const StoresListTable = (props) => {
                                                 {store.status}
                                             </SeverityPill>
                                         </TableCell>
-                                        {/* <TableCell align="right">
-                                            <IconButton>
-                                                <SvgIcon>
-                                                    <DotsHorizontalIcon />
-                                                </SvgIcon>
-                                            </IconButton>
-                                        </TableCell> */}
                                     </TableRow>
                                     {isCurrent && (
                                         <CurrentStore

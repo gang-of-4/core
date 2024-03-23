@@ -11,6 +11,9 @@
     },
     "prisma:generate": {
       "dependsOn": ["^prisma:generate"],
+      "inputs": [
+        "prisma/schema.prisma"
+      ],
       "cache": false
     },
     "prisma:push": {

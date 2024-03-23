@@ -4,11 +4,9 @@ import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 import { paths } from '../../paths';
 import { AccountButton } from '../../layouts/dashboard/account-button';
-import { useAuth } from '../../hooks/use-auth'
 
 
-export function Account({app}) {
-  const { isAuthenticated } = useAuth();
+export function Account({app, auth}) {
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   const pathname = usePathname();
@@ -41,8 +39,8 @@ export function Account({app}) {
 
   return (
     <div>
-      {isAuthenticated ? (
-        <AccountButton />
+      {auth.isAuthenticated ? (
+        <AccountButton auth={auth} />
       ) : (
         Else
       )}

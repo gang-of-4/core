@@ -57,7 +57,7 @@ const VerticalLayoutContainer = styled('div')({
 });
 
 export function VerticalLayout(props) {
-  const { children, sections, navColor, options, bgUrl } = props;
+  const { auth, children, sections, navColor, options, bgUrl } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const mobileNav = useMobileNav();
 
@@ -70,7 +70,7 @@ export function VerticalLayout(props) {
           height: '100vh'
         }}
       >
-        <TopNav onMobileNavOpen={mobileNav.handleOpen}>
+        <TopNav auth={auth} onMobileNavOpen={mobileNav.handleOpen}>
           {/* options under topnav go here */}
         </TopNav>
         {lgUp ? <SideNav

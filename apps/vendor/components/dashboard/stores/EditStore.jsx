@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
@@ -17,18 +16,17 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import { GuestGuard } from 'ui/guards/guest-guard';
-import { IssuerGuard } from 'ui/guards/issuer-guard';
 import { useMounted } from 'ui/hooks/use-mounted';
-import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
-import { Issuer } from 'ui/utils/auth';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useStores } from '@/hooks/useStores';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import NextLink from 'next/link';
+import { formatStore } from '@/utils/format-store';
+import { useAuth } from '@/contexts/AuthContext';
+import { useStores } from '@/contexts/StoresContext';
+import { useRouter } from 'next/navigation';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -42,16 +40,6 @@ const VisuallyHiddenInput = styled('input')({
     whiteSpace: 'nowrap',
     width: 1,
 });
-
-const useParams = () => {
-    const searchParams = useSearchParams();
-    const returnTo = searchParams.get('returnTo') || undefined;
-
-    return {
-        returnTo
-    };
-};
-
 
 
 const validationSchema = Yup.object({
@@ -84,7 +72,11 @@ const validationSchema = Yup.object({
         .required('Owner National ID is required')
 });
 
-const EditStore = ({ store }) => {
+export default function EditStore({ unformattedStore }) {
+
+    const { user } = useAuth();
+
+    const store = formatStore({ store: unformattedStore, user });
 
     const initialValues = {
         name: store?.name,
@@ -96,9 +88,8 @@ const EditStore = ({ store }) => {
     };
 
     const [selectedFileName, setSelectedFileName] = useState('');
-    const isMounted = useMounted();
     const router = useRouter();
-    const { returnTo } = useParams();
+    const isMounted = useMounted();
     const { updateBusinessStore } = useStores();
     const formik = useFormik({
         initialValues,
@@ -119,8 +110,7 @@ const EditStore = ({ store }) => {
                 });
 
                 if (isMounted()) {
-                    // force a hard navigation to the dashboard
-                    window.location.href = `/vendor/dashboard/stores/${store?.id}`;
+                    router.push(`/vendor/dashboard/stores/${store?.id}`)
                 }
                 setSelectedFileName('');
             } catch (err) {
@@ -349,15 +339,3 @@ const EditStore = ({ store }) => {
         </>
     );
 };
-
-EditStore.getLayout = (page) => (
-    <IssuerGuard issuer={Issuer.JWT}>
-        <GuestGuard>
-            <AuthLayout>
-                {page}
-            </AuthLayout>
-        </GuestGuard>
-    </IssuerGuard>
-);
-
-export default EditStore;

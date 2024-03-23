@@ -15,46 +15,32 @@ enum Status {
   REJECTED
 }
 
-model User {
-  id                    String @db.Uuid @id @default(uuid())  
-}
-
 model Store {
-  id                    String  @db.Uuid @id @default(uuid())  
-  vendorId             String  @db.Uuid
-  status                Status  @default(PENDING)
-  individualStore       IndividualStore?
-  businessStore         BusinessStore?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @default(now())
-  deletedAt            DateTime?
+  id              String           @id @default(uuid()) @db.Uuid
+  vendorId        String           @db.Uuid
+  status          Status           @default(PENDING)
+  individualStore IndividualStore?
+  businessStore   BusinessStore?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now())
+  deletedAt       DateTime?
 
   @@index([vendorId])
 }
 
-model Media {
-    id                  String  @db.Uuid @id @default(uuid())  
-    name                String
-    ownerId             String  @db.Uuid
-    extension           String
-    size                Int
-
-  @@index([ownerId])
-}
-
 model BusinessStore {
-  id                    String  @db.Uuid @id @default(uuid())  
-  storeId               String  @db.Uuid @unique
-  store                 Store   @relation(fields: [storeId], references: [id])
-  name                  String
-  logo                  String
-  vatNumber            String
-  crNumber             String
-  ownerNationalId     String
+  id              String @id @default(uuid()) @db.Uuid
+  storeId         String @unique @db.Uuid
+  store           Store  @relation(fields: [storeId], references: [id])
+  name            String
+  logo            String @db.Uuid
+  vatNumber       String
+  crNumber        String
+  ownerNationalId String
 }
 
 model IndividualStore {
-  id                    String  @db.Uuid @id @default(uuid())  
-  storeId               String  @db.Uuid @unique
-  store                 Store   @relation(fields: [storeId], references: [id])
+  id      String @id @default(uuid()) @db.Uuid
+  storeId String @unique @db.Uuid
+  store   Store  @relation(fields: [storeId], references: [id])
 }

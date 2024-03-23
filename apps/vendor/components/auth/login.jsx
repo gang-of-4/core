@@ -15,14 +15,9 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { GuestGuard } from 'ui/guards/guest-guard';
-import { IssuerGuard } from 'ui/guards/issuer-guard';
-import { useAuth } from 'ui/hooks/use-auth';
 import { useMounted } from 'ui/hooks/use-mounted';
-import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
-import { Issuer } from 'ui/utils/auth';
 import { paths } from 'ui/paths';
-import { useStores } from '@/hooks/useStores';
+import { useAuth } from '@/contexts/AuthContext';
 
 const useParams = () => {
   const searchParams = useSearchParams();
@@ -51,12 +46,11 @@ const validationSchema = Yup.object({
     .required('Password is required')
 });
 
-const Page = () => {
+export default function Page() {
   const isMounted = useMounted();
   const router = useRouter();
   const { returnTo } = useParams();
-  const { issuer, signIn } = useAuth();
-  const { getStores } = useStores();
+  const { signIn } = useAuth();
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -70,13 +64,7 @@ const Page = () => {
         const user = await signIn(userInfo, 'vendor');
 
         if (isMounted()) {
-          const stores = await getStores(user.id);
-          if (stores?.length > 0) {
-            router.push(returnTo || paths.vendor.dashboard.index);
-          } else {
-            console.log('No stores associated with this vendor id, redirecting to onboarding to add at least one store');
-            router.push(paths.vendor.onboarding.index);
-          }
+          router.push(returnTo || paths.vendor.dashboard.index);
         }
       } catch (err) {
         console.error(err);
@@ -189,15 +177,3 @@ const Page = () => {
     </>
   );
 };
-
-Page.getLayout = (page) => (
-  <IssuerGuard issuer={Issuer.JWT}>
-    <GuestGuard>
-      <AuthLayout>
-        {page}
-      </AuthLayout>
-    </GuestGuard>
-  </IssuerGuard>
-);
-
-export default Page;
