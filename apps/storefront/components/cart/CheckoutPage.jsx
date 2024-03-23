@@ -31,9 +31,7 @@ const initialAddress = {
 
 const Page = () => {
     const [address, setAddress] = useState(initialAddress);
-    const { cartItems } = useCart;
-    
-    console.log(cartItems);
+    const { cartItems } = useCart();
 
     const handleAddress = useCallback((event) => {
         setAddress((prevState) => ({
@@ -48,11 +46,6 @@ const Page = () => {
 
     return (
         <>
-            <Head>
-                <title>
-                    Checkout | Customer
-                </title>
-            </Head>
             <Box
                 component="main"
                 sx={{
