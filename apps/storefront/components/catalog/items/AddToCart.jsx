@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import Minus from '@untitled-ui/icons-react/build/esm/Minus';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, SvgIcon, TextField, Typography } from '@mui/material'
-import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
@@ -13,7 +12,6 @@ export default function AddToCart({ activeItem }) {
 
     const pathname = usePathname();
 
-    const { setCart } = useCart();
     const { isAuthenticated } = useAuth();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -44,10 +42,11 @@ export default function AddToCart({ activeItem }) {
 
         setLoading(true);
         try {
-            await setCart({
-                item: activeItem,
-                quantity: quantity
-            });
+            // await setCart({
+            //     item: activeItem,
+            //     quantity: quantity
+            // });
+            console.log('Added to cart', { item: activeItem, quantity: quantity });
             setInputValue(1);
         } catch (error) {
             console.error('Error adding to cart', error);
