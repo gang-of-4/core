@@ -62,7 +62,7 @@ export const ItemsListTable = (props) => {
 
     const handleItemUpdate = useCallback(async (values) => {
 
-        await catalogApi.editSatatus({
+        await catalogApi.editStatus({
             id: values.id,
             status: values.status
         });

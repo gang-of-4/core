@@ -70,7 +70,7 @@ class CatalogApi {
         return Promise.resolve(data);
     }
 
-    async editSatatus({
+    async editStatus({
         id,
         status
     }) {
