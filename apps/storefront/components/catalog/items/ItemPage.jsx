@@ -15,58 +15,38 @@ export default function ItemPage({ item }) {
   const [activeVariant, setActiveVariant] = useState(initActiveVariant());
   const [error, setError] = useState();
 
-  function handleOptionChange(event) {
-    const { name, value } = event.target;
+  function handleOptionChange({ group, value }) {
     const newOptions = {
       ...appliedOptions,
-      [name]: value
-    }
+      [group]: value
+    };
     setAppliedOptions(newOptions);
-
     updateActiveVariant(newOptions);
   }
 
 
   function initActiveVariant() {
     if (item?.variants && item.variants.length > 0) {
-      const newActiveVariant = item.variants[0];
-      return {
-        id: newActiveVariant.id,
-        name: newActiveVariant.name ? newActiveVariant.name : item.name,
-        description: newActiveVariant.description ? newActiveVariant.description : item.description,
-        price: newActiveVariant.price ? newActiveVariant.price : item.price,
-        currency: newActiveVariant.currency ? newActiveVariant.currency : item.currency,
-        quantity: newActiveVariant.quantity,
-        images: newActiveVariant.images ? newActiveVariant.images : item.images,
-        options: newActiveVariant.options
-      };
+      return null;
     } else {
       return item;
     }
   }
 
   function updateActiveVariant(newOptions) {
-    const newActiveVariant = item.variants?.find((variant) => {
-      return variant.options.every((option) => {
-        return newOptions[option.title] === option.value.value;
-      });
+
+    const newActiveVariant = item.variants.find(variant => {
+      if (variant.quantity > 0) {
+        return variant.options.every(option => newOptions[option.group_id] === option.id)
+      }
     });
 
     if (newActiveVariant) {
       setError(null);
-      setActiveVariant({
-        id: newActiveVariant.id,
-        name: newActiveVariant.name ? newActiveVariant.name : item.name,
-        description: newActiveVariant.description ? newActiveVariant.description : item.description,
-        price: newActiveVariant.price ? newActiveVariant.price : item.price,
-        currency: newActiveVariant.currency ? newActiveVariant.currency : item.currency,
-        quantity: newActiveVariant.quantity,
-        images: newActiveVariant.images ? newActiveVariant.images : item.images,
-        options: newActiveVariant.options
-      });
+      setActiveVariant(newActiveVariant);
     } else {
       setError('No variant found for selected options. Please select a different combination.')
-      setActiveVariant(initActiveVariant());
+      setActiveVariant(null);
     }
   }
 
@@ -119,9 +99,9 @@ export default function ItemPage({ item }) {
                 </Box>
               </Grid>
 
-                <Grid item xs={12} md={5}>
-                  <ItemImages images={activeVariant?.images} />
-                </Grid>
+              <Grid item xs={12} md={5}>
+                <ItemImages images={item.images} />
+              </Grid>
 
               <Grid item xs={12} md={7}>
                 <Stack spacing={4}>
@@ -129,11 +109,11 @@ export default function ItemPage({ item }) {
                   <Typography
                     variant="h4"
                   >
-                    {activeVariant?.name || item.name}
+                    {item.name}
                   </Typography>
 
                   <Typography variant="body1" color='text.secondary'>
-                    {activeVariant?.description || item.description}
+                    {item.description}
                   </Typography>
 
 
@@ -158,9 +138,7 @@ export default function ItemPage({ item }) {
                     {formatPrice({ price: activeVariant?.price || item.price, currency: activeVariant?.currency || item.currency })}
                   </Typography>
 
-                  <AddToCart
-                    item={activeVariant}
-                  />
+                  <AddToCart activeItem={activeVariant} />
 
                   <Stack
                     spacing={1}

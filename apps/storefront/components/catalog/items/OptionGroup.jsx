@@ -9,9 +9,9 @@ export default function OptionGroup({
 
     const [value, setValue] = useState('');
 
-    function handleChange(event) {
-        setValue(event.target.value);
-        handleOptionChange(event);
+    function handleChange({group, value}) {
+        setValue(value);
+        handleOptionChange({group, value});
     }
 
     return (
@@ -24,7 +24,7 @@ export default function OptionGroup({
                     row
                     aria-labelledby={group.title}
                     name={group.title}
-                    onChange={handleChange}
+                    onChange={(e) => handleChange({ group: group.id, value: e.target.value })}
                     value={value}
                 >
                     {group?.options?.map((option) => {
@@ -34,7 +34,7 @@ export default function OptionGroup({
                                 <Fragment key={option.id}>
                                     <FormControlLabel
                                         key={option.id}
-                                        value={option.value}
+                                        value={option.id}
                                         control={<Radio />}
                                         sx={{
                                             marginRight: 0,
@@ -62,7 +62,7 @@ export default function OptionGroup({
                             return (
                                 <FormControlLabel
                                     key={option.id}
-                                    value={option.value}
+                                    value={option.id}
                                     control={<Radio />}
                                     label={option.label}
                                 />
