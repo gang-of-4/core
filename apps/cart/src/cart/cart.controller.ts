@@ -31,13 +31,13 @@ export class CartController {
   }
 
   @Get()
-  async getCarts(@Headers('Authorization') authorization: string) {
+  async findAll(@Headers('Authorization') authorization: string) {
     const token = this.jwtService.decode(authorization?.split(' ')[1]) as any;
     return await this.cartService.findAll(token?.user?.role?.name);
   }
 
   @Get(':id')
-  async getCart(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return await this.cartService.findOneOrFail(id);
   }
 
@@ -72,13 +72,13 @@ export class CartController {
   }
 
   @Delete(':id/items/:itemId')
-  async deleteCartItem(
+  async removeCartItem(
     @Param('id') id: string,
     @Param('itemId') itemId: string,
     @Headers('Authorization') authorization: string,
   ) {
     const token = this.jwtService.decode(authorization?.split(' ')[1]) as any;
-    return await this.cartService.deleteCartItem(
+    return await this.cartService.removeCartItem(
       id,
       itemId,
       token?.user?.id,
