@@ -36,8 +36,8 @@ export class CartService {
       cartItems: cartItems,
     });
 
-    detailedCart.subtotal = this.getSubtotal(cart);
-    detailedCart.total = this.getTotal(cart, cart.subtotal);
+    detailedCart.subtotal = this.getSubtotal(detailedCart);
+    detailedCart.total = this.getTotal(detailedCart, detailedCart.subtotal);
 
     return detailedCart;
   }
@@ -290,6 +290,10 @@ export class CartService {
       throw new UnauthorizedException();
     }
 
+    if (existingCart.cartItems.length === 0) {
+      throw new NotFoundException();
+    }
+
     await Promise.all(
       existingCart.cartItems.map(async (cartItem) => {
         const isAvailable = await this.itemsService.checkItemAvailability(
@@ -318,9 +322,7 @@ export class CartService {
         cartItems: {
           deleteMany: {},
         },
-        address: {
-          delete: true,
-        },
+        addressId: null,
         paymentMethodId: null,
       },
     });
@@ -334,8 +336,8 @@ export class CartService {
   }
 
   private getSubtotal(cart: CartEntity): number {
-    return cart.cartItems.reduce((acc, cartItem) => {
-      return acc + cartItem.item.price * cartItem.quantity;
+    return cart?.cartItems?.reduce((acc, cartItem) => {
+      return acc + cartItem?.item?.price * cartItem?.quantity;
     }, 0);
   }
 
