@@ -13,6 +13,9 @@ export class CartItemEntity {
   @ApiProperty()
   quantity: number;
 
+  @ApiProperty()
+  item?: any;
+
   constructor(partial: Partial<CartItemEntity>) {
     Object.assign(this, partial);
   }
