@@ -4,17 +4,35 @@ import {
   Stack,
   TextField,
   Typography,
-  Unstable_Grid2 as Grid
+  Unstable_Grid2 as Grid,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from '@mui/material';
 
-
+const paymentMethods = [
+  {
+    label: 'Cash',
+    value: 'Cash'
+  },
+  {
+    label: 'Visa Credit',
+    value: 'visa'
+  },
+  {
+    label: 'PayPal',
+    value: 'paypal'
+  }
+];
 
 export const CheckoutAddress = (props) => {
-  const { address, onChange, ...other } = props;
+  const { address, paymentMethod, onChange, ...other } = props;
+
+  const isCash = paymentMethod === 'Cash';
 
   return (
     <Stack {...other}
-           spacing={6}
+      spacing={6}
     >
       <Stack spacing={3}>
         <Stack
@@ -113,8 +131,62 @@ export const CheckoutAddress = (props) => {
           </Grid>
         </div>
       </Stack>
-      
-    
+      <Stack spacing={3}>
+        <Stack
+          alignItems="center"
+          direction="row"
+          spacing={2}
+        >
+          <Box
+            sx={{
+              alignItems: 'center',
+              border: (theme) => `1px solid ${theme.palette.divider}`,
+              borderRadius: 20,
+              display: 'flex',
+              height: 40,
+              justifyContent: 'center',
+              width: 40
+            }}
+          >
+            <Typography
+              sx={{ fontWeight: 'fontWeightBold' }}
+              variant="h6"
+            >
+              2
+            </Typography>
+          </Box>
+          <Typography variant="h6">
+            Payment Method
+          </Typography>
+        </Stack>
+        <div>
+          <div>
+            <RadioGroup
+              name="paymentMethod"
+              onChange={onChange}
+              sx={{ flexDirection: 'column' }}
+              // value={paymentMethod}
+            >
+              {paymentMethods.map((paymentMethod) => (
+                <FormControlLabel
+                  control={<Radio />}
+                  key={paymentMethod.value}
+                  label={(
+                    <Typography variant="body1"
+                    style={{ opacity: isCash || paymentMethod.value === 'Cash' ? 1 : 0.5 }}
+                    >
+                      {paymentMethod.label}
+                    </Typography>
+                  )}
+                  value={paymentMethod.value}
+                  disabled={!isCash && paymentMethod.value !== 'Cash'}
+                />
+              ))}
+            </RadioGroup>
+          </div>
+        </div>
+      </Stack>
+
     </Stack>
   );
 };
