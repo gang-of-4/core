@@ -57,11 +57,11 @@ export class ItemsService {
           },
           images: {
             createMany: {
-              data: [
-                {
-                  mediaId: '7920e844-7f0d-46ff-99f8-57c4a76ebd5a',
-                },
-              ],
+              data: createItemDto.images.map((image) => {
+                return {
+                  mediaId: image,
+                };
+              }),
             },
           },
         },
@@ -109,11 +109,6 @@ export class ItemsService {
   }
 
   async findOneOrFail(id: string, role: string = 'guest'): Promise<ItemEntity> {
-    const media = await lastValueFrom(
-      this.mediaService.GetManyMedia({
-        ids: ['47652aeb-055e-446d-b859-baa4e6de9362'],
-      }),
-    );
     const { options, ...item } = await this.prisma.item
       .findUniqueOrThrow({
         where: {
@@ -133,11 +128,22 @@ export class ItemsService {
               options: true,
             },
           },
+          images: {
+            select: {
+              mediaId: true,
+            },
+          },
         },
       })
       .catch(() => {
         throw new NotFoundException();
       });
+
+    const media = await lastValueFrom(
+      this.mediaService.GetManyMedia({
+        ids: item.images.map((entry) => entry.mediaId),
+      }),
+    );
 
     return new ItemEntity({
       ...item,
