@@ -63,6 +63,14 @@ export class UpdateItemDto {
     quantity: number;
   }>;
 
+  @ApiProperty()
+  @IsOptional()
+  @IsArray()
+  @ArrayUnique()
+  @IsUUID(4, { each: true })
+  @IsString({ each: true })
+  images?: string[];
+
   constructor(partial: Partial<UpdateItemDto>) {
     Object.assign(this, partial);
   }

@@ -230,6 +230,11 @@ export class ItemsService {
 
   async update(id: string, updateItemDto: UpdateItemDto) {
     await this.prisma.$transaction(async (tx) => {
+      await tx.itemImages.deleteMany({
+        where: {
+          itemId: id,
+        },
+      });
       await tx.item
         .update({
           where: {
@@ -257,6 +262,15 @@ export class ItemsService {
                   id: option,
                 })) ?? []),
               ],
+            },
+            images: {
+              createMany: {
+                data: updateItemDto.images.map((image) => {
+                  return {
+                    mediaId: image,
+                  };
+                }),
+              },
             },
           },
         })
