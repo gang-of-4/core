@@ -35,7 +35,7 @@ export class CreateItemDto {
   @IsOptional()
   @IsNumber()
   @Min(0)
-  price: string;
+  price: number;
 
   @ApiProperty()
   @IsOptional()
@@ -69,6 +69,14 @@ export class CreateItemDto {
   @IsString()
   @IsIn(['DRAFT', 'PENDING'])
   status?: string = 'DRAFT';
+
+  @ApiProperty()
+  @IsOptional()
+  @IsArray()
+  @ArrayUnique()
+  @IsUUID(4, { each: true })
+  @IsString({ each: true })
+  images?: string[];
 
   constructor(partial: Partial<CreateItemDto>) {
     Object.assign(this, partial);

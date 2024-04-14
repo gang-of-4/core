@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from '../dto/items/create-item.dto';
 import { UpdateItemDto } from '../dto/items/update-item.dto';
 import { ItemEntity } from '../entities/item.entity';
@@ -11,10 +11,22 @@ import { CreateVariantsDto } from '../dto/items/create-variants.dto';
 import { VariantEntity } from '../entities/variant.entity';
 import { VariantsException } from '../exceptions/variants.exception';
 import { UpdateItemStatusDto } from '../dto/items/update-item-status.dto';
+import { ClientGrpc } from '@nestjs/microservices';
+import { MediaService } from 'src/items/interfaces/media.interface';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class ItemsService {
-  constructor(private prisma: PrismaService) {}
+  private mediaService: MediaService;
+
+  constructor(
+    private prisma: PrismaService,
+    @Inject('MEDIA_PACKAGE') private client: ClientGrpc,
+  ) {}
+
+  onModuleInit() {
+    this.mediaService = this.client.getService<MediaService>('MediaService');
+  }
 
   async create(createItemDto: CreateItemDto): Promise<ItemEntity> {
     const item = await this.prisma.item
@@ -42,6 +54,15 @@ export class ItemsService {
                 id: option,
               })) ?? []),
             ],
+          },
+          images: {
+            createMany: {
+              data: [
+                {
+                  mediaId: '7920e844-7f0d-46ff-99f8-57c4a76ebd5a',
+                },
+              ],
+            },
           },
         },
       })
@@ -88,6 +109,11 @@ export class ItemsService {
   }
 
   async findOneOrFail(id: string, role: string = 'guest'): Promise<ItemEntity> {
+    const media = await lastValueFrom(
+      this.mediaService.GetManyMedia({
+        ids: ['47652aeb-055e-446d-b859-baa4e6de9362'],
+      }),
+    );
     const { options, ...item } = await this.prisma.item
       .findUniqueOrThrow({
         where: {
@@ -115,6 +141,7 @@ export class ItemsService {
 
     return new ItemEntity({
       ...item,
+      images: media.payload,
       groups: Object.values(
         options.reduce((acc, option) => {
           if (option.group) {
