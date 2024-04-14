@@ -68,6 +68,14 @@ export class MediaService {
       },
     });
 
-    return response.map((media) => new MediaEntity(media));
+    return response.map(
+      (media) =>
+        new MediaEntity({
+          ...media,
+          url: `${this.config.get('AWS_S3_URL')}/${media.ownerId}/${
+            media.name
+          }`,
+        }),
+    );
   }
 }
