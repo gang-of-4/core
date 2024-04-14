@@ -103,9 +103,27 @@ export class ItemsService {
       },
       include: {
         categories: true,
+        images: {
+          select: {
+            mediaId: true,
+          },
+        },
       },
     });
-    return items.map((item) => new ItemEntity(item));
+
+    return Promise.all(
+      items.map(async (item) => {
+        const media = await lastValueFrom(
+          this.mediaService.GetManyMedia({
+            ids: item.images.map((entry) => entry.mediaId),
+          }),
+        );
+        return new ItemEntity({
+          ...item,
+          images: media.payload,
+        });
+      }),
+    );
   }
 
   async findOneOrFail(id: string, role: string = 'guest'): Promise<ItemEntity> {
