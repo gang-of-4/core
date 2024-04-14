@@ -178,11 +178,23 @@ export class ItemsService {
             options: true,
           },
         },
+        images: {
+          select: {
+            mediaId: true,
+          },
+        },
       },
     });
 
+    const media = await lastValueFrom(
+      this.mediaService.GetManyMedia({
+        ids: item.images.map((entry) => entry.mediaId),
+      }),
+    );
+
     return new ItemEntity({
       ...item,
+      images: media.payload,
       groups: Object.values(
         options.reduce((acc, option) => {
           if (option.group) {
