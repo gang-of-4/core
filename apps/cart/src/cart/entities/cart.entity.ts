@@ -20,6 +20,12 @@ export class CartEntity {
   cartItems: CartItemEntity[];
 
   @ApiProperty()
+  subtotal?: number;
+
+  @ApiProperty()
+  total?: number;
+
+  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()

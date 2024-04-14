@@ -14,7 +14,7 @@ export class CartService {
     private itemsService: ItemsService,
   ) {}
 
-  private async getCartAndCartItems(cart: CartEntity): Promise<CartEntity> {
+  private async getCartDetails(cart: CartEntity): Promise<CartEntity> {
     const cartItems = [];
 
     await Promise.all(
@@ -31,10 +31,15 @@ export class CartService {
       }),
     );
 
-    return new CartEntity({
+    const detailedCart = new CartEntity({
       ...cart,
       cartItems: cartItems,
     });
+
+    detailedCart.subtotal = this.getSubtotal(detailedCart);
+    detailedCart.total = this.getTotal(detailedCart, detailedCart.subtotal);
+
+    return detailedCart;
   }
 
   async getExistingOrCreate(userId: string): Promise<CartEntity> {
@@ -49,7 +54,7 @@ export class CartService {
     });
 
     if (existingCart) {
-      return await this.getCartAndCartItems(new CartEntity(existingCart));
+      return await this.getCartDetails(new CartEntity(existingCart));
     } else {
       const cart = await this.prisma.cart.create({
         data: {
@@ -96,7 +101,7 @@ export class CartService {
         throw new NotFoundException();
       });
 
-    return await this.getCartAndCartItems(new CartEntity(cart));
+    return await this.getCartDetails(new CartEntity(cart));
   }
 
   async addCartItem(
@@ -154,7 +159,7 @@ export class CartService {
           address: true,
         },
       });
-      return await this.getCartAndCartItems(new CartEntity(updatedCart));
+      return await this.getCartDetails(new CartEntity(updatedCart));
     } else {
       const updatedCart = await this.prisma.cart.update({
         where: { id: cartId },
@@ -171,7 +176,7 @@ export class CartService {
           address: true,
         },
       });
-      return await this.getCartAndCartItems(new CartEntity(updatedCart));
+      return await this.getCartDetails(new CartEntity(updatedCart));
     }
   }
 
@@ -213,10 +218,10 @@ export class CartService {
       },
     });
 
-    return await this.getCartAndCartItems(new CartEntity(updatedCart));
+    return await this.getCartDetails(new CartEntity(updatedCart));
   }
 
-  async deleteCartItem(
+  async removeCartItem(
     cartId: string,
     cartItemId: string,
     userId: string,
@@ -251,7 +256,7 @@ export class CartService {
       },
     });
 
-    return await this.getCartAndCartItems(new CartEntity(updatedCart));
+    return await this.getCartDetails(new CartEntity(updatedCart));
   }
 
   async checkout(
@@ -285,6 +290,10 @@ export class CartService {
       throw new UnauthorizedException();
     }
 
+    if (existingCart.cartItems.length === 0) {
+      throw new NotFoundException();
+    }
+
     await Promise.all(
       existingCart.cartItems.map(async (cartItem) => {
         const isAvailable = await this.itemsService.checkItemAvailability(
@@ -313,9 +322,7 @@ export class CartService {
         cartItems: {
           deleteMany: {},
         },
-        address: {
-          delete: true,
-        },
+        addressId: null,
         paymentMethodId: null,
       },
     });
@@ -326,5 +333,16 @@ export class CartService {
   private async createOrder(cart: CartEntity) {
     // @TODO-Albaraa: Create order
     console.log('Creating order for cart:', cart);
+  }
+
+  private getSubtotal(cart: CartEntity): number {
+    return cart?.cartItems?.reduce((acc, cartItem) => {
+      return acc + cartItem?.item?.price * cartItem?.quantity;
+    }, 0);
+  }
+
+  private getTotal(cart: CartEntity, subTotal: number): number {
+    // apply tax, shipping, and any other extra fees
+    return subTotal;
   }
 }
