@@ -32,6 +32,7 @@ const initialAddress = {
 const Page = () => {
     const [address, setAddress] = useState(initialAddress);
     const { cartItems } = useCart();
+    console.log('cartItems', cartItems);
 
     const handleAddress = useCallback((event) => {
         setAddress((prevState) => ({
@@ -40,9 +41,25 @@ const Page = () => {
         }));
     }, []);
 
-    const handleSubmit = useCallback((event) => {
+    const handleSubmit = useCallback(async (event) => {
         event.preventDefault();
-    }, []);
+        
+        try {
+            // Assuming you have the cart ID stored somewhere, replace 'cartId' with your actual cart ID variable
+            const cartId = 'replace_with_actual_cart_id'; 
+
+            const response = await axios.post(`/api/v1/cart/${cartId}/checkout`, {
+                address: address,
+                cartItems: cartItems
+            });
+
+            console.log('Checkout Successful', response.data);
+            // Redirect or perform any other actions upon successful checkout
+        } catch (error) {
+            console.error('Error during checkout:', error);
+            // Handle error state, display error message to the user, etc.
+        }
+    }, [address, cartItems]);
 
     return (
         <>
