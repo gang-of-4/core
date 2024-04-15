@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useReducer, useState
 import { useAuth } from "./AuthContext";
 import fetchApi from "@/utils/fetch-api";
 
-const STORAGE_KEY = 'cartItems';
+const STORAGE_KEY = 'cart';
 
 const ActionType = {
     INITIALIZE: 'INITIALIZE',
@@ -64,20 +64,20 @@ export function CartProvider({ children }) {
     }, [isAuthInitialized, user, isAuthenticated]);
 
 
-    const initialize = useCallback(async (userId) => {
+    const initialize = useCallback(async () => {
         try {
-            const { data: cartItems } = await fetchApi({
-                url: `/api/cart?userId=${userId}`,
-                method: 'GET',
+            const { data: cart } = await fetchApi({
+                url: `/api/cart`,
+                method: 'POST',
             });
 
             if (typeof window === 'undefined') {
                 throw new Error('Window is not defined');
             }
 
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
 
-            dispatch({ type: ActionType.INITIALIZE, payload: cartItems });
+            dispatch({ type: ActionType.INITIALIZE, payload: cart });
         } catch (error) {
             console.error('Error initializing cart', error);
         }
@@ -123,7 +123,7 @@ export function CartProvider({ children }) {
 
         try {
             const { data, error } = await fetchApi({
-                url: `/api/cart`,
+                url: `/api/cart/${cart.id}`,
                 options: {
                     method: 'PATCH',
                     headers: {
@@ -152,6 +152,9 @@ export function CartProvider({ children }) {
                 url: `/api/cart`,
                 options: {
                     method: 'DELETE',
+                    body: JSON.stringify({
+                        id: cart.id
+                    })
                 },
             });
 
