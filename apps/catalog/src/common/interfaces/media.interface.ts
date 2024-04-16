@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { MediaEntity } from '../entities/media.entity';
+import { MediaEntity } from '../../items/entities/media.entity';
 
 export interface MediaService {
   GetMedia(getMediaDto: { id: string }): Observable<MediaEntity>;
