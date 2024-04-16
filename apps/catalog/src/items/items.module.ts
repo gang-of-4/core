@@ -8,9 +8,25 @@ import { OptionGroupsController } from './controllers/option-groups.controller';
 import { OptionGroupsService } from './services/option-groups.service';
 import { GroupExistsRule } from './rules/group-exist.rule';
 import { JwtModule } from '@nestjs/jwt';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
-  imports: [PrismaModule, JwtModule],
+  imports: [
+    PrismaModule,
+    JwtModule,
+    ClientsModule.register([
+      {
+        name: 'MEDIA_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'media',
+          protoPath: join(__dirname, '../../grpc/media.proto'),
+          url: 'localhost:50051',
+        },
+      },
+    ]),
+  ],
   controllers: [ItemsController, OptionsController, OptionGroupsController],
   providers: [
     ItemsService,
@@ -20,3 +36,4 @@ import { JwtModule } from '@nestjs/jwt';
   ],
 })
 export class ItemsModule {}
+

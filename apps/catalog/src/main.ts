@@ -8,15 +8,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // app.connectMicroservice({
-  //   transport: Transport.GRPC,
-  //   options: {
-  //     package: 'hero',
-  //     protoPath: 'hero/hero.proto',
-  //     url: '0.0.0.0:50051',
-  //   },
-  // });
-
   app.enableVersioning({
     type: VersioningType.URI,
   });

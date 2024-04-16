@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from '../dto/items/create-item.dto';
 import { UpdateItemDto } from '../dto/items/update-item.dto';
 import { ItemEntity } from '../entities/item.entity';
@@ -11,10 +11,22 @@ import { CreateVariantsDto } from '../dto/items/create-variants.dto';
 import { VariantEntity } from '../entities/variant.entity';
 import { VariantsException } from '../exceptions/variants.exception';
 import { UpdateItemStatusDto } from '../dto/items/update-item-status.dto';
+import { ClientGrpc } from '@nestjs/microservices';
+import { MediaService } from 'src/items/interfaces/media.interface';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class ItemsService {
-  constructor(private prisma: PrismaService) {}
+  private mediaService: MediaService;
+
+  constructor(
+    private prisma: PrismaService,
+    @Inject('MEDIA_PACKAGE') private client: ClientGrpc,
+  ) {}
+
+  onModuleInit() {
+    this.mediaService = this.client.getService<MediaService>('MediaService');
+  }
 
   async create(createItemDto: CreateItemDto): Promise<ItemEntity> {
     const item = await this.prisma.item
@@ -42,6 +54,15 @@ export class ItemsService {
                 id: option,
               })) ?? []),
             ],
+          },
+          images: {
+            createMany: {
+              data: createItemDto.images.map((image) => {
+                return {
+                  mediaId: image,
+                };
+              }),
+            },
           },
         },
       })
@@ -93,10 +114,27 @@ export class ItemsService {
       },
       include: {
         categories: true,
-        images: true,
+        images: {
+          select: {
+            mediaId: true,
+          },
+        },
       },
     });
-    return items.map((item) => new ItemEntity(item));
+
+    return Promise.all(
+      items.map(async (item) => {
+        const media = await lastValueFrom(
+          this.mediaService.GetManyMedia({
+            ids: item.images.map((entry) => entry.mediaId),
+          }),
+        );
+        return new ItemEntity({
+          ...item,
+          images: media.payload,
+        });
+      }),
+    );
   }
 
   async findOneOrFail(id: string, role: string = 'guest'): Promise<ItemEntity> {
@@ -119,15 +157,26 @@ export class ItemsService {
               options: true,
             },
           },
-          images: true,
+          images: {
+            select: {
+              mediaId: true,
+            },
+          },
         },
       })
       .catch(() => {
         throw new NotFoundException();
       });
 
+    const media = await lastValueFrom(
+      this.mediaService.GetManyMedia({
+        ids: item.images.map((entry) => entry.mediaId),
+      }),
+    );
+
     return new ItemEntity({
       ...item,
+      images: media.payload,
       groups: Object.values(
         options.reduce((acc, option) => {
           if (option.group) {
@@ -158,12 +207,23 @@ export class ItemsService {
             options: true,
           },
         },
-        images: true,
+        images: {
+          select: {
+            mediaId: true,
+          },
+        },
       },
     });
 
+    const media = await lastValueFrom(
+      this.mediaService.GetManyMedia({
+        ids: item.images.map((entry) => entry.mediaId),
+      }),
+    );
+
     return new ItemEntity({
       ...item,
+      images: media.payload,
       groups: Object.values(
         options.reduce((acc, option) => {
           if (option.group) {
@@ -181,6 +241,11 @@ export class ItemsService {
 
   async update(id: string, updateItemDto: UpdateItemDto) {
     await this.prisma.$transaction(async (tx) => {
+      await tx.itemImages.deleteMany({
+        where: {
+          itemId: id,
+        },
+      });
       await tx.item
         .update({
           where: {
@@ -208,6 +273,15 @@ export class ItemsService {
                   id: option,
                 })) ?? []),
               ],
+            },
+            images: {
+              createMany: {
+                data: updateItemDto.images.map((image) => {
+                  return {
+                    mediaId: image,
+                  };
+                }),
+              },
             },
           },
         })

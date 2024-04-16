@@ -5,6 +5,7 @@ import { Decimal } from '@prisma/client/catalog/runtime/library';
 import { CategoryEntity } from '../../categories/entities/category.entity';
 import { OptionGroupEntity } from './option-group.entity';
 import { VariantEntity } from './variant.entity';
+import { MediaEntity } from './media.entity';
 
 export class ItemEntity implements Item {
   @ApiProperty()
@@ -29,6 +30,10 @@ export class ItemEntity implements Item {
 
   @ApiProperty()
   description: string;
+
+  @ApiProperty()
+  @Type(() => MediaEntity)
+  images: MediaEntity[];
 
   @ApiProperty()
   storeId: string;
