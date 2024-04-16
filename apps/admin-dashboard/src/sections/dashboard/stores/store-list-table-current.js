@@ -2,6 +2,7 @@ import { Button, CardContent, Divider, Grid, MenuItem, Stack, TableCell, TableRo
 import React from 'react'
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { storesApi } from '../../../api/stores';
 
 const statusOptions = [
     {
@@ -139,11 +140,13 @@ export default function CurrentStore({
                                             name='status'
                                             select
                                             onChange={formik.handleChange}
+                                            data-test="status-select"
                                         >
                                             {statusOptions.map((option) => (
                                                 <MenuItem
                                                     key={option.value}
                                                     value={option.value}
+                                                    data-test={`status-${option.value}`}
                                                 >
                                                     {option.label}
                                                 </MenuItem>
@@ -251,7 +254,7 @@ export default function CurrentStore({
                         </Stack>
                         <div>
                             <Button
-                                onClick={handleStoreDelete}
+                                onClick={() => handleStoreDelete(store.id)}
                                 color="error"
                             >
                                 Delete store

@@ -75,6 +75,17 @@ export class ItemsService {
         }
       });
 
+    await Promise.all(
+      createItemDto.images?.map(async (image) => {
+        await this.prisma.itemImages.create({
+          data: {
+            itemId: item.id,
+            mediaId: image,
+          },
+        });
+      }) ?? [],
+    );
+
     return await this.findOne(item.id);
   }
 
@@ -295,6 +306,16 @@ export class ItemsService {
             },
           });
         }),
+      );
+      await Promise.all(
+        updateItemDto.images?.map(async (image) => {
+          await tx.itemImages.create({
+            data: {
+              itemId: id,
+              mediaId: image,
+            },
+          });
+        }) ?? [],
       );
     });
 

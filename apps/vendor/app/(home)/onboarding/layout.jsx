@@ -1,13 +1,13 @@
 'use client'
-import { withAuthGuard } from 'ui/hocs/with-auth-guard'
+import AuthGuard from '@/components/auth/auth-guard'
 
 
-function layout({ children }) {
+export default function layout({ children }) {
     return (
         <>
-            {children}
+            <AuthGuard role={'vendor'}>
+                {children}
+            </AuthGuard>
         </>
     )
 }
-
-export default withAuthGuard(layout, { role: 'vendor' })

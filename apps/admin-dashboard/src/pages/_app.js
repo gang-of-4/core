@@ -11,8 +11,6 @@ import { SettingsConsumer, SettingsProvider } from '../contexts/settings-context
 import { AuthConsumer, AuthProvider } from '../contexts/auth/jwt-context';
 import { createTheme } from '../theme';
 import { createEmotionCache } from '../utils/create-emotion-cache';
-// Remove if locales are not used
-import '../locales/i18n';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -25,7 +23,7 @@ console.log('-------------------')
   return (
     <CacheProvider value={emotionCache}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <AuthProvider STORAGE_KEY={'adminAccessToken'}>
+          <AuthProvider>
             <AuthConsumer>
               {(auth) => (
                 <SettingsProvider>

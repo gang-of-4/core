@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { decodeToken } from 'common/shared.utils';
 import { PrismaService } from '../../prisma/prisma.service';
 import { S3Service } from '../../aws/services/s3.service';
@@ -16,6 +16,23 @@ export class MediaService {
     private s3Service: S3Service,
     private config: ConfigService,
   ) {}
+
+  async findOne(id: string) {
+    const media = await this.prisma.media
+      .findUniqueOrThrow({
+        where: {
+          id,
+        },
+      })
+      .catch(() => {
+        throw new NotFoundException();
+      });
+
+    return new MediaEntity({
+      ...media,
+      url: `${this.config.get('AWS_S3_URL')}/${media.ownerId}/${media.name}`,
+    });
+  }
 
   async create(file: Express.Multer.File, access_token: string) {
     const { user } = await decodeToken(access_token);

@@ -1,11 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
 import { Avatar, Box, ButtonBase } from '@mui/material';
-import { useAuth } from '../../../hooks/use-auth';
 import { getInitials } from '../../../utils/get-initials';
 import { AccountPopover } from './account-popover';
 
-export function AccountButton({children}) {
-  const { user } = useAuth();
+export function AccountButton({children, auth}) {
   const anchorRef = useRef(null);
   const [openPopover, setOpenPopover] = useState(false);
 
@@ -35,7 +33,7 @@ export function AccountButton({children}) {
         }}
       >
         <Avatar
-          src={user?.avatar}
+          src={auth.user?.avatar}
           sx={{
             height: 32,
             width: 32
@@ -44,11 +42,12 @@ export function AccountButton({children}) {
           {/* <SvgIcon>
             <User01Icon />
           </SvgIcon> */}
-          {getInitials(`${user?.firstName} ${user?.lastName}`)}
+          {getInitials(`${auth.user?.firstName} ${auth.user?.lastName}`)}
         </Avatar>
       </Box>
       <AccountPopover
         anchorEl={anchorRef.current}
+        auth={auth}
         listItems={children}
         onClose={handlePopoverClose}
         open={openPopover}

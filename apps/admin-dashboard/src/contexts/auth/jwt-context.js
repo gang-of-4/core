@@ -4,6 +4,8 @@ import { authApi } from '../../api/auth';
 import { Issuer } from '../../utils/auth';
 
 
+const STORAGE_KEY = 'adminAccessToken'
+
 var ActionType;
 (function (ActionType) {
   ActionType['INITIALIZE'] = 'INITIALIZE';
@@ -67,7 +69,7 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = (props) => {
-  const { children, STORAGE_KEY } = props;
+  const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const initialize = useCallback(async () => {
@@ -107,41 +109,16 @@ export const AuthProvider = (props) => {
 
   useEffect(() => {
     initialize();
-  },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []);
+  }, []);
 
-  const signIn = useCallback(async (userInfo, role) => {
+  const signIn = useCallback(async (userInfo) => {
 
-    let res;
-
-    switch (role) {
-      case 'vendor':
-        res = await authApi.vendorSignIn(
+    const res = await authApi.signIn(
           {
             email: userInfo.email,
             password: userInfo.password
           },
         );
-        break;
-      case 'customer':
-        res = await authApi.customerSignIn(
-          {
-            email: userInfo.email,
-            password: userInfo.password
-          },
-        );
-        break;
-      case 'admin':
-        res = await authApi.adminSignIn(
-          {
-            email: userInfo.email,
-            password: userInfo.password
-          },
-        );
-      default:
-        break;
-    }
 
     const { accessToken } = res;
 
@@ -151,52 +128,6 @@ export const AuthProvider = (props) => {
 
     dispatch({
       type: ActionType.SIGN_IN,
-      payload: {
-        user
-      }
-    });
-  }, [dispatch]);
-
-  const signUp = useCallback(async (userInfo, role) => {
-
-    let res;
-
-    switch (role) {
-      case 'vendor':
-        res = await authApi.vendorSignUp(
-          {
-            firstName: userInfo.firstName,
-            lastName: userInfo.lastName,
-            email: userInfo.email,
-            phone: userInfo.phone,
-            password: userInfo.password,
-            passwordConfirmation: userInfo.passwordConfirmation
-          },
-        );
-        break;
-      case 'customer':
-        res = await authApi.customerSignUp(
-          {
-            firstName: userInfo.firstName,
-            lastName: userInfo.lastName,
-            email: userInfo.email,
-            phone: userInfo.phone,
-            password: userInfo.password,
-            passwordConfirmation: userInfo.passwordConfirmation
-          },
-        );
-        break;
-      default:
-        break;
-    }
-
-    const { accessToken } = res;
-    const user = await authApi.me({ accessToken });
-
-    localStorage.setItem(STORAGE_KEY, accessToken);
-
-    dispatch({
-      type: ActionType.SIGN_UP,
       payload: {
         user
       }
@@ -214,7 +145,6 @@ export const AuthProvider = (props) => {
         ...state,
         issuer: Issuer.JWT,
         signIn,
-        signUp,
         signOut
       }}
     >

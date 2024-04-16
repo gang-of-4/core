@@ -42,12 +42,18 @@ const LayoutRoot = styled('div')(({ theme }) => ({
 }));
 
 export function Layout(props) {
-  const { children, app } = props;
+
+  const { 
+    children, 
+    app, 
+    auth,
+    sideItems=[],
+    topItems=[],
+    topButtons
+  } = props;
+  
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const mobileNav = useMobileNav();
-
-  const sideItems = [];
-  const topItems = [];
 
   // Refer to the following structure when passing sideItems
 
@@ -96,10 +102,13 @@ export function Layout(props) {
     <>
       <TopNav 
         app={app} 
+        auth={auth}
         items={topItems} 
         onMobileNavOpen={mobileNav.handleOpen} 
         openSide={sideItems.length > 0} 
-      />
+      >
+        {topButtons}
+      </TopNav>
       {!lgUp &&
         sideItems.length > 0 &&
         (

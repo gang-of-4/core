@@ -8,7 +8,7 @@ const TOP_NAV_HEIGHT = 64;
 const SIDE_NAV_WIDTH = 280;
 
 export function TopNav(props) {
-  const { onMobileNavOpen, children, ...other } = props;
+  const { onMobileNavOpen, children, auth, ...other } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   return (
@@ -43,7 +43,10 @@ export function TopNav(props) {
           spacing={2}
         >
           {!lgUp && (
-            <IconButton onClick={onMobileNavOpen}>
+            <IconButton
+              data-test="mobile-nav-open"
+              onClick={onMobileNavOpen}
+            >
               <SvgIcon>
                 <Menu01Icon />
               </SvgIcon>
@@ -59,7 +62,7 @@ export function TopNav(props) {
           {/* options under topnav go here */}
           {children}
           <NotificationsButton />
-          <AccountButton>
+          <AccountButton auth={auth}>
             {/* options under account popover go here */}
           </AccountButton>
         </Stack>

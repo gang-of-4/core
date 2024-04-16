@@ -4,7 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBusinessStoreDto } from '../dto/create-business-store.dto';
 import { UpdateBusinessStoreDto } from '../dto/update-business-store.dto';
 import { StoreEntity } from '../entities/store.entity';
-import { Status, Store, User } from '@prisma/client/stores';
+import { Status, Store } from '@prisma/client/stores';
 import { UpdateStoreDto } from '../dto/update-store-dto';
 
 @Injectable()
@@ -92,7 +92,7 @@ export class StoresService {
     );
   }
 
-  async findByVendor(id: User['id']): Promise<StoreEntity[]> {
+  async findByVendor(id: Store['vendorId']): Promise<StoreEntity[]> {
     const stores = await this.prisma.store.findMany({
       where: {
         vendorId: id,
