@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package media;
 
-import "google/protobuf/timestamp.proto";
-
 service MediaService {
   rpc GetMedia(GetMediaRequest) returns (Media) {}
   rpc GetManyMedia(GetManyMediaRequest) returns (MediaList) {}
