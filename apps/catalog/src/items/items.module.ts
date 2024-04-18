@@ -10,6 +10,10 @@ import { GroupExistsRule } from './rules/group-exist.rule';
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { ItemsGrpcService } from './grpc/items.grpc.service';
+import { VariantsGrpcService } from './grpc/variants.grpc.service';
+import { VariantsService } from './services/variants.service';
+import { CatalogGrpcService } from './grpc/catalog.grpc.service';
 
 @Module({
   imports: [
@@ -27,13 +31,20 @@ import { join } from 'path';
       },
     ]),
   ],
-  controllers: [ItemsController, OptionsController, OptionGroupsController],
+  controllers: [
+    ItemsController,
+    OptionsController,
+    OptionGroupsController,
+    VariantsGrpcService,
+    ItemsGrpcService,
+    CatalogGrpcService,
+  ],
   providers: [
     ItemsService,
+    VariantsService,
     OptionsService,
     OptionGroupsService,
     GroupExistsRule,
   ],
 })
 export class ItemsModule {}
-

@@ -13,11 +13,10 @@ export class VariantEntity implements Variant {
   sku: string;
 
   @ApiProperty()
+  @Type(() => Number)
   quantity: number;
 
-  @ApiProperty({ type: Decimal })
-  @Transform(({ value }) => value?.toNumber())
-  @Type(() => Number)
+  @ApiProperty({ type: Decimal, nullable: true })
   price: Decimal;
 
   @Exclude()
@@ -32,9 +31,13 @@ export class VariantEntity implements Variant {
   groups?: OptionGroupEntity[];
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   createdAt: Date;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   updatedAt: Date;
 
   @ApiProperty({ nullable: true, default: null })

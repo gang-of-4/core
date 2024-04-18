@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GetManyMediaDto {
+export class GetManyVariantsDto {
   @ApiProperty()
   ids: string[];
 
-  constructor(partial: Partial<GetManyMediaDto>) {
+  constructor(partial: Partial<GetManyVariantsDto>) {
     Object.assign(this, partial);
   }
 }

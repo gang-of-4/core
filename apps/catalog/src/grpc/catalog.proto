@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package catalog;
+// 24000
+// 21344
+service ItemsService {
+  rpc GetItem(GetItemRequest) returns (Item) {}
+  rpc GetManyItems(GetManyItemsRequest) returns (GetManyItemsResponse) {}
+}
+
+service VariantsService {
+  rpc GetVariant(GetVariantRequest) returns (Variant) {}
+  rpc GetManyVariants(GetManyVariantsRequest) returns (GetManyVariantsResponse) {}
+}
+
+service CatalogService {
+  rpc CheckAvailability(QuantityRequest) returns (CheckAvailabilityResponse) {}
+  rpc ReserveQuantities(QuantityRequest) returns (SimpleSuccessResponse) {}
+  rpc RestoreQuantities(QuantityRequest) returns (SimpleSuccessResponse) {}
+}
+
+message GetItemRequest {
+  string id = 1;
+}
+
+message GetVariantRequest {
+  string id = 1;
+}
+
+message GetManyItemsRequest {
+  repeated string ids = 1;
+}
+
+message GetManyVariantsRequest {
+  repeated string ids = 1;
+}
+
+message GetManyItemsResponse {
+  repeated Item payload = 1;
+}
+
+message GetManyVariantsResponse {
+  repeated Variant payload = 1;
+}
+
+message QuantityRequest {
+  repeated EntityQuantity items = 1;
+  repeated EntityQuantity variants = 2;
+}
+
+message EntityQuantity {
+  string id = 1;
+  int64 quantity = 2;
+}
+
+message AvailabilityResponse {
+  string id = 1;
+  int64 quantity = 2;
+  bool isAvailable = 3;
+}
+
+message CheckAvailabilityResponse {
+  bool isAvailable = 1;
+  repeated AvailabilityResponse items = 2;
+  repeated AvailabilityResponse variants = 3;
+}
+
+message SimpleSuccessResponse {
+  bool success = 1;
+  optional string message = 2;
+}
+
+message GetManyMediaRequest {
+  repeated string ids = 1;
+}
+
+message Item {
+  string id = 1;
+  string name = 2;
+  string sku = 3;
+  string slug = 4;
+  int64 quantity = 5;
+  double price = 6;
+  string description = 7;
+  string storeId = 8;
+  string status = 9;
+  int64 order = 10;
+  bool isActive = 11;
+  repeated Category categories = 12;
+  repeated OptionGroup groups = 13;
+  repeated Variant variants = 14;
+  repeated Media images = 15;
+  string createdAt = 16;
+  string updatedAt = 17;
+}
+
+message Variant {
+  string id = 1;
+  optional int64 quantity = 2;
+  optional double price = 3;
+  Item parent = 4;
+  repeated OptionGroup groups = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
+}
+
+message Category {
+  string id = 1;
+  string name = 2;
+  string slug = 3;
+  string banner = 4;
+  string description = 5;
+  int64 order = 6;
+  optional Category parent = 7;
+  repeated Item items = 8;
+  bool isActive = 9;
+  string createdAt = 10;
+  string updatedAt = 11;
+}
+
+message OptionGroup {
+  string id = 1;
+  string title = 2;
+  string type = 3;
+  int64 order = 4;
+  repeated Option options = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
+}
+
+message Option {
+  string id = 1;
+  string label = 2;
+  string value = 3;
+  optional OptionGroup group = 4;
+}
+
+message Media {
+  string id = 1;
+  string name = 2;
+  string url = 3;
+  int64 size = 4;
+  string extension = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
+}

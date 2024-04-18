@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package media;
+package cart;
 
-service MediaService {
+service CartService {
   rpc GetMedia(GetMediaRequest) returns (Media) {}
   rpc GetManyMedia(GetManyMediaRequest) returns (MediaList) {}
 }

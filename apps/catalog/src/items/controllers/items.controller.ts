@@ -14,7 +14,7 @@ import { CreateItemDto } from '../dto/items/create-item.dto';
 import { UpdateItemDto } from '../dto/items/update-item.dto';
 import { ListItemsDto } from '../dto/items/list-items.dto';
 import { JwtService } from '@nestjs/jwt';
-import { CreateVariantsDto } from '../dto/items/create-variants.dto';
+import { CreateVariantsDto } from '../dto/variants/create-variants.dto';
 import { UpdateItemStatusDto } from '../dto/items/update-item-status.dto';
 
 @Controller({

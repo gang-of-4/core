@@ -23,6 +23,7 @@ export class UpdateItemDto {
   sku: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsNumber()
   @Min(0)
   quantity: number;

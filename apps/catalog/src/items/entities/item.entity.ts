@@ -48,9 +48,13 @@ export class ItemEntity implements Item {
   isActive: boolean;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   createdAt: Date;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   updatedAt: Date;
 
   @ApiProperty({ type: CategoryEntity, isArray: true, nullable: true })
