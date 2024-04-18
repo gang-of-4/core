@@ -41,9 +41,12 @@ export class ItemsService {
             storeId: createItemDto.store_id,
             status: (createItemDto.status as Status) ?? Status.DRAFT,
             order: (await this.count()) + 1,
-            slug: await this.generateUniqueSlug(
-              createItemDto.slug ?? createItemDto.name,
-            ),
+            slug:
+              createItemDto.slug ?? createItemDto.name
+                ? await this.generateUniqueSlug(
+                    createItemDto.slug ?? createItemDto.name,
+                  )
+                : null,
             isActive: false,
             categories: {
               connect: [
@@ -337,7 +340,12 @@ export class ItemsService {
             price: updateItemDto.price,
             description: updateItemDto.description,
             status: Status.PENDING,
-            slug: updateItemDto.name?.toLowerCase().replace(' ', '-'),
+            slug:
+              updateItemDto.slug ?? updateItemDto.name
+                ? await this.generateUniqueSlug(
+                    updateItemDto.slug ?? updateItemDto.name,
+                  )
+                : null,
             isActive: false,
             categories: {
               connect: [
