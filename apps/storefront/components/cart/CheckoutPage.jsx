@@ -1,144 +1,142 @@
-"use client"
-import { useCallback, useState } from 'react';
-import NextLink from 'next/link';
-import Head from 'next/head';
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
-import Lock01Icon from '@untitled-ui/icons-react/build/esm/Lock01';
+"use client";
+import { useCallback, useState } from "react";
+import NextLink from "next/link";
+import ArrowLeftIcon from "@untitled-ui/icons-react/build/esm/ArrowLeft";
+import ArrowRightIcon from "@untitled-ui/icons-react/build/esm/ArrowRight";
 import {
-    Box,
-    Button,
-    Container,
-    Link,
-    Stack,
-    SvgIcon,
-    Typography,
-    Unstable_Grid2 as Grid
-} from '@mui/material';
-import { CheckoutAddress } from './checkout-address';
-import { CheckoutSummary } from './checkout-summary';
-import { useCart } from '@/contexts/CartContext';
-
+  Box,
+  Button,
+  Container,
+  Stack,
+  SvgIcon,
+  Typography,
+  Unstable_Grid2 as Grid,
+} from "@mui/material";
+import { CheckoutAddress } from "./checkout-address";
+import { CheckoutSummary } from "./checkout-summary";
+import { useCart } from "@/contexts/CartContext";
 
 const initialAddress = {
-    country: '',
-    city: '',
-    street: '',
-    postalCode: '',
-    description: ''
+  country: "",
+  city: "",
+  street: "",
+  postalCode: "",
+  notes: "",
 };
 
-
 const Page = () => {
-    const [address, setAddress] = useState(initialAddress);
-    const { cartItems } = useCart();
-    
+  const [address, setAddress] = useState(initialAddress);
+  const [paymentMethodId, setPaymentMethodId] = useState();
+  const { cart } = useCart();
 
-    const handleAddress = useCallback((event) => {
-        setAddress((prevState) => ({
-            ...prevState,
-            [event.target.name]: event.target.value
-        }));
-    }, []);
+  const handleAddress = useCallback((event) => {
+    setAddress((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
+  }, []);
 
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
 
-    const handleSubmit = useCallback(async (event) => {
-        event.preventDefault();
-        
-        try {
-            const cartId = cartItems.id;; 
+      try {
+        const { data, error } = await fetchApi({
+          url: `/api/cart/${cart?.id}/checkout`,
+          options: {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              paymentMethodId,
+              address,
+            }),
+          },
+        });
 
-            const response = await axios.post(`/api/v1/cart/${cartId}/checkout`, {
-                address: address,
-                cartItems: cartItems
-            });
-
-            console.log('Checkout Successful', response.data);
-        } catch (error) {
-            console.error('Error during checkout:', error);
+        if (error) {
+          console.error("Error during checkout:", error);
+          return;
         }
-    }, [address, cartItems]);
 
-    return (
-        <>
-            <Box
-                component="main"
+        console.log("Checkout Successful", response.data);
+      } catch (error) {
+        console.error("Error during checkout:", error);
+      }
+    },
+    [address, cart]
+  );
+
+  return (
+    <>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 8,
+        }}
+      >
+        <Container maxWidth="lg">
+          <form onSubmit={handleSubmit}>
+            <Stack spacing={3}>
+              <Box
+                component={NextLink}
+                href={`/catalog/items`}
+                color="primary.main"
                 sx={{
-                    flexGrow: 1,
-                    py: 8
+                  alignItems: "center",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  px: 2,
+                  pt: 4,
+                  ":hover": {
+                    textDecoration: "underline",
+                  },
                 }}
-            >
-                <Container maxWidth="lg">
-                    <form onSubmit={handleSubmit}>
-                        <Stack spacing={3}>
-                            <div>
-                                <Link
-                                    color="text.primary"
-                                    component={NextLink}
-                                    href={`/cart`}
-                                    sx={{
-                                        alignItems: 'center',
-                                        display: 'inline-flex'
-                                    }}
-                                    underline="hover"
-                                >
-                                    <SvgIcon sx={{ mr: 1 }}>
-                                        <ArrowLeftIcon />
-                                    </SvgIcon>
-                                    <Typography variant="subtitle2">
-                                        Cart
-                                    </Typography>
-                                </Link>
-                            </div>
-                            <Typography variant="h3">
-                                Checkout
-                            </Typography>
-                        </Stack>
-                        <Box mt={6}>
-                            <Grid
-                                container
-                                spacing={6}
-                            >
-                                <Grid
-                                    md={7}
-                                    xs={12}
-                                >
-                                    <CheckoutAddress
-                                        address={address}
-                                        onChange={handleAddress}
-                                    />
-                                </Grid>
-                                <Grid
-                                    md={5}
-                                    xs={12}
-                                >
-                                    <CheckoutSummary
-                                        cartItems={cartItems}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Box>
-                        <Box sx={{ mt: 6 }}>
-                            <Button
-                                color="primary"
-                                endIcon={(
-                                    <SvgIcon>
-                                        <ArrowRightIcon />
-                                    </SvgIcon>
-                                )}
-                                size="large"
-                                sx={{ mt: 3}}
-                                type="submit"
-                                variant="outlined"
-                            >
-                                Complete order
-                            </Button>
-                        </Box>
-                    </form>
-                </Container>
+              >
+                <SvgIcon sx={{ mr: 1 }}>
+                  <ArrowLeftIcon />
+                </SvgIcon>
+                <Typography variant="subtitle2">Back to Cart</Typography>
+              </Box>
+              <Typography variant="h3">Checkout</Typography>
+            </Stack>
+            <Box mt={6}>
+              <Grid container spacing={6}>
+                <Grid md={7} xs={12}>
+                  <CheckoutAddress
+                    address={address}
+                    onChange={handleAddress}
+                    onPaymentChange={setPaymentMethodId}
+                  />
+                </Grid>
+                <Grid md={5} xs={12}>
+                  <CheckoutSummary cart={cart} />
+                </Grid>
+              </Grid>
             </Box>
-        </>
-    );
+            <Box sx={{ mt: 6 }}>
+              <Button
+                color="primary"
+                endIcon={
+                  <SvgIcon>
+                    <ArrowRightIcon />
+                  </SvgIcon>
+                }
+                size="large"
+                sx={{ mt: 3 }}
+                type="submit"
+                variant="outlined"
+              >
+                Complete Order
+              </Button>
+            </Box>
+          </form>
+        </Container>
+      </Box>
+    </>
+  );
 };
 
 export default Page;

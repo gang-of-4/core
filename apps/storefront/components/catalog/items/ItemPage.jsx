@@ -13,6 +13,7 @@ export default function ItemPage({ item }) {
 
   const [appliedOptions, setAppliedOptions] = useState([]);
   const [activeVariant, setActiveVariant] = useState(initActiveVariant());
+  const [isVariant, setIsVariant] = useState(false);
   const [error, setError] = useState();
 
   function handleOptionChange({ group, value }) {
@@ -43,9 +44,11 @@ export default function ItemPage({ item }) {
     if (newActiveVariant) {
       setError(null);
       setActiveVariant(newActiveVariant);
+      setIsVariant(true);
     } else {
       setError('No variant found for selected options. Please select a different combination.')
       setActiveVariant(null);
+      setIsVariant(false);
     }
   }
 
@@ -137,7 +140,7 @@ export default function ItemPage({ item }) {
                     {formatPrice({ price: activeVariant?.price || item.price, currency: activeVariant?.currency || item.currency })}
                   </Typography>
 
-                  <AddToCart activeItem={activeVariant} />
+                  <AddToCart activeItem={activeVariant} isVariant={isVariant}/>
 
                   <Stack
                     spacing={1}

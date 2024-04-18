@@ -36,7 +36,7 @@ export default function Item({ item, ...props }) {
                 image={item?.images?.[0]?.url}
                 alt={item.name}
                 sx={{
-                  objectFit: 'contain',
+                  objectFit: 'cover',
                   objectPosition: 'center',
                   height: 140
                 }}

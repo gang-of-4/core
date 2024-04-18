@@ -7,7 +7,7 @@ import NextLink from 'next/link';
 
 export function CartButton() {
 
-  const { cartItems } = useCart();
+  const { cart } = useCart();
 
 
   return (
@@ -19,7 +19,7 @@ export function CartButton() {
         >
           <Badge
             color="primary"
-            badgeContent={cartItems.length}
+            badgeContent={cart?.cartItems?.length}
           >
             <SvgIcon>
               <ShoppingCart01Icon />

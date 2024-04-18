@@ -8,11 +8,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 
-export default function AddToCart({ activeItem }) {
+export default function AddToCart({ activeItem, isVariant }) {
 
     const pathname = usePathname();
 
-    const { setCart } = useCart();
+    const { addCartItem } = useCart();
     const { isAuthenticated } = useAuth();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -44,9 +44,10 @@ export default function AddToCart({ activeItem }) {
 
         setLoading(true);
         try {
-            await setCart({
-                item: activeItem,
-                quantity: quantity
+            await addCartItem({
+                itemId: activeItem.id,
+                quantity: quantity,
+                isVariant: isVariant,
             });
             setInputValue(1);
         } catch (error) {

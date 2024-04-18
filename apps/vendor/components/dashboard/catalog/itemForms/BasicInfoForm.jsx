@@ -78,6 +78,7 @@ export default function BasicInfoForm({
                         onChange={formik.handleChange}
                         type="quantity"
                         value={formik.values.quantity}
+                        disabled={formik.values?.variants?.length > 0}
                     />
                 </Tooltip>
 

@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-import numeral from 'numeral';
 import {
   Box,
   Card,
@@ -8,75 +6,62 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Typography
-} from '@mui/material';
-
-const calculateAmounts = (cartItems) => {
-
-  const subtotal = cartItems.reduce((acc, cartItem) => {
-    return acc + cartItem.price * cartItem.quantity;
-  }, 0);
-  const total =  + subtotal;
-
-  return {
-    total
-  };
-};
+  Stack,
+  SvgIcon,
+  Typography,
+} from "@mui/material";
+import Image01Icon from "@untitled-ui/icons-react/build/esm/Image01";
+import { formatPrice } from "@/utils/format-price";
 
 export const CheckoutSummary = (props) => {
-  const { onQuantityChange, cartItems = [], ...other } = props;
-  const { total } = calculateAmounts(cartItems);
-
-  const formattedTotal = numeral(total).format('$00.00');
+  const { cart, ...other } = props;
 
   return (
-    <Card
-      variant="outlined"
-      sx={{ p: 3 }}
-      {...other}>
-      <Typography variant="h6">
-        Order Summary
-      </Typography>
+    <Card variant="outlined" sx={{ p: 3 }} {...other}>
+      <Typography variant="h6">Order Summary</Typography>
       <List sx={{ mt: 2 }}>
-        {cartItems.map((cartItem) => {
-          const price = numeral(cartItem.price).format('$00.00');
+        {cart?.cartItems?.map((cartItem) => {
+          const price = formatPrice({ price: cartItem?.item?.price });
 
           return (
-            <ListItem
-              disableGutters
-              key={cartItem.id}
-            >
+            <ListItem disableGutters key={cartItem.id}>
               <ListItemAvatar sx={{ pr: 2 }}>
-                <Box
-                  sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    height: 100,
-                    justifyContent: 'center',
-                    overflow: 'hidden',
-                    width: 100,
-                    '& img': {
-                      width: '100%',
-                      height: 'auto'
-                    }
-                  }}
-                >
-                  <img
-                    alt={cartItem.name}
-                    src={cartItem.image}
+                {cartItem?.item?.images?.[0]?.url ? (
+                  <Box
+                    sx={{ borderRadius: 2 }}
+                    component={"img"}
+                    width={100}
+                    height={100}
+                    src={cartItem.item.images[0].url}
+                    alt={cartItem.item?.name}
                   />
-                </Box>
+                ) : (
+                  <Stack
+                    width={100}
+                    height={100}
+                    sx={{
+                      bgcolor: "grey.100",
+                      borderRadius: 2,
+                    }}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                  >
+                    <SvgIcon>
+                      <Image01Icon />
+                    </SvgIcon>
+                  </Stack>
+                )}
               </ListItemAvatar>
               <ListItemText
-                primary={(
+                primary={
                   <Typography
-                    sx={{ fontWeight: 'fontWeightBold' }}
+                    sx={{ fontWeight: "fontWeightBold" }}
                     variant="subtitle2"
                   >
-                    {cartItem.name}
+                    {cartItem?.item?.name}
                   </Typography>
-                )}
-                secondary={(
+                }
+                secondary={
                   <Typography
                     color="text.secondary"
                     sx={{ mt: 1 }}
@@ -84,62 +69,48 @@ export const CheckoutSummary = (props) => {
                   >
                     {price}
                   </Typography>
-                )}
+                }
               />
               <Typography
-                sx={{ fontWeight: 'fontWeightBold' }}
+                sx={{ fontWeight: "fontWeightBold" }}
                 variant="subtitle2"
               >
-                {cartItem.quantity}
+                {cartItem?.quantity}
               </Typography>
             </ListItem>
           );
         })}
       </List>
-      {/* <OutlinedInput
-        fullWidth
-        placeholder="Discount Code"
-        size="small"
-        sx={{ mt: 2 }}
-      />
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          mt: 2
+          display: "flex",
+          justifyContent: "space-between",
+          mt: 2,
         }}
-      >
-        <Button type="button">
-          Apply Coupon
-        </Button>
-      </Box> */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          mt: 2
-        }}
-      >
-      </Box>
+      ></Box>
       <Divider sx={{ my: 2 }} />
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between'
+          display: "flex",
+          justifyContent: "space-between",
         }}
       >
+        <Typography variant="subtitle2">Subtotal</Typography>
         <Typography variant="subtitle2">
-          Total
+          {formatPrice({ price: cart.subtotal })}
         </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="subtitle2">Total</Typography>
         <Typography variant="subtitle2">
-          {formattedTotal}
+          {formatPrice({ price: cart.total })}
         </Typography>
       </Box>
     </Card>
   );
-};
-
-CheckoutSummary.propTypes = {
-  // @ts-ignore
-  cartItems: PropTypes.array
 };

@@ -67,7 +67,7 @@ const validationSchema = Yup.object({
             id: Yup.string().notRequired(),
             sku: Yup.string().notRequired(),
             price: Yup.number().notRequired(),
-            quantity: Yup.number().notRequired(),
+            quantity: Yup.number().required(),
         })
     ),
     images: Yup
@@ -107,7 +107,9 @@ export default function AddItem({ storeId, draftItemId, categories, optionGroups
 
         formData.append('name', values.name);
         formData.append('sku', values.sku);
-        formData.append('quantity', +values.quantity);
+        if (values.variants?.length === 0) {
+            formData.append('quantity', +values.quantity);
+        }
         formData.append('price', +values.price);
         formData.append('description', values.description);
         formData.append('categories', JSON.stringify(values.categories));
