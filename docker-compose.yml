@@ -25,6 +25,7 @@ services:
         ports:
             - '5555:5555'
             - '50051:50051'
+            - '50052:50052'
         volumes:
             - .:/app
             - .pnpm:/root/.local/share/pnpm/store

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Media } from '@prisma/client/media';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 
 export class MediaEntity implements Media {
   @ApiProperty()
@@ -12,7 +12,7 @@ export class MediaEntity implements Media {
   @Exclude()
   ownerId: string;
 
-  @Exclude()
+  @ApiProperty()
   extension: string;
 
   @ApiProperty()
@@ -23,9 +23,13 @@ export class MediaEntity implements Media {
   size: bigint;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   createdAt: Date;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   updatedAt: Date;
 
   @ApiProperty({ nullable: true, default: null })

@@ -8,11 +8,11 @@ import {
   Headers,
   Body,
 } from '@nestjs/common';
-import { CartService } from './services/cart.service';
+import { CartService } from '../services/cart.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateCartItemDto } from './dto/create-cart-item.dto';
-import { UpdateCartItemDto } from './dto/update-cart-item.dto';
-import { CheckoutCartDto } from './dto/checkout-cart-dto';
+import { CreateCartItemDto } from '../dto/create-cart-item.dto';
+import { UpdateCartItemDto } from '../dto/update-cart-item.dto';
+import { CheckoutCartDto } from '../dto/checkout-cart-dto';
 
 @Controller({
   path: 'cart',

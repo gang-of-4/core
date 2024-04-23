@@ -1,10 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { decodeToken } from 'common/shared.utils';
 import { PrismaService } from '../../prisma/prisma.service';
 import { S3Service } from '../../aws/services/s3.service';
 import * as crypto from 'crypto';
 import { MediaEntity } from '../entities/media.entity';
 import { ConfigService } from '@nestjs/config';
+import { NotFoundException } from '../exceptions/not-found.exception';
+import { GetManyMediaDto } from '../dto/get-many-media.dto';
+import { GetMediaDto } from '../dto/get-media.dto';
 
 @Injectable()
 export class MediaService {
@@ -52,5 +55,44 @@ export class MediaService {
       ...media,
       url: `${this.config.get('AWS_S3_URL')}/${ownerId}/${name}`,
     });
+  }
+
+  async findOneOrFail(getMediaDto: GetMediaDto): Promise<MediaEntity> {
+    const media = await this.prisma.media
+      .findUniqueOrThrow({
+        where: {
+          id: getMediaDto.id,
+          deletedAt: null,
+        },
+      })
+      .catch(() => {
+        throw new NotFoundException();
+      });
+
+    return new MediaEntity({
+      ...media,
+      url: `${this.config.get('AWS_S3_URL')}/${media.ownerId}/${media.name}`,
+    });
+  }
+
+  async findManyById(getManyMediaDto: GetManyMediaDto): Promise<MediaEntity[]> {
+    const response = await this.prisma.media.findMany({
+      where: {
+        id: {
+          in: getManyMediaDto.ids,
+        },
+        deletedAt: null,
+      },
+    });
+
+    return response.map(
+      (media) =>
+        new MediaEntity({
+          ...media,
+          url: `${this.config.get('AWS_S3_URL')}/${media.ownerId}/${
+            media.name
+          }`,
+        }),
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from '../dto/items/create-item.dto';
 import { UpdateItemDto } from '../dto/items/update-item.dto';
 import { ItemEntity } from '../entities/item.entity';
@@ -7,65 +7,126 @@ import { Status } from '@prisma/client/catalog';
 import { SlugUsedException } from '../exceptions/slug-used.exception';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { ListItemsDto } from '../dto/items/list-items.dto';
-import { CreateVariantsDto } from '../dto/items/create-variants.dto';
+import { CreateVariantsDto } from '../dto/variants/create-variants.dto';
 import { VariantEntity } from '../entities/variant.entity';
 import { VariantsException } from '../exceptions/variants.exception';
 import { UpdateItemStatusDto } from '../dto/items/update-item-status.dto';
+import { ClientGrpc } from '@nestjs/microservices';
+import { MediaService } from 'src/common/interfaces/media.interface';
+import { lastValueFrom } from 'rxjs';
+import { ImageUsedException } from '../exceptions/image-used.exception';
 
 @Injectable()
 export class ItemsService {
-  constructor(private prisma: PrismaService) {}
+  private mediaService: MediaService;
+
+  constructor(
+    private prisma: PrismaService,
+    @Inject('MEDIA_PACKAGE') private client: ClientGrpc,
+  ) {}
+
+  onModuleInit() {
+    this.mediaService = this.client.getService<MediaService>('MediaService');
+  }
 
   async create(createItemDto: CreateItemDto): Promise<ItemEntity> {
-    const item = await this.prisma.item
-      .create({
-        data: {
-          name: createItemDto.name,
-          quantity: createItemDto.quantity,
-          price: createItemDto.price,
-          description: createItemDto.description,
-          storeId: createItemDto.store_id,
-          status: (createItemDto.status as Status) ?? Status.DRAFT,
-          order: (await this.count()) + 1,
-          slug: createItemDto.name?.toLowerCase().replace(' ', '-'),
-          isActive: false,
-          categories: {
-            connect: [
-              ...(createItemDto.categories?.map((category) => ({
-                id: category,
-              })) ?? []),
-            ],
-          },
-          options: {
-            connect: [
-              ...(createItemDto.options?.map((option) => ({
-                id: option,
-              })) ?? []),
-            ],
-          },
-        },
-      })
-      .catch((e) => {
-        switch (e.code) {
-          case 'P2002':
-            throw new SlugUsedException();
-          default:
-            throw e;
-        }
-      });
-
-    await Promise.all(
-      createItemDto.images?.map(async (image) => {
-        await this.prisma.itemImages.create({
+    const item = await this.prisma.$transaction(async (tx) => {
+      const item = await tx.item
+        .create({
           data: {
-            itemId: item.id,
-            mediaId: image,
+            name: createItemDto.name,
+            quantity: createItemDto.quantity,
+            price: createItemDto.price,
+            description: createItemDto.description,
+            storeId: createItemDto.store_id,
+            status: (createItemDto.status as Status) ?? Status.DRAFT,
+            order: (await this.count()) + 1,
+            slug:
+              createItemDto.slug ?? createItemDto.name
+                ? await this.generateUniqueSlug(
+                    createItemDto.slug ?? createItemDto.name,
+                  )
+                : null,
+            isActive: false,
+            categories: {
+              connect: [
+                ...(createItemDto.categories?.map((category) => ({
+                  id: category,
+                })) ?? []),
+              ],
+            },
+            options: {
+              connect: [
+                ...(createItemDto.options?.map((option) => ({
+                  id: option,
+                })) ?? []),
+              ],
+            },
+            images: {
+              createMany: {
+                data: [
+                  ...(createItemDto.images?.map((image) => {
+                    return {
+                      mediaId: image,
+                    };
+                  }) ?? []),
+                ],
+              },
+            },
           },
+        })
+        .catch((e) => {
+          switch (e.code) {
+            case 'P2002':
+              throw new SlugUsedException();
+            default:
+              throw e;
+          }
         });
-      }) ?? [],
-    );
+
+      await Promise.all(
+        createItemDto.images?.map(async (image) => {
+          await tx.itemImages
+            .create({
+              data: {
+                itemId: item.id,
+                mediaId: image,
+              },
+            })
+            .catch((e) => {
+              switch (e.code) {
+                case 'P2002':
+                  throw new ImageUsedException();
+                default:
+                  throw e;
+              }
+            });
+        }) ?? [],
+      );
+
+      return item;
+    });
 
     return await this.findOne(item.id);
+  }
+
+  async generateUniqueSlug(name: string): Promise<string> {
+    const originalSlug = name?.toLowerCase().replace(' ', '-');
+    let slug = originalSlug;
+    let count = 0;
+    while (true) {
+      const item = await this.prisma.item.findUnique({
+        where: {
+          slug,
+        },
+      });
+      if (item) {
+        count++;
+        slug = `${originalSlug}-${count}`;
+        continue;
+      }
+      return slug;
+    }
   }
 
   async count(): Promise<number> {
@@ -93,10 +154,27 @@ export class ItemsService {
       },
       include: {
         categories: true,
-        images: true,
+        images: {
+          select: {
+            mediaId: true,
+          },
+        },
       },
     });
-    return items.map((item) => new ItemEntity(item));
+
+    return Promise.all(
+      items.map(async (item) => {
+        const media = await lastValueFrom(
+          this.mediaService.GetManyMedia({
+            ids: item.images.map((entry) => entry.mediaId),
+          }),
+        );
+        return new ItemEntity({
+          ...item,
+          images: media.payload,
+        });
+      }),
+    );
   }
 
   async findOneOrFail(id: string, role: string = 'guest'): Promise<ItemEntity> {
@@ -119,15 +197,26 @@ export class ItemsService {
               options: true,
             },
           },
-          images: true,
+          images: {
+            select: {
+              mediaId: true,
+            },
+          },
         },
       })
       .catch(() => {
         throw new NotFoundException();
       });
 
+    const media = await lastValueFrom(
+      this.mediaService.GetManyMedia({
+        ids: item.images.map((entry) => entry.mediaId),
+      }),
+    );
+
     return new ItemEntity({
       ...item,
+      images: media.payload,
       groups: Object.values(
         options.reduce((acc, option) => {
           if (option.group) {
@@ -158,12 +247,23 @@ export class ItemsService {
             options: true,
           },
         },
-        images: true,
+        images: {
+          select: {
+            mediaId: true,
+          },
+        },
       },
     });
 
+    const media = await lastValueFrom(
+      this.mediaService.GetManyMedia({
+        ids: item.images.map((entry) => entry.mediaId),
+      }),
+    );
+
     return new ItemEntity({
       ...item,
+      images: media.payload,
       groups: Object.values(
         options.reduce((acc, option) => {
           if (option.group) {
@@ -179,8 +279,55 @@ export class ItemsService {
     });
   }
 
+  async findManyById(
+    ids: string[],
+    role: string = 'guest',
+  ): Promise<ItemEntity[]> {
+    const items = await this.prisma.item.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        ...(['guest', 'customer'].includes(role) && {
+          status: Status.APPROVED,
+        }),
+        deletedAt: null,
+      },
+      orderBy: {
+        order: 'asc',
+      },
+      include: {
+        categories: true,
+        images: {
+          select: {
+            mediaId: true,
+          },
+        },
+      },
+    });
+
+    return Promise.all(
+      items.map(async (item) => {
+        const media = await lastValueFrom(
+          this.mediaService.GetManyMedia({
+            ids: item.images.map((entry) => entry.mediaId),
+          }),
+        );
+        return new ItemEntity({
+          ...item,
+          images: media.payload,
+        });
+      }),
+    );
+  }
+
   async update(id: string, updateItemDto: UpdateItemDto) {
     await this.prisma.$transaction(async (tx) => {
+      await tx.itemImages.deleteMany({
+        where: {
+          itemId: id,
+        },
+      });
       await tx.item
         .update({
           where: {
@@ -189,11 +336,16 @@ export class ItemsService {
           data: {
             name: updateItemDto.name,
             sku: updateItemDto.sku,
-            quantity: updateItemDto.quantity,
+            quantity: updateItemDto.variants ? updateItemDto.quantity : null,
             price: updateItemDto.price,
             description: updateItemDto.description,
             status: Status.PENDING,
-            slug: updateItemDto.name?.toLowerCase().replace(' ', '-'),
+            slug:
+              updateItemDto.slug ?? updateItemDto.name
+                ? await this.generateUniqueSlug(
+                    updateItemDto.slug ?? updateItemDto.name,
+                  )
+                : null,
             isActive: false,
             categories: {
               connect: [
@@ -208,6 +360,15 @@ export class ItemsService {
                   id: option,
                 })) ?? []),
               ],
+            },
+            images: {
+              createMany: {
+                data: updateItemDto.images.map((image) => {
+                  return {
+                    mediaId: image,
+                  };
+                }),
+              },
             },
           },
         })

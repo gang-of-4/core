@@ -5,6 +5,7 @@ import { Decimal } from '@prisma/client/catalog/runtime/library';
 import { CategoryEntity } from '../../categories/entities/category.entity';
 import { OptionGroupEntity } from './option-group.entity';
 import { VariantEntity } from './variant.entity';
+import { MediaEntity } from './media.entity';
 
 export class ItemEntity implements Item {
   @ApiProperty()
@@ -31,6 +32,10 @@ export class ItemEntity implements Item {
   description: string;
 
   @ApiProperty()
+  @Type(() => MediaEntity)
+  images: MediaEntity[];
+
+  @ApiProperty()
   storeId: string;
 
   @ApiProperty()
@@ -43,9 +48,13 @@ export class ItemEntity implements Item {
   isActive: boolean;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   createdAt: Date;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   updatedAt: Date;
 
   @ApiProperty({ type: CategoryEntity, isArray: true, nullable: true })
