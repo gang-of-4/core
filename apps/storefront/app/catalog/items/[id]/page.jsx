@@ -15,21 +15,6 @@ async function getItem(id) {
         throw new Error("Failed to fetch");
     }
 
-    let itemImages = [];
-
-    await Promise.all(data.images?.map(async (image) => {
-
-        const mediaRes = await fetch(`${process.env.MEDIA_API_URL}/${image.mediaId}`, {
-            next: { revalidate: 60 },
-        });
-
-        const mediaData = await mediaRes.json();
-
-        itemImages.push(mediaData);
-    }));
-
-    data.images = itemImages;
-
     return data;
 }
 

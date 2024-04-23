@@ -20,25 +20,6 @@ export async function GET(request, { params }) {
         return new Response(JSON.stringify({ message: data.message }), { status: data.statusCode });
     }
 
-    let itemImages = [];
-
-    await Promise.all(data.images?.map(async (image) => {
-
-        const mediaRes = await fetch(`${process.env.MEDIA_API_URL}/${image.mediaId}`, {
-            next: { revalidate: 60 },
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${request.headers.get('Authorization')}`
-            }
-        });
-
-        const mediaData = await mediaRes.json();
-
-        itemImages.push(mediaData);
-    }));
-
-    data.images = itemImages;
-
     return new Response(JSON.stringify(data), { status: 200 });
 
 };

@@ -12,22 +12,7 @@ export async function GET(request) {
 
     const data = await res.json();
 
-    await Promise.all(data.map(async item => {
-        if (item?.images?.[0]?.mediaId) {
-            const mediaRes = await fetch(`${process.env.MEDIA_API_URL}/${item.images[0].mediaId}`, {
-                next: { revalidate: 60 },
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `${request.headers.get('Authorization')}`
-                }
-            });
-            const mediaData = await mediaRes.json();
-            item.images[0] = mediaData;
-        }
-    }));
-
     return Response.json(data)
-
 }
 
 export async function POST(request) {
