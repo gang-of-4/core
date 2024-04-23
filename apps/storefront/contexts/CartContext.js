@@ -171,35 +171,6 @@ export function CartProvider({ children }) {
     dispatch({ type: ActionType.CLEAR_CART });
   }, [dispatch]);
 
-  const checkout = useCallback(
-    async ({ paymentMethodId, address }) => {
-      try {
-        const { data: cart, error } = await fetchApi({
-          url: `/api/cart/${state.cart?.id}/checkout`,
-          options: {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              paymentMethodId,
-              address,
-            }),
-          },
-        });
-
-        if (error) {
-          throw new Error("Error checking out");
-        }
-
-        dispatch({ type: ActionType.SET_CART, payload: cart });
-      } catch (error) {
-        console.error("Error checking out", error);
-      }
-    },
-    [dispatch, state.cart]
-  );
-
   return (
     <CartContext.Provider
       value={{
