@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import EditStore from "@/components/dashboard/stores/EditStore";
+import { config } from "ui/config";
+import { capitalize } from "@/utils/format-string";
 
 export const metadata: Metadata = {
-  title: `Dashboard | Edit Store`,
-  description: "Vendor Dashboard, edit store",
+  title: `${config.platformName} | Edit ${capitalize(config.store.name)}`,
 };
 
 async function getStore(id: string) {

@@ -1,11 +1,12 @@
 import React from 'react'
 import AddItem from '@/components/dashboard/catalog/AddItem'
 import { Metadata } from 'next';
+import { config } from 'ui/config';
+import { capitalize } from '@/utils/format-string';
 
 
 export const metadata: Metadata = {
-  title: 'Add Car | Vendor',
-  description: 'Add car'
+  title: `${config.platformName} | Add ${capitalize(config.catalog.item.name)}`,
 };
 
 async function getCategories() {

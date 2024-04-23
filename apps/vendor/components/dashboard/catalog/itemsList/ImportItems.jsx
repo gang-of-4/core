@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import { Button, FormHelperText, Stack } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useActiveStore } from '@/contexts/ActiveStoreContext';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 
 
@@ -49,7 +51,7 @@ export default function ImportItems() {
                         startIcon={<CloudUploadIcon />}
                     >
                         {
-                            formik.values.file ? `Selected: ${formik.values.file.name}` : 'Import Items'
+                            formik.values.file ? `Selected: ${formik.values.file.name}` : `Import ${capitalize(config.catalog.item.plural)}`
                         }
                         <input
                             type="file"

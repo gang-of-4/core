@@ -20,6 +20,8 @@ import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useAuth } from '@/contexts/AuthContext';
 import { useStores } from '@/contexts/StoresContext';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -127,7 +129,7 @@ export default function Page() {
                     <Card elevation={16}>
                         <CardHeader
                             sx={{ pb: 0 }}
-                            title="Vendor Create Business Store"
+                            title={`Create a ${capitalize(config.store.business.name)}`}
                         />
                         <CardContent>
                             <form
@@ -139,7 +141,7 @@ export default function Page() {
                                         error={!!(formik.touched.name && formik.errors.name)}
                                         fullWidth
                                         helperText={formik.touched.name && formik.errors.name}
-                                        label="Store Name"
+                                        label="Name"
                                         name="name"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}

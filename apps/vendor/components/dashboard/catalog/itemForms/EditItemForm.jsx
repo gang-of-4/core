@@ -22,6 +22,8 @@ import fetchApi from '@/utils/fetch-api';
 import OptionsForm from './OptionsForm';
 import BasicInfoForm from './BasicInfoForm';
 import VariantsForm from './VariantsForm';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 
 const validationSchema = Yup.object({
@@ -168,11 +170,11 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
                                     <ArrowLeftIcon />
                                 </SvgIcon>
                                 <Typography variant="subtitle2">
-                                    Back to Cars
+                                    Back to {capitalize(config.catalog.item.plural)}
                                 </Typography>
                             </Link>
                         </Box>
-                        <CardHeader title="Add New Car" />
+                        <CardHeader title={`Edit ${capitalize(config.catalog.item.name)}`} />
                         <CardContent>
                             <form
                                 noValidate

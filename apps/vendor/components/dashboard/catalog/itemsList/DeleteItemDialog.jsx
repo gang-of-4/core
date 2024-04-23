@@ -1,5 +1,6 @@
 'use client'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material"
+import { config } from "ui/config"
 
 
 export default function DeleteItemDialog({
@@ -16,7 +17,7 @@ export default function DeleteItemDialog({
             <DialogTitle id="delete-item-dialog-title">Confirm Deletion</DialogTitle>
             <DialogContent>
                 <DialogContentText id="delete-item-dialog-description">
-                    Are you sure you want to delete this car?
+                    Are you sure you want to delete this {config.catalog.item.name}?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

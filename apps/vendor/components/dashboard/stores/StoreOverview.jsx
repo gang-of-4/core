@@ -3,6 +3,8 @@ import React from 'react'
 import { PropertyList } from 'ui/components/property-list'
 import { PropertyListItem } from 'ui/components/property-list-item'
 import DeleteStoreDialog from './DeleteStoreDialog'
+import { capitalize } from '@/utils/format-string'
+import { config } from 'ui/config'
 
 export default function StoreOverview({ store }) {
     return (
@@ -13,7 +15,7 @@ export default function StoreOverview({ store }) {
             >
                 <Grid>
                     <Card>
-                        <CardHeader title="Store Overview" sx={{pb: '12px'}} />
+                        <CardHeader title={`${capitalize(config.store.name)} Overview`} sx={{pb: '12px'}} />
                         <CardContent sx={{ pt: 0 }}>
                             <PropertyList>
                                 <PropertyListItem label="Name" value={store?.name} />

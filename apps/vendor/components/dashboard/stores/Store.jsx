@@ -9,6 +9,8 @@ import NextLink from 'next/link';
 import Image01Icon from '@untitled-ui/icons-react/build/esm/Image01';
 import { useAuth } from '@/contexts/AuthContext';
 import { formatStore } from '@/utils/format-store';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 const Status = {
   PENDING: "PENDING",
@@ -130,7 +132,7 @@ export default function Store({ unformattedStore }) {
                 {
                   store.type === 'individual' ?
                     (
-                      <Tooltip title="Individual stores cannot be edited">
+                      <Tooltip title={`${capitalize(config.store.individual.name)} cannot be edited`}>
                         <span>
 
                           <Button
@@ -144,7 +146,7 @@ export default function Store({ unformattedStore }) {
                             disabled
                             data-test="edit-store-button"
                           >
-                            Edit Store
+                            Edit {capitalize(config.store.name)}
                           </Button>
                         </span>
                       </Tooltip>
@@ -163,7 +165,7 @@ export default function Store({ unformattedStore }) {
                         href={`${store?.id}/edit`}
                         data-test="edit-store-button"
                       >
-                        Edit Store
+                        Edit {capitalize(config.store.name)}
                       </Button>
                     )
                 }

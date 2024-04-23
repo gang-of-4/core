@@ -155,10 +155,7 @@ export const StoresProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    ...store,
-                    logo: store.logo ? store.logo : 'default',
-                }),
+                body: JSON.stringify(store),
             },
         });
 

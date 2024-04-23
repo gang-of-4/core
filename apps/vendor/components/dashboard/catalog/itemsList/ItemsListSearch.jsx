@@ -3,6 +3,7 @@ import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
 import { Box, Chip, Divider, Input, Stack, SvgIcon, Typography } from '@mui/material';
 import { MultiSelect } from 'ui/components/multi-select';
 import { useUpdateEffect } from 'ui/hooks/use-update-effect';
+import { config } from 'ui/config';
 
 
 const statusOptions = [
@@ -141,7 +142,7 @@ export const ItemsListSearch = (props) => {
                     disableUnderline
                     fullWidth
                     inputProps={{ ref: queryRef }}
-                    placeholder="Search by car name"
+                    placeholder={`Search by ${config.catalog.item.name} name`}
                     sx={{ flexGrow: 1 }}
                     value={query}
                     onChange={handleQueryChange}

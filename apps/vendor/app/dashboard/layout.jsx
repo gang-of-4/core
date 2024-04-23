@@ -13,6 +13,8 @@ import AuthGuard from '@/components/auth/auth-guard';
 import { useAuth } from '@/contexts/AuthContext'
 import { useStores } from '@/contexts/StoresContext';
 import { useActiveStore } from '@/contexts/ActiveStoreContext';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 
 export default function Layout({ children }) {
@@ -25,6 +27,7 @@ export default function Layout({ children }) {
   const user = auth?.user;
   const { activeStore, setActiveStore } = useActiveStore();
 
+  const storeName = capitalize(config.store.name);
 
   async function checkStores() {
 
@@ -36,18 +39,18 @@ export default function Layout({ children }) {
 
   function getTitle() {
     if (activeStore?.individualStore) {
-      return `${user?.firstName} ${user?.lastName}'s Store`
+      return `${user?.firstName} ${user?.lastName}'s ${storeName}`
     } else if (activeStore?.businessStore) {
       return activeStore?.businessStore?.name
     }
-    return 'Select a Store'
+    return `Select a ${storeName}`
   }
   
   const optionsList = stores?.map(store => {
     if (store?.individualStore) {
       return {
         id: store?.id,
-        text: `${user?.firstName} ${user?.lastName}'s Store`
+        text: `${user?.firstName} ${user?.lastName}'s ${storeName}`
       }
     } else if (store?.businessStore) {
       return {
@@ -91,7 +94,7 @@ export default function Layout({ children }) {
           </SvgIcon>
         )}
       >
-        Create a Store
+        Create
       </Button>
     </>
   );

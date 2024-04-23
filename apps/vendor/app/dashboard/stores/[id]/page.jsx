@@ -1,9 +1,10 @@
 import Store from "@/components/dashboard/stores/Store";
+import { capitalize } from "@/utils/format-string";
+import { config } from "ui/config";
 
 
 export const metadata = {
-  title: `Dashboard | Store`,
-  description: "Vendor Dashboard, store page",
+  title: `${config.platformName} | ${capitalize(config.store.name)}`,
 };
 
 async function getStore(id) {

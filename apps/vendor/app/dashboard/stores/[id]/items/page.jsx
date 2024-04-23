@@ -1,9 +1,11 @@
 import Page from "@/components/dashboard/catalog/itemsList/ItemsPage";
 import SelectStore from "@/components/dashboard/catalog/SelectStore";
+import { capitalize } from "@/utils/format-string";
 import React from "react";
+import { config } from "ui/config";
 
 export const metadata = {
-  title: "Cars | Vendor",
+  title: `${config.platformName} | ${capitalize(config.catalog.item.plural)}`,
 };
 
 async function getItems(storeId) {

@@ -4,25 +4,27 @@ import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import {
-  Box,
-  Button,
-  Card,
-  CardHeader,
-  Container,
-  Link,
-  Stack,
-  SvgIcon,
-  Typography,
-  CardContent,
-} from "@mui/material";
-import { useMounted } from "ui/hooks/use-mounted";
-import ArrowLeftIcon from "@untitled-ui/icons-react/build/esm/ArrowLeft";
-import NextLink from "next/link";
-import fetchApi from "@/utils/fetch-api";
-import OptionsForm from "./itemForms/OptionsForm";
-import BasicInfoForm from "./itemForms/BasicInfoForm";
-import ImagesForm from "./itemForms/ImagesForm";
-import VariantsForm from "./itemForms/VariantsForm";
+    Box,
+    Button,
+    Card,
+    CardHeader,
+    Container,
+    Link,
+    Stack,
+    SvgIcon,
+    Typography,
+    CardContent,
+} from '@mui/material';
+import { useMounted } from 'ui/hooks/use-mounted';
+import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
+import NextLink from 'next/link';
+import fetchApi from '@/utils/fetch-api';
+import OptionsForm from './itemForms/OptionsForm';
+import BasicInfoForm from './itemForms/BasicInfoForm';
+import ImagesForm from './itemForms/ImagesForm';
+import VariantsForm from './itemForms/VariantsForm';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 const initialValues = {
   name: "",
@@ -126,52 +128,60 @@ export default function AddItem({
     setLoading(false);
   }
 
-  return (
-    <>
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            py: 6,
-          }}
-        >
-          <Container maxWidth="lg">
-            <Card>
-              <Box
+    return (
+        <>
+            <Box
+                component="main"
                 sx={{
-                  alignItems: "center",
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  px: 2,
-                  pt: 4,
+                    flexGrow: 1,
+                    py: 6
                 }}
-              >
-                <Link
-                  color="primary"
-                  component={NextLink}
-                  href={`/dashboard/stores/${storeId}/items`}
-                  sx={{
-                    alignItems: "center",
-                    display: "inline-flex",
-                  }}
-                  underline="hover"
-                >
-                  <SvgIcon sx={{ mr: 1 }}>
-                    <ArrowLeftIcon />
-                  </SvgIcon>
-                  <Typography variant="subtitle2">Back to Cars</Typography>
-                </Link>
-              </Box>
-              <CardHeader title="Add New Car" />
-              <CardContent>
-                <form noValidate>
-                  <Stack direction={"column"} spacing={8}>
-                    <Stack spacing={3} direction={"column"}>
-                      <Typography variant="body1" color="textPrimary">
-                        Basic Information
-                      </Typography>
-                      <BasicInfoForm formik={formik} categories={categories} />
-                    </Stack>
+            >
+                <Container maxWidth="lg">
+                    <Card>
+                        <Box sx={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            px: 2,
+                            pt: 4
+                        }}>
+                            <Link
+                                color="primary"
+                                component={NextLink}
+                                href={`/dashboard/stores/${storeId}/items`}
+                                sx={{
+                                    alignItems: 'center',
+                                    display: 'inline-flex'
+                                }}
+                                underline="hover"
+                            >
+                                <SvgIcon sx={{ mr: 1 }}>
+                                    <ArrowLeftIcon />
+                                </SvgIcon>
+                                <Typography variant="subtitle2">
+                                Back to {capitalize(config.catalog.item.plural)}
+                                </Typography>
+                            </Link>
+                        </Box>
+                        <CardHeader title={`Add New ${capitalize(config.catalog.item.name)}`} />
+                        <CardContent>
+                            <form
+                                noValidate
+                            >
+                                <Stack
+                                    direction={'column'}
+                                    spacing={8}
+                                >
+                                    <Stack
+                                        spacing={3}
+                                        direction={'column'}
+                                    >
+                                        <Typography variant="body1" color="textPrimary">
+                                            Basic Information
+                                        </Typography>
+                                        <BasicInfoForm formik={formik} categories={categories} />
+                                    </Stack>
 
                     <Stack spacing={3} direction={"column"}>
                       <Typography variant="body1" color="textPrimary">

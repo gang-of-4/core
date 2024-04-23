@@ -1,5 +1,7 @@
+import { capitalize } from '@/utils/format-string';
 import { SvgIcon } from '@mui/material';
 import { Building02, Package } from '@untitled-ui/icons-react';
+import { config } from 'ui/config';
 import { HomeSmile } from 'ui/icons/untitled-ui/duocolor/home-smile';
 import { paths } from 'ui/paths';
 
@@ -27,7 +29,7 @@ export const getSections = (activeStore) => [
         )
       },
       {
-        title: 'Cars',
+        title: capitalize(config.catalog.item.plural),
         path: activeStore ?
           `${paths.vendor.dashboard.stores.index}/${activeStore?.id}/items` 
           : paths.vendor.dashboard.stores.index,

@@ -20,6 +20,8 @@ import ItemVariants from './ItemVariants';
 import { useEffect, useState } from 'react';
 import fetchApi from '@/utils/fetch-api';
 import ItemImages from './ItemImages';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 const Status = {
     PENDING: "PENDING",
@@ -118,7 +120,7 @@ const ViewItem = ({ storeId, itemId }) => {
                                             href={`/dashboard/stores/${storeId}`}
                                             variant="subtitle2"
                                         >
-                                            Store
+                                            {capitalize(config.store.plural)}
                                         </Link>
                                         <Link
                                             color="text.primary"
@@ -126,7 +128,7 @@ const ViewItem = ({ storeId, itemId }) => {
                                             href={`/dashboard/stores/${storeId}/items`}
                                             variant="subtitle2"
                                         >
-                                            Cars
+                                            {capitalize(config.catalog.item.plural)}
                                         </Link>
                                         {item.name && (
                                             <Typography
@@ -156,7 +158,7 @@ const ViewItem = ({ storeId, itemId }) => {
                                         component={NextLink}
                                         href={`/dashboard/stores/${storeId}/items/${item.id}/edit`}
                                     >
-                                        Edit Car
+                                        Edit {capitalize(config.catalog.item.name)}
                                     </Button>
                                 </Stack>
                             </Stack>

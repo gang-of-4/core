@@ -1,4 +1,5 @@
 "use client"
+import { capitalize, getIndefiniteArticle } from '@/utils/format-string';
 import {
     Box,
     Container,
@@ -7,9 +8,13 @@ import {
     CardContent,
     Typography,
 } from '@mui/material';
+import { config } from 'ui/config';
 
 
 export default function SelectStore() {
+
+    const storeName = capitalize(config.store.name);
+
     return (
         <>
             <Box
@@ -25,10 +30,10 @@ export default function SelectStore() {
                             <CardContent>
                                 <Stack spacing={2}>
                                     <Typography variant="h4">
-                                        No Store Selected
+                                        No {storeName} Selected
                                     </Typography>
                                     <Typography variant="body1">
-                                        Select a store from the sidebar to manage items.
+                                        Select {getIndefiniteArticle(storeName)} {storeName} from the sidebar to manage {config.catalog.item.plural}.
                                     </Typography>
                                 </Stack>
                             </CardContent>

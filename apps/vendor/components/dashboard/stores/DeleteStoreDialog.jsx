@@ -17,6 +17,8 @@ import { useRouter } from 'next/navigation';
 import { paths } from 'ui/paths';
 import { useStores } from '@/contexts/StoresContext';
 import { useActiveStore } from '@/contexts/ActiveStoreContext';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 export default function DeleteStoreDialog({ store }) {
 
@@ -26,6 +28,8 @@ export default function DeleteStoreDialog({ store }) {
     const { deleteStore } = useStores();
 
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+    const storeName = config.store.name;
 
     const handleOpenDeleteDialog = () => {
         setDeleteDialogOpen(true);
@@ -49,7 +53,7 @@ export default function DeleteStoreDialog({ store }) {
     return (
         <>
             <Card>
-                <CardHeader title="Store Management" />
+                <CardHeader title={`${capitalize(storeName)} Management`} />
                 <CardContent sx={{ pt: 0 }}>
                     <Button
                         color="error"
@@ -57,14 +61,14 @@ export default function DeleteStoreDialog({ store }) {
                         onClick={handleOpenDeleteDialog}
                         data-test="delete-store-button"
                     >
-                        Delete Store
+                        Delete {capitalize(storeName)}
                     </Button>
                     <Box sx={{ mt: 1 }}>
                         <Typography
                             color="text.secondary"
                             variant="body2"
                         >
-                            Remove this store,
+                            Remove this {storeName},
                             please be aware that what has been deleted can never be brought
                             back.
                         </Typography>
@@ -80,7 +84,7 @@ export default function DeleteStoreDialog({ store }) {
                 <DialogTitle id="delete-store-dialog-title">Confirm Deletion</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="delete-store-dialog-description">
-                        Are you sure you want to delete the store?
+                        Are you sure you want to delete the {storeName}?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

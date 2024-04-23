@@ -21,6 +21,8 @@ import { paths } from 'ui/paths';
 import fetchApi from '@/utils/fetch-api';
 import ImportItems from './ImportItems';
 import { useRouter } from 'next/navigation';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 const useSearch = () => {
   const [search, setSearch] = useState({
@@ -44,6 +46,8 @@ const Page = ({ items, storeId }) => {
   const [filteredItems, setFilteredItems] = useState(items);
   const [loading, setLoading] = useState(false);
   const [hasUpdatedItems, setHasUpdatedItems] = useState(false);
+
+  const itemsName = capitalize(config.catalog.item.plural);
 
   useEffect(() => {
     const interval = setTimeout(() => {
@@ -127,7 +131,7 @@ const Page = ({ items, storeId }) => {
             >
               <Stack spacing={1}>
                 <Typography variant="h4">
-                  Cars
+                  {itemsName}
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <Link
@@ -142,7 +146,7 @@ const Page = ({ items, storeId }) => {
                     color="text.secondary"
                     variant="subtitle2"
                   >
-                    Cars
+                    {itemsName}
                   </Typography>
                 </Breadcrumbs>
               </Stack>
@@ -171,7 +175,7 @@ const Page = ({ items, storeId }) => {
                   onClick={handleAddItem}
                   disabled={loading}
                 >
-                  {loading ? 'Adding...' : 'Add Car'}
+                  {loading ? 'Adding...' : `Add ${capitalize(config.catalog.item.name)}`}
                 </Button>
               </Stack>
 
