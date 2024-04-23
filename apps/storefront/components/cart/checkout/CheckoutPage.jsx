@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NextLink from "next/link";
 import ArrowLeftIcon from "@untitled-ui/icons-react/build/esm/ArrowLeft";
 import ArrowRightIcon from "@untitled-ui/icons-react/build/esm/ArrowRight";
@@ -12,9 +12,11 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
-import { CheckoutAddress } from "./checkout-address";
-import { CheckoutSummary } from "./checkout-summary";
+import { CheckoutAddress } from "./CheckoutAddress";
+import { CheckoutSummary } from "./CheckoutSummary";
 import { useCart } from "@/contexts/CartContext";
+import fetchApi from "@/utils/fetch-api";
+import { useRouter } from "next/navigation";
 
 const initialAddress = {
   country: "",
@@ -25,9 +27,10 @@ const initialAddress = {
 };
 
 const Page = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(initialAddress);
-  const [paymentMethodId, setPaymentMethodId] = useState();
-  const { cart } = useCart();
+  const { cart, isInitialized } = useCart();
 
   const handleAddress = useCallback((event) => {
     setAddress((prevState) => ({
@@ -39,7 +42,7 @@ const Page = () => {
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-
+      setLoading(true);
       try {
         const { data, error } = await fetchApi({
           url: `/api/cart/${cart?.id}/checkout`,
@@ -49,7 +52,6 @@ const Page = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              paymentMethodId,
               address,
             }),
           },
@@ -60,13 +62,27 @@ const Page = () => {
           return;
         }
 
-        console.log("Checkout Successful", response.data);
+        console.log("Checkout Successful");
+
+        if (data?.redirectUrl) {
+          router.push(data.redirectUrl);
+        }
       } catch (error) {
         console.error("Error during checkout:", error);
+      } finally {
+        setLoading(false);
       }
     },
     [address, cart]
   );
+
+  useEffect(() => {
+    if (isInitialized) {
+      if (cart?.cartItems.length === 0 || !cart.isAvailable) {
+        router.push("/cart");
+      }
+    }
+  }, [cart, isInitialized]);
 
   return (
     <>
@@ -74,7 +90,6 @@ const Page = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8,
         }}
       >
         <Container maxWidth="lg">
@@ -82,7 +97,7 @@ const Page = () => {
             <Stack spacing={3}>
               <Box
                 component={NextLink}
-                href={`/catalog/items`}
+                href={`/cart`}
                 color="primary.main"
                 sx={{
                   alignItems: "center",
@@ -105,14 +120,10 @@ const Page = () => {
             <Box mt={6}>
               <Grid container spacing={6}>
                 <Grid md={7} xs={12}>
-                  <CheckoutAddress
-                    address={address}
-                    onChange={handleAddress}
-                    onPaymentChange={setPaymentMethodId}
-                  />
+                  <CheckoutAddress address={address} onChange={handleAddress} />
                 </Grid>
                 <Grid md={5} xs={12}>
-                  <CheckoutSummary cart={cart} />
+                  {isInitialized && <CheckoutSummary cart={cart} />}
                 </Grid>
               </Grid>
             </Box>
@@ -128,8 +139,9 @@ const Page = () => {
                 sx={{ mt: 3 }}
                 type="submit"
                 variant="outlined"
+                disabled={loading || !isInitialized}
               >
-                Complete Order
+                {loading ? "Processing..." : "Complete Order"}
               </Button>
             </Box>
           </form>

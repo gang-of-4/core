@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   Box,
   Stack,
@@ -27,9 +26,7 @@ const paymentMethods = [
 ];
 
 export const CheckoutAddress = (props) => {
-  const { address, paymentMethod, onChange, onPaymentChange, ...other } = props;
-
-  const isCash = paymentMethod === "Cash";
+  const { address, onChange, ...other } = props;
 
   return (
     <Stack {...other} spacing={6}>
@@ -85,7 +82,7 @@ export const CheckoutAddress = (props) => {
               <TextField
                 fullWidth
                 label="Postal Code"
-                name="zipostalCodep"
+                name="postalCode"
                 onChange={onChange}
                 value={address.postalCode}
               />
@@ -126,7 +123,6 @@ export const CheckoutAddress = (props) => {
           <div>
             <RadioGroup
               name="paymentMethod"
-              onChange={onPaymentChange}
               defaultValue={"Cash"}
               sx={{ flexDirection: "column" }}
             >
