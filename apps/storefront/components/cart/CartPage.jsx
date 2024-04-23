@@ -16,10 +16,11 @@ import ArrowLeftIcon from "@untitled-ui/icons-react/build/esm/ArrowLeft";
 import React from "react";
 import NextLink from "next/link";
 import CartActions from "./CartActions";
-import CartItem from "./CartItem";
+import CartItem from "./cartItems/CartItem";
+import CartItemVariant from "./cartItems/CartItemVariant";
 
 export default function CartPage() {
-  const { cart, removeCartItem } = useCart();
+  const { cart, isInitialized, removeCartItem } = useCart();
 
   async function handleRemoveItem(itemId) {
     await removeCartItem(itemId);
@@ -68,22 +69,48 @@ export default function CartPage() {
           <Grid item xs={12}>
             <Card variant="outlined" sx={{ p: 3 }}>
               <CardHeader title="Your Cart" />
+              {isInitialized && (
+                <>
+                  {cart.cartItems && (
+                    <List>
+                      {cart.cartItems?.map((cartItem) =>
+                        cartItem.isVariant ? (
+                          <CartItemVariant
+                            key={cartItem.id}
+                            cartItem={cartItem}
+                            handleRemoveItem={handleRemoveItem}
+                          />
+                        ) : (
+                          <CartItem
+                            key={cartItem.id}
+                            cartItem={cartItem}
+                            handleRemoveItem={handleRemoveItem}
+                          />
+                        )
+                      )}
+                    </List>
+                  )}
 
-              {cart.cartItems && (
-                <List>
-                  {cart.cartItems?.map((cartItem) => (
-                    <CartItem
-                      key={cartItem.id}
-                      cartItem={cartItem}
-                      handleRemoveItem={handleRemoveItem}
-                    />
-                  ))}
-                </List>
+                  {cart?.cartItems?.length === 0 && (
+                    <Typography
+                      marginBottom={2}
+                      variant="body1"
+                      sx={{ textAlign: "center" }}
+                    >
+                      Your cart is empty.
+                    </Typography>
+                  )}
+
+                  <Divider />
+
+                  <CartActions
+                    disabled={
+                      cart?.cartItems?.length === 0 || !cart.isAvailable
+                    }
+                    isAvailable={cart.isAvailable}
+                  />
+                </>
               )}
-
-              <Divider />
-
-              <CartActions disabled={cart?.cartItems?.length === 0} />
             </Card>
           </Grid>
         </Grid>
