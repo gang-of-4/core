@@ -52,7 +52,7 @@ const validationSchema = Yup.object({
     description: Yup
         .string()
         .max(1000)
-        .required('Car Price is required'),
+        .required('Description is required'),
     quantity: Yup
         .number()
         .notRequired(),
@@ -60,7 +60,7 @@ const validationSchema = Yup.object({
         Yup.string().required('Category is required')
     ),
     options: Yup.array().of(
-        Yup.string().required('Option is required')
+        Yup.string()
     ),
     variants: Yup.array().of(
         Yup.object().shape({
@@ -228,6 +228,7 @@ export default function AddItem({ storeId, draftItemId, categories, optionGroups
                                             formik={formik}
                                             optionGroups={optionGroups}
                                             draftItemId={draftItemId}
+                                            isDisabled={formik.values.options?.length === 0}
                                         />
                                     </Stack>
 
@@ -249,6 +250,7 @@ export default function AddItem({ storeId, draftItemId, categories, optionGroups
                                             disabled={formik.isSubmitting || loading}
                                             size="large"
                                             variant="contained"
+                                            type='button'
                                             onClick={handleSubmit}
                                         >
                                             {loading ? 'Submitting...' : 'Submit'}

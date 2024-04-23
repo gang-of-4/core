@@ -38,7 +38,7 @@ const validationSchema = Yup.object({
     description: Yup
         .string()
         .max(1000)
-        .required('Car Price is required'),
+        .required('Description is required'),
     quantity: Yup
         .number()
         .notRequired(),
@@ -46,7 +46,7 @@ const validationSchema = Yup.object({
         Yup.string().required('Category is required')
     ),
     options: Yup.array().of(
-        Yup.string().required('Option is required')
+        Yup.string()
     ),
     variants: Yup.array().of(
         Yup.object().shape({
@@ -203,7 +203,11 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
                                             <br />
                                             You don&apos;t need to add values for all options below. Choose what you need and leave the rest empty.
                                         </Typography>
-                                        <OptionsForm formik={formik} optionGroups={optionGroups} />
+                                        <OptionsForm 
+                                            formik={formik} 
+                                            optionGroups={optionGroups} 
+                                            isDisabled={formik.values.variants?.length > 0}
+                                        />
                                     </Stack>
 
                                     <Stack
@@ -231,6 +235,7 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
                                             formik={formik}
                                             optionGroups={optionGroups}
                                             draftItemId={item.id}
+                                            isDisabled={formik.values.options?.length === 0}
                                         />
                                     </Stack>
 

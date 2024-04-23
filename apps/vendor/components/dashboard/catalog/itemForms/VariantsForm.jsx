@@ -18,7 +18,7 @@ import fetchApi from '@/utils/fetch-api';
 import VariantOptions from '../itemPage/VariantOptions';
 
 
-export default function VariantsForm({ formik, optionGroups, draftItemId }) {
+export default function VariantsForm({ formik, optionGroups, draftItemId, isDisabled }) {
 
     const [loading, setLoading] = useState(false);
 
@@ -52,8 +52,6 @@ export default function VariantsForm({ formik, optionGroups, draftItemId }) {
                 })
             }
         });
-
-        console.log('variants:', data);
 
         formik.setFieldValue('variants', data);
         setLoading(false);
@@ -93,7 +91,7 @@ export default function VariantsForm({ formik, optionGroups, draftItemId }) {
                             variant="outlined"
                             sx={{ margin: 'auto' }}
                             onClick={handleGenerateVariants}
-                            disabled={loading}
+                            disabled={loading || isDisabled}
                         >
                             {loading ? 'Generating...' : 'Generate Variants'}
                         </Button>

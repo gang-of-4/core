@@ -59,6 +59,13 @@ export default function ItemBasicInfo({ item }) {
                                 : <Typography variant="body1">N/A</Typography>
                         }
                     </Stack>
+
+                    <Stack>
+                        <Typography variant="subtitle1">Description:</Typography>
+                        <Typography variant="body1">
+                            {item.description}
+                        </Typography>
+                    </Stack>
                 </Stack>
 
                 <Stack
@@ -70,6 +77,13 @@ export default function ItemBasicInfo({ item }) {
                         spacing={3}
                     >
                         <Stack>
+                            <Typography variant="subtitle1">Quantity:</Typography>
+                            <Typography variant="body1">
+                                {item.quantity ?? 'N/A'}
+                            </Typography>
+                        </Stack>
+
+                        <Stack>
                             <Typography variant="subtitle1">Price:</Typography>
                             <Typography variant="body1">
                                 {item.price ?
@@ -78,13 +92,6 @@ export default function ItemBasicInfo({ item }) {
                                         currency: item.currency
                                     }) : 'N/A'
                                 }
-                            </Typography>
-                        </Stack>
-
-                        <Stack>
-                            <Typography variant="subtitle1">Description:</Typography>
-                            <Typography variant="body1">
-                                {item.description}
                             </Typography>
                         </Stack>
                     </Stack>

@@ -11,7 +11,8 @@ import {
 
 export default function OptionsForm({
     formik,
-    optionGroups
+    optionGroups,
+    isDisabled = false
 }) {
     return (
         <Stack
@@ -38,6 +39,7 @@ export default function OptionsForm({
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 value={formik.values.options}
+                                disabled={isDisabled}
                             >
                                 {optionGroup?.options?.map((option) => {
                                     if (optionGroup.type === 'COLOR') {
