@@ -1,8 +1,8 @@
-import CheckoutPage from '@/components/cart/CheckoutPage'
+import CheckoutPage from '@/components/cart/checkout/CheckoutPage'
 import AuthGuard from '@/components/auth/auth-guard'
 import React from 'react'
 
-export const meta = {
+export const metadata = {
   title: 'Checkout',
   description: 'Your checkout',
 }

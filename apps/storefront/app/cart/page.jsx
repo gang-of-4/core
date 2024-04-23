@@ -3,7 +3,7 @@ import AuthGuard from '@/components/auth/auth-guard'
 import CartPage from '@/components/cart/CartPage'
 import React from 'react'
 
-export const meta = {
+export const metadata = {
   title: 'Cart',
   description: 'Your cart',
 }
