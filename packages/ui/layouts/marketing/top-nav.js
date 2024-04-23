@@ -14,7 +14,7 @@ import { alpha } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
 import { useWindowScroll } from '../../hooks/use-window-scroll';
 import { paths } from '../../paths';
-import { organization } from '../../config'
+import { config } from '../../config';
 import { Account } from '../../components/custom/account';
 import { TopNavItem } from './top-nav-item';
 
@@ -115,7 +115,7 @@ export function TopNav(props) {
                   }
                 }}
               >
-                {organization.name}
+                {config.platformName}
               </Box>
             </Stack>
           </Stack>

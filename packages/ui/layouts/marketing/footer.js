@@ -9,36 +9,7 @@ import {
 import NextLink from 'next/link';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
-import { organization } from '../../config';
-
-const sections = [
-  {
-    title: 'Legal',
-    items: [
-      {
-        title: 'Terms & Conditions',
-        path: '#'
-      },
-      {
-        title: 'License',
-        path: '#'
-      }
-    ]
-  },
-  {
-    title: 'Social',
-    items: [
-      {
-        title: 'Instagram',
-        path: '#'
-      },
-      {
-        title: 'LinkedIn',
-        path: '#'
-      }
-    ]
-  }
-];
+import { config } from '../../config';
 
 export function Footer(props) {
   return (
@@ -105,7 +76,7 @@ export function Footer(props) {
                     }
                   }}
                 >
-                  {organization.name}
+                  {config.platformName}
                 </Box>
               </Stack>
               <Typography
@@ -116,7 +87,7 @@ export function Footer(props) {
               </Typography>
             </Stack>
           </Grid>
-          {sections.map((section, index) => (
+          {config.footer?.sections?.map((section, index) => (
             <Grid
               key={section.title}
               md={3}

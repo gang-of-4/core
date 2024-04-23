@@ -8,7 +8,7 @@ import { Scrollbar } from '../../../components/scrollbar';
 import { paths } from '../../../paths';
 import { OptionSwitch } from '../option-switch';
 import { SideNavSection } from '../vertical-layout/side-nav-section';
-import { organization } from '../../../config';
+import { config } from '../../../config';
 
 const MOBILE_NAV_WIDTH = 280;
 
@@ -159,7 +159,7 @@ export function MobileNav(props) {
                 color="inherit"
                 variant="h6"
               >
-                {organization.name}
+                {config.platformName}
               </Typography>
             </Box>
           </Stack>

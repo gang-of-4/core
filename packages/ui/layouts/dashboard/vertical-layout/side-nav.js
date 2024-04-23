@@ -7,7 +7,7 @@ import { Logo } from '../../../components/logo';
 import { Scrollbar } from '../../../components/scrollbar';
 import { paths } from '../../../paths';
 import { OptionSwitch } from '../option-switch';
-import { organization } from '../../../config';
+import { config } from '../../../config';
 import { SideNavSection } from './side-nav-section';
 
 
@@ -202,7 +202,7 @@ export function SideNav(props) {
                 color="inherit"
                 variant="h6"
               >
-                {organization.name}
+                {config.platformName}
               </Typography>
             </Box>
           </Stack>
