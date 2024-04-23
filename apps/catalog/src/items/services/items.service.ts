@@ -394,16 +394,6 @@ export class ItemsService {
           });
         }),
       );
-      await Promise.all(
-        updateItemDto.images?.map(async (image) => {
-          await tx.itemImages.create({
-            data: {
-              itemId: id,
-              mediaId: image,
-            },
-          });
-        }) ?? [],
-      );
     });
 
     return await this.findOne(id);
