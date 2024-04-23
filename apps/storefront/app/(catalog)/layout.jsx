@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import SearchBar from '@/components/catalog/SearchBar';
-import { Box, Container, Grid } from '@mui/material';
-import React from 'react'
+import SearchBar from "@/components/catalog/SearchBar";
+import { Box, Container, Grid } from "@mui/material";
+import React from "react";
 
 function layout({ children }) {
   return (
@@ -12,24 +12,22 @@ function layout({ children }) {
         flexGrow: 1,
       }}
     >
-      <Container maxWidth={'lg'}>
+      <Container maxWidth={"lg"}>
         <Grid
           container
           spacing={{
             xs: 3,
-            lg: 4
+            lg: 4,
           }}
         >
-          <Grid 
-            item
-            xs={12}>
+          <Grid item xs={12}>
             <SearchBar />
           </Grid>
-            {children}
+          {children}
         </Grid>
       </Container>
     </Box>
-  )
+  );
 }
 
 export default layout;

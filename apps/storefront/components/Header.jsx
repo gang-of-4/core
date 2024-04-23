@@ -7,6 +7,8 @@ import { Box } from '@mui/material'
 import { PagesPopover } from 'ui/layouts/marketing/pages-popover';
 import { CartButton } from './cart/CartButton';
 import { Footer } from 'ui/layouts/marketing/footer';
+import { config } from 'ui/config'
+import { capitalize } from '@/utils/format-string'
 
 
 export default function Header({ children, categories }) {
@@ -30,7 +32,7 @@ export default function Header({ children, categories }) {
       path: '/',
     },
     {
-      title: 'Categories',
+      title: capitalize(config.catalog.category.plural),
       children: [
         {
           items: categories.map(category => {
@@ -43,8 +45,16 @@ export default function Header({ children, categories }) {
       ]
     },
     {
-      title: 'Stores',
+      title: capitalize(config.store.plural),
       path: '/stores'
+    },
+    {
+      title: capitalize(config.about.name),
+      path: '/about'
+    },
+    {
+      title: capitalize(config.contact.name),
+      path: '/contact'
     }
   ];
 
@@ -54,19 +64,19 @@ export default function Header({ children, categories }) {
       path: '/',
     },
     {
-      title: 'Categories',
+      title: capitalize(config.catalog.category.plural),
       children: (<PagesPopover sections={sections} />)
     },
     {
-      title: 'Stores',
+      title: capitalize(config.store.plural),
       path: '/stores'
     },
     {
-      title: 'About',
+      title: capitalize(config.about.name),
       path: '/about'
     },
     {
-      title: 'Contact',
+      title: capitalize(config.contact.name),
       path: '/contact'
     }
   ];

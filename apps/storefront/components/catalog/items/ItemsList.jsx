@@ -1,22 +1,23 @@
-"use client"
-import { Box, Stack, Typography } from '@mui/material'
-import React from 'react'
-import Item from './Item'
+"use client";
+import { Box, Stack, Typography } from "@mui/material";
+import React from "react";
+import Item from "./Item";
+import { config } from "ui/config";
 
 export default function ItemsList({ items }) {
   return (
     <>
       <Box>
-        {items && items?.length > 0 ?
+        {items && items?.length > 0 ? (
           <Stack
             direction="row"
             justifyContent={{
-              xs: 'center',
-              md: 'flex-start'
+              xs: "center",
+              md: "flex-start",
             }}
             alignItems="center"
             sx={{
-              flexWrap: 'wrap'
+              flexWrap: "wrap",
             }}
           >
             {items.map((item) => (
@@ -28,22 +29,22 @@ export default function ItemsList({ items }) {
                   marginRight: 1,
                   marginLeft: 0,
                   marginBottom: 1,
-                  marginTop: 0
+                  marginTop: 0,
                 }}
               />
             ))}
           </Stack>
-          :
+        ) : (
           <Typography
             variant="body1"
             sx={{
-              textAlign: 'center'
+              textAlign: "center",
             }}
           >
-            Could not fetch items, please try again later.
+            Could not fetch {config.catalog.item.plural}, please try again later.
           </Typography>
-        }
+        )}
       </Box>
     </>
-  )
+  );
 }

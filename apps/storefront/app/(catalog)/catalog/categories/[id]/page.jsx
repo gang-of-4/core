@@ -1,12 +1,11 @@
-import Category from '@/components/catalog/Category'
-import React from 'react'
-import { organization } from 'ui/config'
+import Category from "@/components/catalog/Category";
+import React from "react";
+import { config } from "ui/config";
 
 async function getCategory(id) {
-  const res = await fetch(
-    `${process.env.CATALOG_API_URL}/categories/${id}`,
-    { next: { revalidate: 0 } }
-  );
+  const res = await fetch(`${process.env.CATALOG_API_URL}/categories/${id}`, {
+    next: { revalidate: 0 },
+  });
 
   const data = await res.json();
 
@@ -25,15 +24,11 @@ export async function generateMetadata({ params }) {
   const category = await getCategory(id);
 
   return {
-    title: `${organization.name} | ${category?.name}`,
+    title: `${config.platformName} | ${category?.name}`,
   };
 }
 
 export default async function page({ params }) {
-
-  const category = await getCategory(params.id)
-
-  return (
-    <Category category={category} />
-  )
+  const category = await getCategory(params.id);
+  return <Category category={category} />;
 }

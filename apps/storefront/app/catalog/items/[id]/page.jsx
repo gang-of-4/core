@@ -1,15 +1,13 @@
-import ItemPage from '@/components/catalog/items/ItemPage'
-import React from 'react'
-import { organization } from 'ui/config'
+import ItemPage from "@/components/catalog/items/ItemPage";
+import React from "react";
+import { config } from "ui/config";
 
 async function getItem(id) {
+  const res = await fetch(`${process.env.CATALOG_API_URL}/items/${id}`, {
+    next: { revalidate: 0 },
+  });
 
-    const res = await fetch(
-        `${process.env.CATALOG_API_URL}/items/${id}`,
-        { next: { revalidate: 0 } }
-    );
-
-    const data = await res.json();
+  const data = await res.json();
 
     if (!res.ok) {
         throw new Error("Failed to fetch");
@@ -19,24 +17,23 @@ async function getItem(id) {
 }
 
 export async function generateMetadata({ params }) {
-    // read route params
-    const id = params.id;
+  // read route params
+  const id = params.id;
 
-    // fetch data
-    const item = await getItem(id);
+  // fetch data
+  const item = await getItem(id);
 
-    return {
-        title: `${organization.name} | ${item?.name}`,
-    };
+  return {
+    title: `${config.platformName} | ${item?.name}`,
+  };
 }
 
 export default async function page({ params }) {
+  const item = await getItem(params.id);
 
-    const item = await getItem(params.id);
-
-    return (
-        <>
-            <ItemPage item={item} />
-        </>
-    )
+  return (
+    <>
+      <ItemPage item={item} />
+    </>
+  );
 }

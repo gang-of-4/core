@@ -1,17 +1,18 @@
-import Catalog from '@/components/catalog/Catalog'
-import React from 'react'
-import { organization } from 'ui/config'
+import Catalog from "@/components/catalog/Catalog";
+import { capitalize } from "@/utils/format-string";
+import React from "react";
+import { config } from "ui/config";
+
+const catalogName = capitalize(config.catalog.name);
 
 export const metadata = {
-  title: `${organization.name} | Catalog`,
-  description: 'Catalog of items',
-}
+  title: `${config.platformName} | ${catalogName}`,
+};
 
 async function getCategories() {
-  const res = await fetch(
-    `${process.env.CATALOG_API_URL}/categories`,
-    { next: { revalidate: 0 } }
-  );
+  const res = await fetch(`${process.env.CATALOG_API_URL}/categories`, {
+    next: { revalidate: 0 },
+  });
 
   const data = await res.json();
 
@@ -23,11 +24,9 @@ async function getCategories() {
 }
 
 async function getItems() {
-
-  const res = await fetch(
-    `${process.env.CATALOG_API_URL}/items`,
-    { next: { revalidate: 0 } }
-  );
+  const res = await fetch(`${process.env.CATALOG_API_URL}/items`, {
+    next: { revalidate: 0 },
+  });
 
   const data = await res.json();
 
@@ -39,10 +38,9 @@ async function getItems() {
 }
 
 async function getOptionGroups() {
-  const res = await fetch(
-    `${process.env.CATALOG_API_URL}/option-groups`,
-    { next: { revalidate: 0 } }
-  );
+  const res = await fetch(`${process.env.CATALOG_API_URL}/option-groups`, {
+    next: { revalidate: 0 },
+  });
 
   const data = await res.json();
 
@@ -53,21 +51,19 @@ async function getOptionGroups() {
   return data;
 }
 
-
 export default async function page() {
-
   const categories = await getCategories();
   const items = await getItems();
   const optionGroups = await getOptionGroups();
 
   const filters = {
     categories,
-    optionGroups
-  }
+    optionGroups,
+  };
 
   return (
     <>
-      <Catalog items={items} filters={filters} title={'Catalog'} />
+      <Catalog items={items} filters={filters} title={catalogName} />
     </>
-  )
+  );
 }
