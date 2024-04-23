@@ -32,9 +32,6 @@ export default async function handler(req, res) {
         const { id } = req.query;
         const store = req.body;
 
-        console.log('id', id);
-        console.log('token', token);
-        console.log('store', store);
 
         const respone = await fetch(
             `${process.env.STORES_API_URL}/${id}`,
