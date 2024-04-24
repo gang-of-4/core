@@ -44,11 +44,13 @@ export const config = {
     plural: "garages",
     individual: {
       name: "personal garage",
-      desciption: "Personal Garages are designed to meet personal offerings of cars.",
+      desciption:
+        "Personal Garages are designed to meet personal offerings of cars.",
     },
     business: {
       name: "car dealership",
-      desciption: "Car Dealerships are designed to meet branding and professional requirements, as well as the needs of establishments with a variety of cars.",
+      desciption:
+        "Car Dealerships are designed to meet branding and professional requirements, as well as the needs of establishments with a variety of cars.",
     },
   },
   catalog: {
@@ -65,11 +67,21 @@ export const config = {
       name: "option",
       plural: "options",
     },
+    optionGroup: {
+      name: "option group",
+      plural: "option groups",
+      example:
+        "For example, 'Size' is an option group while 'Small', 'Medium', and 'Large' are options.",
+    },
     variant: {
       name: "variant",
     },
   },
   cart: {
     name: "cart",
+  },
+  order: {
+    name: "order",
+    plural: "orders",
   },
 };
