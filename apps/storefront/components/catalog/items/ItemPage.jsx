@@ -1,15 +1,21 @@
-"use client"
-import { Box, Container, Grid, Stack, SvgIcon, Typography } from '@mui/material'
-import NextLink from 'next/link'
-import React, { useState } from 'react'
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
-import AddToCart from './AddToCart';
-import ItemImages from './ItemImages';
-import OptionGroup from './OptionGroup';
-import { formatPrice } from '@/utils/format-price';
+"use client";
+import {
+  Box,
+  Container,
+  Grid,
+  Stack,
+  SvgIcon,
+  Typography,
+} from "@mui/material";
+import NextLink from "next/link";
+import React, { useState } from "react";
+import ArrowLeftIcon from "@untitled-ui/icons-react/build/esm/ArrowLeft";
+import ItemImages from "./ItemImages";
+import OptionGroup from "./OptionGroup";
+import { formatPrice } from "@/utils/format-price";
 import { capitalize } from "@/utils/format-string";
 import { config } from "ui/config";
-
+import AddToCart from "@/components/cart/AddToCart";
 
 export default function ItemPage({ item }) {
   const [appliedOptions, setAppliedOptions] = useState([]);
@@ -130,7 +136,7 @@ export default function ItemPage({ item }) {
                     })}
                   </Typography>
 
-                  <AddToCart activeItem={activeVariant} isVariant={isVariant}/>
+                  <AddToCart activeItem={activeVariant} isVariant={isVariant} />
 
                   <Stack spacing={1}>
                     {error && (

@@ -1,84 +1,104 @@
-"use client"
+"use client";
 
-import { useAuth } from '@/contexts/AuthContext'
-import React from 'react'
-import { Layout as MainLayout } from 'ui/layouts/marketing'
-import { Box } from '@mui/material'
-import { PagesPopover } from 'ui/layouts/marketing/pages-popover';
-import { CartButton } from './cart/CartButton';
-import { Footer } from 'ui/layouts/marketing/footer';
-import { config } from 'ui/config'
-import { capitalize } from '@/utils/format-string'
-
+import { useAuth } from "@/contexts/AuthContext";
+import React from "react";
+import { Layout as MainLayout } from "ui/layouts/marketing";
+import { Box } from "@mui/material";
+import { PagesPopover } from "ui/layouts/marketing/pages-popover";
+import { CartButton } from "./cart/CartButton";
+import { Footer } from "ui/layouts/marketing/footer";
+import { config } from "ui/config";
+import { capitalize } from "@/utils/format-string";
 
 export default function Header({ children, categories }) {
-
   const auth = useAuth();
 
   const sections = [
     {
-      items: categories.map(category => {
+      items: categories.map((category) => {
         return {
           title: category.name,
           path: `/catalog/categories/${category.id}`,
-        }
-      })
+        };
+      }),
     },
   ];
 
+  const items = {
+    home: {
+      title: "Home",
+      path: "/",
+    },
+    catalog: {
+      title: capitalize(config.catalog.category.plural),
+    },
+    stores: {
+      title: capitalize(config.store.plural),
+      path: "/stores",
+    },
+    about: {
+      title: capitalize(config.about.name),
+      path: "/about",
+    },
+    contact: {
+      title: capitalize(config.contact.name),
+      path: "/contact",
+    },
+  };
+
   const sideItems = [
     {
-      title: 'Home',
-      path: '/',
+      title: items.home.title,
+      path: items.home.path,
     },
     {
-      title: capitalize(config.catalog.category.plural),
+      title: items.catalog.title,
       children: [
         {
-          items: categories.map(category => {
+          items: categories.map((category) => {
             return {
               title: category.name,
-              path: `/catalog/category/${category.slug}`
-            }
-          })
-        }
-      ]
+              path: `/catalog/category/${category.slug}`,
+            };
+          }),
+        },
+      ],
     },
     {
-      title: capitalize(config.store.plural),
-      path: '/stores'
+      title: items.stores.title,
+      path: items.stores.path,
     },
     {
-      title: capitalize(config.about.name),
-      path: '/about'
+      title: items.about.title,
+      path: items.about.path,
     },
     {
-      title: capitalize(config.contact.name),
-      path: '/contact'
-    }
+      title: items.contact.title,
+      path: items.contact.path,
+    },
   ];
 
   const topItems = [
     {
-      title: 'Home',
-      path: '/',
+      title: items.home.title,
+      path: items.home.path,
     },
     {
-      title: capitalize(config.catalog.category.plural),
-      children: (<PagesPopover sections={sections} />)
+      title: items.catalog.title,
+      children: <PagesPopover sections={sections} />,
     },
     {
-      title: capitalize(config.store.plural),
-      path: '/stores'
+      title: items.stores.title,
+      path: items.stores.path,
     },
     {
-      title: capitalize(config.about.name),
-      path: '/about'
+      title: items.about.title,
+      path: items.about.path,
     },
     {
-      title: capitalize(config.contact.name),
-      path: '/contact'
-    }
+      title: items.contact.title,
+      path: items.contact.path,
+    },
   ];
 
   return (
@@ -91,12 +111,12 @@ export default function Header({ children, categories }) {
       >
         <Box
           sx={{
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'top center',
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top center",
             backgroundImage: 'url("/assets/gradient-bg.svg")',
-            pt: '100px',
-            mb: '120px',
-            minHeight: '100vh'
+            pt: "100px",
+            mb: "120px",
+            minHeight: "100vh",
           }}
         >
           {children}
@@ -104,5 +124,5 @@ export default function Header({ children, categories }) {
         <Footer />
       </MainLayout>
     </>
-  )
+  );
 }

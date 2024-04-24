@@ -2,10 +2,10 @@
 import AuthGuard from '@/components/auth/auth-guard'
 import CartPage from '@/components/cart/CartPage'
 import React from 'react'
+import { config } from 'ui/config'
 
 export const metadata = {
-  title: 'Cart',
-  description: 'Your cart',
+  title: `${config.platformName} | Cart`,
 }
 
 export default function page() {

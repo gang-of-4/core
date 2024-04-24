@@ -10,6 +10,7 @@ import NextLink from "next/link";
 import { formatPrice } from "@/utils/format-price";
 import CartItemAvatar from "./CartItemAvatar";
 import CartItemActions from "./CartItemActions";
+import { config } from "ui/config";
 
 export default function CartItemVariant({ cartItem, handleRemoveItem }) {
   return (
@@ -50,8 +51,8 @@ export default function CartItemVariant({ cartItem, handleRemoveItem }) {
               <br />
               {!cartItem.isAvailable && (
                 <span style={{ color: "#F04438" }}>
-                  This item is not available. Please remove it from your cart to
-                  proceed.
+                  This {config.catalog.item.name} is not available. Please
+                  remove it from your {config.cart.name} to proceed.
                 </span>
               )}
             </Typography>

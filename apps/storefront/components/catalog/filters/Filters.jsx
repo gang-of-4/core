@@ -50,7 +50,6 @@ export default function Filters({ filtersList }) {
   }
 
   function handleClearFilters() {
-    console.log(appliedFilters)
     setAppliedFilters({})
   }
 

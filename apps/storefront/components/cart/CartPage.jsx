@@ -18,6 +18,8 @@ import NextLink from "next/link";
 import CartActions from "./CartActions";
 import CartItem from "./cartItems/CartItem";
 import CartItemVariant from "./cartItems/CartItemVariant";
+import { capitalize } from "@/utils/format-string";
+import { config } from "ui/config";
 
 export default function CartPage() {
   const { cart, isInitialized, removeCartItem } = useCart();
@@ -61,7 +63,9 @@ export default function CartPage() {
                 <SvgIcon sx={{ mr: 1 }}>
                   <ArrowLeftIcon />
                 </SvgIcon>
-                <Typography variant="subtitle2">Back to Catalog</Typography>
+                <Typography variant="subtitle2">
+                  Back to {capitalize(config.catalog.name)}
+                </Typography>
               </Box>
             </Stack>
           </Grid>
@@ -97,7 +101,7 @@ export default function CartPage() {
                       variant="body1"
                       sx={{ textAlign: "center" }}
                     >
-                      Your cart is empty.
+                      Your {config.cart.name} is empty.
                     </Typography>
                   )}
 

@@ -17,6 +17,8 @@ import { CheckoutSummary } from "./CheckoutSummary";
 import { useCart } from "@/contexts/CartContext";
 import fetchApi from "@/utils/fetch-api";
 import { useRouter } from "next/navigation";
+import { capitalize } from "@/utils/format-string";
+import { config } from "ui/config";
 
 const initialAddress = {
   country: "",
@@ -113,7 +115,9 @@ const Page = () => {
                 <SvgIcon sx={{ mr: 1 }}>
                   <ArrowLeftIcon />
                 </SvgIcon>
-                <Typography variant="subtitle2">Back to Cart</Typography>
+                <Typography variant="subtitle2">
+                  Back to {capitalize(config.cart.name)}
+                </Typography>
               </Box>
               <Typography variant="h3">Checkout</Typography>
             </Stack>
@@ -141,7 +145,9 @@ const Page = () => {
                 variant="outlined"
                 disabled={loading || !isInitialized}
               >
-                {loading ? "Processing..." : "Complete Order"}
+                {loading
+                  ? "Processing..."
+                  : `Complete ${capitalize(config.order.name)}`}
               </Button>
             </Box>
           </form>

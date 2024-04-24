@@ -9,13 +9,16 @@ import {
 } from "@mui/material";
 import { formatPrice } from "@/utils/format-price";
 import CartItemAvatar from "../cartItems/CartItemAvatar";
+import { capitalize } from "@/utils/format-string";
 
 export const CheckoutSummary = (props) => {
   const { cart, ...other } = props;
 
   return (
     <Card variant="outlined" sx={{ p: 3 }} {...other}>
-      <Typography variant="h6">Order Summary</Typography>
+      <Typography variant="h6">
+        {capitalize(config.order.name)} Summary
+      </Typography>
       <List sx={{ mt: 2 }}>
         {cart?.cartItems?.map((cartItem) => (
           <ListItem disableGutters key={cartItem.id}>

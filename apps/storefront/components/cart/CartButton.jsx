@@ -3,6 +3,8 @@ import ShoppingCart01Icon from '@untitled-ui/icons-react/build/esm/ShoppingCart0
 import { Badge, IconButton, SvgIcon, Tooltip } from '@mui/material';
 import { useCart } from '@/contexts/CartContext';
 import NextLink from 'next/link';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 
 export function CartButton() {
@@ -12,7 +14,7 @@ export function CartButton() {
 
   return (
     <>
-      <Tooltip title="Cart">
+      <Tooltip title={capitalize(config.cart.name)}>
         <IconButton
           component={NextLink}
           href="/cart"
