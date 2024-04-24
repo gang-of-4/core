@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --concurrency=14",
+    "dev": "turbo run dev --concurrency=16",
     "lint": "turbo run lint",
     "prisma:generate": "turbo run prisma:generate",
     "prisma:setup": "turbo run prisma:generate prisma:push prisma:seed",
