@@ -46,7 +46,6 @@ export default function Store({ unformattedStore }) {
   async function getFormattedStore() {
     try {
       const formattedStore = await formatStore({ store: unformattedStore, user });
-      console.log(formattedStore);
       setStore(formattedStore);
     } catch (error) {
       console.error(error);

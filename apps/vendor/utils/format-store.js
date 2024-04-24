@@ -1,5 +1,7 @@
 import { getInitials } from "ui/utils/get-initials";
 import fetchApi from "./fetch-api";
+import { config } from "ui/config";
+import { capitalize } from "./format-string";
 
 export async function formatStore({ store, user }) {
 
@@ -9,7 +11,7 @@ export async function formatStore({ store, user }) {
         return {
             id: store?.id,
             vendor: vendor,
-            name: `${vendor?.firstName} ${vendor?.lastName}'s Store`,
+            name: `${vendor?.firstName} ${vendor?.lastName}'s ${capitalize(config.store.name)}`,
             status: store?.status,
             logo: vendor?.avatar || getInitials(`${vendor?.firstName} ${vendor?.lastName}`),
             type: 'individual'
