@@ -9,6 +9,8 @@ import {
   Typography,
 } from '@mui/material';
 import { Scrollbar } from '../../../../components/scrollbar';
+import { capitalize } from '../../../../utils/format-string';
+import { config } from 'ui/config';
 
 export function OptionDetails({ group }) {
 
@@ -30,7 +32,7 @@ export function OptionDetails({ group }) {
           {group?.type}
         </Typography>
         <Typography color="textPrimary" variant='h6'>
-          Options
+          {capitalize(config.catalog.option.plural)}
         </Typography>
         <div>
           <Scrollbar>

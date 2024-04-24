@@ -1,18 +1,24 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import Bell01Icon from '@untitled-ui/icons-react/build/esm/Bell01';
-import { Badge, IconButton, SvgIcon, Tooltip } from '@mui/material';
-import { notifications as initialNotifications } from './notifications';
-import { NotificationsPopover } from './notifications-popover';
+import { useCallback, useMemo, useRef, useState } from "react";
+import Bell01Icon from "@untitled-ui/icons-react/build/esm/Bell01";
+import { Badge, IconButton, SvgIcon, Tooltip } from "@mui/material";
+import { NotificationsPopover } from "./notifications-popover";
+
+const initialNotifications = [];
 
 const useNotifications = () => {
   const [notifications, setNotifications] = useState(initialNotifications);
   const unread = useMemo(() => {
-    return notifications.reduce((acc, notification) => acc + (notification.read ? 0 : 1), 0);
+    return notifications.reduce(
+      (acc, notification) => acc + (notification.read ? 0 : 1),
+      0
+    );
   }, [notifications]);
 
   const handleRemoveOne = useCallback((notificationId) => {
     setNotifications((prevState) => {
-      return prevState.filter((notification) => notification.id !== notificationId);
+      return prevState.filter(
+        (notification) => notification.id !== notificationId
+      );
     });
   }, []);
 
@@ -20,7 +26,7 @@ const useNotifications = () => {
     setNotifications((prevState) => {
       return prevState.map((notification) => ({
         ...notification,
-        read: true
+        read: true,
       }));
     });
   }, []);
@@ -29,14 +35,15 @@ const useNotifications = () => {
     handleMarkAllAsRead,
     handleRemoveOne,
     notifications,
-    unread
+    unread,
   };
 };
 
 export const NotificationsButton = () => {
   const anchorRef = useRef(null);
   const [openPopover, setOpenPopover] = useState(false);
-  const { handleRemoveOne, handleMarkAllAsRead, notifications, unread } = useNotifications();
+  const { handleRemoveOne, handleMarkAllAsRead, notifications, unread } =
+    useNotifications();
 
   const handlePopoverOpen = useCallback(() => {
     setOpenPopover(true);
@@ -49,14 +56,8 @@ export const NotificationsButton = () => {
   return (
     <>
       <Tooltip title="Notifications">
-        <IconButton
-          ref={anchorRef}
-          onClick={handlePopoverOpen}
-        >
-          <Badge
-            color="error"
-            badgeContent={unread}
-          >
+        <IconButton ref={anchorRef} onClick={handlePopoverOpen}>
+          <Badge color="error" badgeContent={unread}>
             <SvgIcon>
               <Bell01Icon />
             </SvgIcon>

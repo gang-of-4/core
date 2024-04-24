@@ -1,4 +1,4 @@
-import { GuestGuard } from '../guards/guest-guard';
+import { GuestGuard } from "../guards/guest-guard";
 
 export const withGuestGuard = (Component) => (props) => (
   <GuestGuard>

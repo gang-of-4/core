@@ -3,6 +3,8 @@ import HomeSmileIcon from '../../icons/untitled-ui/duocolor/home-smile';
 import ShoppingBag03Icon from '../../icons/untitled-ui/duocolor/shopping-bag-03';
 import LayoutAlt02 from '@untitled-ui/icons-react/build/esm/LayoutAlt02';
 import { paths } from '../../paths';
+import { capitalize } from '../../utils/format-string';
+import { config } from 'ui/config';
 
 export const getSections = () => [
   {
@@ -17,7 +19,7 @@ export const getSections = () => [
         )
       },
       {
-        title: 'Stores',
+        title: capitalize(config.store.plural),
         path: paths.dashboard.stores.index,
         icon: (
           <SvgIcon fontSize="small">
@@ -26,7 +28,7 @@ export const getSections = () => [
         ),
       },
       {
-        title: 'Catalog',
+        title: capitalize(config.catalog.name),
         path: paths.dashboard.catalog.index,
         icon: (
           <SvgIcon fontSize="small">
@@ -35,15 +37,15 @@ export const getSections = () => [
         ),
         items: [
           {
-            title: 'Cars',
+            title: capitalize(config.catalog.item.plural),
             path: paths.dashboard.catalog.items.index
           },
           {
-            title: 'Categories',
+            title: capitalize(config.catalog.category.plural),
             path: paths.dashboard.catalog.categories.index
           },
           {
-            title: 'Options',
+            title: capitalize(config.catalog.option.plural),
             path: paths.dashboard.catalog.options.index
           }
         ]

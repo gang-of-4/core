@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import { useState } from "react";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import {
   Button,
   FormControl,
@@ -15,47 +15,33 @@ import {
   TextField,
   Tooltip,
   Typography,
-} from '@mui/material';
-import NextLink from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useMounted } from '../../../../hooks/use-mounted';
-import XIcon from '@untitled-ui/icons-react/build/esm/X';
-import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
-import { paths } from '../../../../paths';
-import { catalogApi } from '../../../../api/catalog';
-
+} from "@mui/material";
+import NextLink from "next/link";
+import { useRouter } from "next/navigation";
+import { useMounted } from "../../../../hooks/use-mounted";
+import XIcon from "@untitled-ui/icons-react/build/esm/X";
+import PlusIcon from "@untitled-ui/icons-react/build/esm/Plus";
+import { paths } from "../../../../paths";
+import { catalogApi } from "../../../../api/catalog";
+import { capitalize } from "../../../../utils/format-string";
+import { config } from "ui/config";
 
 const validationSchema = Yup.object({
-  // title: Yup
-  //   .string()
-  //   .max(255)
-  //   .required('Title is required'),
-  // type: Yup
-  //   .string()
-  //   .max(255)
-  //   .required('Type is required'),
-  // options: Yup.array().of(
-  //   Yup.object().shape({
-  //     label: Yup.string().max(255).required('Option Label is required'),
-  //     value: Yup.string().max(255).required('Option Value is required'),
-  //   })
-  // ),
   optionsToAdd: Yup.array().of(
     Yup.object().shape({
-      label: Yup.string().max(255).required('Option Label is required'),
-      value: Yup.string().max(255).required('Option Value is required'),
+      label: Yup.string().max(255).required("Label is required"),
+      value: Yup.string().max(255).required("Value is required"),
     })
   ),
 });
 
 export function OptionEditForm({ group }) {
-
   const initialValues = {
     optionsToAdd: [],
-    submit: null
+    submit: null,
   };
 
-  const [options, setOptions] = useState(group?.options || []);
+  const options = group?.options ?? [];
   const [optionsToAdd, setOptionsToAdd] = useState([]);
   const router = useRouter();
   const isMounted = useMounted();
@@ -63,15 +49,13 @@ export function OptionEditForm({ group }) {
     initialValues,
     validationSchema,
     onSubmit: async (values, helpers) => {
-
       values.optionsToAdd.forEach(async (option) => {
         try {
           await catalogApi.addOption({
             groupId: group.id,
             label: option.label,
-            value: option.value
+            value: option.value,
           });
-
         } catch (err) {
           console.error(err);
           if (isMounted()) {
@@ -81,21 +65,23 @@ export function OptionEditForm({ group }) {
           }
         }
       });
-      
+
       if (isMounted()) {
         router.push(paths.dashboard.catalog.options.index);
       }
-    }
+    },
   });
 
+  const optionName = capitalize(config.catalog.option.name);
+
   function handleAddOption() {
-    setOptionsToAdd([...optionsToAdd, { label: '', value: '' }]);
-  };
+    setOptionsToAdd([...optionsToAdd, { label: "", value: "" }]);
+  }
 
   function handleRemoveAddedOption(option) {
     const newOptions = optionsToAdd.filter((o) => o !== option);
-    setOptions(newOptions);
-    formik.setFieldValue('optionsToAdd', newOptions);
+    setOptionsToAdd(newOptions);
+    formik.setFieldValue("optionsToAdd", newOptions);
   }
 
   function handleOptionChangeAdded({ index, e }) {
@@ -103,29 +89,19 @@ export function OptionEditForm({ group }) {
     const newOptions = [...optionsToAdd];
     newOptions[index][name] = value;
     setOptionsToAdd(newOptions);
-    formik.setFieldValue('optionsToAdd', newOptions);
+    formik.setFieldValue("optionsToAdd", newOptions);
   }
 
   return (
     <>
-      <form
-        noValidate
-        onSubmit={formik.handleSubmit}
-      >
-        <Stack
-          spacing={3}
-        >
-
-
+      <form noValidate onSubmit={formik.handleSubmit}>
+        <Stack spacing={3}>
           <Stack
             spacing={3}
-            direction={{ sm: 'column', md: 'row' }}
-            sx={{ width: '100%' }}
+            direction={{ sm: "column", md: "row" }}
+            sx={{ width: "100%" }}
           >
-            <Stack
-              spacing={3}
-              sx={{ width: '100%' }}
-            >
+            <Stack spacing={3} sx={{ width: "100%" }}>
               <TextField
                 label="Title"
                 name="title"
@@ -142,100 +118,102 @@ export function OptionEditForm({ group }) {
                   name="type"
                   defaultValue={group.type}
                 >
-                  <FormControlLabel value="TEXT" control={<Radio />} label="Text only" disabled />
-                  <FormControlLabel value="COLOR" control={<Radio />} label="Color" disabled />
-                  <FormControlLabel value="image" control={<Radio />} label="Image" disabled />
+                  <FormControlLabel
+                    value="TEXT"
+                    control={<Radio />}
+                    label="Text only"
+                    disabled
+                  />
+                  <FormControlLabel
+                    value="COLOR"
+                    control={<Radio />}
+                    label="Color"
+                    disabled
+                  />
+                  <FormControlLabel
+                    value="image"
+                    control={<Radio />}
+                    label="Image"
+                    disabled
+                  />
                 </RadioGroup>
               </FormControl>
 
-              <Typography variant='body2' color='textSecondary'>
-                Option groups cannot be edited after creation in this release. You can still add new options to this group.
+              <Typography variant="body2" color="textSecondary">
+                {capitalize(config.catalog.optionGroup.plural)} cannot be edited
+                after creation in this release. You can still add new{" "}
+                {config.catalog.option.plural} to this{" "}
+                {config.catalog.optionGroup.name}.
                 <br />
-                We apologize for the inconvenience and are working on a solution.
+                We apologize for the inconvenience and are working on a
+                solution.
               </Typography>
-
             </Stack>
-            <Stack
-              spacing={3}
-              sx={{ width: '100%' }}
-            >
-
+            <Stack spacing={3} sx={{ width: "100%" }}>
               <Button
                 onClick={handleAddOption}
                 variant="outlined"
-                startIcon={(
+                startIcon={
                   <SvgIcon>
                     <PlusIcon />
                   </SvgIcon>
-                )}
-
+                }
               >
-                Add Option
+                Add {optionName}
               </Button>
 
               {options.map((option, index) => (
                 <Stack
                   key={index}
                   spacing={3}
-                  direction={'row'}
-                  justifyContent={'space-between'}>
-                  <Stack
-                    spacing={3}
-                    sx={{ width: '100%' }}
-                    direction={'row'}
-                  >
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                >
+                  <Stack spacing={3} sx={{ width: "100%" }} direction={"row"}>
                     <TextField
-                      label={`Option ${index + 1} Label`}
+                      label={`${optionName} ${index + 1} Label`}
                       name={`label`}
                       defaultValue={option.label}
                       disabled
                     />
-                    {
-                      group.type === 'COLOR' ?
-                        <FormControl component="fieldset">
-                          <Stack
-                            spacing={3}
-                            direction='row'
-                            height={'100%'}
-                            alignItems={'center'}
-                            justifyContent={'center'}
-                          >
-                            <FormLabel component="legend"
-                            >
-                              Option {index + 1} Value
-                            </FormLabel>
-                            <input
-                              type="color"
-                              name='value'
-                              defaultValue={option.value}
-                              disabled
-                              style={{
-                                WebkitAppearance: 'none',
-                                height: '48px',
-                                width: '48px',
-                                background: 'none',
-                                border: 'none',
-                              }}
-                            />
-                          </Stack>
-                        </FormControl>
-                        :
-                        <TextField
-                          label={`Option ${index + 1} Value`}
-                          name={`value`}
-                          defaultValue={option.value}
-                          disabled
-                        />
-
-                    }
+                    {group.type === "COLOR" ? (
+                      <FormControl component="fieldset">
+                        <Stack
+                          spacing={3}
+                          direction="row"
+                          height={"100%"}
+                          alignItems={"center"}
+                          justifyContent={"center"}
+                        >
+                          <FormLabel component="legend">
+                            {optionName} {index + 1} Value
+                          </FormLabel>
+                          <input
+                            type="color"
+                            name="value"
+                            defaultValue={option.value}
+                            disabled
+                            style={{
+                              WebkitAppearance: "none",
+                              height: "48px",
+                              width: "48px",
+                              background: "none",
+                              border: "none",
+                            }}
+                          />
+                        </Stack>
+                      </FormControl>
+                    ) : (
+                      <TextField
+                        label={`${optionName} ${index + 1} Value`}
+                        name={`value`}
+                        defaultValue={option.value}
+                        disabled
+                      />
+                    )}
                   </Stack>
-                  <Stack
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                  >
-                    <IconButton
-                      disabled
-                    >
+                  <Stack alignItems={"center"} justifyContent={"center"}>
+                    <IconButton disabled>
                       <SvgIcon>
                         <XIcon />
                       </SvgIcon>
@@ -248,71 +226,94 @@ export function OptionEditForm({ group }) {
                 <Stack
                   key={index}
                   spacing={3}
-                  direction={'row'}
-                  justifyContent={'space-between'}>
-                  <Stack
-                    spacing={3}
-                    sx={{ width: '100%' }}
-                    direction={'row'}
-                  >
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                >
+                  <Stack spacing={3} sx={{ width: "100%" }} direction={"row"}>
                     <TextField
-                      error={!!(formik.touched.optionsToAdd?.[index]?.label && formik.errors.optionsToAdd?.[index]?.label)}
-                      helperText={formik.touched.optionsToAdd?.[index]?.label && formik.errors.optionsToAdd?.[index]?.label}
-                      label={`Option ${index + 1 + options?.length} Label`}
+                      error={
+                        !!(
+                          formik.touched.optionsToAdd?.[index]?.label &&
+                          formik.errors.optionsToAdd?.[index]?.label
+                        )
+                      }
+                      helperText={
+                        formik.touched.optionsToAdd?.[index]?.label &&
+                        formik.errors.optionsToAdd?.[index]?.label
+                      }
+                      label={`${optionName} ${
+                        index + 1 + options?.length
+                      } Label`}
                       name={`label`}
                       onChange={(e) => handleOptionChangeAdded({ index, e })}
                       value={option.label}
                     />
-                    {
-                      group.type === 'COLOR' ?
-                        <FormControl component="fieldset">
-                          <Stack
-                            spacing={3}
-                            direction='row'
-                            height={'100%'}
-                            alignItems={'center'}
-                            justifyContent={'center'}
-                          >
-                            <FormLabel component="legend"
-                            >
-                              Option {index + 1 + options?.length} Value
-                            </FormLabel>
-                            <input
-                              type="color"
-                              name='value'
-                              value={option.value}
-                              onChange={(e) => handleOptionChangeAdded({ index, e })}
-                              style={{
-                                WebkitAppearance: 'none',
-                                height: '48px',
-                                width: '48px',
-                                background: 'none',
-                                border: 'none',
-                              }}
-                            />
-                          </Stack>
-                          {formik.errors.optionsToAdd?.[index]?.value && (
-                            <FormHelperText error>{formik.errors.optionsToAdd?.[index]?.value}</FormHelperText>
-                          )}
-                        </FormControl>
-                        :
-                        <TextField
-                          error={!!(formik.touched.optionsToAdd?.[index]?.value && formik.errors.optionsToAdd?.[index]?.value)}
-                          helperText={formik.touched.optionsToAdd?.[index]?.value && formik.errors.optionsToAdd?.[index]?.value}
-                          label={`Option ${index + 1 + options?.length} Value`}
-                          name={`value`}
-                          onChange={(e) => handleOptionChangeAdded({ index, e })}
-                          value={option.value}
-                        />
-                    }
+                    {group.type === "COLOR" ? (
+                      <FormControl component="fieldset">
+                        <Stack
+                          spacing={3}
+                          direction="row"
+                          height={"100%"}
+                          alignItems={"center"}
+                          justifyContent={"center"}
+                        >
+                          <FormLabel component="legend">
+                            {optionName} {index + 1 + options?.length} Value
+                          </FormLabel>
+                          <input
+                            type="color"
+                            name="value"
+                            value={option.value}
+                            onChange={(e) =>
+                              handleOptionChangeAdded({ index, e })
+                            }
+                            style={{
+                              WebkitAppearance: "none",
+                              height: "48px",
+                              width: "48px",
+                              background: "none",
+                              border: "none",
+                            }}
+                          />
+                        </Stack>
+                        {formik.errors.optionsToAdd?.[index]?.value && (
+                          <FormHelperText error>
+                            {formik.errors.optionsToAdd?.[index]?.value}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    ) : (
+                      <TextField
+                        error={
+                          !!(
+                            formik.touched.optionsToAdd?.[index]?.value &&
+                            formik.errors.optionsToAdd?.[index]?.value
+                          )
+                        }
+                        helperText={
+                          formik.touched.optionsToAdd?.[index]?.value &&
+                          formik.errors.optionsToAdd?.[index]?.value
+                        }
+                        label={`${optionName} ${
+                          index + 1 + options?.length
+                        } Value`}
+                        name={`value`}
+                        onChange={(e) => handleOptionChangeAdded({ index, e })}
+                        value={option.value}
+                      />
+                    )}
                   </Stack>
-                  <Stack
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                  >
-                    <Tooltip title={`Remove Option ${index + 1 + options?.length}`} arrow>
+                  <Stack alignItems={"center"} justifyContent={"center"}>
+                    <Tooltip
+                      title={`Remove ${capitalize(
+                        config.catalog.option.name
+                      )} ${index + 1 + options?.length}`}
+                      arrow
+                    >
                       <IconButton
-                        onClick={() => { handleRemoveAddedOption(option) }}
+                        onClick={() => {
+                          handleRemoveAddedOption(option);
+                        }}
                       >
                         <SvgIcon>
                           <XIcon />
@@ -326,23 +327,19 @@ export function OptionEditForm({ group }) {
           </Stack>
 
           {formik.errors.submit && (
-            <FormHelperText
-              error
-              sx={{ mt: 3 }}
-            >
+            <FormHelperText error sx={{ mt: 3 }}>
               {formik.errors.submit}
             </FormHelperText>
           )}
 
           <Stack
-            direction='row'
+            direction="row"
             justifyContent={{
-              sm: 'center',
-              md: 'flex-end'
+              sm: "center",
+              md: "flex-end",
             }}
             spacing={3}
           >
-
             <Button
               component={NextLink}
               href={paths.dashboard.catalog.options.index}
@@ -361,9 +358,8 @@ export function OptionEditForm({ group }) {
               Update
             </Button>
           </Stack>
-
         </Stack>
       </form>
     </>
-  )
+  );
 }

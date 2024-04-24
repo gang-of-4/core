@@ -4,7 +4,7 @@ import { Box, Container, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
-import { organization } from 'ui/config';
+import { config } from 'ui/config';
 
 const TOP_NAV_HEIGHT = 64;
 
@@ -71,7 +71,7 @@ export const Layout = (props) => {
                   }
                 }}
               >
-                {organization.name}
+                {config.platformName}
               </Box>
             </Stack>
           </Stack>

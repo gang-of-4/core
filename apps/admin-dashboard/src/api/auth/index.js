@@ -1,25 +1,21 @@
-import { decode } from '../../utils/jwt';
-
+import { decode } from "../../utils/jwt";
 
 class AuthApi {
-
   async signIn(request) {
     const { email, password } = request;
 
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await fetch(
-          `/admin/api/auth/login`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              email,
-              password
-            })
-          });
+        const res = await fetch(`/admin/api/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
 
         const data = await res.json();
 
@@ -30,10 +26,9 @@ class AuthApi {
 
         const accessToken = data.accessToken;
         resolve({ accessToken });
-
       } catch (err) {
-        console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
+        console.error("[Auth Api]: ", err);
+        reject(new Error("Internal server error"));
       }
     });
   }
@@ -47,7 +42,7 @@ class AuthApi {
         const { user } = await decode(accessToken);
 
         if (!user) {
-          reject(new Error('Invalid authorization token'));
+          reject(new Error("Invalid authorization token"));
           return;
         }
 
@@ -61,15 +56,14 @@ class AuthApi {
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
           emailVerefiedAt: user.emailVerefiedAt,
-          deletedAt: user.deletedAt
+          deletedAt: user.deletedAt,
         });
       } catch (err) {
-        console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
+        console.error("[Auth Api]: ", err);
+        reject(new Error("Internal server error"));
       }
     });
   }
-
 }
 
 export const authApi = new AuthApi();

@@ -1,7 +1,7 @@
-import Head from 'next/head';
-import { useRouter, useSearchParams } from 'next/navigation';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import Head from "next/head";
+import { useRouter, useSearchParams } from "next/navigation";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import {
   Button,
   Card,
@@ -10,40 +10,36 @@ import {
   FormHelperText,
   Stack,
   TextField,
-} from '@mui/material';
-import { GuestGuard } from '../../guards/guest-guard';
-import { IssuerGuard } from '../../guards/issuer-guard';
-import { useAuth } from '../../hooks/use-auth';
-import { useMounted } from '../../hooks/use-mounted';
-import { Layout as AuthLayout } from '../../layouts/auth/classic-layout';
-import { paths } from '../../paths';
-import { Issuer } from '../../utils/auth';
+} from "@mui/material";
+import { GuestGuard } from "../../guards/guest-guard";
+import { IssuerGuard } from "../../guards/issuer-guard";
+import { useAuth } from "../../hooks/use-auth";
+import { useMounted } from "../../hooks/use-mounted";
+import { Layout as AuthLayout } from "../../layouts/auth/classic-layout";
+import { paths } from "../../paths";
+import { Issuer } from "../../utils/auth";
 
 const useParams = () => {
   const searchParams = useSearchParams();
-  const returnTo = searchParams.get('returnTo') || undefined;
+  const returnTo = searchParams.get("returnTo") || undefined;
 
   return {
-    returnTo
+    returnTo,
   };
 };
 
 const initialValues = {
-  email: '',
-  password: '',
-  submit: null
+  email: "",
+  password: "",
+  submit: null,
 };
 
 const validationSchema = Yup.object({
-  email: Yup
-    .string()
-    .email('Must be a valid email')
+  email: Yup.string()
+    .email("Must be a valid email")
     .max(255)
-    .required('Email is required'),
-  password: Yup
-    .string()
-    .max(255)
-    .required('Password is required')
+    .required("Email is required"),
+  password: Yup.string().max(255).required("Password is required"),
 });
 
 const Page = () => {
@@ -58,9 +54,9 @@ const Page = () => {
       try {
         const userInfo = {
           email: values.email,
-          password: values.password
-        }
-        await signIn(userInfo, 'admin');
+          password: values.password,
+        };
+        await signIn(userInfo, "admin");
 
         if (isMounted()) {
           router.push(returnTo || paths.dashboard.index);
@@ -74,27 +70,19 @@ const Page = () => {
           helpers.setSubmitting(false);
         }
       }
-    }
+    },
   });
 
   return (
     <>
       <Head>
-        <title>
-          Login | Admin
-        </title>
+        <title>Login | Admin</title>
       </Head>
       <div>
         <Card elevation={16}>
-          <CardHeader
-            sx={{ pb: 0 }}
-            title="Admin Login"
-          />
+          <CardHeader sx={{ pb: 0 }} title="Admin Login" />
           <CardContent>
-            <form
-              noValidate
-              onSubmit={formik.handleSubmit}
-            >
+            <form noValidate onSubmit={formik.handleSubmit}>
               <Stack spacing={3}>
                 <TextField
                   autoFocus
@@ -121,10 +109,7 @@ const Page = () => {
                 />
               </Stack>
               {formik.errors.submit && (
-                <FormHelperText
-                  error
-                  sx={{ mt: 3 }}
-                >
+                <FormHelperText error sx={{ mt: 3 }}>
                   {formik.errors.submit}
                 </FormHelperText>
               )}
@@ -149,9 +134,7 @@ const Page = () => {
 Page.getLayout = (page) => (
   <IssuerGuard issuer={Issuer.JWT}>
     <GuestGuard>
-      <AuthLayout>
-        {page}
-      </AuthLayout>
+      <AuthLayout>{page}</AuthLayout>
     </GuestGuard>
   </IssuerGuard>
 );

@@ -9,7 +9,7 @@ import {
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
 import NextLink from 'next/link';
-import { organization } from 'ui/config';
+import { config } from 'ui/config';
 
 const sections = [
   {
@@ -104,7 +104,7 @@ export const Footer = (props) => (
                   }
                 }}
               >
-                {organization.name}
+                {config.platformName}
               </Box>
             </Stack>
             <Typography

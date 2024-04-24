@@ -5,7 +5,7 @@ import { Box, ButtonBase, Drawer, Stack } from '@mui/material';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
 import { SideNavItem } from './side-nav-item';
-import { organization } from 'ui/config';
+import { config } from 'ui/config';
 
 
 const renderItems = ({ depth = 0, items, pathname }) => items.reduce((acc,
@@ -217,7 +217,7 @@ export const SideNav = (props) => {
               }
             }}
           >
-            {organization.name}
+            {config.platformName}
           </Box>
         </Stack>
       </Box>

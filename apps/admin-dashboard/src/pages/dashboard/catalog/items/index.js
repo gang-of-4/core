@@ -17,6 +17,8 @@ import { paths } from '../../../../paths';
 import { ItemsListTable } from '../../../../sections/dashboard/catalog/items/item-list-table';
 import { ItemsListSearch } from '../../../../sections/dashboard/catalog/items/item-list-search';
 import { catalogApi } from '../../../../api/catalog';
+import { capitalize } from '../../../../utils/format-string';
+import { config } from 'ui/config';
 
 
 const useSearch = () => {
@@ -69,6 +71,8 @@ const Page = () => {
 
   const { items } = useItems(search, hasUpdatedItems);
 
+  const itemsName = capitalize(config.catalog.item.plural);
+
   const handleFiltersChange = useCallback((filters) => {
     updateSearch((prevState) => ({
       ...prevState,
@@ -83,7 +87,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Dashboard: Cars | Admin
+          Admin Dashboard | {itemsName}
         </title>
       </Head>
       <Box
@@ -102,7 +106,7 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h4">
-                  Cars
+                  {itemsName}
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <Link
@@ -117,7 +121,7 @@ const Page = () => {
                     color="text.secondary"
                     variant="subtitle2"
                   >
-                    Cars
+                    {itemsName}
                   </Typography>
                 </Breadcrumbs>
               </Stack>

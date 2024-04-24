@@ -1,5 +1,4 @@
 import { applyPagination } from '../../utils/apply-pagination';
-import { deepCopy } from '../../utils/deep-copy';
 import fetchApi from '../../utils/fetch-api';
 import { formatStores } from '../../utils/format-stores';
 
@@ -22,7 +21,7 @@ class StoresApi {
       console.error(err);
     }
 
-    let data = deepCopy(stores);
+    let data = stores;
     let count = data.length;
 
     if (typeof filters !== 'undefined') {

@@ -18,7 +18,7 @@ import { Logo } from '../../components/logo';
 import { useWindowScroll } from '../../hooks/use-window-scroll';
 import { paths } from '../../paths';
 import { TopNavItem } from './top-nav-item';
-import { organization } from 'ui/config'
+import { config } from 'ui/config'
 
 
 const TOP_NAV_HEIGHT = 64;
@@ -118,12 +118,12 @@ export const TopNav = (props) => {
                     }
                   }}
                 >
-                  {organization.name}
+                  {config.platformName}
                 </Box>
               )}
             </Stack>
             <Chip
-              label={organization.version}
+              label={config.version}
               size="small"
             />
           </Stack>

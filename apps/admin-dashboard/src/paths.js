@@ -1,35 +1,35 @@
 export const paths = {
-  index: '/',
+  index: "/",
   auth: {
     jwt: {
-      login: '/auth/login',
-      register: '/auth/signup'
+      login: "/auth/login",
+      register: "/auth/signup",
     },
   },
   dashboard: {
-    index: '/dashboard',
+    index: "/dashboard",
     stores: {
-      index: '/dashboard/stores',
+      index: "/dashboard/stores",
     },
     catalog: {
-      index: '/dashboard/catalog',
+      index: "/dashboard/catalog",
       items: {
-        index: '/dashboard/catalog/items',
+        index: "/dashboard/catalog/items",
       },
       categories: {
-        index: '/dashboard/catalog/categories',
-        add:'/dashboard/catalog/categories/add',
+        index: "/dashboard/catalog/categories",
+        add: "/dashboard/catalog/categories/add",
       },
       options: {
-        index: '/dashboard/catalog/options',
+        index: "/dashboard/catalog/options",
         groups: {
-          index: '/dashboard/catalog/options/groups',
-          add: '/dashboard/catalog/options/groups/add',
+          index: "/dashboard/catalog/options/groups",
+          add: "/dashboard/catalog/options/groups/add",
         },
       },
     },
   },
   errors: {
-    forbidden: '/404',
+    forbidden: "/404",
   },
 };
