@@ -2,6 +2,7 @@ import { SvgIcon } from '@mui/material';
 import HomeSmileIcon from '../../icons/untitled-ui/duocolor/home-smile';
 import ShoppingBag03Icon from '../../icons/untitled-ui/duocolor/shopping-bag-03';
 import LayoutAlt02 from '@untitled-ui/icons-react/build/esm/LayoutAlt02';
+
 import { paths } from '../../paths';
 import { capitalize } from '../../utils/format-string';
 import { config } from 'ui/config';
@@ -49,6 +50,15 @@ export const getSections = () => [
             path: paths.dashboard.catalog.options.index
           }
         ]
+      },
+      {
+        title: capitalize(config.order.plural),
+        path: paths.dashboard.orders.index,
+        icon: (
+          <SvgIcon fontSize="small">
+
+          </SvgIcon>
+        ),
       },
     ]
   }
