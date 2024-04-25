@@ -9,7 +9,7 @@ export class OrdersService {
     return `Orders for ${role}!`;
   }
 
-  async findOneOrFail(id: string, role: string) {
+  async findOneOrFail(id: string, role: string = 'guest') {
     return `Order with id ${id} for ${role}!`;
   }
 

@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, Headers, Param, Patch } from '@nestjs/common';
-import { OrdersService } from './orders.service';
+import { OrdersService } from '../services/orders.service';
 import { JwtService } from '@nestjs/jwt';
 
 @Controller({
