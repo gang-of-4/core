@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./../node_modules/@prisma/client/orders"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ItemStatus {
+  INPROGRESS
+  DELIVEREDTOWAREHOUSE
+}
+
+enum OrderStatus {
+  INPROGRESS
+  DELIVERED
+  CANCELLED
+}
+
+model Order {
+  id             String       @id @default(uuid()) @db.Uuid
+  userId         String       @db.Uuid
+  orderAddressId String       @unique @db.Uuid
+  total          Decimal?     @db.Decimal(10, 2)
+  subtotal       Decimal?     @db.Decimal(10, 2)
+  status         OrderStatus  @default(INPROGRESS)
+  orderAddress   OrderAddress @relation(fields: [orderAddressId], references: [id])
+  orderItems     OrderItem[]
+}
+
+model OrderAddress {
+  id         String @id @default(uuid()) @db.Uuid
+  country    String @unique @db.Uuid
+  city       String
+  state      String
+  street     String
+  postalCode String
+  notes      String
+  Order      Order?
+}
+
+model OrderItem {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String
+  sku       String
+  quantity  Int
+  price     Decimal     @db.Decimal(10, 2)
+  images    ItemImage[]
+  storeId   String      @db.Uuid
+  orderId   String      @db.Uuid
+  order     Order       @relation(fields: [orderId], references: [id])
+  status    ItemStatus  @default(INPROGRESS)
+  options   Option[]
+  isVariant Boolean     @default(false)
+}
+
+model ItemImage {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  ownerId     String    @db.Uuid
+  extension   String
+  url         String
+  size        BigInt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  deletedAt   DateTime?
+  orderItemId String    @db.Uuid
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+}
+
+model Option {
+  id         String      @id @default(uuid()) @db.Uuid
+  label      String
+  value      String
+  group_id   String      @db.Uuid
+  group      OptionGroup @relation(fields: [group_id], references: [id])
+  orderItems OrderItem[]
+}
+
+enum OptionType {
+  TEXT
+  COLOR
+}
+
+model OptionGroup {
+  id      String     @id @default(uuid()) @db.Uuid
+  title   String
+  type    OptionType @default(TEXT)
+  order   DateTime   @default(now())
+  options Option[]
+}
