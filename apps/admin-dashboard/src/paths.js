@@ -28,6 +28,9 @@ export const paths = {
         },
       },
     },
+    orders: {
+      index: '/dashboard/orders',
+    }
   },
   errors: {
     forbidden: "/404",
