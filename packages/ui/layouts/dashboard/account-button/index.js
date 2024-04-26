@@ -1,9 +1,10 @@
-import { useCallback, useRef, useState } from 'react';
-import { Avatar, Box, ButtonBase } from '@mui/material';
-import { getInitials } from '../../../utils/get-initials';
-import { AccountPopover } from './account-popover';
+import { useCallback, useRef, useState } from "react";
+import { Avatar, Box, ButtonBase, SvgIcon } from "@mui/material";
+import { User01 } from "@untitled-ui/icons-react";
+import { getInitials } from "../../../utils/get-initials";
+import { AccountPopover } from "./account-popover";
 
-export function AccountButton({children, auth}) {
+export function AccountButton({ accountPopoverButtons, auth }) {
   const anchorRef = useRef(null);
   const [openPopover, setOpenPopover] = useState(false);
 
@@ -16,39 +17,42 @@ export function AccountButton({children, auth}) {
   }, []);
 
   return (
-    <div className='account-dropdown'>
+    <div className="account-dropdown">
       <Box
         component={ButtonBase}
         onClick={handlePopoverOpen}
         ref={anchorRef}
         sx={{
-          alignItems: 'center',
-          display: 'flex',
+          alignItems: "center",
+          display: "flex",
           borderWidth: 2,
-          borderStyle: 'solid',
-          borderColor: 'divider',
+          borderStyle: "solid",
+          borderColor: "divider",
           height: 40,
           width: 40,
-          borderRadius: '50%'
+          borderRadius: "50%",
         }}
       >
         <Avatar
           src={auth.user?.avatar}
           sx={{
             height: 32,
-            width: 32
+            width: 32,
           }}
         >
-          {/* <SvgIcon>
-            <User01Icon />
-          </SvgIcon> */}
-          {getInitials(`${auth.user?.firstName} ${auth.user?.lastName}`)}
+          {auth?.user?.firstName && auth?.user?.lastName ? (
+            getInitials(`${auth.user?.firstName} ${auth.user?.lastName}`)
+          ) : (
+            <SvgIcon>
+              <User01 />
+            </SvgIcon>
+          )}
         </Avatar>
       </Box>
       <AccountPopover
         anchorEl={anchorRef.current}
         auth={auth}
-        listItems={children}
+        listItems={accountPopoverButtons}
         onClose={handlePopoverClose}
         open={openPopover}
       />
