@@ -9,6 +9,7 @@ import { CartButton } from "./cart/CartButton";
 import { Footer } from "ui/layouts/marketing/footer";
 import { config } from "ui/config";
 import { capitalize } from "@/utils/format-string";
+import { Settings01, ReceiptCheck } from "@untitled-ui/icons-react";
 
 export default function Header({ children, categories }) {
   const auth = useAuth();
@@ -101,13 +102,33 @@ export default function Header({ children, categories }) {
     },
   ];
 
+  const accountPopoverButtons = [
+    {
+      text: "His Orders",
+      href: "/orders",
+      icon: <ReceiptCheck />,
+    },
+    {
+      text: "Settings",
+      href: "/settings",
+      icon: <Settings01 />,
+    },
+  ];
+
+  const topButtons = (
+    <>
+      <CartButton />
+    </>
+  );
+
   return (
     <>
       <MainLayout
+        accountPopoverButtons={accountPopoverButtons}
         auth={auth}
         sideItems={sideItems}
         topItems={topItems}
-        topButtons={<CartButton />}
+        topButtons={topButtons}
       >
         <Box
           sx={{
