@@ -1,15 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsNumber, IsString, IsUUID } from 'class-validator';
 
 export class CreateCartItemDto {
   @ApiProperty()
   @IsString()
   @IsUUID()
-  itemId: string;
+  id: string;
 
   @ApiProperty()
   @IsNumber()
   quantity: number;
+
+  @ApiProperty()
+  @IsBoolean()
+  isVariant: boolean = false;
 
   constructor(partial: Partial<CreateCartItemDto>) {
     Object.assign(this, partial);
