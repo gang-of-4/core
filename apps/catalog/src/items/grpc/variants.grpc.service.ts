@@ -22,7 +22,6 @@ export class VariantsGrpcService {
     const p = {
       payload: result.map((media) => instanceToPlain(media)),
     };
-    console.log(p);
     return p;
   }
 }

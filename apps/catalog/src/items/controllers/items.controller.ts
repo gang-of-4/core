@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Headers,
+  SerializeOptions,
 } from '@nestjs/common';
 import { ItemsService } from '../services/items.service';
 import { CreateItemDto } from '../dto/items/create-item.dto';
@@ -27,11 +28,17 @@ export class ItemsController {
     private jwtService: JwtService,
   ) {}
 
+  @SerializeOptions({
+    groups: ['http'],
+  })
   @Post()
   async create(@Body() createItemDto: CreateItemDto) {
     return await this.itemsService.create(createItemDto);
   }
 
+  @SerializeOptions({
+    groups: ['http'],
+  })
   @Get()
   async findAll(
     @Query() listItemsDto: ListItemsDto,
@@ -44,6 +51,9 @@ export class ItemsController {
     );
   }
 
+  @SerializeOptions({
+    groups: ['http'],
+  })
   @Get(':id')
   async findOne(
     @Param('id') id: string,
@@ -53,11 +63,17 @@ export class ItemsController {
     return await this.itemsService.findOneOrFail(id, token?.user?.role?.name);
   }
 
+  @SerializeOptions({
+    groups: ['http'],
+  })
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
     return await this.itemsService.update(id, updateItemDto);
   }
 
+  @SerializeOptions({
+    groups: ['http'],
+  })
   @Patch(':id/status')
   async updateStatus(
     @Param('id') id: string,
@@ -66,11 +82,17 @@ export class ItemsController {
     return await this.itemsService.updateStatus(id, updateItemStatusDto);
   }
 
+  @SerializeOptions({
+    groups: ['http'],
+  })
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.itemsService.remove(id);
   }
 
+  @SerializeOptions({
+    groups: ['http'],
+  })
   @Post(':id/variants')
   async createVariants(
     @Param('id') id: string,

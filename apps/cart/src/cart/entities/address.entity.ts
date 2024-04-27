@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Address } from '@prisma/client/cart';
 import { IsOptional } from 'class-validator';
 
-export class AddressEntity {
+export class AddressEntity implements Address {
   @ApiProperty()
   id: string;
 

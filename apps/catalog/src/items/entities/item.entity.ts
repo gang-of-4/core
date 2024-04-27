@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, Item } from '@prisma/client/catalog';
-import { Expose, Transform, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { Decimal } from '@prisma/client/catalog/runtime/library';
 import { CategoryEntity } from '../../categories/entities/category.entity';
 import { OptionGroupEntity } from './option-group.entity';
@@ -21,6 +21,7 @@ export class ItemEntity implements Item {
   slug: string;
 
   @ApiProperty()
+  @Expose({ groups: ['http'] })
   quantity: number;
 
   @ApiProperty({ type: Decimal })
@@ -36,15 +37,18 @@ export class ItemEntity implements Item {
   images: MediaEntity[];
 
   @ApiProperty()
+  @Expose({ groups: ['http'] })
   storeId: string;
 
   @ApiProperty()
   status: $Enums.Status;
 
   @ApiProperty()
+  @Expose({ groups: ['http'] })
   order: number;
 
   @ApiProperty()
+  @Expose({ groups: ['http'] })
   isActive: boolean;
 
   @ApiProperty()
