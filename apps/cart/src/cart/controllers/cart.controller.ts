@@ -15,7 +15,7 @@ import { UpdateCartItemDto } from '../dto/update-cart-item.dto';
 import { CheckoutCartDto } from '../dto/checkout-cart-dto';
 
 @Controller({
-  path: 'cart',
+  path: 'carts',
   version: '1',
 })
 export class CartController {
@@ -78,12 +78,7 @@ export class CartController {
     @Headers('Authorization') authorization: string,
   ) {
     const token = this.jwtService.decode(authorization?.split(' ')[1]) as any;
-    return await this.cartService.removeCartItem(
-      id,
-      itemId,
-      token?.user?.id,
-      token?.user?.role?.name,
-    );
+    return await this.cartService.removeCartItem(id, itemId, token?.user?.id);
   }
 
   @Post(':id/checkout')

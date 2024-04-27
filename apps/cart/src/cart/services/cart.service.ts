@@ -1,72 +1,55 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CartEntity } from '../entities/cart.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { CreateCartItemDto } from '../dto/create-cart-item.dto';
-import { ItemsService } from './items.service';
 import { UpdateCartItemDto } from '../dto/update-cart-item.dto';
 import { CheckoutCartDto } from '../dto/checkout-cart-dto';
+import {
+  CatalogService,
+  ItemsService,
+  VariantsService,
+} from '../common/interfaces/catalog.interface';
+import { ClientGrpc } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
+import { QuantityNotAvailableException } from '../exceptions/quantity-not-available.exception';
+import { CartItemEntity } from '../entities/cartItem.entity';
+import { CartCheckoutException } from '../exceptions/cart-checkout.exception';
 
 @Injectable()
 export class CartService {
+  private catalogService: CatalogService;
+  private itemsService: ItemsService;
+  private variantsService: VariantsService;
+
   constructor(
+    @Inject('CATALOG_PACKAGE') private client: ClientGrpc,
     private prisma: PrismaService,
-    private itemsService: ItemsService,
   ) {}
 
-  private async getCartDetails(cart: CartEntity): Promise<CartEntity> {
-    const cartItems = [];
-
-    await Promise.all(
-      cart.cartItems.map(async (cartItem) => {
-        const item = await this.itemsService.getItem(cartItem.itemId);
-        if (item.quantity < cartItem.quantity) {
-          throw new NotFoundException();
-        }
-        cartItems.push({
-          id: cartItem.id,
-          quantity: cartItem.quantity,
-          item: item,
-        });
-      }),
-    );
-
-    const detailedCart = new CartEntity({
-      ...cart,
-      cartItems: cartItems,
-    });
-
-    detailedCart.subtotal = this.getSubtotal(detailedCart);
-    detailedCart.total = this.getTotal(detailedCart, detailedCart.subtotal);
-
-    return detailedCart;
+  onModuleInit() {
+    this.catalogService =
+      this.client.getService<CatalogService>('CatalogService');
+    this.itemsService = this.client.getService<ItemsService>('ItemsService');
+    this.variantsService =
+      this.client.getService<VariantsService>('VariantsService');
   }
 
   async getExistingOrCreate(userId: string): Promise<CartEntity> {
-    const existingCart = await this.prisma.cart.findUnique({
-      where: {
-        userId,
-      },
-      include: {
-        cartItems: true,
-        address: true,
-      },
-    });
-
-    if (existingCart) {
-      return await this.getCartDetails(new CartEntity(existingCart));
-    } else {
-      const cart = await this.prisma.cart.create({
+    const cart = await this.findOneByUserId(userId);
+    if (cart) {
+      return cart;
+    }
+    return new CartEntity({
+      ...(await this.prisma.cart.create({
         data: {
           userId,
-          paymentMethodId: null,
         },
-      });
-
-      return new CartEntity({
-        ...cart,
-      });
-    }
+      })),
+      isAvailable: false,
+      address: null,
+      cartItems: [],
+    });
   }
 
   async findAll(role: string): Promise<CartEntity[]> {
@@ -86,7 +69,7 @@ export class CartService {
     return carts.map((cart) => new CartEntity(cart));
   }
 
-  async findOneOrFail(id: string): Promise<CartEntity> {
+  async findOneOrFail(id: string) {
     const cart = await this.prisma.cart
       .findUniqueOrThrow({
         where: {
@@ -101,91 +84,152 @@ export class CartService {
         throw new NotFoundException();
       });
 
-    return await this.getCartDetails(new CartEntity(cart));
+    const cartItems = cart.cartItems.filter((cartItem) => !cartItem.isVariant);
+
+    const cartVariants = cart.cartItems.filter(
+      (cartItem) => cartItem.isVariant,
+    );
+
+    const availability = await lastValueFrom(
+      this.catalogService.CheckAvailability({
+        items: cartItems.map((cartItem) => ({
+          id: cartItem.itemId,
+          quantity: cartItem.quantity,
+        })),
+        variants: cartVariants.map((cartItem) => ({
+          id: cartItem.itemId,
+          quantity: cartItem.quantity,
+        })),
+      }),
+    );
+
+    const items = await lastValueFrom(
+      this.itemsService.GetManyItems({
+        ids: cartItems.map((cartItem) => cartItem.itemId),
+      }),
+    );
+
+    const variants = await lastValueFrom(
+      this.variantsService.GetManyVariants({
+        ids: cartVariants.map((cartItem) => cartItem.itemId),
+      }),
+    );
+
+    return new CartEntity({
+      ...cart,
+      isAvailable: availability.isAvailable,
+      cartItems: cart.cartItems.map((cartItem) => {
+        const entity = new CartItemEntity({
+          ...cartItem,
+        });
+        if (cartItem.isVariant) {
+          entity.variant = variants.payload.find(
+            (variant) => variant.id === cartItem.itemId,
+          );
+          entity.isAvailable = availability.variants.find(
+            (variant) => variant.id === cartItem.itemId,
+          ).isAvailable;
+        } else {
+          entity.item = items.payload.find(
+            (item) => item.id === cartItem.itemId,
+          );
+          entity.isAvailable = availability.items.find(
+            (item) => item.id === cartItem.itemId,
+          ).isAvailable;
+        }
+        return entity;
+      }),
+    });
+  }
+
+  async findOneByUserId(userId: string) {
+    const cart = await this.prisma.cart.findUnique({
+      where: {
+        userId: userId,
+      },
+      include: {
+        cartItems: true,
+        address: true,
+      },
+    });
+
+    if (!cart) {
+      return null;
+    }
+
+    const cartItems = cart.cartItems.filter(
+      (cartItem: { isVariant: any }) => !cartItem.isVariant,
+    );
+
+    const cartVariants = cart.cartItems.filter(
+      (cartItem: { isVariant: any }) => cartItem.isVariant,
+    );
+
+    const availability = await lastValueFrom(
+      this.catalogService.CheckAvailability({
+        items: cartItems.map((cartItem: { itemId: any; quantity: any }) => ({
+          id: cartItem.itemId,
+          quantity: cartItem.quantity,
+        })),
+        variants: cartVariants.map(
+          (cartItem: { itemId: any; quantity: any }) => ({
+            id: cartItem.itemId,
+            quantity: cartItem.quantity,
+          }),
+        ),
+      }),
+    );
+
+    const items = await lastValueFrom(
+      this.itemsService.GetManyItems({
+        ids: cartItems.map((cartItem: { itemId: any }) => cartItem.itemId),
+      }),
+    );
+
+    const variants = await lastValueFrom(
+      this.variantsService.GetManyVariants({
+        ids: cartVariants.map((cartItem: { itemId: any }) => cartItem.itemId),
+      }),
+    );
+
+    return new CartEntity({
+      ...cart,
+      isAvailable: availability.isAvailable,
+      cartItems: cart.cartItems.map((cartItem: Partial<CartItemEntity>) => {
+        if (cartItem.isVariant) {
+          const variant = variants.payload.find(
+            (variant) => variant.id === cartItem.itemId,
+          );
+          const isAvailable = availability.variants.find(
+            (variant) => variant.id === cartItem.itemId,
+          ).isAvailable;
+          return new CartItemEntity({
+            ...cartItem,
+            variant,
+            isAvailable,
+          });
+        } else {
+          const item = items.payload.find(
+            (item) => item.id === cartItem.itemId,
+          );
+          const isAvailable = availability.items.find(
+            (item) => item.id === cartItem.itemId,
+          ).isAvailable;
+          return new CartItemEntity({
+            ...cartItem,
+            item,
+            isAvailable,
+          });
+        }
+      }),
+    });
   }
 
   async addCartItem(
     cartId: string,
     createCartItemDto: CreateCartItemDto,
     userId: string,
-  ): Promise<CartEntity> {
-    const existingCart = await this.prisma.cart.findUnique({
-      where: {
-        id: cartId,
-      },
-    });
-
-    if (!existingCart) {
-      throw new NotFoundException();
-    }
-
-    if (existingCart.userId !== userId) {
-      throw new UnauthorizedException();
-    }
-
-    const isAvailable = await this.itemsService.checkItemAvailability(
-      createCartItemDto.itemId,
-      createCartItemDto.quantity,
-    );
-
-    if (!isAvailable) {
-      throw new NotFoundException();
-    }
-
-    const existingCartItem = await this.prisma.cartItem.findFirst({
-      where: {
-        itemId: createCartItemDto.itemId,
-        cartId,
-      },
-    });
-
-    if (existingCartItem) {
-      const updatedCart = await this.prisma.cart.update({
-        where: { id: cartId },
-        data: {
-          cartItems: {
-            update: {
-              where: { id: existingCartItem.id },
-              data: {
-                quantity: {
-                  increment: createCartItemDto.quantity,
-                },
-              },
-            },
-          },
-        },
-        include: {
-          cartItems: true,
-          address: true,
-        },
-      });
-      return await this.getCartDetails(new CartEntity(updatedCart));
-    } else {
-      const updatedCart = await this.prisma.cart.update({
-        where: { id: cartId },
-        data: {
-          cartItems: {
-            create: {
-              itemId: createCartItemDto.itemId,
-              quantity: createCartItemDto.quantity,
-            },
-          },
-        },
-        include: {
-          cartItems: true,
-          address: true,
-        },
-      });
-      return await this.getCartDetails(new CartEntity(updatedCart));
-    }
-  }
-
-  async updateCartItem(
-    cartId: string,
-    cartItemId: string,
-    updateCartItemDto: UpdateCartItemDto,
-    userId: string,
-  ): Promise<CartEntity> {
+  ) {
     const cart = await this.prisma.cart
       .findUniqueOrThrow({
         where: {
@@ -200,49 +244,126 @@ export class CartService {
       throw new UnauthorizedException();
     }
 
-    const updatedCart = await this.prisma.cart.update({
-      where: { id: cartId },
-      data: {
-        cartItems: {
-          update: {
-            where: { id: cartItemId },
-            data: {
-              quantity: updateCartItemDto.quantity,
-            },
-          },
+    const cartItem = await this.prisma.cartItem.findUnique({
+      where: {
+        itemId_cartId: {
+          itemId: createCartItemDto.id,
+          cartId: cartId,
         },
-      },
-      include: {
-        cartItems: true,
-        address: true,
       },
     });
 
-    return await this.getCartDetails(new CartEntity(updatedCart));
+    const key = createCartItemDto.isVariant ? 'variants' : 'items';
+
+    const isAvailable = await lastValueFrom(
+      this.catalogService.CheckAvailability({
+        [key]: [
+          {
+            id: createCartItemDto.id,
+            quantity: createCartItemDto.quantity + (cartItem?.quantity || 0),
+          },
+        ],
+      }),
+    );
+
+    if (!isAvailable.isAvailable && isAvailable[key].length > 0) {
+      throw new QuantityNotAvailableException();
+    } else if (!isAvailable.isAvailable) {
+      throw new NotFoundException();
+    }
+
+    await this.prisma.cartItem.upsert({
+      where: {
+        itemId_cartId: {
+          itemId: createCartItemDto.id,
+          cartId: cartId,
+        },
+      },
+      update: {
+        quantity: {
+          increment: createCartItemDto.quantity,
+        },
+      },
+      create: {
+        quantity: createCartItemDto.quantity,
+        itemId: createCartItemDto.id,
+        isVariant: createCartItemDto.isVariant,
+        cart: {
+          connect: {
+            id: cartId,
+          },
+        },
+      },
+    });
+
+    return await this.findOneOrFail(cart.id);
   }
 
-  async removeCartItem(
+  async updateCartItem(
     cartId: string,
     cartItemId: string,
+    updateCartItemDto: UpdateCartItemDto,
     userId: string,
-    role: string,
-  ): Promise<CartEntity> {
-    const existingCart = await this.prisma.cart
+  ) {
+    await this.prisma.cart
       .findUniqueOrThrow({
         where: {
           id: cartId,
+          userId: userId,
         },
       })
       .catch(() => {
         throw new NotFoundException();
       });
 
-    if (existingCart.userId !== userId && role !== 'admin') {
-      throw new UnauthorizedException();
+    const cartItem = await this.prisma.cartItem
+      .findUniqueOrThrow({
+        where: {
+          id: cartItemId,
+        },
+      })
+      .catch(() => {
+        throw new NotFoundException();
+      });
+
+    const key = cartItem.isVariant ? 'variants' : 'items';
+
+    const isAvailable = await lastValueFrom(
+      this.catalogService.CheckAvailability({
+        [key]: [
+          {
+            id: cartItem.itemId,
+            quantity: updateCartItemDto.quantity,
+          },
+        ],
+      }),
+    );
+
+    if (!isAvailable.isAvailable && isAvailable[key].length > 0) {
+      throw new QuantityNotAvailableException();
+    } else if (!isAvailable.isAvailable) {
+      throw new NotFoundException();
     }
 
-    const updatedCart = await this.prisma.cart.update({
-      where: { id: cartId },
+    await this.prisma.cartItem
+      .update({
+        where: {
+          id: cartItemId,
+        },
+        data: {
+          quantity: updateCartItemDto.quantity,
+        },
+      })
+      .catch(() => {
+        throw new NotFoundException();
+      });
+
+    return await this.findOneOrFail(cartId);
+  }
+
+  async removeCartItem(cartId: string, cartItemId: string, userId: string) {
+    const cart = await this.prisma.cart.update({
+      where: { id: cartId, userId: userId },
       data: {
         cartItems: {
           delete: {
@@ -250,99 +371,83 @@ export class CartService {
           },
         },
       },
-      include: {
-        cartItems: true,
-        address: true,
-      },
     });
 
-    return await this.getCartDetails(new CartEntity(updatedCart));
+    return await this.findOneOrFail(cart.id);
   }
 
   async checkout(
     cartId: string,
     checkoutCartDto: CheckoutCartDto,
     userId: string,
-  ): Promise<CartEntity> {
-    const existingCart = await this.prisma.cart.update({
-      where: {
-        id: cartId,
-      },
-      data: {
-        address: {
-          create: {
-            ...checkoutCartDto.address,
-          },
+  ) {
+    const cart = await this.prisma.cart
+      .findUniqueOrThrow({
+        where: {
+          id: cartId,
+          userId: userId,
         },
-        paymentMethodId: checkoutCartDto.paymentMethodId,
-      },
-      include: {
-        cartItems: true,
-        address: true,
-      },
-    });
+        include: {
+          cartItems: true,
+          address: true,
+        },
+      })
+      .catch(() => {
+        throw new NotFoundException();
+      });
 
-    if (!existingCart) {
+    if (cart.cartItems.length === 0) {
       throw new NotFoundException();
     }
 
-    if (existingCart.userId !== userId) {
-      throw new UnauthorizedException();
-    }
+    const items = cart.cartItems.filter((cartItem) => !cartItem.isVariant);
+    const variants = cart.cartItems.filter((cartItem) => cartItem.isVariant);
 
-    if (existingCart.cartItems.length === 0) {
-      throw new NotFoundException();
-    }
-
-    await Promise.all(
-      existingCart.cartItems.map(async (cartItem) => {
-        const isAvailable = await this.itemsService.checkItemAvailability(
-          cartItem.itemId,
-          cartItem.quantity,
-        );
-        if (!isAvailable) {
-          throw new NotFoundException();
-        }
+    const availability = await lastValueFrom(
+      this.catalogService.CheckAvailability({
+        items: items.map((cartItem) => ({
+          id: cartItem.itemId,
+          quantity: cartItem.quantity,
+        })),
+        variants: variants.map((cartItem) => ({
+          id: cartItem.itemId,
+          quantity: cartItem.quantity,
+        })),
       }),
     );
 
-    await this.itemsService.reserveItems(existingCart.cartItems);
+    if (!availability.isAvailable) {
+      throw new QuantityNotAvailableException();
+    }
 
-    await this.createOrder(existingCart);
+    const result = await lastValueFrom(
+      this.catalogService.ReserveQuantities({
+        items: items.map((cartItem) => ({
+          id: cartItem.itemId,
+          quantity: cartItem.quantity,
+        })),
+        variants: variants.map((cartItem) => ({
+          id: cartItem.itemId,
+          quantity: cartItem.quantity,
+        })),
+      }),
+    );
 
-    return await this.clearCart(cartId);
-  }
+    if (!result.success) {
+      throw new CartCheckoutException(result.message);
+    }
 
-  private async clearCart(cartId: string): Promise<CartEntity> {
-    const cart = await this.prisma.cart.update({
-      where: {
-        id: cartId,
-      },
-      data: {
-        cartItems: {
-          deleteMany: {},
+    await this.prisma.$transaction([
+      this.prisma.cartItem.deleteMany({
+        where: {
+          cartId: cartId,
         },
-        addressId: null,
-        paymentMethodId: null,
-      },
-    });
-
-    return new CartEntity(cart);
-  }
-
-  private async createOrder(cart: CartEntity) {
-    // @TODO-Albaraa: Create order
-    console.log('Creating order for cart:', cart);
-  }
-
-  private getSubtotal(cart: CartEntity): number {
-    return cart?.cartItems?.reduce((acc, cartItem) => {
-      return acc + cartItem?.item?.price * cartItem?.quantity;
-    }, 0);
-  }
-
-  private getTotal(cart: CartEntity, subTotal: number): number {
-    // apply tax, shipping, and any other extra fees
-    return subTotal;
+      }),
+      this.prisma.cart.delete({
+        where: {
+          id: cartId,
+        },
+      }),
+    ]);
   }
 }

@@ -4,10 +4,6 @@ import { AddressEntity } from '../entities/address.entity';
 
 export class CheckoutCartDto {
   @ApiProperty()
-  @IsUUID()
-  paymentMethodId: string;
-
-  @ApiProperty()
   @IsOptional()
   address: AddressEntity;
 
