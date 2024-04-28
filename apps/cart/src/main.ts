@@ -28,7 +28,7 @@ async function bootstrap() {
     .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/docs/cart', app, document);
+  SwaggerModule.setup('/docs/carts', app, document);
 
   await app.startAllMicroservices();
   await app.listen(3007);
