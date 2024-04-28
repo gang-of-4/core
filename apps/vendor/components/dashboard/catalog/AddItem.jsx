@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -236,7 +236,7 @@ export default function AddItem({
                       <Button
                         disabled={formik.isSubmitting || loading}
                         size="large"
-                        variant="contained"
+                        variant="outlined"
                         type="button"
                         onClick={handleSubmit}
                       >

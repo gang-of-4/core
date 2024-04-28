@@ -58,18 +58,6 @@ const validationSchema = Yup.object({
             quantity: Yup.number().notRequired(),
         })
     ),
-    images: Yup
-        .array().of(
-            Yup.object()
-                .test('fileFormat', 'Invalid file format. Only images are allowed.', (value) => {
-                    if (!value) return true;
-                    return value && ['image/jpeg', 'image/png'].includes(value.type);
-                })
-                .test('fileSize', 'File too large', value => {
-                    return value && value.size <= 2 * 1024 * 1024; // 2MB
-                })
-        )
-        .notRequired()
 });
 
 export default function EditItemForm({ storeId, item, categories, optionGroups }) {
@@ -89,7 +77,7 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
             }).flat()
             : [],
         variants: (item.variants && item.variants?.length > 0) ? item.variants : [],
-        images: item.images || [],
+        images: item.images?.map(image => image.id) || [],
         submit: null
     };
 
@@ -106,9 +94,6 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
         setLoading(true);
 
         const formData = new FormData();
-        values.images.forEach((image) => {
-            formData.append('images', image);
-        });
 
         formData.append('name', values.name);
         formData.append('sku', values.sku);
@@ -118,6 +103,7 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
         formData.append('categories', JSON.stringify(values.categories));
         formData.append('options', JSON.stringify(values.options));
         formData.append('variants', JSON.stringify(values.variants));
+        formData.append('mediaIds', values.images);
         formData.append('storeId', storeId);
 
         try {
@@ -258,7 +244,8 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
                                         <Button
                                             disabled={formik.isSubmitting || loading}
                                             size="large"
-                                            variant="contained"
+                                            variant="outlined"
+                                            type="button"
                                             onClick={handleSubmit}
                                         >
                                             {loading ? 'Submitting...' : 'Submit'}

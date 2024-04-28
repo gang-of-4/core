@@ -9,7 +9,7 @@ export async function POST(request) {
 
   let mediaId = null;
 
-  if (logo) {
+  if (logo instanceof File) {
     const mediaFormData = new FormData();
     mediaFormData.append("image", logo);
 
@@ -33,6 +33,15 @@ export async function POST(request) {
     mediaId = mediaData.id;
   }
 
+  const requestBody = {
+    vendorId,
+    name,
+    vatNumber,
+    crNumber,
+    ownerNationalId,
+  };
+  mediaId && (requestBody.logo = mediaId);
+
   const storesRes = await fetch(`${process.env.STORES_API_URL}/business`, {
     method: "POST",
     next: { revalidate: 0 },
@@ -40,14 +49,7 @@ export async function POST(request) {
       "Content-Type": "application/json",
       Authorization: `${request.headers.get("Authorization")}`,
     },
-    body: JSON.stringify({
-      vendorId,
-      name,
-      logo: mediaId,
-      vatNumber,
-      crNumber,
-      ownerNationalId,
-    }),
+    body: JSON.stringify(requestBody),
   });
 
   const storesData = await storesRes.json();

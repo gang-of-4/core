@@ -42,7 +42,7 @@ export async function PATCH(request, { params }) {
     const storeId = formData.get('storeId');
     const images = formData.getAll('images');
 
-    const mediaIds = [];
+    const mediaIds = formData.getAll('mediaIds') ?? [];
 
     await Promise.all(images.map(async (image) => {
 
