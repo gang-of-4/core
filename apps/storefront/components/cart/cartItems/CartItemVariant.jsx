@@ -17,36 +17,41 @@ export default function CartItemVariant({ cartItem, handleRemoveItem }) {
     <ListItem disableGutters>
       <ListItemButton
         componentq={NextLink}
-        href={`/catalog/items/${cartItem.item?.parent?.id}`}
+        href={`/catalog/items/${cartItem.variant?.parent?.id}`}
         sx={{
           borderRadius: 2,
           padding: 2,
         }}
       >
         <CartItemAvatar
-          url={cartItem.item?.parent?.images?.[0]?.url}
-          alt={cartItem.item?.parent?.name}
+          url={cartItem.variant?.parent?.images?.[0]?.url}
+          alt={cartItem.variant?.parent?.name}
         />
         <ListItemText
           primary={
             <Typography
               sx={{ fontWeight: "fontWeightBold" }}
-              variant="subtitle2"
+              variant="subtitle1"
             >
-              {cartItem.item?.parent?.name}
+              {cartItem.variant?.parent?.name}
             </Typography>
           }
           secondary={
-            <Typography color="text.secondary" sx={{ mt: 1 }} variant="body1">
+            <Typography color="text.secondary" sx={{ mt: 1 }} variant="body2">
               {formatPrice({
-                price: cartItem.item.price,
-                currency: cartItem.item?.currency,
+                price: cartItem.variant?.price,
+                currency: cartItem.variant?.currency,
               })}
               <br />
               <span>
-                {cartItem.item?.options
-                  ?.map((option) => option.label)
-                  .join(", ")}
+                {cartItem.variant?.groups
+                  ?.map(
+                    (group) =>
+                      ` ${group.title}: ${group.options
+                        ?.map((option) => option.label)
+                        .join(", ")}`
+                  )
+                  .join("  |  ")}
               </span>
               <br />
               {!cartItem.isAvailable && (

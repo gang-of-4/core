@@ -7,22 +7,12 @@ import {
   Stack,
   SvgIcon,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import NextLink from "next/link";
-import { config } from "ui/config";
 
-export default function CartActions({ disabled, isAvailable }) {
+export default function CartActions({ disabled }) {
   return (
     <Stack spacing={2}>
-      {!isAvailable && (
-        <Typography color="error" sx={{ mt: 1 }} variant="body1">
-          One or more {config.catalog.item.plural} in your {config.cart.name}{" "}
-          are not available. Please check your
-          {config.cart.name} and try again.
-        </Typography>
-      )}
-
       <Stack
         direction="row"
         justifyContent={"space-between"}

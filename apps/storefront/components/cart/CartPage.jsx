@@ -111,7 +111,6 @@ export default function CartPage() {
                     disabled={
                       cart?.cartItems?.length === 0 || !cart.isAvailable
                     }
-                    isAvailable={cart.isAvailable}
                   />
                 </>
               )}

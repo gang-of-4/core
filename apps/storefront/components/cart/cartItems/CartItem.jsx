@@ -31,13 +31,13 @@ export default function CartItem({ cartItem, handleRemoveItem }) {
           primary={
             <Typography
               sx={{ fontWeight: "fontWeightBold" }}
-              variant="subtitle2"
+              variant="subtitle1"
             >
               {cartItem.item.name}
             </Typography>
           }
           secondary={
-            <Typography color="text.secondary" sx={{ mt: 1 }} variant="body1">
+            <Typography color="text.secondary" sx={{ mt: 1 }} variant="body2">
               {formatPrice({
                 price: cartItem.item.price,
                 currency: cartItem.item?.currency,

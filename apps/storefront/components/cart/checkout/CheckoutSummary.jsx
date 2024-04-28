@@ -10,6 +10,7 @@ import {
 import { formatPrice } from "@/utils/format-price";
 import CartItemAvatar from "../cartItems/CartItemAvatar";
 import { capitalize } from "@/utils/format-string";
+import { config } from "ui/config";
 
 export const CheckoutSummary = (props) => {
   const { cart, ...other } = props;
@@ -25,25 +26,25 @@ export const CheckoutSummary = (props) => {
             {cartItem.isVariant ? (
               <>
                 <CartItemAvatar
-                  url={cartItem.item?.parent?.images?.[0]?.url}
-                  alt={cartItem.item?.parent?.name}
+                  url={cartItem.variant?.parent?.images?.[0]?.url}
+                  alt={cartItem.variant?.parent?.name}
                 />
                 <ListItemText
                   primary={
                     <Typography
                       sx={{ fontWeight: "fontWeightBold" }}
-                      variant="subtitle2"
+                      variant="subtitle1"
                     >
-                      {cartItem?.item?.parent?.name}
+                      {cartItem?.variant?.parent?.name}
                     </Typography>
                   }
                   secondary={
                     <Typography
                       color="text.secondary"
                       sx={{ mt: 1 }}
-                      variant="body1"
+                      variant="body2"
                     >
-                      {formatPrice({ price: cartItem?.item?.price })}
+                      {formatPrice({ price: cartItem?.variant?.price })}
                     </Typography>
                   }
                 />
