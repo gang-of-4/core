@@ -118,7 +118,7 @@ export function CartProvider({ children }) {
   );
 
   const modifyCartItem = useCallback(
-    async ({ cartItem }) => {
+    async (cartItem) => {
       try {
         const { data: cart, error } = await fetchApi({
           url: `/api/cart/${state.cart?.id}/items/${cartItem?.id}`,
@@ -128,7 +128,7 @@ export function CartProvider({ children }) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              quantity: cartItem.quantity,
+              quantity: +cartItem.quantity,
             }),
           },
         });
