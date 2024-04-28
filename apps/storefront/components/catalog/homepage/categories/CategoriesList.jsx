@@ -41,7 +41,7 @@ export default function CategoriesList({ categories }) {
                   key={category.id}
                   id={category.id}
                   name={category.name}
-                  image={category.banner}
+                  image={category.logo}
                 />
               ))}
               <Button
