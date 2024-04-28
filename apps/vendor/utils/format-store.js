@@ -20,11 +20,15 @@ export async function formatStore({ store, user }) {
     } else if (store?.businessStore) {
 
         if (store?.businessStore?.logo) {
-            const { data } = await fetchApi({
-                url: `/vendor/api/media/${store.businessStore.logo}`,
-                includeToken: false
-            });
-            store.businessStore.logo = data;
+            try{
+                const { data } = await fetchApi({
+                    url: `/vendor/api/media/${store.businessStore.logo}`,
+                    includeToken: false
+                });
+                store.businessStore.logo = data;
+            } catch (error) {
+                console.error(error);
+            }
         }
 
 
