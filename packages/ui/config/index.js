@@ -52,6 +52,7 @@ export const config = {
       desciption:
         "Car Dealerships are designed to meet branding and professional requirements, as well as the needs of establishments with a variety of cars.",
     },
+    desciption: "Garages are designed to meet the needs of car sellers. They can be used to showcase cars, manage orders, and more. Join us and create your own garage today!",
   },
   catalog: {
     name: "catalog",
