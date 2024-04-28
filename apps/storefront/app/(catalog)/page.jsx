@@ -17,7 +17,46 @@ async function getCategories() {
     throw new Error("Failed to fetch");
   }
 
-  return data;
+  const categories = await Promise.all(
+    data.map(async (category) => {
+      const media = await getCategoryMedia(category);
+      return { ...category, ...media };
+    })
+  );
+
+  return categories;
+}
+
+async function getCategoryMedia(category) {
+  const media = {};
+  if (category.banner) {
+    try {
+      const res = await fetch(
+        `${process.env.MEDIA_API_URL}/${category.banner}`,
+        {
+          next: { revalidate: 0 },
+        }
+      );
+      const data = await res.json();
+      media.banner = data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (category.logo) {
+    try {
+      const res = await fetch(`${process.env.MEDIA_API_URL}/${category.logo}`, {
+        next: { revalidate: 0 },
+      });
+      const data = await res.json();
+      media.logo = data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return media;
 }
 
 async function getItems() {

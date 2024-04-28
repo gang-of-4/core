@@ -16,6 +16,38 @@ async function getCategory(id) {
   return data;
 }
 
+async function getCategoryMedia(category) {
+  const media = {};
+  if (category.banner) {
+    try {
+      const res = await fetch(
+        `${process.env.MEDIA_API_URL}/${category.banner}`,
+        {
+          next: { revalidate: 0 },
+        }
+      );
+      const data = await res.json();
+      media.banner = data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (category.logo) {
+    try {
+      const res = await fetch(`${process.env.MEDIA_API_URL}/${category.logo}`, {
+        next: { revalidate: 0 },
+      });
+      const data = await res.json();
+      media.logo = data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return media;
+}
+
 export async function generateMetadata({ params }) {
   // read route params
   const id = params.id;
@@ -30,5 +62,13 @@ export async function generateMetadata({ params }) {
 
 export default async function page({ params }) {
   const category = await getCategory(params.id);
-  return <Category category={category} />;
+  const categoryMedia = await getCategoryMedia(category);
+  return (
+    <Category
+      category={{
+        ...category,
+        ...categoryMedia,
+      }}
+    />
+  );
 }
