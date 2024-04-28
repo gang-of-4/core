@@ -20,6 +20,7 @@ export class CategoriesService {
             isActive: false,
             description: createCategoryDto.description,
             banner: createCategoryDto.banner,
+            logo: createCategoryDto.logo,
             parentId: createCategoryDto.parent_id,
             order: (await this.count()) + 1,
           },

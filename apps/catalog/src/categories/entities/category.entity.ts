@@ -17,6 +17,9 @@ export class CategoryEntity implements Cateogry {
   banner: string;
 
   @ApiProperty()
+  logo: string;
+
+  @ApiProperty()
   description: string;
 
   @ApiProperty()
