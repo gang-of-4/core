@@ -1,4 +1,3 @@
-import { applyPagination } from '../../utils/apply-pagination';
 import fetchApi from '../../utils/fetch-api';
 import { formatStores } from '../../utils/format-stores';
 
@@ -6,7 +5,7 @@ import { formatStores } from '../../utils/format-stores';
 class StoresApi {
 
   async getStores(request = {}) {
-    const { filters, page, rowsPerPage } = request;
+    const { filters } = request;
 
     let stores;
     try {
@@ -46,10 +45,6 @@ class StoresApi {
         return true;
       });
       count = data.length;
-    }
-
-    if (typeof page !== 'undefined' && typeof rowsPerPage !== 'undefined') {
-      data = applyPagination(data, page, rowsPerPage);
     }
 
     return Promise.resolve({
