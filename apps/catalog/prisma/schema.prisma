@@ -64,7 +64,8 @@ model Cateogry {
   id                  String @db.Uuid @id @default(uuid())  
   name                String
   slug                String @unique
-  banner              String?
+  banner              String? @db.Uuid
+  logo                String? @db.Uuid
   description         String
   isActive            Boolean @default(true)
   order               Int
