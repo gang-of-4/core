@@ -26,9 +26,7 @@ export async function formatStores(stores) {
           config.store.name
         )}`,
         status: store?.status,
-        logo:
-          vendor?.avatar ||
-          getInitials(`${vendor?.firstName} ${vendor?.lastName}`),
+        logo: vendor?.avatar,
         type: "individual",
       };
     } else if (store?.businessStore) {

@@ -4,6 +4,7 @@ import ChevronDownIcon from "@untitled-ui/icons-react/build/esm/ChevronDown";
 import ChevronRightIcon from "@untitled-ui/icons-react/build/esm/ChevronRight";
 import Image01Icon from "@untitled-ui/icons-react/build/esm/Image01";
 import {
+  Avatar,
   Box,
   IconButton,
   SvgIcon,
@@ -20,6 +21,7 @@ import CurrentStore from "./store-list-table-current";
 import { storesApi } from "../../../api/stores";
 import { capitalize } from "../../../utils/format-string";
 import { config } from "ui/config";
+import { getInitials } from "../../../utils/get-initials";
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -156,39 +158,24 @@ export const StoresListTable = (props) => {
                           display: "flex",
                         }}
                       >
-                        {store.logo ? (
-                          <Box
+                        <Box
+                          sx={{
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <Avatar
                             sx={{
-                              alignItems: "center",
-                              borderRadius: 1,
-                              display: "flex",
                               height: 80,
-                              justifyContent: "center",
                               width: 80,
-                              objectFit: "cover",
-                              overflow: "hidden",
+                              fontSize: 32,
                             }}
-                            component="img"
-                            src={store.logo?.url}
-                            alt={store.logo?.name}
-                          />
-                        ) : (
-                          <Box
-                            sx={{
-                              alignItems: "center",
-                              backgroundColor: "neutral.50",
-                              borderRadius: 1,
-                              display: "flex",
-                              height: 80,
-                              justifyContent: "center",
-                              width: 80,
-                            }}
+                            {...(store?.logo && { src: store?.logo?.url })}
                           >
-                            <SvgIcon>
-                              <Image01Icon />
-                            </SvgIcon>
-                          </Box>
-                        )}
+                            {getInitials(store?.name)}
+                          </Avatar>
+                        </Box>
                         <Box
                           sx={{
                             cursor: "pointer",
