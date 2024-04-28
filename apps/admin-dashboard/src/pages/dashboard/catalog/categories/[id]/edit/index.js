@@ -26,16 +26,23 @@ const Page = () => {
   const id = router.query.id;
 
   const [category, setCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     if (id) {
       fetchCategory(id);
+      fetchCategories();
     }
   }, [id]);
 
   async function fetchCategory(id) {
     const Category = await catalogApi.getCategory(id);
     setCategory(Category);
+  }
+
+  async function fetchCategories() {
+    const { categories: Categories } = await catalogApi.getCategories();
+    setCategories(Categories);
   }
 
   return (
@@ -83,7 +90,9 @@ const Page = () => {
             </Box>
             <CardHeader sx={{ pb: 0 }} title={`Edit Category: `} />
             <CardContent>
-              {category && <CategoryEditForm category={category} />}
+              {category && categories && (
+                <CategoryEditForm category={category} categories={categories} />
+              )}
             </CardContent>
           </Card>
         </Container>

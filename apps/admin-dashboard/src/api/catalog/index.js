@@ -284,7 +284,7 @@ class CatalogApi {
     return Promise.resolve(category);
   }
 
-  async createCategory({ name, slug, description, banner, logo }) {
+  async createCategory({ name, slug, description, parentId, banner, logo }) {
     let data;
     try {
       const { data: returnedData } = await fetchApi({
@@ -298,6 +298,7 @@ class CatalogApi {
             name,
             slug,
             description,
+            ...parentId && { parent_id: parentId },
             // banner,
             // logo
           }),

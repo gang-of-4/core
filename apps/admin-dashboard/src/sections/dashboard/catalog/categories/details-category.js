@@ -20,6 +20,15 @@ export function CategoryDetails({ category }) {
 
         <Stack spacing={2}>
           <Typography color="textPrimary" variant="h6">
+            Parent
+          </Typography>
+          <Typography color="textPrimary">
+            {category?.parent?.name || "None"}
+          </Typography>
+        </Stack>
+
+        <Stack spacing={2}>
+          <Typography color="textPrimary" variant="h6">
             Description
           </Typography>
           <Typography color="textPrimary">{category?.description}</Typography>

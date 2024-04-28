@@ -3,7 +3,11 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import {
   Button,
+  FormControl,
   FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -19,22 +23,9 @@ import { catalogApi } from "../../../../api/catalog";
 const validationSchema = Yup.object({
   name: Yup.string().max(255).required("Name is required"),
   description: Yup.string().max(255).required("Description is required"),
-  banner: Yup.mixed(),
-  // .required('Banner is required')
-  // .test('fileFormat', 'Invalid file format', (value) => {
-  //   return value && ['image/jpeg', 'image/png'].includes(value.type);
-  // })
-  // .test('fileSize', 'File size is too large', (value) => {
-  //   return value && value.size <= 2 * 1024 * 1024; // 2MB in bytes
-  // }),
-  logo: Yup.mixed(),
-  // .required('Logo is required')
-  // .test('fileFormat', 'Invalid file format', (value) => {
-  //   return value && ['image/jpeg', 'image/png'].includes(value.type);
-  // })
-  // .test('fileSize', 'File size is too large', (value) => {
-  //   return value && value.size <= 2 * 1024 * 1024; // 2MB in bytes
-  // }),
+  banner: Yup.mixed().notRequired(),
+  logo: Yup.mixed().notRequired(),
+  parentId: Yup.string().notRequired(),
 });
 
 const VisuallyHiddenInput = styled("input")({
@@ -49,12 +40,13 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export function CategoryCreateForm() {
+export function CategoryCreateForm({ categories }) {
   const initialValues = {
     name: "",
     description: "",
-    banner: null,
-    logo: null,
+    banner: "",
+    logo: "",
+    parentId: "",
     submit: null,
   };
 
@@ -72,6 +64,7 @@ export function CategoryCreateForm() {
           name: values.name,
           slug: values.name.toLocaleLowerCase(),
           description: values.description,
+          parentId: values.parentId,
         });
 
         if (isMounted()) {
@@ -125,6 +118,32 @@ export function CategoryCreateForm() {
                 value={formik.values.description}
                 multiline
               />
+              <FormControl
+                fullWidth
+                error={
+                  !!(formik.touched.parentId && formik.errors.parentId)
+                }
+              >
+                <InputLabel id="categories-label">Categories</InputLabel>
+                <Select
+                  labelId="categories-label"
+                  name="parentId"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.parentId}
+                >
+                  {categories?.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {formik.touched.parentId && formik.errors.parentId && (
+                  <FormHelperText error>
+                    {formik.errors.parentId}
+                  </FormHelperText>
+                )}
+              </FormControl>
             </Stack>
             <Stack spacing={3} sx={{ width: "100%" }}>
               <Stack>

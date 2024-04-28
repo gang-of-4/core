@@ -3,9 +3,14 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import {
   Button,
+  FormControl,
   FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import NextLink from "next/link";
@@ -19,22 +24,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 const validationSchema = Yup.object({
   name: Yup.string().max(255).required("Name is required"),
   description: Yup.string().max(255).required("Description is required"),
-  banner: Yup.mixed(),
-  // .required('Banner is required')
-  // .test('fileFormat', 'Invalid file format', (value) => {
-  //   return value && ['image/jpeg', 'image/png'].includes(value.type);
-  // })
-  // .test('fileSize', 'File size is too large', (value) => {
-  //   return value && value.size <= 2 * 1024 * 1024; // 2MB in bytes
-  // }),
-  logo: Yup.mixed(),
-  // .required('Logo is required')
-  // .test('fileFormat', 'Invalid file format', (value) => {
-  //   return value && ['image/jpeg', 'image/png'].includes(value.type);
-  // })
-  // .test('fileSize', 'File size is too large', (value) => {
-  //   return value && value.size <= 2 * 1024 * 1024; // 2MB in bytes
-  // }),
+  banner: Yup.mixed().notRequired(),
+  logo: Yup.mixed().notRequired(),
 });
 
 const VisuallyHiddenInput = styled("input")({
@@ -49,12 +40,13 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export function CategoryEditForm({ category }) {
+export function CategoryEditForm({ category, categories }) {
   const initialValues = {
     name: category?.name || "",
     description: category?.description || "",
     banner: category?.banner || "",
     logo: category?.logo || "",
+    parentId: category?.parent?.id || "",
     submit: null,
   };
 
@@ -126,6 +118,39 @@ export function CategoryEditForm({ category }) {
                 value={formik.values.description}
                 multiline
               />
+
+              <Tooltip
+                title={
+                  "Parent cannot be edited after creation. This will be added in a future release."
+                }
+                arrow
+              >
+                <FormControl
+                  fullWidth
+                  error={!!(formik.touched.parentId && formik.errors.parentId)}
+                >
+                  <InputLabel id="categories-label">Parent</InputLabel>
+                  <Select
+                    labelId="categories-label"
+                    name="parentId"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    defaultValue={formik.values.parentId}
+                    disabled
+                  >
+                    {categories?.map((category) => (
+                      <MenuItem key={category.id} value={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {formik.touched.parentId && formik.errors.parentId && (
+                    <FormHelperText error>
+                      {formik.errors.parentId}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </Tooltip>
             </Stack>
             <Stack spacing={3} sx={{ width: "100%" }}>
               <Stack>
@@ -215,7 +240,7 @@ export function CategoryEditForm({ category }) {
         >
           <Button
             component={NextLink}
-            href={paths.dashboard.catalog.categories.index}
+            href={`${paths.dashboard.catalog.categories.index}/${category.id}`}
             size="large"
             variant="contained"
             color="inherit"

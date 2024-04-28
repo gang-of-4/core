@@ -94,22 +94,14 @@ export const CategoryListTable = (props) => {
                           <Trash01Icon />
                         </SvgIcon>
                       </IconButton>
-                      <Tooltip
-                        title="This action will be added in a future release"
-                        arrow
+                      <IconButton
+                        component={NextLink}
+                        href={`${paths.dashboard.catalog.categories.index}/${category.id}/edit`}
                       >
-                        <div>
-                          <IconButton
-                            component={NextLink}
-                            href={`${paths.dashboard.catalog.categories.index}/${category.id}/edit`}
-                            disabled
-                          >
-                            <SvgIcon>
-                              <Edit02Icon />
-                            </SvgIcon>
-                          </IconButton>
-                        </div>
-                      </Tooltip>
+                        <SvgIcon>
+                          <Edit02Icon />
+                        </SvgIcon>
+                      </IconButton>
                     </Stack>
                   </TableCell>
                 </TableRow>

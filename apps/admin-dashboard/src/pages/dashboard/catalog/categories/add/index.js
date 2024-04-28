@@ -16,9 +16,43 @@ import { CategoryCreateForm } from "../../../../../sections/dashboard/catalog/ca
 import { paths } from "../../../../../paths";
 import { capitalize } from "../../../../../utils/format-string";
 import { config } from "ui/config";
+import { useMounted } from "../../../../../hooks/use-mounted";
+import { useCallback, useEffect, useState } from "react";
+import { catalogApi } from "../../../../../api/catalog";
+
+const useCategories = () => {
+  const isMounted = useMounted();
+  const [state, setState] = useState({
+    categories: [],
+    categoriesCount: 0,
+  });
+
+  const getCategories = useCallback(async () => {
+    try {
+      const response = await catalogApi.getCategories();
+
+      if (isMounted()) {
+        setState({
+          categories: response.categories,
+          categoriesCount: response.count,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  return state;
+};
 
 const Page = () => {
   const categoryName = capitalize(config.catalog.category.name);
+  const { categories } = useCategories();
+
 
   return (
     <>
@@ -63,7 +97,7 @@ const Page = () => {
             </Box>
             <CardHeader sx={{ pb: 0 }} title={`Add New ${categoryName}`} />
             <CardContent>
-              <CategoryCreateForm />
+              <CategoryCreateForm categories={categories}/>
             </CardContent>
           </Card>
         </Container>
