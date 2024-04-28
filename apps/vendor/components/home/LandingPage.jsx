@@ -60,6 +60,30 @@ export default function LandingPage() {
                         },
                       }
                     : {
+                        backgroundColor: "primary",
+                        color: "neutral.50",
+                        "&:hover": {
+                          backgroundColor: "primary.dark",
+                        },
+                      }
+                }
+                variant="contained"
+              >
+                Go to Dashboard
+              </Button>
+              <Button
+                component={NextLink}
+                href={"/auth/signup"}
+                sx={(theme) =>
+                  theme.palette.mode === "dark"
+                    ? {
+                        backgroundColor: "neutral.50",
+                        color: "neutral.900",
+                        "&:hover": {
+                          backgroundColor: "neutral.200",
+                        },
+                      }
+                    : {
                         backgroundColor: "neutral.900",
                         color: "neutral.50",
                         "&:hover": {
