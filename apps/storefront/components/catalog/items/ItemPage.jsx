@@ -113,6 +113,12 @@ export default function ItemPage({ item }) {
                   <Typography variant="h4">{item.name}</Typography>
 
                   <Typography variant="body1" color="text.secondary">
+                    {item.categories
+                      ?.map((category) => `${category.name} `)
+                      .join(", ")}
+                  </Typography>
+
+                  <Typography variant="body2" color="text.secondary">
                     {item.description}
                   </Typography>
 

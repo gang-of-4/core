@@ -50,9 +50,9 @@ export class StoresService {
           businessStore: {
             create: {
               name: createBusinessStoreDto.name,
-              logo: createBusinessStoreDto.logo,
               vatNumber: createBusinessStoreDto.vatNumber,
               crNumber: createBusinessStoreDto.crNumber,
+              logo: createBusinessStoreDto?.logo,
               ownerNationalId: createBusinessStoreDto.ownerNationalId,
             },
           },

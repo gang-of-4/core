@@ -33,7 +33,7 @@ model BusinessStore {
   storeId         String @unique @db.Uuid
   store           Store  @relation(fields: [storeId], references: [id])
   name            String
-  logo            String @db.Uuid
+  logo            String? @db.Uuid
   vatNumber       String
   crNumber        String
   ownerNationalId String
