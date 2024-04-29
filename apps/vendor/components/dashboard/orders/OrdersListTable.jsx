@@ -30,7 +30,7 @@ const getStatusColor = (status) => {
   }
 };
 
-export const OrdersListTable = ({ orders, ...other }) => {
+export const OrdersListTable = ({ orders, storeId, ...other }) => {
   return (
     <div {...other}>
       <Scrollbar>
@@ -54,7 +54,7 @@ export const OrdersListTable = ({ orders, ...other }) => {
                       <Tooltip title={`View Order Details`}>
                         <IconButton
                           component={NextLink}
-                          href={`/dashboard/orders/${order.id}`}
+                          href={`/dashboard/stores/${storeId}/orders/${order.id}`}
                         >
                           <SvgIcon>
                             <ArrowRight />

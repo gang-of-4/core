@@ -221,10 +221,10 @@ async function getOrders(storeId) {
 
 export default async function page({ params }) {
   let orders = [];
-
+  let storeId = params.id;
   if (params.id) {
     orders = await getOrders(params.id);
   }
 
-  return <>{!params.id ? <></> : <OrdersPage orders={orders} />}</>;
+  return <>{!params.id ? <></> : <OrdersPage orders={orders} storeId={storeId} />}</>;
 }

@@ -9,15 +9,17 @@ import {
   Link,
   Card,
   Divider,
+  CardContent,
 } from "@mui/material";
 import { BreadcrumbsSeparator } from "ui/components/breadcrumbs-separator";
 import { paths } from "ui/paths";
 import { capitalize } from "@/utils/format-string";
 import { config } from "ui/config";
-import { OredrsListSearch } from "./OrdersListSearch";
-import { OrdersListTable } from "./OrdersListTable";
+import { DetailsOrderStatus } from "./details-order-status";
+import { DetailsUser } from "./details-user";
+import { OrderDetails } from "./details-order";
 
-export default function OrdersPage({ orders , storeId}) {
+export default function OrderDetailsPage({ order }) {
   return (
     <>
       <Box
@@ -32,7 +34,7 @@ export default function OrdersPage({ orders , storeId}) {
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
                 <Typography variant="h4">
-                  {capitalize(config.order.plural)}
+                {`${capitalize(config.order.name)} Details`}
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <Link
@@ -50,13 +52,17 @@ export default function OrdersPage({ orders , storeId}) {
               </Stack>
             </Stack>
             <Card>
-              <Stack>
-                <OredrsListSearch />
-              </Stack>
-              <Divider />
-              <Stack>
-                {orders.length !== 0 && <OrdersListTable orders={orders} storeId={storeId} />}
-              </Stack>
+              <CardContent>
+                {order && <DetailsOrderStatus order={order} />}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent>
+                {order && <DetailsUser order={order} />}
+              </CardContent>
+            </Card>
+            <Card>
+              {order && <OrderDetails order={order} />}
             </Card>
           </Stack>
         </Container>
