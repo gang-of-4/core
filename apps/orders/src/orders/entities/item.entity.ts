@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { $Enums, OrderItem } from '@prisma/client/orders';
+import { $Enums, Item } from '@prisma/client/orders';
 import { Decimal } from '@prisma/client/orders/runtime/library';
 import { Exclude, Transform, Type } from 'class-transformer';
-import { ItemImageEntity } from './item-image.entity';
+import { ImageEntity } from './item-image.entity';
 import { OptionGroupEntity } from './option-group.entity';
 
-export class OrderItemEntity implements OrderItem {
+export class ItemEntity implements Item {
   @ApiProperty()
   id: string;
 
@@ -24,8 +24,8 @@ export class OrderItemEntity implements OrderItem {
   price: Decimal;
 
   @ApiProperty()
-  @Type(() => ItemImageEntity)
-  itemImages: ItemImageEntity[];
+  @Type(() => ImageEntity)
+  images?: ImageEntity[];
 
   @Exclude()
   orderId: string;
@@ -43,7 +43,8 @@ export class OrderItemEntity implements OrderItem {
   @ApiProperty()
   isVariant: boolean;
 
-  constructor(partial: Partial<OrderItemEntity>) {
+  constructor(partial: Partial<ItemEntity>) {
     Object.assign(this, partial);
   }
+  orderItemId?: string;
 }

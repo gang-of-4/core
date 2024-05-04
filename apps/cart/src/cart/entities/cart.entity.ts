@@ -29,7 +29,10 @@ export class CartEntity implements Cart {
   @Expose()
   get subtotal(): number {
     return this?.cartItems?.reduce((acc, cartItem) => {
-      return acc + cartItem?.item?.price * cartItem?.quantity;
+      return (
+        acc +
+        (cartItem?.item?.price ?? cartItem?.variant?.price) * cartItem?.quantity
+      );
     }, 0);
   }
 

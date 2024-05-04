@@ -4,17 +4,20 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { CreateCartItemDto } from '../dto/create-cart-item.dto';
 import { UpdateCartItemDto } from '../dto/update-cart-item.dto';
-import { CheckoutCartDto } from '../dto/checkout-cart-dto';
 import {
   CatalogService,
   ItemsService,
   VariantsService,
 } from '../common/interfaces/catalog.interface';
-import { ClientGrpc } from '@nestjs/microservices';
+import { ClientGrpc, ClientKafka } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { QuantityNotAvailableException } from '../exceptions/quantity-not-available.exception';
 import { CartItemEntity } from '../entities/cartItem.entity';
 import { CartCheckoutException } from '../exceptions/cart-checkout.exception';
+import { CreateOrderDto } from '../dto/create-order.dto';
+import { instanceToPlain } from 'class-transformer';
+import { randomUUID } from 'crypto';
+import { CheckoutCartDto } from '../dto/checkout-cart-dto';
 
 @Injectable()
 export class CartService {
@@ -25,6 +28,7 @@ export class CartService {
   constructor(
     @Inject('CATALOG_PACKAGE') private client: ClientGrpc,
     private prisma: PrismaService,
+    @Inject('KAFKA_SERVICE') private kafkaClient: ClientKafka,
   ) {}
 
   onModuleInit() {
@@ -33,6 +37,7 @@ export class CartService {
     this.itemsService = this.client.getService<ItemsService>('ItemsService');
     this.variantsService =
       this.client.getService<VariantsService>('VariantsService');
+    this.kafkaClient.subscribeToResponseOf('order.created');
   }
 
   async getExistingOrCreate(userId: string): Promise<CartEntity> {
@@ -62,7 +67,6 @@ export class CartService {
       },
       include: {
         cartItems: true,
-        address: true,
       },
     });
 
@@ -77,7 +81,6 @@ export class CartService {
         },
         include: {
           cartItems: true,
-          address: true,
         },
       })
       .catch(() => {
@@ -149,7 +152,6 @@ export class CartService {
       },
       include: {
         cartItems: true,
-        address: true,
       },
     });
 
@@ -208,19 +210,16 @@ export class CartService {
             variant,
             isAvailable,
           });
-        } else {
-          const item = items.payload.find(
-            (item) => item.id === cartItem.itemId,
-          );
-          const isAvailable = availability.items.find(
-            (item) => item.id === cartItem.itemId,
-          ).isAvailable;
-          return new CartItemEntity({
-            ...cartItem,
-            item,
-            isAvailable,
-          });
         }
+        const item = items.payload.find((item) => item.id === cartItem.itemId);
+        const isAvailable = availability.items.find(
+          (item) => item.id === cartItem.itemId,
+        ).isAvailable;
+        return new CartItemEntity({
+          ...cartItem,
+          item,
+          isAvailable,
+        });
       }),
     });
   }
@@ -389,7 +388,6 @@ export class CartService {
         },
         include: {
           cartItems: true,
-          address: true,
         },
       })
       .catch(() => {
@@ -400,16 +398,30 @@ export class CartService {
       throw new NotFoundException();
     }
 
-    const items = cart.cartItems.filter((cartItem) => !cartItem.isVariant);
-    const variants = cart.cartItems.filter((cartItem) => cartItem.isVariant);
+    const cartItems = cart.cartItems.filter((cartItem) => !cartItem.isVariant);
+    const cartVariants = cart.cartItems.filter(
+      (cartItem) => cartItem.isVariant,
+    );
+
+    const items = await lastValueFrom(
+      this.itemsService.GetManyItems({
+        ids: cartItems.map((cartItem: { itemId: any }) => cartItem.itemId),
+      }),
+    );
+
+    const variants = await lastValueFrom(
+      this.variantsService.GetManyVariants({
+        ids: cartVariants.map((cartItem: { itemId: any }) => cartItem.itemId),
+      }),
+    );
 
     const availability = await lastValueFrom(
       this.catalogService.CheckAvailability({
-        items: items.map((cartItem) => ({
+        items: cartItems.map((cartItem) => ({
           id: cartItem.itemId,
           quantity: cartItem.quantity,
         })),
-        variants: variants.map((cartItem) => ({
+        variants: cartVariants.map((cartItem) => ({
           id: cartItem.itemId,
           quantity: cartItem.quantity,
         })),
@@ -436,6 +448,47 @@ export class CartService {
     if (!result.success) {
       throw new CartCheckoutException(result.message);
     }
+
+    await lastValueFrom(
+      this.kafkaClient.emit(
+        'order.created',
+        instanceToPlain(
+          new CreateOrderDto({
+            id: randomUUID(),
+            userId: userId,
+            address: {
+              ...checkoutCartDto,
+            },
+            items: cart.cartItems.map((cartItem: Partial<CartItemEntity>) => {
+              if (cartItem.isVariant) {
+                const variant = variants.payload.find(
+                  (variant) => variant.id === cartItem.itemId,
+                );
+                const isAvailable = availability.variants.find(
+                  (variant) => variant.id === cartItem.itemId,
+                ).isAvailable;
+                return new CartItemEntity({
+                  ...cartItem,
+                  variant,
+                  isAvailable,
+                });
+              }
+              const item = items.payload.find(
+                (item) => item.id === cartItem.itemId,
+              );
+              const isAvailable = availability.items.find(
+                (item) => item.id === cartItem.itemId,
+              ).isAvailable;
+              return new CartItemEntity({
+                ...cartItem,
+                item,
+                isAvailable,
+              });
+            }),
+          }),
+        ),
+      ),
+    );
 
     await this.prisma.$transaction([
       this.prisma.cartItem.deleteMany({

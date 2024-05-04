@@ -41,6 +41,7 @@ export class ItemsService {
             storeId: createItemDto.store_id,
             status: (createItemDto.status as Status) ?? Status.DRAFT,
             order: (await this.count()) + 1,
+            sku: createItemDto.sku,
             slug:
               createItemDto.slug ?? createItemDto.name
                 ? await this.generateUniqueSlug(
@@ -361,15 +362,17 @@ export class ItemsService {
                 })) ?? []),
               ],
             },
-            images: {
-              createMany: {
-                data: updateItemDto.images.map((image) => {
-                  return {
-                    mediaId: image,
-                  };
-                }),
+            ...(updateItemDto.images && {
+              images: {
+                createMany: {
+                  data: updateItemDto.images.map((image) => {
+                    return {
+                      mediaId: image,
+                    };
+                  }),
+                },
               },
-            },
+            }),
           },
         })
         .catch((e) => {
@@ -380,20 +383,22 @@ export class ItemsService {
               throw e;
           }
         });
-      await Promise.all(
-        updateItemDto.variants.map(async (variant) => {
-          await tx.variant.update({
-            where: {
-              id: variant.id,
-            },
-            data: {
-              sku: variant.sku,
-              price: variant.price,
-              quantity: variant.quantity,
-            },
-          });
-        }),
-      );
+
+      updateItemDto.variants &&
+        (await Promise.all(
+          updateItemDto.variants.map(async (variant) => {
+            await tx.variant.update({
+              where: {
+                id: variant.id,
+              },
+              data: {
+                sku: variant.sku,
+                price: variant.price,
+                quantity: variant.quantity,
+              },
+            });
+          }),
+        ));
     });
 
     return await this.findOne(id);

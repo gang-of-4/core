@@ -1,16 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { ItemImage } from '@prisma/client/orders';
+import { Image } from '@prisma/client/orders';
 
-export class ItemImageEntity implements ItemImage {
+export class ImageEntity implements Image {
   @ApiProperty()
   id: string;
 
   @ApiProperty()
   name: string;
-
-  @Exclude()
-  ownerId: string;
 
   @ApiProperty()
   extension: string;
@@ -22,22 +19,10 @@ export class ItemImageEntity implements ItemImage {
   @Type(() => Number)
   size: bigint;
 
-  @ApiProperty()
-  @Type(() => String)
-  createdAt: Date;
-
-  @ApiProperty()
-  @Type(() => String)
-  updatedAt: Date;
-
-  @ApiProperty({ nullable: true, default: null })
-  @Expose({ groups: ['media.delete', 'self'] })
-  deletedAt: Date;
-
   @Exclude()
-  orderItemId: string;
+  itemId: string;
 
-  constructor(partial: Partial<ItemImageEntity>) {
+  constructor(partial: Partial<ImageEntity>) {
     Object.assign(this, partial);
   }
 }

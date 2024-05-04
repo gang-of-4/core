@@ -17,7 +17,9 @@ export class VariantEntity implements Variant {
   @Expose({ groups: ['http'] })
   quantity: number;
 
-  @ApiProperty({ type: Decimal, nullable: true })
+  @ApiProperty({ type: Decimal })
+  @Transform(({ value }) => value?.toNumber())
+  @Type(() => Number)
   price: Decimal;
 
   @Exclude()

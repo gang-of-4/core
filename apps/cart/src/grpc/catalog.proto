@@ -81,17 +81,19 @@ message Item {
   double price = 5;
   string description = 6;
   string status = 7;
-  repeated Category categories = 8;
-  repeated OptionGroup groups = 9;
-  repeated Variant variants = 10;
-  repeated Media images = 11;
-  string createdAt = 12;
-  string updatedAt = 13;
+  string storeId = 8;
+  repeated Category categories = 9;
+  repeated OptionGroup groups = 10;
+  repeated Variant variants = 11;
+  repeated Media images = 12;
+  string createdAt = 13;
+  string updatedAt = 14;
 }
 
 message Variant {
   string id = 1;
-  optional double price = 3;
+  string sku = 2;
+  double price = 3;
   Item parent = 4;
   repeated OptionGroup groups = 5;
   string createdAt = 6;

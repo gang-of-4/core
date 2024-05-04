@@ -1,11 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsUUID } from 'class-validator';
-import { AddressEntity } from '../entities/address.entity';
+import { IsString } from 'class-validator';
 
 export class CheckoutCartDto {
   @ApiProperty()
-  @IsOptional()
-  address: AddressEntity;
+  @IsString()
+  country: string;
+
+  @ApiProperty()
+  @IsString()
+  city: string;
+
+  @ApiProperty()
+  @IsString()
+  street: string;
+
+  @ApiProperty()
+  @IsString()
+  state: string;
+
+  @ApiProperty()
+  @IsString()
+  postalCode: string;
+
+  @ApiProperty()
+  @IsString()
+  notes: string;
 
   constructor(partial: Partial<CheckoutCartDto>) {
     Object.assign(this, partial);

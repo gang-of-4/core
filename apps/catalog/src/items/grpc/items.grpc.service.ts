@@ -11,14 +11,16 @@ export class ItemsGrpcService {
   @GrpcMethod('ItemsService')
   async GetItem(getItemDto: GetItemDto) {
     const result = await this.itemsService.findOneOrFail(getItemDto.id);
-    return instanceToPlain(result);
+    return instanceToPlain(result, { groups: ['grpc'] });
   }
 
   @GrpcMethod('ItemsService')
   async GetManyItems(getManyItemsDto: GetManyItemsDto) {
     const result = await this.itemsService.findManyById(getManyItemsDto.ids);
     return {
-      payload: result.map((media) => instanceToPlain(media)),
+      payload: result.map((item) =>
+        instanceToPlain(item, { groups: ['grpc'] }),
+      ),
     };
   }
 }

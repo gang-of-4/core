@@ -13,9 +13,18 @@ export class OptionGroupsService {
       data: {
         title: createOptionDto.title,
         type: createOptionDto.type,
+        order: (await this.count()) + 1,
       },
     });
     return new OptionGroupEntity(optionGroup);
+  }
+
+  async count(): Promise<number> {
+    return this.prisma.optionGroup.count({
+      where: {
+        deletedAt: null,
+      },
+    });
   }
 
   async findAll() {

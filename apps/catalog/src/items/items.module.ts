@@ -27,6 +27,10 @@ import { CatalogGrpcService } from './grpc/catalog.grpc.service';
           package: 'media',
           protoPath: join(__dirname, '../../grpc/media.proto'),
           url: 'localhost:50051',
+          loader: {
+            longs: Number,
+            arrays: true,
+          },
         },
       },
     ]),
