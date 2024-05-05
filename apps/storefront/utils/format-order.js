@@ -25,7 +25,6 @@ export async function formatOrder({
           }
         );
         const data = await res.json();
-        console.log(data);
         return {
           ...orderItem,
           store: data,
