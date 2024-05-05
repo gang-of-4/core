@@ -104,7 +104,7 @@ export default function Header({ children, categories }) {
 
   const accountPopoverButtons = [
     {
-      text: "His Orders",
+      text: `My ${capitalize(config.order.plural)}`,
       href: "/orders",
       icon: <ReceiptCheck />,
     },

@@ -45,14 +45,8 @@ class OrdersApi {
       return Promise.resolve(order);
     } catch (err) {
       console.error(err);
-      return data;  // No need to wrap in Promise.resolve
+      return data;
     }
-  
-    // if (order && order.length > 0) {
-    //   return Promise.resolve(order[0]);  // Directly return the value
-    // } else {
-    //   return null;  // Directly return null
-    // }
   }
   
 

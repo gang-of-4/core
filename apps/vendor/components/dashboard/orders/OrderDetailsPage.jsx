@@ -19,7 +19,7 @@ import { DetailsOrderStatus } from "./details-order-status";
 import { DetailsUser } from "./details-user";
 import { OrderDetails } from "./details-order";
 
-export default function OrderDetailsPage({ order }) {
+export default function OrderDetailsPage({ order, storeId }) {
   return (
     <>
       <Box
@@ -34,7 +34,7 @@ export default function OrderDetailsPage({ order }) {
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
                 <Typography variant="h4">
-                {`${capitalize(config.order.name)} Details`}
+                  {`${capitalize(config.order.name)} Details`}
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <Link
@@ -45,9 +45,14 @@ export default function OrderDetailsPage({ order }) {
                   >
                     Dashboard
                   </Link>
-                  <Typography color="text.secondary" variant="subtitle2">
+                  <Link
+                    color="text.primary"
+                    component={NextLink}
+                    href={`${paths.vendor.dashboard.index}/stores/${storeId}/orders`}
+                    variant="subtitle2"
+                  >
                     {capitalize(config.order.plural)}
-                  </Typography>
+                  </Link>
                 </Breadcrumbs>
               </Stack>
             </Stack>
@@ -61,9 +66,7 @@ export default function OrderDetailsPage({ order }) {
                 {order && <DetailsUser order={order} />}
               </CardContent>
             </Card>
-            <Card>
-              {order && <OrderDetails order={order} />}
-            </Card>
+            <Card>{order && <OrderDetails order={order} />}</Card>
           </Stack>
         </Container>
       </Box>

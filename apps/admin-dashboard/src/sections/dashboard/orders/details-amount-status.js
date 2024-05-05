@@ -1,112 +1,120 @@
-import {
-    Button,
-    MenuItem,
-    Stack,
-    TextField,
-    Typography,
-} from '@mui/material';
-import { ordersApi } from '../../../api/orders';
+import { MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { ordersApi } from "../../../api/orders";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import { formatPrice } from "../../../utils/format-price";
+import { capitalize } from "../../../utils/format-string";
+import { config } from "ui/config";
 
 const statusOptions = [
-    {
-        label: "Delivered",
-        value: "DELIVERED",
-    },
-    {
-        label: "InProgress",
-        value: "INPROGRESS",
-    },
-    {
-        label: "Cancelled",
-        value: "CANCELLED",
-    },
+  {
+    label: "Delivered",
+    value: "DELIVERED",
+  },
+  {
+    label: "In Progress",
+    value: "INPROGRESS",
+  },
+  {
+    label: "Cancelled",
+    value: "CANCELLED",
+  },
 ];
 
 const validationSchema = Yup.object({
-    status: Yup.string().required("Required"),
+  status: Yup.string().required("Required"),
 });
 
-export function DetailsAmountStatus({ order, initialValues }) {
+export function DetailsAmountStatus({ order }) {
+  const initialValues = {
+    status: order.status,
+  };
 
-    const formik = useFormik({
-        initialValues: { status: order.status },
-        validationSchema,
-        onSubmit: () => {},
-    });
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: () => {},
+  });
 
-    const handleChangeStatus = async (event) => {
-        const newStatus = event.target.value;
-        formik.setFieldValue("status", newStatus);
+  const handleChangeStatus = async (event) => {
+    const newStatus = event.target.value;
+    formik.setFieldValue("status", newStatus);
 
-        try {
-            await ordersApi.updateOrder({
-                status: newStatus,
-                id: order.id,
-            });
+    try {
+      await ordersApi.updateOrder({
+        status: newStatus,
+        id: order.id,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-        } catch (err) {
-            console.error(err);
-        }
-    };
+  return (
+    <>
+      <Stack
+        spacing={2}
+        sx={{ width: "100%" }}
+        direction={"row"}
+        marginBottom={1}
+      >
+        <Typography color="textPrimary" variant="h6">
+          {capitalize(config.order.name)} Overview
+        </Typography>
+      </Stack>
+      <Stack
+        spacing={2}
+        sx={{ width: "100%" }}
+        direction={"row"}
+        justifyContent={"space-around"}
+      >
+        <Stack>
+          <Typography color="textPrimary" variant="h6">
+            {capitalize(config.order.name)} ID
+          </Typography>
+          <Typography color="textPrimary" variant="h7">
+            {order.id}
+          </Typography>
+        </Stack>
 
-    return (
-        <>
-                <Stack
-                    spacing={2}
-                    sx={{ width: '100%' }}
-                    direction={'row'}
-                    justifyContent={'space-around'}
-                >
-                    <Stack>
-                        <Typography color="textPrimary" variant='h6'>
-                            Order Id
-                        </Typography>
-                        <Typography color="textPrimary" variant='h7'>
-                            {order.id}
-                        </Typography>
-                    </Stack>
+        <Stack>
+          <Typography color="textPrimary" variant="h6">
+            Total
+          </Typography>
+          <Typography color="textPrimary" variant="h7">
+            {formatPrice({ price: order.total })}
+          </Typography>
+        </Stack>
 
-                    <Stack>
-                        <Typography color="textPrimary" variant='h6'>
-                            Total
-                        </Typography>
-                        <Typography color="textPrimary" variant='h7'>
-                            {order.total}
-                        </Typography>
-                    </Stack>
+        <Stack>
+          <Typography color="textPrimary" variant="h6">
+            Subtotal
+          </Typography>
+          <Typography color="textPrimary" variant="h7">
+            {formatPrice({ price: order.subtotal })}
+          </Typography>
+        </Stack>
 
-                    <Stack>
-                        <Typography color="textPrimary" variant='h6'>
-                            Sub Total
-                        </Typography>
-                        <Typography color="textPrimary" variant='h7'>
-                            {order.subtota}
-                        </Typography>
-                    </Stack>
-
-                    <Stack width={'20%'}>
-                        <TextField
-                            value={formik.values.status}
-                            onBlur={formik.handleBlur}
-                            error={!!(formik.touched.status && formik.errors.status)}
-                            helperText={formik.touched.status && formik.errors.status}
-                            fullWidth
-                            label="Status"
-                            name="status"
-                            select
-                            onChange={handleChangeStatus}
-                        >
-                            {statusOptions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Stack>
-                </Stack>
-        </>
-    )
+        <Stack width={"20%"}>
+          <TextField
+            value={formik.values.status}
+            onBlur={formik.handleBlur}
+            error={!!(formik.touched.status && formik.errors.status)}
+            helperText={formik.touched.status && formik.errors.status}
+            fullWidth
+            label="Status"
+            name="status"
+            select
+            onChange={handleChangeStatus}
+          >
+            {statusOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Stack>
+      </Stack>
+    </>
+  );
 }

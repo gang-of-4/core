@@ -18,7 +18,7 @@ async function getCategories() {
   }
 
   const categories = await Promise.all(
-    data.map(async (category) => {
+    data?.slice(0, 5)?.map(async (category) => {
       const media = await getCategoryMedia(category);
       return { ...category, ...media };
     })
