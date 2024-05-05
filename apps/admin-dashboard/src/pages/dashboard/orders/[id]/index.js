@@ -8,11 +8,8 @@ import {
   Breadcrumbs,
   Link,
   Card,
-  SvgIcon,
   CardContent,
-  CardHeader,
 } from "@mui/material";
-import Edit02Icon from "@untitled-ui/icons-react/build/esm/Edit02";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useMounted } from "../../../../hooks/use-mounted";
@@ -29,7 +26,7 @@ import { DetailsUser } from "../../../../sections/dashboard/orders/details-user"
 
 const useOrder = (id) => {
   const isMounted = useMounted();
-  const [state, setState] = useState({});
+  const [state, setState] = useState(null);
 
   const getOrder = useCallback(
     async (id) => {
@@ -61,7 +58,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Admin Dashboard | Details Order</title>
+        <title>Admin Dashboard | {capitalize(config.order.name)} Details</title>
       </Head>
       <Box
         component="main"
@@ -102,7 +99,7 @@ const Page = () => {
             </Stack>
             <Card>
               <CardContent>
-                {order && <DetailsAmountStatus order={order} initialValues ={{status: order.status}} />}
+                {order && <DetailsAmountStatus order={order} />}
               </CardContent>
             </Card>
             <Card>

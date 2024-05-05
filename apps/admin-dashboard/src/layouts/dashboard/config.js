@@ -1,8 +1,7 @@
 import { SvgIcon } from '@mui/material';
 import HomeSmileIcon from '../../icons/untitled-ui/duocolor/home-smile';
-import ShoppingBag03Icon from '../../icons/untitled-ui/duocolor/shopping-bag-03';
 import LayoutAlt02 from '@untitled-ui/icons-react/build/esm/LayoutAlt02';
-import { ReceiptCheck } from "@untitled-ui/icons-react";
+import { Building02, ReceiptCheck } from "@untitled-ui/icons-react";
 import { paths } from '../../paths';
 import { capitalize } from '../../utils/format-string';
 import { config } from 'ui/config';
@@ -24,7 +23,7 @@ export const getSections = () => [
         path: paths.dashboard.stores.index,
         icon: (
           <SvgIcon fontSize="small">
-            <ShoppingBag03Icon />
+            <Building02 />
           </SvgIcon>
         ),
       },

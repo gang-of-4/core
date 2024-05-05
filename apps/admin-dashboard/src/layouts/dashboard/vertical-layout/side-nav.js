@@ -90,29 +90,42 @@ export const SideNav = (props) => {
         }}
       >
         <Stack sx={{ height: "100%" }}>
-          <Stack alignItems="center" direction="row" spacing={2} sx={{ p: 3 }}>
-            <Box
-              component={NextLink}
-              href={paths.index}
-              sx={{
-                borderColor: "var(--nav-logo-border)",
-                borderRadius: 1,
-                borderStyle: "solid",
-                borderWidth: 1,
-                display: "flex",
-                height: 40,
-                p: "4px",
-                width: 40,
-              }}
-            >
-              <Logo />
-            </Box>
-            <Stack alignItems="center" direction="row" spacing={2} {...props}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Typography color="inherit" variant="h6">
-                  {config.platformName}
-                </Typography>
+          <Stack
+            spacing={2}
+            sx={{
+              width: "100%",
+              p: 3,
+            }}
+          >
+            <Stack alignItems="center" direction="row" spacing={2}>
+              <Box
+                component={NextLink}
+                href={paths.index}
+                sx={{
+                  borderColor: "var(--nav-logo-border)",
+                  borderRadius: 1,
+                  borderStyle: "solid",
+                  borderWidth: 1,
+                  display: "flex",
+                  height: 40,
+                  p: "4px",
+                  width: 40,
+                }}
+              >
+                <Logo />
               </Box>
+              <Stack alignItems="center" direction="row" spacing={2} {...props}>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Typography color="inherit" variant="h6">
+                    {config.platformName}
+                  </Typography>
+                </Box>
+              </Stack>
+            </Stack>
+            <Stack>
+              <Typography color="inherit" variant="subtitle2">
+                <Box sx={{ fontStyle: "oblique" }}>Admin Dashboard</Box>
+              </Typography>
             </Stack>
           </Stack>
           <Stack

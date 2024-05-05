@@ -8,37 +8,33 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
-} from '@mui/material';
-import NextLink from "next/link";
-import { Scrollbar } from '../../../components/scrollbar';
+} from "@mui/material";
+import { Scrollbar } from "../../../components/scrollbar";
 import Image01Icon from "@untitled-ui/icons-react/build/esm/Image01";
-import ArrowRightIcon from "@untitled-ui/icons-react/build/esm/ArrowRight";
-import { paths } from '../../../paths';
-import { SeverityPill } from '../../../components/severity-pill';
-import { DetailsItem } from './details-item';
-import { Fragment, useCallback, useState } from 'react';
+import { SeverityPill } from "../../../components/severity-pill";
+import { DetailsItem } from "./details-item";
+import { Fragment, useCallback, useState } from "react";
 import ChevronDownIcon from "@untitled-ui/icons-react/build/esm/ChevronDown";
 import ChevronRightIcon from "@untitled-ui/icons-react/build/esm/ChevronRight";
-
+import { capitalize } from "../../../utils/format-string";
+import { config } from "ui/config";
+import { formatPrice } from "../../../utils/format-price";
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'Delivered':
-      return 'success';
-    case 'InProgress':
-      return 'info';
-    case 'Cancelled':
-      return 'error';
+    case "Delivered":
+      return "success";
+    case "InProgress":
+      return "info";
+    case "Cancelled":
+      return "error";
     default:
-      return 'info';
+      return "info";
   }
 };
 
-
 export function OrderDetails({ order }) {
-
   const [currentOrderItem, setCurrentOrderItem] = useState(null);
 
   const handleOrderItemToggle = useCallback((orderItemId) => {
@@ -53,37 +49,24 @@ export function OrderDetails({ order }) {
 
   return (
     <>
-      <Stack
-        spacing={3}
-        sx={{ width: '100%' }}
-      >
+      <Stack spacing={3} sx={{ width: "100%" }}>
         <Stack sx={{ marginTop: 3, marginLeft: 3 }}>
-          <Typography color="textPrimary" variant='h6'>
-            Order Items
+          <Typography color="textPrimary" variant="h6">
+            {capitalize(config.order.name)}{" "}
+            {capitalize(config.catalog.item.plural)}
           </Typography>
         </Stack>
 
         <div>
           <Scrollbar>
-            <Table sx={{ minWidth: 1200, alignItems: "center" }}>
+            <Table sx={{ alignItems: "center" }}>
               <TableHead>
                 <TableRow>
                   <TableCell />
-                  <TableCell>
-                    Images
-                  </TableCell>
-                  <TableCell>
-                    Item Name
-                  </TableCell>
-                  <TableCell>
-                    Quantity
-                  </TableCell>
-                  <TableCell>
-                    Status
-                  </TableCell>
-                  <TableCell>
-                    Price
-                  </TableCell>
+                  <TableCell>{capitalize(config.catalog.item.name)}</TableCell>
+                  <TableCell align="center">Status</TableCell>
+                  <TableCell align="center">Quantity</TableCell>
+                  <TableCell align="center">Price</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -127,14 +110,14 @@ export function OrderDetails({ order }) {
                             </SvgIcon>
                           </IconButton>
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                           <Box
                             sx={{
                               alignItems: "center",
                               display: "flex",
                             }}
                           >
-                            {orderItem.images ? (
+                            {orderItem.images?.[0]?.url ? (
                               <Box
                                 sx={{
                                   alignItems: "center",
@@ -147,8 +130,8 @@ export function OrderDetails({ order }) {
                                   overflow: "hidden",
                                 }}
                                 component="img"
-                                src={orderItem.images?.url}
-                                alt={orderItem.images?.name}
+                                src={orderItem.images?.[0]?.url}
+                                alt={orderItem?.name}
                               />
                             ) : (
                               <Box
@@ -179,26 +162,19 @@ export function OrderDetails({ order }) {
                             </Box>
                           </Box>
                         </TableCell>
-                        <TableCell>
-                          {orderItem.name}
-                        </TableCell>
-                        <TableCell>
-                          {orderItem.quantity}
-                        </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                           <SeverityPill color={statusColor}>
                             {order.status}
                           </SeverityPill>
                         </TableCell>
-                        <TableCell>
-                          {orderItem.price}
+                        <TableCell align="center">
+                          {orderItem.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {formatPrice({ price: orderItem.price })}
                         </TableCell>
                       </TableRow>
-                      {isCurrent && (
-                        <DetailsItem
-                          item={orderItem}
-                        />
-                      )}
+                      {isCurrent && <DetailsItem item={orderItem} />}
                     </Fragment>
                   );
                 })}
@@ -208,5 +184,5 @@ export function OrderDetails({ order }) {
         </div>
       </Stack>
     </>
-  )
+  );
 }

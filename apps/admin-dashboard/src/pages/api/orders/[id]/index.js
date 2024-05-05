@@ -42,11 +42,11 @@ export default async function handler(req, res) {
             updatedAt: "2024-04-23T14:08:02.757Z",
           },
         ],
-        isVariant: false,
+        isVariant: true,
       },
     ],
     total: 100,
-    subtota: 100,
+    subtotal: 100,
     status: "INPROGRESS",
     orderAddress: {
       id: "e184cffd-01a6-468f-93c9-d2fe52d8613d",

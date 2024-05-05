@@ -1,5 +1,5 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
+import Head from "next/head";
+import NextLink from "next/link";
 import {
   Box,
   Container,
@@ -7,16 +7,18 @@ import {
   Typography,
   Breadcrumbs,
   Link,
-  Card
-} from '@mui/material';
-import { Layout as DashboardLayout } from '../../../layouts/dashboard';
-import { useCallback, useEffect, useState } from 'react';
-import { BreadcrumbsSeparator } from '../../../components/breadcrumbs-separator';
-import { paths } from '../../../paths';
-import { OrdersListTable } from '../../../sections/dashboard/orders/orders-list-table';
-import { OrdersListSearch } from '../../../sections/dashboard/orders/orders-list-search';
-import { ordersApi } from '../../../api/orders';
-import { useMounted } from '../../../hooks/use-mounted';
+  Card,
+} from "@mui/material";
+import { Layout as DashboardLayout } from "../../../layouts/dashboard";
+import { useCallback, useEffect, useState } from "react";
+import { BreadcrumbsSeparator } from "../../../components/breadcrumbs-separator";
+import { paths } from "../../../paths";
+import { OrdersListTable } from "../../../sections/dashboard/orders/orders-list-table";
+import { OrdersListSearch } from "../../../sections/dashboard/orders/orders-list-search";
+import { ordersApi } from "../../../api/orders";
+import { useMounted } from "../../../hooks/use-mounted";
+import { capitalize } from "../../../utils/format-string";
+import { config } from "ui/config";
 
 const useSearch = () => {
   const [search, setSearch] = useState({
@@ -28,7 +30,7 @@ const useSearch = () => {
 
   return {
     search,
-    updateSearch: setSearch
+    updateSearch: setSearch,
   };
 };
 
@@ -36,7 +38,7 @@ const useOrders = () => {
   const isMounted = useMounted();
   const [state, setState] = useState({
     orders: [],
-    ordersCount: 0
+    ordersCount: 0,
   });
 
   const getOrders = useCallback(async () => {
@@ -46,50 +48,42 @@ const useOrders = () => {
       if (isMounted()) {
         setState({
           orders: response.data,
-          ordersCount: response.count
+          ordersCount: response.count,
         });
       }
     } catch (err) {
       console.error(err);
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     getOrders();
-
-  },[] );
+  }, []);
 
   return state;
 };
 
 const Page = () => {
-  const { orders, ordersCount } = useOrders();
+  const { orders } = useOrders();
+  const ordersName = capitalize(config.order.plural);
 
   return (
     <>
       <Head>
-        <title>
-          Dashboard: Orders | Admin
-        </title>
+        <title>Admin Dashboard | {ordersName}</title>
       </Head>
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
         <Container maxWidth="xl">
           <Stack spacing={4}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              spacing={4}
-            >
+            <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">
-                  Orders
-                </Typography>
+                <Typography variant="h4">{ordersName}</Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <Link
                     color="text.primary"
@@ -99,21 +93,15 @@ const Page = () => {
                   >
                     Dashboard
                   </Link>
-                  <Typography
-                    color="text.secondary"
-                    variant="subtitle2"
-                  >
-                    Orders
+                  <Typography color="text.secondary" variant="subtitle2">
+                    {ordersName}
                   </Typography>
                 </Breadcrumbs>
               </Stack>
             </Stack>
             <Card>
-              <OrdersListSearch  />
-              <OrdersListTable
-                orders={orders}
-                // ordersCount={ordersCount}
-              />
+              <OrdersListSearch />
+              <OrdersListTable orders={orders} />
             </Card>
           </Stack>
         </Container>
@@ -122,10 +110,6 @@ const Page = () => {
   );
 };
 
-Page.getLayout = (page) => (
-  <DashboardLayout>
-    {page}
-  </DashboardLayout>
-);
+Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Page;
