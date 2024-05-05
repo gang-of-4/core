@@ -434,11 +434,11 @@ export class CartService {
 
     const result = await lastValueFrom(
       this.catalogService.ReserveQuantities({
-        items: items.map((cartItem) => ({
+        items: cartItems.map((cartItem) => ({
           id: cartItem.itemId,
           quantity: cartItem.quantity,
         })),
-        variants: variants.map((cartItem) => ({
+        variants: cartVariants.map((cartItem) => ({
           id: cartItem.itemId,
           quantity: cartItem.quantity,
         })),
