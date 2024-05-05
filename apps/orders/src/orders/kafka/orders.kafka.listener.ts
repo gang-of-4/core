@@ -20,7 +20,6 @@ export class OrdersKafkaListener {
   @MessagePattern('order.created')
   async createOrder(@Payload() message: CreateOrderDto) {
     await this.prisma.$transaction(async (tx) => {
-      console.log(message.items[1].variant.parent);
       const createdGroups = [];
       const groups = message.items
         .filter((item) => item.isVariant)
