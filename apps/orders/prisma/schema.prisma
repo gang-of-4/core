@@ -10,7 +10,7 @@ datasource db {
 
 enum ItemStatus {
   INPROGRESS
-  DELIVEREDTOWAREHOUSE
+  READY
 }
 
 enum OrderStatus {
@@ -20,19 +20,20 @@ enum OrderStatus {
 }
 
 model Order {
-  id             String       @id @default(uuid()) @db.Uuid
+  uuid           String       @id @default(uuid()) @db.Uuid
+  id             Int          @unique @default(autoincrement())
   userId         String       @db.Uuid
-  orderAddressId String       @unique @db.Uuid
+  addressId      String       @unique @db.Uuid
   total          Decimal?     @db.Decimal(10, 2)
   subtotal       Decimal?     @db.Decimal(10, 2)
   status         OrderStatus  @default(INPROGRESS)
-  orderAddress   OrderAddress @relation(fields: [orderAddressId], references: [id])
-  orderItems     OrderItem[]
+  address        Address @relation(fields: [addressId], references: [id])
+  items          Item[]
 }
 
-model OrderAddress {
+model Address {
   id         String @id @default(uuid()) @db.Uuid
-  country    String @unique @db.Uuid
+  country    String
   city       String
   state      String
   street     String
@@ -41,33 +42,29 @@ model OrderAddress {
   Order      Order?
 }
 
-model OrderItem {
+model Item {
   id        String      @id @default(uuid()) @db.Uuid
   name      String
   sku       String
   quantity  Int
   price     Decimal     @db.Decimal(10, 2)
-  images    ItemImage[]
+  images    Image[]
   storeId   String      @db.Uuid
   orderId   String      @db.Uuid
-  order     Order       @relation(fields: [orderId], references: [id])
+  order     Order       @relation(fields: [orderId], references: [uuid])
   status    ItemStatus  @default(INPROGRESS)
   options   Option[]
   isVariant Boolean     @default(false)
 }
 
-model ItemImage {
+model Image {
   id          String    @id @default(uuid()) @db.Uuid
   name        String
-  ownerId     String    @db.Uuid
   extension   String
   url         String
   size        BigInt
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
-  deletedAt   DateTime?
-  orderItemId String    @db.Uuid
-  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  itemId      String    @db.Uuid
+  item        Item @relation(fields: [itemId], references: [id])
 }
 
 model Option {
@@ -76,7 +73,7 @@ model Option {
   value      String
   group_id   String      @db.Uuid
   group      OptionGroup @relation(fields: [group_id], references: [id])
-  orderItems OrderItem[]
+  items      Item[]
 }
 
 enum OptionType {
@@ -88,6 +85,6 @@ model OptionGroup {
   id      String     @id @default(uuid()) @db.Uuid
   title   String
   type    OptionType @default(TEXT)
-  order   DateTime   @default(now())
+  order   Int
   options Option[]
 }

@@ -41,6 +41,7 @@ clean:
 	find ./apps -type d -name "node_modules" -maxdepth 2 -exec rm -r {} +
 	find ./apps -type d -name ".next" -maxdepth 2 -exec rm -r {} +
 	find ./apps -type d -name ".turbo" -maxdepth 2 -exec rm -r {} +
+	find ./apps -type d -name "dist" -maxdepth 2 -exec rm -r {} +
 	find ./packages -type d -name "node_modules" -maxdepth 2 -exec rm -r {} +
 	find ./packages -type d -name ".next" -maxdepth 2 -exec rm -r {} +
 	find ./packages -type d -name ".turbo" -maxdepth 2 -exec rm -r {} +

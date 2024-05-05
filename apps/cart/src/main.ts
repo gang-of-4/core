@@ -7,12 +7,30 @@ import {
 } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableVersioning({
     type: VersioningType.URI,
+  });
+
+  app.connectMicroservice({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: 'cart',
+        brokers: ['kafka:9092'],
+      },
+      consumer: {
+        groupId: 'cart-consumer',
+        allowAutoTopicCreation: true,
+      },
+      producer: {
+        allowAutoTopicCreation: true,
+      },
+    },
   });
 
   app.setGlobalPrefix('api');

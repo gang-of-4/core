@@ -82,8 +82,8 @@ export interface Item {
 
 export interface Variant {
   id: string;
-  quantity?: number;
-  price?: number;
+  sku: string;
+  price: number;
   parent: Item;
   groups: OptionGroup[];
   createdAt: string;

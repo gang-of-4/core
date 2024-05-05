@@ -18,6 +18,29 @@ import { join } from 'path';
           package: 'catalog',
           protoPath: join(__dirname, '../../src/grpc/catalog.proto'),
           url: 'localhost:50052',
+          loader: {
+            longs: Number,
+            arrays: true,
+          },
+        },
+      },
+    ]),
+    ClientsModule.register([
+      {
+        name: 'KAFKA_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'cart',
+            brokers: ['kafka:9092'],
+          },
+          consumer: {
+            groupId: 'cart-consumer',
+            allowAutoTopicCreation: true,
+          },
+          producer: {
+            allowAutoTopicCreation: true,
+          },
         },
       },
     ]),

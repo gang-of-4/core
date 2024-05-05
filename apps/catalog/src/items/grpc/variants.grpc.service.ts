@@ -11,7 +11,7 @@ export class VariantsGrpcService {
   @GrpcMethod('VariantsService')
   async GetVariant(getVariantDto: GetVariantDto) {
     const result = await this.variantsService.findOneOrFail(getVariantDto.id);
-    return instanceToPlain(result);
+    return instanceToPlain(result, { groups: ['grpc'] });
   }
 
   @GrpcMethod('VariantsService')
@@ -19,9 +19,11 @@ export class VariantsGrpcService {
     const result = await this.variantsService.findManyById(
       getManyVariantsDto.ids,
     );
-    const p = {
-      payload: result.map((media) => instanceToPlain(media)),
+    const response = {
+      payload: result.map((item) =>
+        instanceToPlain(item, { groups: ['grpc'] }),
+      ),
     };
-    return p;
+    return response;
   }
 }

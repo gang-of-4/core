@@ -15,7 +15,7 @@ export class OptionGroupEntity implements OptionGroup {
 
   @ApiProperty()
   @Exclude()
-  order: Date;
+  order: number;
 
   @ApiProperty({ type: OptionEntity, isArray: true, nullable: true })
   @Type(() => OptionEntity)

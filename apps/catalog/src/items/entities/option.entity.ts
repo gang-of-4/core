@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Option } from '@prisma/client/catalog';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { OptionGroupEntity } from './option-group.entity';
 
 export class OptionEntity implements Option {
@@ -21,9 +21,13 @@ export class OptionEntity implements Option {
   group_id: string;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   createdAt: Date;
 
   @ApiProperty()
+  @Type(() => String)
+  @Transform(({ value }) => value.toISOString())
   updatedAt: Date;
 
   @ApiProperty({ nullable: true, default: null })

@@ -6,10 +6,28 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { useContainer } from 'class-validator';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { Transport } from '@nestjs/microservices';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.connectMicroservice({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: 'orders',
+        brokers: ['kafka:9092'],
+      },
+      consumer: {
+        groupId: 'orders-consumer',
+        allowAutoTopicCreation: true,
+      },
+      subscribe: {
+        fromBeginning: true,
+      },
+    },
+  });
 
   app.enableVersioning({
     type: VersioningType.URI,

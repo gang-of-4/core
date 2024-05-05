@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ItemEntity } from './item.entity';
 import { Exclude, Type } from 'class-transformer';
 import { CartItem } from '@prisma/client/cart';
+import { VariantEntity } from './variant.entity';
 // import { Item, Variant } from '../common/interfaces/catalog.interface';
 
 export class CartItemEntity implements CartItem {
@@ -16,7 +17,8 @@ export class CartItemEntity implements CartItem {
   item?: ItemEntity;
 
   @ApiProperty()
-  variant?: any;
+  @Type(() => VariantEntity)
+  variant?: VariantEntity;
 
   @Exclude()
   cartId: string;

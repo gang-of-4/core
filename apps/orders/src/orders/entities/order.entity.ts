@@ -2,12 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, Order } from '@prisma/client/orders';
 import { Decimal } from '@prisma/client/orders/runtime/library';
 import { Exclude, Transform, Type } from 'class-transformer';
-import { OrderAddressEntity } from './orderAddress.entity';
-import { OrderItemEntity } from './orderItem.entity';
+import { AddressEntity } from './address.entity';
+import { ItemEntity } from './item.entity';
 
 export class OrderEntity implements Order {
   @ApiProperty()
-  id: string;
+  uuid: string;
+
+  @ApiProperty()
+  id: number;
 
   @ApiProperty()
   userId: string;
@@ -26,19 +29,19 @@ export class OrderEntity implements Order {
   status: $Enums.OrderStatus;
 
   @Exclude()
-  orderAddressId: string;
+  addressId: string;
 
   @ApiProperty()
-  @Type(() => OrderAddressEntity)
-  orderAddress: OrderAddressEntity;
+  @Type(() => AddressEntity)
+  address: AddressEntity;
 
   @ApiProperty({
-    type: OrderItemEntity,
+    type: ItemEntity,
     isArray: true,
     required: false,
   })
-  @Type(() => OrderItemEntity)
-  orderItems: OrderItemEntity[];
+  @Type(() => ItemEntity)
+  items: ItemEntity[];
 
   constructor(partial: Partial<OrderEntity>) {
     Object.assign(this, partial);

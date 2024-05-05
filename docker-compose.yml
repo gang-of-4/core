@@ -54,6 +54,13 @@ services:
         image: 'bitnami/kafka:latest'
         networks:
             - core-network
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server kafka:9092 --topic hc --create --if-not-exists && kafka-topics && .sh --bootstrap-server kafka:9092 --topic hc --describe"]
+            start_period: 10s
+            interval: 5s
+            timeout: 10s
+            retries: 5
         environment:
             - KAFKA_CFG_NODE_ID=0
             - KAFKA_CFG_PROCESS_ROLES=controller,broker

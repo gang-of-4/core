@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { OrderAddress } from '@prisma/client/orders';
+import { Address } from '@prisma/client/orders';
 
-export class OrderAddressEntity implements OrderAddress {
+export class AddressEntity implements Address {
   @ApiProperty()
   id: string;
 
@@ -23,7 +23,7 @@ export class OrderAddressEntity implements OrderAddress {
   @ApiProperty()
   notes: string;
 
-  constructor(partial: Partial<OrderAddressEntity>) {
+  constructor(partial: Partial<AddressEntity>) {
     Object.assign(this, partial);
   }
 }

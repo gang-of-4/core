@@ -34,6 +34,18 @@ export class ItemEntity {
   description: string;
 
   @ApiProperty()
+  categories: Category[];
+
+  @ApiProperty()
+  groups: OptionGroup[];
+
+  @ApiProperty()
+  variants: Variant[];
+
+  @ApiProperty()
+  images: Media[];
+
+  @ApiProperty()
   storeId: string;
 
   @ApiProperty()
@@ -47,13 +59,13 @@ export class ItemEntity {
   @ApiProperty()
   isActive: boolean;
 
+  @ApiProperty()
+  createdAt: string;
+
+  @ApiProperty()
+  updatedAt: string;
+
   constructor(partial: Partial<ItemEntity>) {
     Object.assign(this, partial);
   }
-  categories: Category[];
-  groups: OptionGroup[];
-  variants: Variant[];
-  images: Media[];
-  createdAt: string;
-  updatedAt: string;
 }

@@ -100,7 +100,7 @@ model OptionGroup {
   id                  String @db.Uuid @id @default(uuid())  
   title               String
   type                OptionType @default(TEXT)
-  order               DateTime @default(now())
+  order               Int
   options             Option[]
   createdAt           DateTime @default(now())
   updatedAt           DateTime @default(now())

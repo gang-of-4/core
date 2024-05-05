@@ -15,3 +15,7 @@ CREATE DATABASE catalogb_test OWNER catalog;
 CREATE USER media WITH PASSWORD 'rG4dCFE5c5cP7';
 CREATE DATABASE mediadb OWNER media;
 CREATE DATABASE mediagb_test OWNER media;
+
+CREATE USER orders WITH PASSWORD 'rG4dCFE5c5cP7';
+CREATE DATABASE ordersdb OWNER media;
+CREATE DATABASE ordersdb_test OWNER media;
