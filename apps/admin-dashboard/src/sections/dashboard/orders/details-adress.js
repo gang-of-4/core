@@ -26,6 +26,7 @@ export function OrderAddress({ order }) {
                 <TableRow>
                   <TableCell>Id</TableCell>
                   <TableCell>Country</TableCell>
+                  <TableCell>State</TableCell>
                   <TableCell>City</TableCell>
                   <TableCell>Street</TableCell>
                   <TableCell>Postal Code</TableCell>
@@ -34,12 +35,13 @@ export function OrderAddress({ order }) {
               </TableHead>
               <TableBody>
                 <TableRow hover sx={{ alignItems: "center" }}>
-                  <TableCell>{order.orderAddress?.id}</TableCell>
-                  <TableCell>{order.orderAddress?.country}</TableCell>
-                  <TableCell>{order.orderAddress?.city}</TableCell>
-                  <TableCell>{order.orderAddress?.street}</TableCell>
-                  <TableCell>{order.orderAddress?.postalCode}</TableCell>
-                  <TableCell>{order.orderAddress?.notes}</TableCell>
+                  <TableCell>{order.address?.id}</TableCell>
+                  <TableCell>{order.address?.country}</TableCell>
+                  <TableCell>{order.address?.state}</TableCell>
+                  <TableCell>{order.address?.city}</TableCell>
+                  <TableCell>{order.address?.street}</TableCell>
+                  <TableCell>{order.address?.postalCode}</TableCell>
+                  <TableCell>{order.address?.notes}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

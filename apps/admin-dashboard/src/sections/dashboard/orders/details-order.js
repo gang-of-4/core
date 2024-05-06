@@ -23,12 +23,10 @@ import { formatPrice } from "../../../utils/format-price";
 
 const getStatusColor = (status) => {
   switch (status) {
-    case "Delivered":
+    case "READY":
       return "success";
-    case "InProgress":
-      return "info";
-    case "Cancelled":
-      return "error";
+    case "INPROGRESS":
+      return "warning";
     default:
       return "info";
   }
@@ -70,9 +68,9 @@ export function OrderDetails({ order }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {order.orderItems?.map((orderItem) => {
+                {order.items?.map((orderItem) => {
                   const isCurrent = orderItem.id === currentOrderItem;
-                  const statusColor = getStatusColor(order.status);
+                  const statusColor = getStatusColor(orderItem.status);
                   return (
                     <Fragment key={orderItem.id}>
                       <TableRow
@@ -164,7 +162,7 @@ export function OrderDetails({ order }) {
                         </TableCell>
                         <TableCell align="center">
                           <SeverityPill color={statusColor}>
-                            {order.status}
+                            {orderItem.status}
                           </SeverityPill>
                         </TableCell>
                         <TableCell align="center">

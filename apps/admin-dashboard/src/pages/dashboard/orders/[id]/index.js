@@ -28,20 +28,17 @@ const useOrder = (id) => {
   const isMounted = useMounted();
   const [state, setState] = useState(null);
 
-  const getOrder = useCallback(
-    async (id) => {
-      try {
-        const response = await ordersApi.getOrder(id);
+  const getOrder = useCallback(async (id) => {
+    try {
+      const response = await ordersApi.getOrder(id);
 
-        if (isMounted()) {
-          setState(response);
-        }
-      } catch (err) {
-        console.error(err);
+      if (isMounted()) {
+        setState(response);
       }
-    },
-    []);
-
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
   useEffect(() => {
     getOrder(id);
@@ -54,6 +51,8 @@ const Page = () => {
   const router = useRouter();
   const id = router.query.id;
   const order = useOrder(id);
+
+  console.log("ORDER", order);
 
   return (
     <>
@@ -92,7 +91,7 @@ const Page = () => {
                     {capitalize(config.order.plural)}
                   </Link>
                   <Typography color="text.secondary" variant="subtitle2">
-                    {capitalize(order?.id)}
+                    {order?.id}
                   </Typography>
                 </Breadcrumbs>
               </Stack>
@@ -104,16 +103,27 @@ const Page = () => {
             </Card>
             <Card>
               <CardContent>
-                {order && <DetailsUser order={order} />}
+                {order && (
+                  <>
+                    <DetailsUser order={order} />
+                    {!order.user && (
+                      <Typography
+                        color={"error"}
+                        variant={"h6"}
+                        textAlign={"center"}
+                        sx={{
+                          marginTop: 4,
+                        }}
+                      >
+                        User not found
+                      </Typography>
+                    )}
+                  </>
+                )}
               </CardContent>
             </Card>
-            <Card>
-              {order && <OrderDetails order={order} />}
-            </Card>
-            <Card>
-              {order && <OrderAddress order={order} />}
-            </Card>
-            
+            <Card>{order && <OrderDetails order={order} />}</Card>
+            <Card>{order && <OrderAddress order={order} />}</Card>
           </Stack>
         </Container>
       </Box>

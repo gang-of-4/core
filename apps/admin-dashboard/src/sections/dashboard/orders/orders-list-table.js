@@ -82,7 +82,7 @@ export const OrdersListTable = (props) => {
                     </TableCell>
                     <TableCell width="35%">
                       <Typography variant="subtitle2">
-                        {order.user?.name}
+                        {order.user?.name ?? "Not Found"}
                       </Typography>
                     </TableCell>
                     <TableCell>

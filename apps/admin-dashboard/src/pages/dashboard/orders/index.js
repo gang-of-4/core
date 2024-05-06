@@ -20,19 +20,6 @@ import { useMounted } from "../../../hooks/use-mounted";
 import { capitalize } from "../../../utils/format-string";
 import { config } from "ui/config";
 
-const useSearch = () => {
-  const [search, setSearch] = useState({
-    filters: {
-      name: undefined,
-      status: [],
-    },
-  });
-
-  return {
-    search,
-    updateSearch: setSearch,
-  };
-};
 
 const useOrders = () => {
   const isMounted = useMounted();
