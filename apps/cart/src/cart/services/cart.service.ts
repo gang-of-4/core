@@ -502,5 +502,9 @@ export class CartService {
         },
       }),
     ]);
+
+    return {
+      message: 'Checkout successful',
+    };
   }
 }

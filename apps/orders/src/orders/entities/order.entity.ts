@@ -43,6 +43,15 @@ export class OrderEntity implements Order {
   @Type(() => ItemEntity)
   items: ItemEntity[];
 
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+
+  @ApiProperty({ nullable: true, default: null })
+  deletedAt: Date;
+
   constructor(partial: Partial<OrderEntity>) {
     Object.assign(this, partial);
   }

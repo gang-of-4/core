@@ -215,7 +215,7 @@ export class OrdersService {
   ): Promise<OrderEntity> {
     const order = await this.findOne(id, role, userId, storeId);
 
-    if (!order || role !== 'admin') {
+    if (!order || role !== 'vendor') {
       throw new NotFoundException();
     }
 

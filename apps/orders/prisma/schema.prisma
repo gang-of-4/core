@@ -29,6 +29,9 @@ model Order {
   status         OrderStatus  @default(INPROGRESS)
   address        Address @relation(fields: [addressId], references: [id])
   items          Item[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
 }
 
 model Address {
