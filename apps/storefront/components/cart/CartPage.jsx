@@ -20,6 +20,7 @@ import CartItem from "./cartItems/CartItem";
 import CartItemVariant from "./cartItems/CartItemVariant";
 import { capitalize } from "@/utils/format-string";
 import { config } from "ui/config";
+import { formatPrice } from "@/utils/format-price";
 
 export default function CartPage() {
   const { cart, isInitialized, removeCartItem } = useCart();
@@ -106,6 +107,31 @@ export default function CartPage() {
                   )}
 
                   <Divider />
+
+                  <Stack
+                    direction="row"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    sx={{ mt: 2 }}
+                  >
+                    <Stack
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="flex-end"
+                      spacing={2}
+                    >
+                      <Typography
+                        variant="subtitle"
+                        color={"textSecondary"}
+                        textAlign={"right"}
+                      >
+                        Subtotal: {formatPrice({ price: cart.subtotal })}
+                      </Typography>
+                      <Typography variant="subtitle" textAlign={"right"}>
+                        Total: {formatPrice({ price: cart.total })}
+                      </Typography>
+                    </Stack>
+                  </Stack>
 
                   <CartActions
                     disabled={

@@ -1,6 +1,6 @@
 export async function POST(request, { params }) {
   const { id } = params;
-  const { paymentMethodId, address } = await request.json();
+  const { address } = await request.json();
 
   const res = await fetch(`${process.env.CART_API_URL}/${id}/checkout`, {
     method: "POST",
@@ -9,11 +9,13 @@ export async function POST(request, { params }) {
       "Content-Type": "application/json",
       Authorization: `${request.headers.get("Authorization")}`,
     },
-    body: JSON.stringify({ paymentMethodId, address }),
+    body: JSON.stringify(address),
   });
 
   const data = await res.json();
 
+  console.log(data);
+  
   if (!res.ok) {
     return new Response(JSON.stringify({ message: data.message }), {
       status: data.statusCode,

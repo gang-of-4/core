@@ -22,6 +22,7 @@ import { config } from "ui/config";
 
 const initialAddress = {
   country: "",
+  state: "",
   city: "",
   street: "",
   postalCode: "",
@@ -68,6 +69,8 @@ const Page = () => {
 
         if (data?.redirectUrl) {
           router.push(data.redirectUrl);
+        } else {
+          router.push("/orders");
         }
       } catch (error) {
         console.error("Error during checkout:", error);

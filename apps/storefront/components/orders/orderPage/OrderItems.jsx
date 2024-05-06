@@ -28,10 +28,10 @@ const getStatusInfo = (status) => {
         color: "warning",
         label: "In Progress",
       };
-    case "DELIVEREDTOWAREHOUSE":
+    case "READY":
       return {
-        color: "info",
-        label: "Delivered to Warehouse",
+        color: "success",
+        label: "Ready",
       };
     default:
       return {
@@ -60,10 +60,13 @@ export default function OrderItems({ order }) {
                 <TableCell align="center">Quantity</TableCell>
                 <TableCell align="center">Price</TableCell>
                 <TableCell align="center">Status</TableCell>
+                <TableCell align="center">
+                  {capitalize(config.store.name)}
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {order.orderItems?.map((orderItem) => {
+              {order.items?.map((orderItem) => {
                 const statusInfo = getStatusInfo(orderItem?.status);
 
                 return (
@@ -116,7 +119,7 @@ export default function OrderItems({ order }) {
                                   ?.map(
                                     (group) =>
                                       `${group?.title}: 
-                                      ${group?.values
+                                      ${group?.options
                                         ?.map((option) => option?.label)
                                         .join(", ")}`
                                   )
@@ -135,6 +138,10 @@ export default function OrderItems({ order }) {
                       <SeverityPill color={statusInfo.color}>
                         {statusInfo.label}
                       </SeverityPill>
+                    </TableCell>
+                    <TableCell align="center">
+                      {orderItem?.store?.businessStore?.name ??
+                        capitalize(config.store.individual.name)}
                     </TableCell>
                   </TableRow>
                 );

@@ -31,8 +31,9 @@ const useSearch = () => {
 };
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { user, isInitialized } = useAuth();
   const { search, updateSearch } = useSearch();
 
@@ -47,6 +48,7 @@ export default function OrdersPage() {
   }, [isInitialized, user, search]);
 
   async function fetchOrders(search) {
+    setLoading(true);
     const filters = {
       ...search.filters,
     };
@@ -60,6 +62,8 @@ export default function OrdersPage() {
     } catch (error) {
       console.error(error);
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -93,7 +97,9 @@ export default function OrdersPage() {
         >
           <Grid item xs={12}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Typography variant="h4">My {capitalize(config.order.plural)}</Typography>
+              <Typography variant="h4">
+                My {capitalize(config.order.plural)}
+              </Typography>
             </Stack>
           </Grid>
           <Grid item xs={12}>
@@ -106,6 +112,19 @@ export default function OrdersPage() {
                 {orders && orders.length > 0 && (
                   <OrdersListTable orders={orders} />
                 )}
+              </Stack>
+              <Stack
+                alignItems={"center"}
+                justifyContent={"center"}
+                spacing={2}
+                sx={{
+                  padding: 4,
+                }}
+              >
+                {orders && orders.length === 0 && (
+                  <Typography>No orders found.</Typography>
+                )}
+                {loading && <Typography>Loading...</Typography>}
                 {error && <Typography color="error">{error}</Typography>}
               </Stack>
             </Card>

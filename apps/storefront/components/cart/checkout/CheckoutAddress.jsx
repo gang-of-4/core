@@ -7,23 +7,9 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Tooltip,
+  FormControl,
 } from "@mui/material";
-
-// These will be returned from the Payment Service API in the future
-const paymentMethods = [
-  {
-    label: "Cash",
-    value: "Cash",
-  },
-  {
-    label: "Visa Credit",
-    value: "visa",
-  },
-  {
-    label: "PayPal",
-    value: "paypal",
-  },
-];
 
 export const CheckoutAddress = (props) => {
   const { address, onChange, ...other } = props;
@@ -58,6 +44,15 @@ export const CheckoutAddress = (props) => {
                 name="country"
                 onChange={onChange}
                 value={address.country}
+              />
+            </Grid>
+            <Grid xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="State"
+                name="state"
+                onChange={onChange}
+                value={address.state}
               />
             </Grid>
             <Grid xs={12} sm={6}>
@@ -119,34 +114,41 @@ export const CheckoutAddress = (props) => {
           </Box>
           <Typography variant="h6">Payment Method</Typography>
         </Stack>
-        <div>
-          <div>
-            <RadioGroup
-              name="paymentMethod"
-              defaultValue={"Cash"}
-              sx={{ flexDirection: "column" }}
-            >
-              {paymentMethods.map((paymentMethod) => (
+        <Box width={"fit-content"}>
+          <RadioGroup name="paymentMethod">
+            <FormControl component="fieldset">
+              <RadioGroup
+                name="paymentMethod"
+                defaultValue={"cash"}
+                sx={{
+                  paddingLeft: 4,
+                }}
+              >
                 <FormControlLabel
+                  value="cash"
                   control={<Radio />}
-                  key={paymentMethod.value}
-                  label={
-                    <Typography
-                      variant="body1"
-                      style={{
-                        opacity: paymentMethod.value === "Cash" ? 1 : 0.5,
-                      }}
-                    >
-                      {paymentMethod.label}
-                    </Typography>
-                  }
-                  value={paymentMethod.value}
-                  disabled={paymentMethod.value !== "Cash"}
+                  label="Cash"
                 />
-              ))}
-            </RadioGroup>
-          </div>
-        </div>
+                <Tooltip title="To be added in future releases" arrow>
+                  <FormControlLabel
+                    value="visa"
+                    control={<Radio />}
+                    label="Visa Credit Card"
+                    disabled
+                  />
+                </Tooltip>
+                <Tooltip title="To be added in future releases" arrow>
+                  <FormControlLabel
+                    value="paypal"
+                    control={<Radio />}
+                    label="PayPal"
+                    disabled
+                  />
+                </Tooltip>
+              </RadioGroup>
+            </FormControl>
+          </RadioGroup>
+        </Box>
       </Stack>
     </Stack>
   );

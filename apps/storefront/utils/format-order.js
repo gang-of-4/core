@@ -14,8 +14,8 @@ export async function formatOrder({
     order.user = data;
   }
   if (includeStore) {
-    order.orderItems = await Promise.all(
-      order.orderItems.map(async (orderItem) => {
+    order.items = await Promise.all(
+      order.items?.map(async (orderItem) => {
         const res = await fetch(
           `${process.env.STORES_API_URL}/${orderItem.storeId}`,
           {

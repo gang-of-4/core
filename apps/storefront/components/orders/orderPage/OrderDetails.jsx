@@ -55,6 +55,8 @@ export default function OrderDetails({ order }) {
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsDialogOpen(false);
     }
   }
 
@@ -129,7 +131,7 @@ export default function OrderDetails({ order }) {
               <Stack spacing={3}>
                 <OrderOverview order={order} />
                 <OrderItems order={order} />
-                <OrderAddress address={order?.orderAddress} />
+                <OrderAddress address={order?.address} />
               </Stack>
             </Grid>
           </Grid>
