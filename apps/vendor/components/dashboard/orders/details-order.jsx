@@ -1,6 +1,5 @@
 import {
   Box,
-  IconButton,
   Stack,
   SvgIcon,
   Table,
@@ -11,15 +10,15 @@ import {
   Typography,
   TextField,
   MenuItem,
-} from '@mui/material';
-import { Scrollbar } from '../../../../../packages/ui/components/scrollbar';
+} from "@mui/material";
+import { Scrollbar } from "../../../../../packages/ui/components/scrollbar";
 import Image01Icon from "@untitled-ui/icons-react/build/esm/Image01";
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { capitalize } from "@/utils/format-string";
 import { config } from "ui/config";
-
+import fetchApi from "@/utils/fetch-api";
 
 const statusOptions = [
   {
@@ -27,8 +26,8 @@ const statusOptions = [
     value: "INPROGRESS",
   },
   {
-    label: "Delivered To Warehouse",
-    value: "DELIVEREDTOWAREHOUSE",
+    label: "Ready",
+    value: "READY",
   },
 ];
 
@@ -36,28 +35,25 @@ const validationSchema = Yup.object({
   status: Yup.string().required("Required"),
 });
 
-
-export function OrderDetails({ order }) {
-
+export function OrderDetails({ order, storeId }) {
   const formik = useFormik({
     initialValues: { status: order.status },
     validationSchema,
-    onSubmit: () => { },
+    onSubmit: () => {},
   });
 
-  const handleChangeStatus = async (event, orderItemId) => {
+  const handleChangeStatus = async (event, orderItemId, item) => {
     const newStatus = event.target.value;
     formik.setFieldValue("status", newStatus);
 
     try {
       await fetchApi({
-        url: `/vendor/api/orders/${order.id}/items/${orderItemId}`,
+        url: `/vendor/api/orders/${order.id}/items/${orderItemId}?storeId=${storeId}`,
         options: {
           method: "PATCH",
           body: JSON.stringify({ status: newStatus }),
         },
       });
-
     } catch (err) {
       console.error(err);
     }
@@ -65,37 +61,28 @@ export function OrderDetails({ order }) {
 
   return (
     <>
-      <Stack
-        spacing={3}
-        sx={{ width: '100%' }}
-      >
+      <Stack spacing={3} sx={{ width: "100%" }}>
         <Stack sx={{ marginTop: 3, marginLeft: 3 }}>
-          <Typography color="textPrimary" variant='h6'>
-          {`Order ${capitalize(config.catalog.item.plural)}`}
+          <Typography color="textPrimary" variant="h6">
+            {`Order ${capitalize(config.catalog.item.plural)}`}
           </Typography>
         </Stack>
 
         <div>
           <Scrollbar>
-            <Table >
+            <Table>
               <TableHead>
                 <TableRow>
                   <TableCell align="center">
-                  {capitalize(config.catalog.item.plural)}
+                    {capitalize(config.catalog.item.plural)}
                   </TableCell>
-                  <TableCell align="center">
-                    Quantity
-                  </TableCell>
-                  <TableCell align="center">
-                    Price
-                  </TableCell>
-                  <TableCell align="center">
-                    Status
-                  </TableCell>
+                  <TableCell align="center">Quantity</TableCell>
+                  <TableCell align="center">Price</TableCell>
+                  <TableCell align="center">Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {order.orderItems?.map((orderItem) => {
+                {order.items?.map((orderItem) => {
                   return (
                     <Fragment key={orderItem.id}>
                       <TableRow
@@ -151,9 +138,9 @@ export function OrderDetails({ order }) {
                                       ?.map(
                                         (group) =>
                                           `${group?.title}: 
-                                      ${group?.values
-                                            ?.map((option) => option?.label)
-                                            .join(", ")}`
+                                      ${group?.options
+                                        ?.map((option) => option?.label)
+                                        .join(", ")}`
                                       )
                                       .join("  |  ")}
                                   </Typography>
@@ -165,20 +152,24 @@ export function OrderDetails({ order }) {
                         <TableCell align="center">
                           {orderItem.quantity}
                         </TableCell>
-                        <TableCell align="center">
-                          {orderItem.price}
-                        </TableCell>
+                        <TableCell align="center">{orderItem.price}</TableCell>
                         <TableCell align="center">
                           <TextField
                             value={formik.values.status}
                             onBlur={formik.handleBlur}
-                            error={!!(formik.touched.status && formik.errors.status)}
-                            helperText={formik.touched.status && formik.errors.status}
+                            error={
+                              !!(formik.touched.status && formik.errors.status)
+                            }
+                            helperText={
+                              formik.touched.status && formik.errors.status
+                            }
                             fullWidth
                             label="Status"
                             name="status"
                             select
-                            onChange={(e) => handleChangeStatus(e, orderItem.id)}
+                            onChange={(e) =>
+                              handleChangeStatus(e, orderItem.id, orderItem)
+                            }
                           >
                             {statusOptions.map((option) => (
                               <MenuItem key={option.value} value={option.value}>
@@ -197,5 +188,5 @@ export function OrderDetails({ order }) {
         </div>
       </Stack>
     </>
-  )
+  );
 }

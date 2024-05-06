@@ -31,6 +31,7 @@ const EditItem = ({ storeId, itemId, categories, optionGroups }) => {
         }
 
         setItem(data);
+        console.log('item', data);
     }
 
     return (

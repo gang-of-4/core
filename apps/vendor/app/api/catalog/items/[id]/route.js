@@ -42,7 +42,9 @@ export async function PATCH(request, { params }) {
     const storeId = formData.get('storeId');
     const images = formData.getAll('images');
 
-    const mediaIds = formData.getAll('mediaIds') ?? [];
+    const mediaIds = formData.getAll('mediaIds');
+
+    console.log('mediaIds', mediaIds);
 
     await Promise.all(images.map(async (image) => {
 
@@ -88,7 +90,7 @@ export async function PATCH(request, { params }) {
                 options,
                 variants,
                 store_id: storeId,
-                images: mediaIds
+                ...(mediaIds && { images: mediaIds })
             })
         });
 

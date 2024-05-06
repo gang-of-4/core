@@ -53,7 +53,15 @@ export default function VariantsForm({ formik, optionGroups, draftItemId, isDisa
             }
         });
 
-        formik.setFieldValue('variants', data);
+        const variants = data.map((variant) => {
+            return {
+                ...variant,
+                quantity: variant.quantity ?? 0,
+                price: variant.price ?? 0,
+            }
+        });
+
+        formik.setFieldValue('variants', variants);
         setLoading(false);
     }
 

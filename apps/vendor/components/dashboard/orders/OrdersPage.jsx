@@ -16,8 +16,36 @@ import { capitalize } from "@/utils/format-string";
 import { config } from "ui/config";
 import { OredrsListSearch } from "./OrdersListSearch";
 import { OrdersListTable } from "./OrdersListTable";
+import { useEffect, useState } from "react";
+import fetchApi from "@/utils/fetch-api";
+import AtomicSpinner from "atomic-spinner";
 
-export default function OrdersPage({ orders , storeId}) {
+export default function OrdersPage({ storeId }) {
+  const [orders, setOrders] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchOrders(storeId);
+  }, [storeId]);
+
+  async function fetchOrders(storeId) {
+    setLoading(true);
+    try {
+      const { data } = await fetchApi({
+        url: `/vendor/api/orders?storeId=${storeId}`,
+      });
+
+      setOrders(data);
+      setError(null);
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <>
       <Box
@@ -55,8 +83,31 @@ export default function OrdersPage({ orders , storeId}) {
               </Stack>
               <Divider />
               <Stack>
-                {orders.length !== 0 && <OrdersListTable orders={orders} storeId={storeId} />}
+                {orders && orders?.length !== 0 && (
+                  <OrdersListTable orders={orders} storeId={storeId} />
+                )}
               </Stack>
+              {error && (
+                <Stack
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  width={"100%"}
+                >
+                  <Typography color="error">{error}</Typography>
+                </Stack>
+              )}
+              {loading && (
+                <Stack
+                  direction="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  spacing={2}
+                  sx={{ minHeight: "100%" }}
+                >
+                  <AtomicSpinner atomSize={300} />
+                  <h1>Loading... please wait</h1>
+                </Stack>
+              )}
             </Card>
           </Stack>
         </Container>

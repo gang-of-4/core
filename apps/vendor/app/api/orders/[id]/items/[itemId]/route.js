@@ -1,93 +1,27 @@
 export async function PATCH(request, { params }) {
   const { id, itemId } = params;
   const { status } = await request.json();
+  const { searchParams } = new URL(request.url);
 
-  // const res = await fetch(`${process.env.ORDERS_API_URL}/orders/${id}/items/${itemId}`, {
-  //   method: "PATCH",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({ status }),
-  // });
-
-  // const data = await res.json();
-
-  // if (!res.ok) {
-  //   return new Response(JSON.stringify({ message: data.message }), {
-  //     status: data.statusCode,
-  //   });
-  // }
-
-  const data = {
-    id: id,
-    userId: "e184cffd-01a6-468f-93c9-d2fe52d8613d",
-    orderItems: [
-      {
-        id: itemId,
-        name: "BMW m4",
-        sku: "rpkfpk",
-        quantity: 5,
-        price: 20,
-        storeId: "e184cffd-01a6-468f-93c9-d2fe52d8613d",
-        status: status,
-        groups: [
-          {
-            id: "e184cffd-01a6-468f-93c9-d2fe52d8613d",
-            type: "TEXT",
-            title: "Seat",
-            values: [
-              {
-                id: "e184cffd-01a6-468f-93c9-d2fe52d8613d",
-                label: "Leather",
-                value: "Leather",
-              },
-              {
-                id: "e184cffd-01a6-468f-93c9-d2fe52d8613d",
-                label: "Weave",
-                value: "Weave",
-              },
-            ],
-          },
-          {
-            id: "e184cffd-01a6-468f-93c9-d2fe52d8612d",
-            type: "COLOR",
-            title: "Color",
-            values: [
-              {
-                id: "e184cffd-01a6-468f-93c9-d2fe52d8613d",
-                label: "Red",
-                value: "#ff0000",
-              },
-            ],
-          },
-        ],
-        images: [
-          {
-            id: "1d85d5e2-467c-4233-9931-e198b515eb3d",
-            name: "05398927-7bad-4269-9f53-ffda4ea61010.jpg",
-            url: "https://media.cars4sale.tech/659073e8-8e22-45e7-81d3-3378b660bf8a/05398927-7bad-4269-9f53-ffda4ea61010.jpg",
-            size: 7270,
-            extension: "jpg",
-            createdAt: "2024-04-23T14:08:02.757Z",
-            updatedAt: "2024-04-23T14:08:02.757Z",
-          },
-        ],
-        isVariant: true,
+  const res = await fetch(
+    `${process.env.ORDERS_API_URL}/${id}/items/${itemId}/status?${searchParams}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${request.headers.get("Authorization")}`,
       },
-    ],
-    total: 100,
-    subtota: 100,
-    status: "INPROGRESS",
-    orderAddress: {
-      id: "e184cffd-01a6-468f-93c9-d2fe52d8613d",
-      country: "United States",
-      city: "Los Angeles",
-      street: "Eclipse St",
-      postalCode: "1234",
-      notes: "Next to the gas station.",
-    },
-    createdAt: "2024-04-23T14:08:02.757Z",
-  };
+      body: JSON.stringify({ status }),
+    }
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return new Response(JSON.stringify({ message: data.message }), {
+      status: data.statusCode,
+    });
+  }
 
   return new Response(JSON.stringify(data), { status: 200 });
 }

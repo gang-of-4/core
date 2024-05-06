@@ -31,7 +31,7 @@ export function DetailsOrderStatus({ order }) {
             >
                 <Stack>
                     <Typography color="textPrimary" variant='h6'>
-                        {`${capitalize(config.order.name)} Id`}
+                        {`${capitalize(config.order.name)} ID`}
                     </Typography>
                     <Typography color="textPrimary" variant='h7'>
                         {order.id}
