@@ -30,7 +30,7 @@ model Order {
   address        Address @relation(fields: [addressId], references: [id])
   items          Item[]
   createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  updatedAt      DateTime     @default(now())
   deletedAt      DateTime?
 }
 
