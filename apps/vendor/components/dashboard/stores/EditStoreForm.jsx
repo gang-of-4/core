@@ -80,7 +80,7 @@ export default function EditStoreForm({ store }) {
         });
 
         if (isMounted()) {
-          router.push(`/vendor/dashboard/stores/${store?.id}`);
+          router.push(`/dashboard/stores/${store?.id}`);
         }
       } catch (err) {
         console.error(err);
