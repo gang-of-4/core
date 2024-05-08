@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "main": "index.ts",
   "scripts": {
-    "dev": "node index.ts"
+    "dev": "node index.ts",
+    "cy:run": "cypress run",
+    "cy:e2e": "cypress open",
+    "cy:run-unit": "cypress run --spec cypress/e2e/unit",
+    "cy:run-integration": "cypress run --spec cypress/e2e/integration"
+  },
+  "devDependencies": {
+    "cypress": "^13.4.0"
   }
 }
