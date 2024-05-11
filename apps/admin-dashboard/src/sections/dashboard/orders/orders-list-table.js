@@ -70,6 +70,7 @@ export const OrdersListTable = (props) => {
                         <IconButton
                           component={NextLink}
                           href={`${paths.dashboard.orders.index}/${order.id}`}
+                          data-test="view-order-details"
                         >
                           <SvgIcon>
                             <ArrowRightIcon />

@@ -106,9 +106,14 @@ export function DetailsAmountStatus({ order }) {
             name="status"
             select
             onChange={handleChangeStatus}
+            data-test="order-status-select"
           >
             {statusOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
+              <MenuItem
+                key={option.value}
+                value={option.value}
+                data-test={`order-status-${option.value}`}
+              >
                 {option.label}
               </MenuItem>
             ))}
