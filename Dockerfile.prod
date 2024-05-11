@@ -1,0 +1,27 @@
+FROM node:alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+RUN corepack prepare pnpm@8.8.0 --activate
+RUN pnpm install --global turbo@latest
+RUN pnpm install -g @nestjs/cli
+
+
+FROM base AS setup
+ARG NAME
+ADD . .
+RUN turbo prune --docker ${NAME}
+
+
+FROM base AS prod
+ARG NAME
+WORKDIR /app
+COPY --from=setup /out/full/apps/${NAME} .
+RUN pnpm install
+RUN pnpm run prisma:generate
+RUN pnpm run build
+RUN pnpm run prisma:generate
+
+COPY --from=setup config/docker/entrypoint.d/prod.sh prod.sh
+RUN chmod +x prod.sh
+CMD [ "sh", "prod.sh" ]
