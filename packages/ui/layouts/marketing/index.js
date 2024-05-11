@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { useMediaQuery } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { SideNav } from './side-nav';
-import { TopNav } from './top-nav';
-
+import { useCallback, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useMediaQuery } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { SideNav } from "./side-nav";
+import { TopNav } from "./top-nav";
 
 const useMobileNav = () => {
   const pathname = usePathname();
@@ -18,8 +17,7 @@ const useMobileNav = () => {
 
   useEffect(() => {
     handlePathnameChange();
-  },
-[pathname]);
+  }, [pathname]);
 
   const handleOpen = useCallback(() => {
     setIsOpen(true);
@@ -32,22 +30,28 @@ const useMobileNav = () => {
   return {
     isOpen,
     handleOpen,
-    handleClose
+    handleClose,
   };
 };
 
-const LayoutRoot = styled('div')(({ theme }) => ({
+const LayoutRoot = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
-  height: '100%'
+  height: "100%",
 }));
 
 export function Layout(props) {
-  const { children, app } = props;
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-  const mobileNav = useMobileNav();
+  const {
+    children,
+    accountPopoverButtons,
+    app,
+    auth,
+    sideItems = [],
+    topItems = [],
+    topButtons,
+  } = props;
 
-  const sideItems = [];
-  const topItems = [];
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+  const mobileNav = useMobileNav();
 
   // Refer to the following structure when passing sideItems
 
@@ -94,24 +98,24 @@ export function Layout(props) {
 
   return (
     <>
-      <TopNav 
-        app={app} 
-        items={topItems} 
-        onMobileNavOpen={mobileNav.handleOpen} 
-        openSide={sideItems.length > 0} 
-      />
-      {!lgUp &&
-        sideItems.length > 0 &&
-        (
-          <SideNav
-            items={sideItems}
-            onClose={mobileNav.handleClose}
-            open={mobileNav.isOpen}
-          />
-        )}
-      <LayoutRoot>
-        {children}
-      </LayoutRoot>
+      <TopNav
+        accountPopoverButtons={accountPopoverButtons}
+        app={app}
+        auth={auth}
+        items={topItems}
+        onMobileNavOpen={mobileNav.handleOpen}
+        openSide={sideItems.length > 0}
+      >
+        {topButtons}
+      </TopNav>
+      {!lgUp && sideItems.length > 0 && (
+        <SideNav
+          items={sideItems}
+          onClose={mobileNav.handleClose}
+          open={mobileNav.isOpen}
+        />
+      )}
+      <LayoutRoot>{children}</LayoutRoot>
     </>
   );
 }

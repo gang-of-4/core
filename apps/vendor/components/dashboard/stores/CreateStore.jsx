@@ -13,18 +13,15 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import { GuestGuard } from 'ui/guards/guest-guard';
-import { IssuerGuard } from 'ui/guards/issuer-guard';
-import { useAuth } from 'ui/hooks/use-auth';
 import { useMounted } from 'ui/hooks/use-mounted';
-import { Layout as AuthLayout } from 'ui/layouts/auth/classic-layout';
 import { paths } from 'ui/paths';
-// import { AuthIssuer } from 'ui/sections/auth/auth-issuer';
-import { Issuer } from 'ui/utils/auth';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useStores } from '@/hooks/useStores';
+import { useAuth } from '@/contexts/AuthContext';
+import { useStores } from '@/contexts/StoresContext';
+import { capitalize } from '@/utils/format-string';
+import { config } from 'ui/config';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -66,7 +63,7 @@ const validationSchema = Yup.object({
         .notRequired()
         .test('fileFormat', 'Invalid file format. Only images are allowed.', (value) => {
             if (!value) return true;
-            return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+            return value && ['image/jpeg', 'image/png'].includes(value.type);
         })
         .test('fileSize', 'File size is too large. Maximum size is 2MB.', (value) => {
             if (!value) return true;
@@ -86,13 +83,13 @@ const validationSchema = Yup.object({
         .required('Owner National ID is required')
 });
 
-const Page = () => {
+export default function Page() {
     const [selectedFileName, setSelectedFileName] = useState('');
     const isMounted = useMounted();
     const router = useRouter();
     const { returnTo } = useParams();
     const { user } = useAuth();
-    const { createBusinessStore } =  useStores();
+    const { createBusinessStore } = useStores();
     const formik = useFormik({
         initialValues,
         validationSchema,
@@ -132,7 +129,7 @@ const Page = () => {
                     <Card elevation={16}>
                         <CardHeader
                             sx={{ pb: 0 }}
-                            title="Vendor Create Business Store"
+                            title={`Create a ${capitalize(config.store.business.name)}`}
                         />
                         <CardContent>
                             <form
@@ -144,7 +141,7 @@ const Page = () => {
                                         error={!!(formik.touched.name && formik.errors.name)}
                                         fullWidth
                                         helperText={formik.touched.name && formik.errors.name}
-                                        label="Store Name"
+                                        label="Name"
                                         name="name"
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
@@ -184,8 +181,8 @@ const Page = () => {
                                         type="ownerNationalId"
                                         value={formik.values.ownerNationalId}
                                     />
-                                    <Typography variant="body2" color="textSecondary" sx={{ pl: 1}}>
-                                        Accepted formats: JPEG, PNG, GIF. 
+                                    <Typography variant="body2" color="textSecondary" sx={{ pl: 1 }}>
+                                        Accepted formats: JPEG, PNG.
                                         <br />
                                         Maximum size: 2MB
                                     </Typography>
@@ -206,7 +203,7 @@ const Page = () => {
                                                 formik.setFieldValue('logo', selectedFile);
                                                 setSelectedFileName(selectedFile ? selectedFile.name : '');
                                             }}
-                                            inputProps={{ accept: 'image/jpeg, image/png, image/gif' }}
+                                            inputProps={{ accept: 'image/jpeg, image/png' }}
                                         />
                                     </Button>
                                     {formik.touched.logo && formik.errors.logo && (
@@ -243,15 +240,3 @@ const Page = () => {
         </>
     );
 };
-
-Page.getLayout = (page) => (
-    <IssuerGuard issuer={Issuer.JWT}>
-        <GuestGuard>
-            <AuthLayout>
-                {page}
-            </AuthLayout>
-        </GuestGuard>
-    </IssuerGuard>
-);
-
-export default Page;

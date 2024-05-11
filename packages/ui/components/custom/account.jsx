@@ -1,15 +1,12 @@
-import React from 'react'
-import { Button , useMediaQuery } from '@mui/material';
-import { usePathname } from 'next/navigation';
-import NextLink from 'next/link';
-import { paths } from '../../paths';
-import { AccountButton } from '../../layouts/dashboard/account-button';
-import { useAuth } from '../../hooks/use-auth'
+import React from "react";
+import { Button, useMediaQuery } from "@mui/material";
+import { usePathname } from "next/navigation";
+import NextLink from "next/link";
+import { paths } from "../../paths";
+import { AccountButton } from "../../layouts/dashboard/account-button";
 
-
-export function Account({app}) {
-  const { isAuthenticated } = useAuth();
-  const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
+export function Account({ app, auth, accountPopoverButtons }) {
+  const mdUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
 
   const pathname = usePathname();
 
@@ -17,35 +14,36 @@ export function Account({app}) {
 
   function getUrl(app) {
     switch (app) {
-      case 'vendor':
+      case "vendor":
         return `vendor`;
-      case 'admin':
+      case "admin":
         return `admin`;
       default:
-        return '';
+        return "";
     }
   }
 
-  const Else = (
-      pathname.includes('/auth/')
-        ? null
-        : <Button
-          component={NextLink}
-          href={`${url}${paths.auth.login}`}
-          size={mdUp ? 'medium' : 'small'}
-          variant="contained"
-        >
-          Login
-        </Button>
-  )
+  const Else = pathname.includes("/auth/") ? null : (
+    <Button
+      component={NextLink}
+      href={`${url}${paths.auth.login}`}
+      size={mdUp ? "medium" : "small"}
+      variant="contained"
+    >
+      Login
+    </Button>
+  );
 
   return (
     <div>
-      {isAuthenticated ? (
-        <AccountButton />
+      {auth.isAuthenticated ? (
+        <AccountButton
+          accountPopoverButtons={accountPopoverButtons}
+          auth={auth}
+        />
       ) : (
         Else
       )}
     </div>
-  )
+  );
 }

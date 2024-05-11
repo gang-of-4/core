@@ -1,11 +1,10 @@
-import { useCallback, useRef, useState } from 'react';
-import { Avatar, Box, ButtonBase } from '@mui/material';
-import { useAuth } from '../../../hooks/use-auth';
-import { getInitials } from '../../../utils/get-initials';
-import { AccountPopover } from './account-popover';
+import { useCallback, useRef, useState } from "react";
+import { Avatar, Box, ButtonBase, SvgIcon } from "@mui/material";
+import { User01 } from "@untitled-ui/icons-react";
+import { getInitials } from "../../../utils/get-initials";
+import { AccountPopover } from "./account-popover";
 
-export function AccountButton({children}) {
-  const { user } = useAuth();
+export function AccountButton({ accountPopoverButtons, auth }) {
   const anchorRef = useRef(null);
   const [openPopover, setOpenPopover] = useState(false);
 
@@ -18,38 +17,42 @@ export function AccountButton({children}) {
   }, []);
 
   return (
-    <div className='account-dropdown'>
+    <div className="account-dropdown">
       <Box
         component={ButtonBase}
         onClick={handlePopoverOpen}
         ref={anchorRef}
         sx={{
-          alignItems: 'center',
-          display: 'flex',
+          alignItems: "center",
+          display: "flex",
           borderWidth: 2,
-          borderStyle: 'solid',
-          borderColor: 'divider',
+          borderStyle: "solid",
+          borderColor: "divider",
           height: 40,
           width: 40,
-          borderRadius: '50%'
+          borderRadius: "50%",
         }}
       >
         <Avatar
-          src={user?.avatar}
+          src={auth.user?.avatar}
           sx={{
             height: 32,
-            width: 32
+            width: 32,
           }}
         >
-          {/* <SvgIcon>
-            <User01Icon />
-          </SvgIcon> */}
-          {getInitials(`${user?.firstName} ${user?.lastName}`)}
+          {auth?.user?.firstName && auth?.user?.lastName ? (
+            getInitials(`${auth.user?.firstName} ${auth.user?.lastName}`)
+          ) : (
+            <SvgIcon>
+              <User01 />
+            </SvgIcon>
+          )}
         </Avatar>
       </Box>
       <AccountPopover
         anchorEl={anchorRef.current}
-        listItems={children}
+        auth={auth}
+        listItems={accountPopoverButtons}
         onClose={handlePopoverClose}
         open={openPopover}
       />

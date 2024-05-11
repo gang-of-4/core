@@ -1,45 +1,50 @@
-import { usersApi } from "@/api/usersApi";
 import { getInitials } from "ui/utils/get-initials";
+import fetchApi from "./fetch-api";
+import { config } from "ui/config";
+import { capitalize } from "./format-string";
 
-export async function formatStore(store) {
-        
-        const vendorId = store?.vendorId;
-        let vendor = {};
-        try {
-            vendor = await usersApi.getUser(vendorId);
-            if (!vendor?.id) throw new Error(`Vendor with id ${vendorId} not found`);
-        } catch (err) {
-            console.error(err);
-            vendor = {
-                firstName: 'Not',
-                lastName: 'Found',
-            };
+export async function formatStore({ store, user }) {
+
+    let vendor = user;
+
+    if (store?.individualStore) {
+        return {
+            id: store?.id,
+            vendor: vendor,
+            name: `${vendor?.firstName} ${vendor?.lastName}'s ${capitalize(config.store.name)}`,
+            status: store?.status,
+            logo: vendor?.avatar || getInitials(`${vendor?.firstName} ${vendor?.lastName}`),
+            type: 'individual'
         }
 
-        if (store?.individualStore) {
-                return {
-                    id: store?.id,
-                    vendor: vendor,
-                    name: `${vendor?.firstName} ${vendor?.lastName}'s Store`,
-                    status: store?.status,
-                    logo: vendor?.avatar || getInitials(`${vendor?.firstName} ${vendor?.lastName}`),
-                    type: 'individual'
-                }
+    } else if (store?.businessStore) {
 
-        } else if (store?.businessStore) {
-            return {
-                id: store?.id,
-                vendor: vendor,
-                name: store?.businessStore?.name,
-                status: store?.status,
-                vatNumber: store?.businessStore?.vatNumber,
-                crNumber: store?.businessStore?.crNumber,
-                ownerNationalId: store?.businessStore?.ownerNationalId,
-                logo: store?.businessStore?.logo,
-                type: 'business'
+        if (store?.businessStore?.logo) {
+            try{
+                const { data } = await fetchApi({
+                    url: `/vendor/api/media/${store.businessStore.logo}`,
+                    includeToken: false
+                });
+                store.businessStore.logo = data;
+            } catch (error) {
+                console.error(error);
             }
-
-        } else {
-            return { ...store, type: 'unknown' };
         }
+
+
+        return {
+            id: store?.id,
+            vendor: vendor,
+            name: store?.businessStore?.name,
+            status: store?.status,
+            vatNumber: store?.businessStore?.vatNumber,
+            crNumber: store?.businessStore?.crNumber,
+            ownerNationalId: store?.businessStore?.ownerNationalId,
+            logo: store?.businessStore?.logo,
+            type: 'business'
+        }
+
+    } else {
+        return { ...store, type: 'unknown' };
+    }
 }

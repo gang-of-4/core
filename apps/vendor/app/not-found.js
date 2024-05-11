@@ -1,26 +1,16 @@
 'use client'
 
 import NextLink from 'next/link';
-import Head from 'next/head';
 import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { organization } from 'ui/config/index.js';
 
 
 const NotFound = () => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
-  const name = organization.name; 
-
-
 
   return (
     <>
-      <Head>
-        <title>
-          Error: Not Found | {name}
-        </title>
-      </Head>
       <Box
         component="main"
         sx={{
@@ -45,7 +35,7 @@ const NotFound = () => {
               sx={{
                 height: 'auto',
                 maxWidth: '100%',
-                width: 400
+                width: 200
               }}
             />
           </Box>
@@ -53,7 +43,7 @@ const NotFound = () => {
             align="center"
             variant={mdUp ? 'h1' : 'h4'}
           >
-            404: The page you are looking for isn’t here
+            404: The page you are looking for isn&apos;t here
           </Typography>
           <Typography
             align="center"

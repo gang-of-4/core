@@ -35,7 +35,7 @@ export function OptionPopover(props) {
           key={option.id}
           onClick={() => onChange(option)}
         >
-          {option.text}
+          {option.text?.length > 18 ? `${option.text.slice(0, 18)}...` : option.text}
         </MenuItem>
       ))}
     </Popover>

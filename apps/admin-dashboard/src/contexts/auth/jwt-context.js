@@ -1,21 +1,22 @@
-import { createContext, useCallback, useEffect, useReducer } from 'react';
-import PropTypes from 'prop-types';
-import { authApi } from '../../api/auth';
-import { Issuer } from '../../utils/auth';
+import { createContext, useCallback, useEffect, useReducer } from "react";
+import PropTypes from "prop-types";
+import { authApi } from "../../api/auth";
+import { Issuer } from "../../utils/auth";
 
+const STORAGE_KEY = "adminAccessToken";
 
 var ActionType;
 (function (ActionType) {
-  ActionType['INITIALIZE'] = 'INITIALIZE';
-  ActionType['SIGN_IN'] = 'SIGN_IN';
-  ActionType['SIGN_UP'] = 'SIGN_UP';
-  ActionType['SIGN_OUT'] = 'SIGN_OUT';
+  ActionType["INITIALIZE"] = "INITIALIZE";
+  ActionType["SIGN_IN"] = "SIGN_IN";
+  ActionType["SIGN_UP"] = "SIGN_UP";
+  ActionType["SIGN_OUT"] = "SIGN_OUT";
 })(ActionType || (ActionType = {}));
 
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null
+  user: null,
 };
 
 const handlers = {
@@ -26,7 +27,7 @@ const handlers = {
       ...state,
       isAuthenticated,
       isInitialized: true,
-      user
+      user,
     };
   },
   SIGN_IN: (state, action) => {
@@ -35,7 +36,7 @@ const handlers = {
     return {
       ...state,
       isAuthenticated: true,
-      user
+      user,
     };
   },
   SIGN_UP: (state, action) => {
@@ -44,30 +45,29 @@ const handlers = {
     return {
       ...state,
       isAuthenticated: true,
-      user
+      user,
     };
   },
   SIGN_OUT: (state) => ({
     ...state,
     isAuthenticated: false,
-    user: null
-  })
+    user: null,
+  }),
 };
 
-const reducer = (state, action) => (handlers[action.type]
-  ? handlers[action.type](state, action)
-  : state);
+const reducer = (state, action) =>
+  handlers[action.type] ? handlers[action.type](state, action) : state;
 
 export const AuthContext = createContext({
   ...initialState,
   issuer: Issuer.JWT,
   signIn: () => Promise.resolve(),
   signUp: () => Promise.resolve(),
-  signOut: () => Promise.resolve()
+  signOut: () => Promise.resolve(),
 });
 
 export const AuthProvider = (props) => {
-  const { children, STORAGE_KEY } = props;
+  const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const initialize = useCallback(async () => {
@@ -81,127 +81,56 @@ export const AuthProvider = (props) => {
           type: ActionType.INITIALIZE,
           payload: {
             isAuthenticated: true,
-            user
-          }
+            user,
+          },
         });
       } else {
         dispatch({
           type: ActionType.INITIALIZE,
           payload: {
             isAuthenticated: false,
-            user: null
-          }
+            user: null,
+          },
         });
       }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       dispatch({
         type: ActionType.INITIALIZE,
         payload: {
           isAuthenticated: false,
-          user: null
-        }
+          user: null,
+        },
       });
     }
   }, [dispatch]);
 
   useEffect(() => {
     initialize();
-  },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []);
+  }, []);
 
-  const signIn = useCallback(async (userInfo, role) => {
+  const signIn = useCallback(
+    async (userInfo) => {
+      const res = await authApi.signIn({
+        email: userInfo.email,
+        password: userInfo.password,
+      });
 
-    let res;
+      const { accessToken } = res;
 
-    switch (role) {
-      case 'vendor':
-        res = await authApi.vendorSignIn(
-          {
-            email: userInfo.email,
-            password: userInfo.password
-          },
-        );
-        break;
-      case 'customer':
-        res = await authApi.customerSignIn(
-          {
-            email: userInfo.email,
-            password: userInfo.password
-          },
-        );
-        break;
-      case 'admin':
-        res = await authApi.adminSignIn(
-          {
-            email: userInfo.email,
-            password: userInfo.password
-          },
-        );
-      default:
-        break;
-    }
+      const user = await authApi.me({ accessToken });
 
-    const { accessToken } = res;
+      localStorage.setItem(STORAGE_KEY, accessToken);
 
-    const user = await authApi.me({ accessToken });
-
-    localStorage.setItem(STORAGE_KEY, accessToken);
-
-    dispatch({
-      type: ActionType.SIGN_IN,
-      payload: {
-        user
-      }
-    });
-  }, [dispatch]);
-
-  const signUp = useCallback(async (userInfo, role) => {
-
-    let res;
-
-    switch (role) {
-      case 'vendor':
-        res = await authApi.vendorSignUp(
-          {
-            firstName: userInfo.firstName,
-            lastName: userInfo.lastName,
-            email: userInfo.email,
-            phone: userInfo.phone,
-            password: userInfo.password,
-            passwordConfirmation: userInfo.passwordConfirmation
-          },
-        );
-        break;
-      case 'customer':
-        res = await authApi.customerSignUp(
-          {
-            firstName: userInfo.firstName,
-            lastName: userInfo.lastName,
-            email: userInfo.email,
-            phone: userInfo.phone,
-            password: userInfo.password,
-            passwordConfirmation: userInfo.passwordConfirmation
-          },
-        );
-        break;
-      default:
-        break;
-    }
-
-    const { accessToken } = res;
-    const user = await authApi.me({ accessToken });
-
-    localStorage.setItem(STORAGE_KEY, accessToken);
-
-    dispatch({
-      type: ActionType.SIGN_UP,
-      payload: {
-        user
-      }
-    });
-  }, [dispatch]);
+      dispatch({
+        type: ActionType.SIGN_IN,
+        payload: {
+          user,
+        },
+      });
+    },
+    [dispatch]
+  );
 
   const signOut = useCallback(async () => {
     localStorage.removeItem(STORAGE_KEY);
@@ -214,8 +143,7 @@ export const AuthProvider = (props) => {
         ...state,
         issuer: Issuer.JWT,
         signIn,
-        signUp,
-        signOut
+        signOut,
       }}
     >
       {children}
@@ -224,7 +152,7 @@ export const AuthProvider = (props) => {
 };
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export const AuthConsumer = AuthContext.Consumer;

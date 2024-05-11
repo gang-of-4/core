@@ -3,12 +3,12 @@ import Head from 'next/head';
 import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { paths } from '../paths';
-import { organization } from 'ui/config/index.js';
+import { config } from 'ui/config';
 
 const Page = () => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.down('md'));
-  const name = organization.name;
+  const name = config.platformName;
 
   return (
     <>

@@ -1,5 +1,5 @@
-import { createContext } from 'react';
-import { noop } from '../../utils/noop';
+import { createContext } from "react";
+import { noop } from "../../utils/noop";
 
 export const DropdownContext = createContext({
   anchorEl: null,
@@ -7,5 +7,5 @@ export const DropdownContext = createContext({
   onMenuLeave: noop,
   onTriggerEnter: noop,
   onTriggerLeave: noop,
-  open: false
+  open: false,
 });

@@ -5,9 +5,13 @@ import { Box, Button, Card, CardContent, Container, Stack, SvgIcon, Typography }
 import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import NextLink from 'next/link';
 import { paths } from 'ui/paths'
+import { config } from 'ui/config';
+import { capitalize, getIndefiniteArticle } from '@/utils/format-string';
 
 
 export default function Home() {
+
+  const storeName = config.store.name;
 
   return (
     <>
@@ -32,7 +36,7 @@ export default function Home() {
                       Welcome to the Vendor Dashboard
                     </Typography>
                     <Typography variant="body1">
-                      Select a store from the left to manage it.
+                      Select {getIndefiniteArticle(storeName)} {storeName} from the left to manage it.
                     </Typography>
                   </Stack>
                 </CardContent>
@@ -42,7 +46,7 @@ export default function Home() {
                 <CardContent>
                   <Stack spacing={2}>
                     <Typography variant="h4">
-                      Manage Stores
+                      Manage {capitalize(config.store.plural)}
                     </Typography>
                     <Stack spacing={1}>
                       
@@ -56,7 +60,7 @@ export default function Home() {
                           </SvgIcon>
                         )}
                       >
-                        Create a Store
+                        Create {getIndefiniteArticle(storeName)} {capitalize(storeName)}
                       </Button>
 
                     </Stack>

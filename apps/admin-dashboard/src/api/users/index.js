@@ -1,19 +1,22 @@
-const apiUrl = process.env.NEXT_PUBLIC_USERS_API_URL;
+import fetchApi from "../../utils/fetch-api";
 
 class UsersApi {
-
-    async getUser(id) {
-        let user;
-        try {
-            const res = await fetch(`${apiUrl}/${id}`);
-            user = await res.json();
-        } catch (err) {
-            console.error(err);
-        }
-
-        return Promise.resolve(user);
+  async getUser(id) {
+    let user;
+    try {
+      const { data } = await fetchApi({
+        url: `/admin/api/users/${id}`,
+        options: {
+          method: "GET",
+        },
+      });
+      user = data;
+    } catch (err) {
+      console.error(err);
     }
 
+    return Promise.resolve(user);
+  }
 }
 
 export const usersApi = new UsersApi();

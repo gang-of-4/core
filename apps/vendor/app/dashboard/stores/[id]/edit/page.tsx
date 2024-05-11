@@ -1,11 +1,11 @@
-import { formatStore } from "@/utils/format-store";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import EditStore from "@/components/dashboard/stores/EditStore";
+import { config } from "ui/config";
+import { capitalize } from "@/utils/format-string";
 
 export const metadata: Metadata = {
-  title: `Dashboard | Edit Store`,
-  description: "Vendor Dashboard, edit store",
+  title: `${config.platformName} | Edit ${capitalize(config.store.name)}`,
 };
 
 async function getStore(id: string) {
@@ -15,8 +15,7 @@ async function getStore(id: string) {
     if (!res.ok) throw new Error("Failed to fetch");
     return res.json();
   });
-  const formattedStore = await formatStore(store);
-  return formattedStore;
+  return store;
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -27,7 +26,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       {store?.type === "individual" ? (
         redirect(`/dashboard/stores/${params.id}`)
       ) : (
-        <EditStore store={store} />
+        <EditStore unformattedStore={store} />
       )}
     </>
   );

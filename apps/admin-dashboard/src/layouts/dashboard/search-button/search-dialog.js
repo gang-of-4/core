@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
-import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
-import XIcon from '@untitled-ui/icons-react/build/esm/X';
+import { useCallback, useState } from "react";
+import PropTypes from "prop-types";
+import SearchMdIcon from "@untitled-ui/icons-react/build/esm/SearchMd";
+import XIcon from "@untitled-ui/icons-react/build/esm/X";
 import {
   Badge,
   Box,
@@ -14,16 +14,15 @@ import {
   Stack,
   SvgIcon,
   TextField,
-  Typography
-} from '@mui/material';
-import { Tip } from '../../../components/tip';
+  Typography,
+} from "@mui/material";
+import { Tip } from "../../../components/tip";
 
-const articles = {
-};
+const articles = {};
 
 export const SearchDialog = (props) => {
   const { onClose, open = false, ...other } = props;
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [displayArticles, setDisplayArticles] = useState(false);
 
@@ -31,18 +30,13 @@ export const SearchDialog = (props) => {
     event.preventDefault();
     setDisplayArticles(false);
     setIsLoading(true);
-    // Do search here
+    // add search logic here
     setIsLoading(false);
     setDisplayArticles(true);
   }, []);
 
   return (
-    <Dialog
-      fullWidth
-      maxWidth="sm"
-      onClose={onClose}
-      open={open}
-      {...other}>
+    <Dialog fullWidth maxWidth="sm" onClose={onClose} open={open} {...other}>
       <Stack
         alignItems="center"
         direction="row"
@@ -50,16 +44,11 @@ export const SearchDialog = (props) => {
         spacing={3}
         sx={{
           px: 3,
-          py: 2
+          py: 2,
         }}
       >
-        <Typography variant="h6">
-          Search
-        </Typography>
-        <IconButton
-          color="inherit"
-          onClick={onClose}
-        >
+        <Typography variant="h6">Search</Typography>
+        <IconButton color="inherit" onClick={onClose}>
           <SvgIcon>
             <XIcon />
           </SvgIcon>
@@ -67,11 +56,7 @@ export const SearchDialog = (props) => {
       </Stack>
       <DialogContent>
         <Tip message="Search by entering a keyword and pressing Enter" />
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{ mt: 3 }}
-        >
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
             fullWidth
             InputProps={{
@@ -81,7 +66,7 @@ export const SearchDialog = (props) => {
                     <SearchMdIcon />
                   </SvgIcon>
                 </InputAdornment>
-              )
+              ),
             }}
             label="Search"
             onChange={(event) => setValue(event.target.value)}
@@ -92,59 +77,42 @@ export const SearchDialog = (props) => {
         {isLoading && (
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              mt: 3
+              display: "flex",
+              justifyContent: "center",
+              mt: 3,
             }}
           >
             <CircularProgress />
           </Box>
         )}
         {displayArticles && (
-          <Stack
-            spacing={2}
-            sx={{ mt: 3 }}
-          >
+          <Stack spacing={2} sx={{ mt: 3 }}>
             {Object.keys(articles).map((type, index) => (
-              <Stack
-                key={index}
-                spacing={2}
-              >
-                <Typography variant="h6">
-                  {type}
-                </Typography>
+              <Stack key={index} spacing={2}>
+                <Typography variant="h6">{type}</Typography>
                 <Stack
                   divider={<Divider />}
                   sx={{
-                    borderColor: 'divider',
+                    borderColor: "divider",
                     borderRadius: 1,
-                    borderStyle: 'solid',
-                    borderWidth: 1
+                    borderStyle: "solid",
+                    borderWidth: 1,
                   }}
                 >
                   {articles[type].map((article, index) => (
-                    <Box
-                      key={article.title}
-                      sx={{ p: 2 }}
-                    >
+                    <Box key={article.title} sx={{ p: 2 }}>
                       <Stack
                         alignItems="center"
                         direction="row"
                         spacing={2}
                         sx={{ pl: 1 }}
                       >
-                        <Badge
-                          color="primary"
-                          variant="dot"
-                        />
+                        <Badge color="primary" variant="dot" />
                         <Typography variant="subtitle1">
                           {article.title}
                         </Typography>
                       </Stack>
-                      <Typography
-                        color="text.secondary"
-                        variant="body2"
-                      >
+                      <Typography color="text.secondary" variant="body2">
                         {article.path}
                       </Typography>
                       <Typography
@@ -159,16 +127,11 @@ export const SearchDialog = (props) => {
                 </Stack>
               </Stack>
             ))}
-            {
-              Object.keys(articles).length === 0 && (
-                <Typography
-                  color="text.secondary"
-                  variant="body2"
-                >
-                  No results found
-                </Typography>
-              )
-            }
+            {Object.keys(articles).length === 0 && (
+              <Typography color="text.secondary" variant="body2">
+                No results found
+              </Typography>
+            )}
           </Stack>
         )}
       </DialogContent>
@@ -178,5 +141,5 @@ export const SearchDialog = (props) => {
 
 SearchDialog.propTypes = {
   onClose: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool,
 };

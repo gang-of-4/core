@@ -1,24 +1,26 @@
-import { applyPagination } from '../../utils/apply-pagination';
-import { deepCopy } from '../../utils/deep-copy';
+import fetchApi from '../../utils/fetch-api';
 import { formatStores } from '../../utils/format-stores';
 
-const apiUrl = process.env.NEXT_PUBLIC_STORES_API_URL;
 
 class StoresApi {
 
   async getStores(request = {}) {
-    const { filters, page, rowsPerPage } = request;
+    const { filters } = request;
 
     let stores;
     try {
-        const res = await fetch(apiUrl);
-        const returnedStores = await res.json();
-        stores = await formatStores(returnedStores);
+      const { data: returnedStores } = await fetchApi({
+        url: '/admin/api/stores',
+        options: {
+          method: 'GET',
+        }
+      });
+      stores = await formatStores(returnedStores);
     } catch (err) {
-        console.error(err);
+      console.error(err);
     }
-    
-    let data = deepCopy(stores);
+
+    let data = stores;
     let count = data.length;
 
     if (typeof filters !== 'undefined') {
@@ -45,28 +47,44 @@ class StoresApi {
       count = data.length;
     }
 
-    if (typeof page !== 'undefined' && typeof rowsPerPage !== 'undefined') {
-      data = applyPagination(data, page, rowsPerPage);
-    }
-
     return Promise.resolve({
       data,
       count
     });
   }
 
+  async getStore(id) {
+
+    let store;
+    try {
+      const { data } = await fetchApi({
+        url: `/admin/api/stores/${id}`,
+        options: {
+          method: 'GET',
+        }
+      });
+      store = await formatStores([data]);
+    } catch (err) {
+      console.error(err);
+    }
+
+    return Promise.resolve(store[0]);
+  }
+
   async updateStore(store) {
     const { id } = store;
 
     try {
-      const res = await fetch(`${apiUrl}/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(store)
+      const { data: updatedStore } = await fetchApi({
+        url: `/admin/api/stores/${id}`,
+        options: {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(store)
+        }
       });
-      const updatedStore = await res.json();
 
       return Promise.resolve(updatedStore);
     } catch (err) {
@@ -78,16 +96,33 @@ class StoresApi {
     const { id } = store;
 
     try {
-      const res = await fetch(`${apiUrl}/business/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(store)
+      const { data: updatedStore } = await fetchApi({
+        url: `/admin/api/stores/business/${id}`,
+        options: {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(store)
+        }
       });
-      const updatedStore = await res.json();
 
       return Promise.resolve(updatedStore);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async deletStore(id) {
+    try {
+      await fetchApi({
+        url: `/admin/api/stores/${id}`,
+        options: {
+          method: 'DELETE',
+        }
+      });
+
+      return Promise.resolve();
     } catch (err) {
       console.error(err);
     }

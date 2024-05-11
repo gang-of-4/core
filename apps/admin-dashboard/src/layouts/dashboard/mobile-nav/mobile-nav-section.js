@@ -1,14 +1,18 @@
-import PropTypes from 'prop-types';
-import { Box, Stack } from '@mui/material';
-import { MobileNavItem } from './mobile-nav-item';
+import PropTypes from "prop-types";
+import { Box, Stack } from "@mui/material";
+import { MobileNavItem } from "./mobile-nav-item";
 
-const renderItems = ({ depth = 0, items, pathname }) => items.reduce((acc,
-  item) => reduceChildRoutes({
-  acc,
-  depth,
-  item,
-  pathname
-}), []);
+const renderItems = ({ depth = 0, items, pathname }) =>
+  items.reduce(
+    (acc, item) =>
+      reduceChildRoutes({
+        acc,
+        depth,
+        item,
+        pathname,
+      }),
+    []
+  );
 
 const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
   const checkPath = !!(item.path && pathname);
@@ -32,15 +36,15 @@ const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
           component="ul"
           spacing={0.5}
           sx={{
-            listStyle: 'none',
+            listStyle: "none",
             m: 0,
-            p: 0
+            p: 0,
           }}
         >
           {renderItems({
             depth: depth + 1,
             items: item.items,
-            pathname
+            pathname,
           })}
         </Stack>
       </MobileNavItem>
@@ -64,29 +68,30 @@ const reduceChildRoutes = ({ acc, depth, item, pathname }) => {
 };
 
 export const MobileNavSection = (props) => {
-  const { items = [], pathname, subheader = '', ...other } = props;
+  const { items = [], pathname, subheader = "", ...other } = props;
 
   return (
     <Stack
       component="ul"
       spacing={0.5}
       sx={{
-        listStyle: 'none',
+        listStyle: "none",
         m: 0,
-        p: 0
+        p: 0,
       }}
-      {...other}>
+      {...other}
+    >
       {subheader && (
         <Box
           component="li"
           sx={{
-            color: 'var(--nav-section-title-color)',
+            color: "var(--nav-section-title-color)",
             fontSize: 14,
             fontWeight: 700,
             lineHeight: 1.66,
             mb: 1,
             ml: 1,
-            textTransform: 'uppercase'
+            textTransform: "uppercase",
           }}
         >
           {subheader}
@@ -100,5 +105,5 @@ export const MobileNavSection = (props) => {
 MobileNavSection.propTypes = {
   items: PropTypes.array,
   pathname: PropTypes.string,
-  subheader: PropTypes.string
+  subheader: PropTypes.string,
 };

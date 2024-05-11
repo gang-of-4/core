@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { Box, ButtonBase, Drawer, Stack } from '@mui/material';
 import { Logo } from '../../components/logo';
 import { paths } from '../../paths';
-import { organization } from '../../config'
+import { config } from '../../config'
 import { SideNavItem } from './side-nav-item';
 
 
@@ -214,7 +214,7 @@ export function SideNav(props) {
               }
             }}
           >
-            {organization.name}
+            {config.platformName}
           </Box>
         </Stack>
       </Box>
