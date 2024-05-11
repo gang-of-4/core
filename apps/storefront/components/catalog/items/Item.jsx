@@ -35,7 +35,10 @@ export default function Item({ item, ...props }) {
     <>
       <Card sx={{ maxWidth: 250 }} {...props}>
         <CardActionArea>
-          <Link href={`/catalog/items/${item.id}`}>
+          <Link
+            href={`/catalog/items/${item.id}`}
+            data-test={`item-card-${item.id}`}
+          >
             {item?.images?.[0]?.url ? (
               <CardMedia
                 component="img"
