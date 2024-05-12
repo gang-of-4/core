@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CartController } from '../controllers/cart.controller';
 import { CartService } from '../services/cart.service';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -95,6 +94,6 @@ describe('CartService', () => {
       userId,
     );
     expect(foundedCart).toBeInstanceOf(CartEntity);
-    expect(foundedCart.userId).toEqual(userId);
+    expect(foundedCart.id).toEqual(createdCart.id);
   });
 });
