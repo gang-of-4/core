@@ -48,7 +48,12 @@ describe('OrdersService', () => {
   });
 
   afterEach(async () => {
+    await prisma.item.deleteMany();
     await prisma.order.deleteMany();
+    await prisma.optionGroup.deleteMany();
+    await prisma.option.deleteMany();
+    await prisma.image.deleteMany();
+    await prisma.address.deleteMany();
     await prisma.$disconnect();
   });
 
@@ -63,22 +68,53 @@ describe('OrdersService', () => {
   it('should create an order', async () => {
     const userId = randomUUID();
     const orderId = randomUUID();
-    const order = await kafkaListener.createOrder({
+    const createOrder = {
       id: orderId,
-      items: [],
+      items: [
+        {
+          id: randomUUID(),
+          item: {
+            name: 'Test Item',
+            id: randomUUID(),
+            sku: 'test',
+            slug: 'test',
+            price: 50,
+            description: '',
+            images: [],
+            storeId: randomUUID(),
+            order: 0,
+            isActive: true,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+          quantity: 2,
+          isVariant: false,
+        },
+      ],
       status: 'INPROGRESS',
       userId: userId,
-      subtotal: 0,
-      total: 0,
+      subtotal: 100,
+      total: 100,
       address: {
-        id: '1',
-        city: '',
-        country: '',
-        street: '',
-        state: '',
-        postalCode: '',
-        notes: '',
+        city: 'riyadh',
+        country: 'saudi arabia',
+        street: 'street name',
+        state: 'riyadh',
+        postalCode: '42314',
+        notes: 'small note',
       },
-    });
+    };
+    await kafkaListener.createOrder(createOrder);
+
+    const order = await service.findOneOrFail(
+      orderId,
+      'customer',
+      userId,
+      null,
+    );
+
+    expect(order.uuid).toEqual(orderId);
+    expect(order.address.country).toEqual(createOrder.address.country);
+    expect(order.items[0].name).toEqual(createOrder.items[0].item.name);
   });
 });
