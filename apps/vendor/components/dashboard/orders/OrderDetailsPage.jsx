@@ -15,7 +15,6 @@ import { paths } from "ui/paths";
 import { capitalize } from "@/utils/format-string";
 import { config } from "ui/config";
 import { DetailsOrderStatus } from "./details-order-status";
-import { DetailsUser } from "./details-user";
 import { OrderDetails } from "./details-order";
 import { useEffect, useState } from "react";
 import fetchApi from "@/utils/fetch-api";
@@ -93,11 +92,6 @@ export default function OrderDetailsPage({ orderId, storeId }) {
                     <DetailsOrderStatus order={order} />
                   </CardContent>
                 </Card>
-                {/* <Card>
-                  <CardContent>
-                    <DetailsUser order={order} />
-                  </CardContent>
-                </Card> */}
                 <Card>
                   <OrderDetails order={order} storeId={storeId} />
                 </Card>
