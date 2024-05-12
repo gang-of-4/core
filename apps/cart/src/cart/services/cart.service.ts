@@ -1,6 +1,6 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CartEntity } from '../entities/cart.entity';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { CreateCartItemDto } from '../dto/create-cart-item.dto';
 import { UpdateCartItemDto } from '../dto/update-cart-item.dto';
@@ -157,6 +157,15 @@ export class CartService {
 
     if (!cart) {
       return null;
+    }
+
+    if (cart.cartItems.length <= 0) {
+      return new CartEntity({
+        ...cart,
+        isAvailable: false,
+        address: null,
+        cartItems: [],
+      });
     }
 
     const cartItems = cart.cartItems.filter(

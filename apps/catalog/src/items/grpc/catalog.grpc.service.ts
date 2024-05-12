@@ -1,6 +1,6 @@
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
 import { QuantityRequestDto } from '../dto/catalog/quantity-request.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Status } from '@prisma/client/catalog';
 import { CheckAvailabilityResponseDto } from '../dto/catalog/check-availability.dto';
 

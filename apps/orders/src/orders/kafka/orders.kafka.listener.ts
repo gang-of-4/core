@@ -58,6 +58,7 @@ export class OrdersKafkaListener {
 
       const order = await tx.order.create({
         data: {
+          uuid: message.id,
           status: OrderStatus[message.status],
           userId: message.userId,
           total: message.total,

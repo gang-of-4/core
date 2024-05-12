@@ -44,9 +44,6 @@ class ItemDto {
   slug: string;
 
   @ApiProperty()
-  quantity: number;
-
-  @ApiProperty()
   price: any;
 
   @ApiProperty()
@@ -185,6 +182,30 @@ class OrderItemDto {
   }
 }
 
+export class AddressDto {
+  @ApiProperty()
+  country: string;
+
+  @ApiProperty()
+  city: string;
+
+  @ApiProperty()
+  state: string;
+
+  @ApiProperty()
+  street: string;
+
+  @ApiProperty()
+  postalCode: string;
+
+  @ApiProperty()
+  notes: string;
+
+  constructor(partial: Partial<AddressDto>) {
+    Object.assign(this, partial);
+  }
+}
+
 export class CreateOrderDto {
   @ApiProperty()
   id: string;
@@ -202,7 +223,7 @@ export class CreateOrderDto {
   status: string;
 
   @ApiProperty()
-  address: AddressEntity;
+  address: AddressDto;
 
   @ApiProperty({
     isArray: true,
