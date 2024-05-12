@@ -19,11 +19,12 @@ import OrderAddress from "./OrderAddress";
 import { SeverityPill } from "ui/components/severity-pill";
 import { useState } from "react";
 import CancelOrderDialog from "./CancelOrderDialog";
+import { useRouter } from "next/navigation";
 
 const getStatusColor = (status) => {
   switch (status) {
     case "INPROGRESS":
-      return "warning";
+      return "info";
     case "DELIVERED":
       return "success";
     case "CANCELLED":
@@ -36,6 +37,7 @@ const getStatusColor = (status) => {
 export default function OrderDetails({ order }) {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const router = useRouter();
 
   function handleDialogOpen() {
     setIsDialogOpen(true);
@@ -53,6 +55,7 @@ export default function OrderDetails({ order }) {
           method: "DELETE",
         },
       });
+      router.push(`/orders`);
     } catch (error) {
       console.error(error);
     } finally {
@@ -121,6 +124,7 @@ export default function OrderDetails({ order }) {
                     component="button"
                     color="error"
                     onClick={handleDialogOpen}
+                    disabled={order.status === "CANCELLED"}
                   >
                     Cancel {capitalize(config.order.name)}
                   </Button>

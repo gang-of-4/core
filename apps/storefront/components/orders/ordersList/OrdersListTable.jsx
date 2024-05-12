@@ -20,13 +20,13 @@ import { capitalize } from "@/utils/format-string";
 const getStatusColor = (status) => {
   switch (status) {
     case "INPROGRESS":
-      return "warning";
+      return "info";
     case "DELIVERED":
       return "success";
     case "CANCELLED":
       return "error";
     default:
-      return "warning";
+      return "info";
   }
 };
 
