@@ -24,7 +24,7 @@ export function DetailsUser({ order }) {
             Name
           </Typography>
           <Typography color="textPrimary" variant="h7">
-            {order.user?.name}
+            {order.user?.firstName} {order.user?.lastName}
           </Typography>
         </Stack>
 
@@ -42,7 +42,7 @@ export function DetailsUser({ order }) {
             Phone Number
           </Typography>
           <Typography color="textPrimary" variant="h7">
-            {order.user?.phone}
+            {order.user?.phone ?? "N/A"}
           </Typography>
         </Stack>
       </Stack>

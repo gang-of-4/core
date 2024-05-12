@@ -37,7 +37,7 @@ export default async function handler(req, res) {
         return res.status(200).json(data);
       }
 
-      data.user = { authData };
+      data.user = authData;
     }
 
     return res.status(200).json(data);
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     const token = req.headers.authorization;
     const { id } = req.query;
     const body = req.body;
-    
+
     const respone = await fetch(`${process.env.ORDERS_API_URL}/${id}/status`, {
       method: "PATCH",
       headers: {

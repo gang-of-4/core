@@ -32,17 +32,7 @@ const getStatusColor = (status) => {
 };
 
 export const OrdersListTable = (props) => {
-  const {
-    onPageChange,
-    onRowsPerPageChange,
-    page,
-    orders,
-    ordersCount,
-    rowsPerPage,
-    hasUpdatedOrders,
-    setHasUpdatedOrders,
-    ...other
-  } = props;
+  const { orders, ...other } = props;
 
   return (
     <div {...other}>
@@ -83,7 +73,9 @@ export const OrdersListTable = (props) => {
                     </TableCell>
                     <TableCell width="35%">
                       <Typography variant="subtitle2">
-                        {order.user?.name ?? "Not Found"}
+                        {order.user
+                          ? `${order.user.firstName} ${order.user.lastName}`
+                          : "Not Found"}
                       </Typography>
                     </TableCell>
                     <TableCell>

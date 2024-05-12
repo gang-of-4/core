@@ -96,15 +96,15 @@ const Page = () => {
                 </Breadcrumbs>
               </Stack>
             </Stack>
-            <Card>
-              <CardContent>
-                {order && <DetailsAmountStatus order={order} />}
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent>
-                {order && (
-                  <>
+            {order && (
+              <>
+                <Card>
+                  <CardContent>
+                    <DetailsAmountStatus order={order} />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent>
                     <DetailsUser order={order} />
                     {!order.user && (
                       <Typography
@@ -118,12 +118,16 @@ const Page = () => {
                         User not found
                       </Typography>
                     )}
-                  </>
-                )}
-              </CardContent>
-            </Card>
-            <Card>{order && <OrderDetails order={order} />}</Card>
-            <Card>{order && <OrderAddress order={order} />}</Card>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <OrderDetails order={order} />
+                </Card>
+                <Card>
+                  <OrderAddress order={order} />
+                </Card>
+              </>
+            )}
           </Stack>
         </Container>
       </Box>
