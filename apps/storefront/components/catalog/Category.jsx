@@ -15,6 +15,7 @@ import { ArrowCircleRight } from "@untitled-ui/icons-react";
 import React from "react";
 import { config } from "ui/config";
 import { capitalize } from "@/utils/format-string";
+import ItemsList from "./items/ItemsList";
 
 function getHierarchy(category) {
   if (category.parent) {
@@ -23,7 +24,7 @@ function getHierarchy(category) {
   return [category];
 }
 
-export default function Category({ category }) {
+export default function Category({ category, items }) {
   const router = useRouter();
   const { setAppliedFilters } = useItems();
 
@@ -117,6 +118,9 @@ export default function Category({ category }) {
           <div>
             <Typography variant="body1">{category.description}</Typography>
           </div>
+          <Stack>
+            <ItemsList items={items} />
+          </Stack>
         </Stack>
       </Grid>
     </>

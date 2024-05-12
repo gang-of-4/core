@@ -16,6 +16,20 @@ async function getCategory(id) {
   return data;
 }
 
+async function getItems() {
+  const res = await fetch(`${process.env.CATALOG_API_URL}/items`, {
+    next: { revalidate: 0 },
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch");
+  }
+
+  return data;
+}
+
 async function getCategoryMedia(category) {
   const media = {};
   if (category.banner) {
@@ -63,12 +77,14 @@ export async function generateMetadata({ params }) {
 export default async function page({ params }) {
   const category = await getCategory(params.id);
   const categoryMedia = await getCategoryMedia(category);
+  const items = await getItems();
   return (
     <Category
       category={{
         ...category,
         ...categoryMedia,
       }}
+      items={items}
     />
   );
 }
