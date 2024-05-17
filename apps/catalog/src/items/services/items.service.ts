@@ -165,11 +165,14 @@ export class ItemsService {
 
     return Promise.all(
       items.map(async (item) => {
-        const media = await lastValueFrom(
-          this.mediaService.GetManyMedia({
-            ids: item.images.map((entry) => entry.mediaId),
-          }),
-        );
+        let media = { payload: [] };
+        if (item.images && item.images.length > 0) {
+          media = await lastValueFrom(
+            this.mediaService.GetManyMedia({
+              ids: item.images.map((entry) => entry.mediaId),
+            }),
+          );
+        }
         return new ItemEntity({
           ...item,
           images: media.payload,
@@ -209,11 +212,17 @@ export class ItemsService {
         throw new NotFoundException();
       });
 
-    const media = await lastValueFrom(
-      this.mediaService.GetManyMedia({
-        ids: item.images.map((entry) => entry.mediaId),
-      }),
-    );
+    let media = {
+      payload: [],
+    };
+
+    if (item.images && item.images.length > 0) {
+      media = await lastValueFrom(
+        this.mediaService.GetManyMedia({
+          ids: item.images.map((entry) => entry.mediaId),
+        }),
+      );
+    }
 
     return new ItemEntity({
       ...item,
@@ -256,11 +265,17 @@ export class ItemsService {
       },
     });
 
-    const media = await lastValueFrom(
-      this.mediaService.GetManyMedia({
-        ids: item.images.map((entry) => entry.mediaId),
-      }),
-    );
+    let media = {
+      payload: [],
+    };
+
+    if (item.images && item.images.length > 0) {
+      media = await lastValueFrom(
+        this.mediaService.GetManyMedia({
+          ids: item.images.map((entry) => entry.mediaId),
+        }),
+      );
+    }
 
     return new ItemEntity({
       ...item,

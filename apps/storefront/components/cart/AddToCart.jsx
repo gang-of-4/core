@@ -123,6 +123,7 @@ export default function AddToCart({ activeItem, isVariant }) {
           color="primary"
           onClick={handleAddToCart}
           disabled={!!error || !activeItem || loading}
+          data-test="add-to-cart"
         >
           {loading ? "Adding..." : `Add to ${capitalize(config.cart.name)}`}
         </Button>
@@ -155,6 +156,7 @@ export default function AddToCart({ activeItem, isVariant }) {
               component={NextLink}
               href={`/auth/login?returnTo=${pathname}`}
               variant="contained"
+              data-test="cart-dialog-login"
             >
               Sign In
             </Button>

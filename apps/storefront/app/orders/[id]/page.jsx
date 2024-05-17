@@ -7,7 +7,7 @@ export const metadata = {
   title: `${config.platformName} | Order Details`,
 };
 
-export default async function page({ params }) {
+export default function page({ params }) {
   return (
     <AuthGuard role="customer">
       <OrderPage orderId={params.id} />

@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { CartItemEntity } from './cartItem.entity';
-import { AddressEntity } from './address.entity';
 import { Cart } from '@prisma/client/cart';
 
 export class CartEntity implements Cart {
@@ -11,15 +10,6 @@ export class CartEntity implements Cart {
   @ApiProperty()
   @Exclude()
   userId: string;
-
-  @ApiProperty()
-  paymentMethodId?: string;
-
-  @Exclude()
-  addressId: string;
-
-  @ApiProperty()
-  address?: AddressEntity;
 
   @ApiProperty({ type: CartItemEntity, isArray: true, nullable: true })
   @Type(() => CartItemEntity)
