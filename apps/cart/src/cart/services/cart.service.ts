@@ -52,7 +52,6 @@ export class CartService {
         },
       })),
       isAvailable: false,
-      address: null,
       cartItems: [],
     });
   }
@@ -163,7 +162,6 @@ export class CartService {
       return new CartEntity({
         ...cart,
         isAvailable: false,
-        address: null,
         cartItems: [],
       });
     }
