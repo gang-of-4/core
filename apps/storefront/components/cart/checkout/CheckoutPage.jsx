@@ -70,7 +70,7 @@ const Page = () => {
         if (data?.redirectUrl) {
           router.push(data.redirectUrl);
         } else {
-          router.push("/orders");
+          router.push("/orders?checkout=true");
         }
       } catch (error) {
         console.error("Error during checkout:", error);

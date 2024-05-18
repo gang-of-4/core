@@ -15,6 +15,8 @@ import { OrdersListSearch } from "./OrdersListSearch";
 import { OrdersListTable } from "./OrdersListTable";
 import { capitalize } from "@/utils/format-string";
 import { config } from "ui/config";
+import { useSearchParams } from "next/navigation";
+import { useCart } from "@/contexts/CartContext";
 
 const useSearch = () => {
   const [search, setSearch] = useState({
@@ -35,7 +37,13 @@ export default function OrdersPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user, isInitialized } = useAuth();
+  const { checkout } = useCart();
   const { search, updateSearch } = useSearch();
+
+  const searchParams = useSearchParams();
+  const hasCheckedOut = searchParams.get("checkout");
+
+  console.log("hasCheckedOut", hasCheckedOut);
 
   useEffect(() => {
     const interval = setTimeout(() => {
@@ -44,8 +52,12 @@ export default function OrdersPage() {
       }
     }, 500);
 
+    if (hasCheckedOut) {
+      checkout();
+    }
+
     return () => clearInterval(interval);
-  }, [isInitialized, user, search]);
+  }, [isInitialized, user, search, hasCheckedOut]);
 
   async function fetchOrders(search) {
     setLoading(true);
