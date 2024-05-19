@@ -1,5 +1,4 @@
 export const config = {
-  organization: "",
   platformName: "Cars4Sale",
   platformDescription: "Cars4Sale is a platform for buying and selling cars",
   version: "0.1.1",
