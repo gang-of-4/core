@@ -14,11 +14,13 @@ const ActionType = {
   INITIALIZE: "INITIALIZE",
   SET_CART: "SET_CART",
   CLEAR_CART: "CLEAR_CART",
+  CHECKOUT: "CHECKOUT",
 };
 
 const initialState = {
   cart: {},
   isInitialized: false,
+  checkedOut: false,
 };
 
 const reducer = (state, action) => {
@@ -28,6 +30,7 @@ const reducer = (state, action) => {
         ...state,
         cart: action.payload,
         isInitialized: true,
+        checkedOut: false,
       };
     case ActionType.SET_CART:
       return {
@@ -38,6 +41,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         cart: {},
+      };
+    case ActionType.CHECKOUT:
+      return {
+        ...state,
+        checkedOut: true,
       };
     default:
       return state;
@@ -64,7 +72,7 @@ export function CartProvider({ children }) {
     if (isAuthInitialized && !isAuthenticated) {
       dispatch({ type: ActionType.CLEAR_CART });
     }
-  }, [isAuthInitialized, user, isAuthenticated]);
+  }, [isAuthInitialized, user, isAuthenticated, state.checkedOut]);
 
   const initialize = useCallback(async () => {
     try {
@@ -171,6 +179,10 @@ export function CartProvider({ children }) {
     dispatch({ type: ActionType.CLEAR_CART });
   }, [dispatch]);
 
+  const checkout = useCallback(async () => {
+    dispatch({ type: ActionType.CHECKOUT });
+  }, [dispatch]);
+
   return (
     <CartContext.Provider
       value={{
@@ -179,6 +191,7 @@ export function CartProvider({ children }) {
         modifyCartItem,
         removeCartItem,
         clearCart,
+        checkout,
       }}
     >
       {children}

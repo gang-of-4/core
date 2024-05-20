@@ -39,7 +39,7 @@ export default function LandingPage() {
                 fontWeight: 500,
               }}
             >
-              {config.store.desciption}
+              {config.store.description}
             </Typography>
             <Stack
               alignItems="center"

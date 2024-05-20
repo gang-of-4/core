@@ -44,8 +44,6 @@ export async function PATCH(request, { params }) {
 
     const mediaIds = formData.getAll('mediaIds');
 
-    console.log('mediaIds', mediaIds);
-
     await Promise.all(images.map(async (image) => {
 
         const mediaFormData = new FormData();

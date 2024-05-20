@@ -30,6 +30,7 @@ export default function CategoryCard({ name, image, id }) {
               backgroundSize: "cover",
               backgroundPosition: "center",
               height: 200,
+              width: 150,
               display: "flex",
               alignItems: "flex-end",
               color: "white",

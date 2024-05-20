@@ -48,7 +48,7 @@ export default function OrderAddress({ address }) {
               <Typography variant="body2">{address?.city}</Typography>
             </Stack>
             <Stack direction="row" spacing={1}>
-              <Typography variant="body2">Stree:</Typography>
+              <Typography variant="body2">Street:</Typography>
               <Typography variant="body2">{address?.street}</Typography>
             </Stack>
           </Stack>

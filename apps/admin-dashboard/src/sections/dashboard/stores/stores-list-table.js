@@ -48,8 +48,6 @@ export const StoresListTable = (props) => {
   } = props;
   const [currentStore, setCurrentStore] = useState(null);
 
-  console.log("StoresListTable", stores);
-
   const handleStoreToggle = useCallback((storeId) => {
     setCurrentStore((prevStoreId) => {
       if (prevStoreId === storeId) {

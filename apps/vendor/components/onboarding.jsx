@@ -142,7 +142,7 @@ export default function Page() {
                             }}
                             className={classes.cardText}
                           >
-                            {config.store.individual.desciption}
+                            {config.store.individual.description}
                           </Typography>
                         </button>
                       </span>
@@ -167,7 +167,7 @@ export default function Page() {
                         }}
                         className={classes.cardText}
                       >
-                        {config.store.individual.desciption}
+                        {config.store.individual.description}
                       </Typography>
                     </button>
                   )}
@@ -195,7 +195,7 @@ export default function Page() {
                         }}
                         className={classes.cardText}
                       >
-                        {config.store.business.desciption}
+                        {config.store.business.description}
                       </Typography>
                     </button>
                   </Link>

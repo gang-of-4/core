@@ -94,8 +94,6 @@ export default function AddItem({
     const { values } = formik;
     setLoading(true);
 
-    console.log("values", values?.variants);
-
     const formData = new FormData();
     values.images.forEach((image) => {
       formData.append("images", image);

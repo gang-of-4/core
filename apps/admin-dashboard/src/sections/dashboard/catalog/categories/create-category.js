@@ -124,7 +124,7 @@ export function CategoryCreateForm({ categories }) {
                   !!(formik.touched.parentId && formik.errors.parentId)
                 }
               >
-                <InputLabel id="categories-label">Categories</InputLabel>
+                <InputLabel id="categories-label">Parent</InputLabel>
                 <Select
                   labelId="categories-label"
                   name="parentId"
