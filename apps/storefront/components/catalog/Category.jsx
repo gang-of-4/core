@@ -1,20 +1,7 @@
 "use client";
-import { useItems } from "@/contexts/ItemsContext";
-import {
-  Box,
-  Button,
-  Grid,
-  Link,
-  Stack,
-  SvgIcon,
-  Typography,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Box, Divider, Grid, Link, Stack, Typography } from "@mui/material";
 import NextLink from "next/link";
-import { ArrowCircleRight } from "@untitled-ui/icons-react";
 import React from "react";
-import { config } from "ui/config";
-import { capitalize } from "@/utils/format-string";
 import ItemsList from "./items/ItemsList";
 
 function getHierarchy(category) {
@@ -25,17 +12,7 @@ function getHierarchy(category) {
 }
 
 export default function Category({ category, items }) {
-  const router = useRouter();
-  const { setAppliedFilters } = useItems();
-
   const hierarchy = getHierarchy(category);
-
-  function handleClick() {
-    setAppliedFilters({
-      ["Category"]: [category],
-    });
-    router.push("/catalog/items");
-  }
 
   return (
     <>
@@ -62,12 +39,7 @@ export default function Category({ category, items }) {
 
       <Grid item xs={12}>
         <Stack spacing={4}>
-          <Stack
-            spacing={2}
-            direction={"row"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
+          <Stack spacing={2} direction={"row"} alignItems={"center"}>
             <Stack spacing={2} direction={"row"} alignItems={"center"}>
               {category.logo?.url && (
                 <Box
@@ -102,22 +74,11 @@ export default function Category({ category, items }) {
                 )}
               </Stack>
             </Stack>
-            <Button
-              variant="contained"
-              onClick={handleClick}
-              endIcon={
-                <SvgIcon>
-                  <ArrowCircleRight />
-                </SvgIcon>
-              }
-              style={{ backgroundColor: "#2970FF" }}
-            >
-              Browse {category.name} {capitalize(config.catalog.item.plural)}
-            </Button>
           </Stack>
           <div>
             <Typography variant="body1">{category.description}</Typography>
           </div>
+          <Divider />
           <Stack>
             <ItemsList items={items} />
           </Stack>

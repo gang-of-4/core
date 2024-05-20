@@ -75,7 +75,15 @@ export class CategoriesService {
         .findUniqueOrThrow({
           where: { id, deletedAt: null },
           include: {
-            parent: true,
+            parent: {
+              include: {
+                parent: {
+                  include: {
+                    parent: true,
+                  },
+                },
+              },
+            },
           },
         })
         .catch(() => {
