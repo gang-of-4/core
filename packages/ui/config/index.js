@@ -43,15 +43,15 @@ export const config = {
     plural: "garages",
     individual: {
       name: "personal garage",
-      desciption:
+      description:
         "Personal Garages are designed to meet personal offerings of cars.",
     },
     business: {
       name: "car dealership",
-      desciption:
+      description:
         "Car Dealerships are designed to meet branding and professional requirements, as well as the needs of establishments with a variety of cars.",
     },
-    desciption: "Garages are designed to meet the needs of car sellers. They can be used to showcase cars, manage orders, and more. Join us and create your own garage today!",
+    description: "Garages are designed to meet the needs of car sellers. They can be used to showcase cars, manage orders, and more. Join us and create your own garage today!",
   },
   catalog: {
     name: "catalog",
