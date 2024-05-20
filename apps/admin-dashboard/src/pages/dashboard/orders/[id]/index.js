@@ -52,8 +52,6 @@ const Page = () => {
   const id = router.query.id;
   const order = useOrder(id);
 
-  console.log("ORDER", order);
-
   return (
     <>
       <Head>

@@ -43,8 +43,6 @@ export default function OrdersPage() {
   const searchParams = useSearchParams();
   const hasCheckedOut = searchParams.get("checkout");
 
-  console.log("hasCheckedOut", hasCheckedOut);
-
   useEffect(() => {
     const interval = setTimeout(() => {
       if (isInitialized && user?.id) {
