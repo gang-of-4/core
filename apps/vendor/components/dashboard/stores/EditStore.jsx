@@ -69,22 +69,30 @@ export default function EditStore({ unformattedStore }) {
                 <SvgIcon sx={{ mr: 1 }}>
                   <ArrowLeftIcon />
                 </SvgIcon>
-                <Typography variant="subtitle2">Back to {capitalize(config.store.name)}</Typography>
+                <Typography variant="subtitle2">
+                  Back to {capitalize(config.store.name)}
+                </Typography>
               </Link>
             </Box>
-            <CardHeader sx={{ pb: 0 }} title={`Edit ${capitalize(config.store.business.name)}`} />
+            <CardHeader
+              sx={{ pb: 0 }}
+              title={`Edit ${capitalize(config.store.business.name)}`}
+            />
 
             <CardContent>
               {store ? (
                 <EditStoreForm store={store} />
               ) : (
                 <Stack
-                    alignItems="center"
-                    justifyContent="center"
-                    sx={{width: "100%"}}
-                    spacing={2}
+                  alignItems="center"
+                  justifyContent="center"
+                  sx={{ width: "100%" }}
+                  spacing={2}
                 >
-                  <AtomicSpinner atomSize={200} />
+                  <AtomicSpinner
+                    atomSize={200}
+                    electronColorPalette={["#C90000", "#F75C5C", "#FF8787"]}
+                  />
                   <Typography variant="h6" align="center">
                     Loading...
                   </Typography>

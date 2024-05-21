@@ -22,7 +22,7 @@ export default function LandingPage() {
         <Container maxWidth={"lg"}>
           <Box maxWidth="sm">
             <Typography variant="h1" sx={{ mb: 2 }}>
-              Create your own {config.store.name} in&nbsp;
+              Become a {config.store.name} in&nbsp;
               <Typography
                 component="span"
                 color="primary.main"

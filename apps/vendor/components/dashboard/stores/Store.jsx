@@ -140,7 +140,7 @@ export default function Store({ unformattedStore }) {
                       </SvgIcon>
                     }
                     variant="contained"
-                    style={{ backgroundColor: "#2970FF" }}
+                    style={{ backgroundColor: "#FF2929" }}
                     component={NextLink}
                     href={`${store?.id}/edit`}
                     data-test="edit-store-button"

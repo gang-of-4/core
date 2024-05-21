@@ -47,7 +47,7 @@ export default function ImportItems() {
                     <Button
                         variant="contained"
                         component="label"
-                        style={{ backgroundColor: '#2970FF' }}
+                        style={{ backgroundColor: '#FF2929' }}
                         startIcon={<CloudUploadIcon />}
                     >
                         {
