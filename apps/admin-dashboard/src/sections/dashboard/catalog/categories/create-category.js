@@ -153,7 +153,7 @@ export function CategoryCreateForm({ categories }) {
                   fullWidth
                   size="large"
                   sx={{ mt: 2 }}
-                  style={{ backgroundColor: "#2970FF" }}
+                  style={{ backgroundColor: "#FF2929" }}
                   startIcon={<CloudUploadIcon />}
                 >
                   {selectedBannerFileName
@@ -184,7 +184,7 @@ export function CategoryCreateForm({ categories }) {
                   fullWidth
                   size="large"
                   sx={{ mt: 2 }}
-                  style={{ backgroundColor: "#2970FF" }}
+                  style={{ backgroundColor: "#FF2929" }}
                   startIcon={<CloudUploadIcon />}
                 >
                   {selectedLogoFileName

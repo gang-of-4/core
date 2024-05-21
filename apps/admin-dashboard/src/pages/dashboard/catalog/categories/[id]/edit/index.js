@@ -88,7 +88,7 @@ const Page = () => {
                 </Typography>
               </Link>
             </Box>
-            <CardHeader sx={{ pb: 0 }} title={`Edit Category: `} />
+            <CardHeader sx={{ pb: 0 }} title={`Edit ${capitalize(config.catalog.category.name)}`} />
             <CardContent>
               {category && categories && (
                 <CategoryEditForm category={category} categories={categories} />

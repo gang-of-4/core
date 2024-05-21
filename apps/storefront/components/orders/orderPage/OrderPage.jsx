@@ -65,7 +65,10 @@ export default function OrderPage({ orderId }) {
             spacing={2}
             sx={{ minHeight: "100%" }}
           >
-            <AtomicSpinner atomSize={300} />
+            <AtomicSpinner
+              atomSize={300}
+              electronColorPalette={["#C90000", "#F75C5C", "#FF8787"]}
+            />
             <h1>Loading... please wait</h1>
           </Stack>
         )}

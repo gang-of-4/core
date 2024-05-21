@@ -14,22 +14,22 @@ const withAlphas = (color) => {
 export const neutral = {
   50: "#F8F9FA",
   100: "#F3F4F6",
-  200: "#E5E7EB",
-  300: "#D2D6DB",
-  400: "#9DA4AE",
-  500: "#6C737F",
-  600: "#4D5761",
-  700: "#2F3746",
-  800: "#1C2536",
-  900: "#111927",
+  200: "#EBE5E5",
+  300: "#DBD2D2",
+  400: "#AE9D9D",
+  500: "#7F6C6C",
+  600: "#614D4D",
+  700: "#462F2F",
+  800: "#361C1C",
+  900: "#271111",
 };
 
 export const blue = withAlphas({
-  lightest: "#F5F8FF",
-  light: "#EBEFFF",
-  main: "#2970FF",
-  dark: "#004EEB",
-  darkest: "#00359E",
+  lightest: "#FFF5F5",
+  light: "#FFEBEB",
+  main: "#FF2929",
+  dark: "#EB0000",
+  darkest: "#9E0000",
   contrastText: "#FFFFFF",
 });
 

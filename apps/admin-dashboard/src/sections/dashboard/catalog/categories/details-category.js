@@ -1,4 +1,6 @@
-import { Stack, Typography } from "@mui/material";
+import { Link, Stack, Typography } from "@mui/material";
+import { paths } from "../../../../paths";
+import NextLink from "next/link";
 
 export function CategoryDetails({ category }) {
   return (
@@ -22,9 +24,17 @@ export function CategoryDetails({ category }) {
           <Typography color="textPrimary" variant="h6">
             Parent
           </Typography>
-          <Typography color="textPrimary">
-            {category?.parent?.name || "None"}
-          </Typography>
+          {category?.parent ? (
+            <Link
+              color="textPrimary"
+              component={NextLink}
+              href={`${paths.dashboard.catalog.categories.index}/${category?.parent?.id}`}
+            >
+              {category?.parent?.name}
+            </Link>
+          ) : (
+            <Typography color="textPrimary">None</Typography>
+          )}
         </Stack>
 
         <Stack spacing={2}>

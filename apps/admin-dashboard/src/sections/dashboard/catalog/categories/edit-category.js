@@ -155,12 +155,11 @@ export function CategoryEditForm({ category, categories }) {
             <Stack spacing={3} sx={{ width: "100%" }}>
               <Stack>
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   component="label"
                   fullWidth
                   size="large"
                   sx={{ mt: 2 }}
-                  style={{ backgroundColor: "#2970FF" }}
                   startIcon={<CloudUploadIcon />}
                 >
                   {selectedBannerFileName
@@ -186,12 +185,11 @@ export function CategoryEditForm({ category, categories }) {
               </Stack>
               <Stack>
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   component="label"
                   fullWidth
                   size="large"
                   sx={{ mt: 2 }}
-                  style={{ backgroundColor: "#2970FF" }}
                   startIcon={<CloudUploadIcon />}
                 >
                   {selectedLogoFileName

@@ -139,7 +139,7 @@ export default function Page() {
                     sx={{ mt: 2 }}
                     type="submit"
                     variant="contained"
-                    style={{ backgroundColor: "#2970FF" }}
+                    style={{ backgroundColor: "#FF2929" }}
                   >
                     Login
                   </Button>
