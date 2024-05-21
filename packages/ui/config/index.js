@@ -1,6 +1,7 @@
 export const config = {
-  platformName: "Cars4Sale",
-  platformDescription: "Cars4Sale is a platform for buying and selling cars",
+  platformName: "Med Equip Hub",
+  platformDescription:
+    "Med Equip Hub is a platform for buying and selling medical equipment.",
   version: "0.1.1",
   about: {
     name: "about",
@@ -39,25 +40,26 @@ export const config = {
     ],
   },
   store: {
-    name: "garage",
-    plural: "garages",
+    name: "supplier",
+    plural: "suppliers",
     individual: {
-      name: "personal garage",
+      name: "individual supplier",
       description:
-        "Personal Garages are designed to meet personal offerings of cars.",
+        "Individual Suppliers are designed to meet personal offerings of medical equipment.",
     },
     business: {
-      name: "car dealership",
+      name: "medical supplier",
       description:
-        "Car Dealerships are designed to meet branding and professional requirements, as well as the needs of establishments with a variety of cars.",
+        "Medical Suppliers are designed to meet branding and professional requirements, as well as the needs of establishments with a variety of medical equipment.",
     },
-    description: "Garages are designed to meet the needs of car sellers. They can be used to showcase cars, manage orders, and more. Join us and create your own garage today!",
+    description:
+      "Suppliers are designed to meet the needs of sellers of medical equipment. They can be used to showcase medical equipment, manage orders, and more. Join us and start selling medical equipment today!",
   },
   catalog: {
     name: "catalog",
     item: {
-      name: "car",
-      plural: "cars",
+      name: "equipment",
+      plural: "equipment",
     },
     category: {
       name: "category",
