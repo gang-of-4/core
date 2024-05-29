@@ -43,7 +43,7 @@ export default function VariantsForm({ formik, optionGroups, draftItemId, isDisa
         const filteredArray = optionsToSend.filter(item => item !== undefined && item !== null && item?.length > 0);
 
         const { data } = await fetchApi({
-            url: `/vendor/api/catalog/items/${draftItemId}/generate-variants`,
+            url: `/api/catalog/items/${draftItemId}/generate-variants`,
             options: {
                 method: 'POST',
                 body: JSON.stringify({

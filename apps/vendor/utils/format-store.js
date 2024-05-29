@@ -22,7 +22,7 @@ export async function formatStore({ store, user }) {
         if (store?.businessStore?.logo) {
             try{
                 const { data } = await fetchApi({
-                    url: `/vendor/api/media/${store.businessStore.logo}`,
+                    url: `/api/media/${store.businessStore.logo}`,
                     includeToken: false
                 });
                 store.businessStore.logo = data;

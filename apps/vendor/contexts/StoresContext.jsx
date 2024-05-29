@@ -70,7 +70,7 @@ export const StoresProvider = ({ children }) => {
 
         try {
             const { data } = await fetchApi({
-                url: `/vendor/api/stores/vendor/${id}`,
+                url: `/api/stores/vendor/${id}`,
                 options: {
                     method: 'GET',
                 },
@@ -90,7 +90,7 @@ export const StoresProvider = ({ children }) => {
 
     const createIndividualStore = useCallback(async (vendorId) => {
         const { data } = await fetchApi({
-            url: `/vendor/api/stores/individual`,
+            url: `/api/stores/individual`,
             options: {
                 method: 'POST',
                 headers: {
@@ -129,7 +129,7 @@ export const StoresProvider = ({ children }) => {
         formData.append('ownerNationalId', ownerNationalId);
 
         const { data } = await fetchApi({
-            url: `/vendor/api/stores/business`,
+            url: `/api/stores/business`,
             options: {
                 method: 'POST',
                 body: formData,
@@ -149,7 +149,7 @@ export const StoresProvider = ({ children }) => {
 
     const updateBusinessStore = useCallback(async ({ storeId, store }) => {
         const { data } = await fetchApi({
-            url: `/vendor/api/stores/business/${storeId}`,
+            url: `/api/stores/business/${storeId}`,
             options: {
                 method: 'PATCH',
                 headers: {
@@ -177,7 +177,7 @@ export const StoresProvider = ({ children }) => {
 
     const deleteStore = useCallback(async (storeId) => {
         const { data } = await fetchApi({
-            url: `/vendor/api/stores/${storeId}`,
+            url: `/api/stores/${storeId}`,
             options: {
                 method: 'DELETE',
             },

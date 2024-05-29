@@ -16,7 +16,7 @@ const EditItem = ({ storeId, itemId, categories, optionGroups }) => {
 
     async function fetchItem() {
         const { data, error } = await fetchApi({
-            url: `/vendor/api/catalog/items/${itemId}`,
+            url: `/api/catalog/items/${itemId}`,
             options: {
                 method: 'GET',
                 headers: {

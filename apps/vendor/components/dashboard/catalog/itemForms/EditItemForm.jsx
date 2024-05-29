@@ -108,7 +108,7 @@ export default function EditItemForm({ storeId, item, categories, optionGroups }
 
         try {
             await fetchApi({
-                url: `/vendor/api/catalog/items/${item.id}`,
+                url: `/api/catalog/items/${item.id}`,
                 options: {
                     method: 'PATCH',
                     body: formData,

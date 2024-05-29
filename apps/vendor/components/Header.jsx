@@ -16,7 +16,7 @@ export default function Header({ children }) {
           sx={{
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'top center',
-            backgroundImage: 'url("/vendor/assets/gradient-bg.svg")',
+            backgroundImage: 'url("/assets/gradient-bg.svg")',
             pt: '120px',
             height: '100vh'
           }}

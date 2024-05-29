@@ -118,7 +118,7 @@ export function AuthProvider(props) {
     const signIn = useCallback(async (request) => {
         const { email, password } = request;
         const { data, loading, error } = await fetchApi({
-            url: '/vendor/api/auth/login',
+            url: '/api/auth/login',
             options: {
                 method: 'POST',
                 headers: {
@@ -179,7 +179,7 @@ export function AuthProvider(props) {
         }
 
         await fetchApi({
-            url: '/vendor/api/auth/register',
+            url: '/api/auth/register',
             options: {
                 method: 'POST',
                 headers: {

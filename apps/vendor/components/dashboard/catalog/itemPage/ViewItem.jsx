@@ -58,7 +58,7 @@ const ViewItem = ({ storeId, itemId }) => {
 
     async function fetchItem(itemId) {
         const { data, error } = await fetchApi({
-            url: `/vendor/api/catalog/items/${itemId}`,
+            url: `/api/catalog/items/${itemId}`,
             options: {
                 method: 'GET',
                 headers: {

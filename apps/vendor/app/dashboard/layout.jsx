@@ -114,7 +114,7 @@ export default function Layout({ children }) {
           auth={auth}
           options={options}
           sections={sections}
-          bgUrl={"/vendor/assets/gradient-bg.svg"}
+          bgUrl={"/assets/gradient-bg.svg"}
         >
           {children}
         </DashboardLayout>

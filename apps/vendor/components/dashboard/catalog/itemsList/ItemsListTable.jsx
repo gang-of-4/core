@@ -56,7 +56,7 @@ export const ItemsListTable = ({
     async function handleDelete(itemId) {
         try {
             await fetchApi({
-                url: `/vendor/api/catalog/items/${itemId}`,
+                url: `/api/catalog/items/${itemId}`,
                 options: {
                     method: 'DELETE'
                 }

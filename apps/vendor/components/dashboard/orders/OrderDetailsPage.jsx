@@ -33,7 +33,7 @@ export default function OrderDetailsPage({ orderId, storeId }) {
     setLoading(true);
     try {
       const { data } = await fetchApi({
-        url: `/vendor/api/orders/${orderId}`,
+        url: `/api/orders/${orderId}`,
       });
 
       setOrder(data);

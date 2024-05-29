@@ -113,7 +113,7 @@ export default function AddItem({
 
     try {
       await fetchApi({
-        url: `/vendor/api/catalog/items/${draftItemId}`,
+        url: `/api/catalog/items/${draftItemId}`,
         options: {
           method: "PATCH",
           body: formData,

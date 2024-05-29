@@ -59,7 +59,7 @@ const Page = ({ items, storeId }) => {
   async function fetchItems(search) {
     try {
       const { data } = await fetchApi({
-        url: `/vendor/api/catalog/items?store_id=${storeId}&q=${search.filters.name}&status=${search.filters.status}`,
+        url: `/api/catalog/items?store_id=${storeId}&q=${search.filters.name}&status=${search.filters.status}`,
         options: {
           method: 'GET',
           headers: {
@@ -90,7 +90,7 @@ const Page = ({ items, storeId }) => {
   async function handleAddItem() {
     setLoading(true);
     const { data } = await fetchApi({
-      url: `/vendor/api/catalog/items`,
+      url: `/api/catalog/items`,
       options: {
         method: 'POST',
         body: JSON.stringify({

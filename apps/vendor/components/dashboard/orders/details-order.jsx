@@ -48,7 +48,7 @@ export function OrderDetails({ order, storeId }) {
 
     try {
       await fetchApi({
-        url: `/vendor/api/orders/${order.id}/items/${orderItemId}?storeId=${storeId}`,
+        url: `/api/orders/${order.id}/items/${orderItemId}?storeId=${storeId}`,
         options: {
           method: "PATCH",
           body: JSON.stringify({ status: newStatus }),
