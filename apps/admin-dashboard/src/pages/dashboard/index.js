@@ -69,7 +69,7 @@ const Page = () => {
                     },
                   }}
                 >
-                  <img src="/admin/assets/iconly/iconly-glass-info.svg" />
+                  <img src="/assets/iconly/iconly-glass-info.svg" />
                 </Box>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography color="primary.main" variant="overline">

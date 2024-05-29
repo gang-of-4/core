@@ -10,7 +10,7 @@ class StoresApi {
     let stores;
     try {
       const { data: returnedStores } = await fetchApi({
-        url: '/admin/api/stores',
+        url: '/api/stores',
         options: {
           method: 'GET',
         }
@@ -58,7 +58,7 @@ class StoresApi {
     let store;
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/stores/${id}`,
+        url: `/api/stores/${id}`,
         options: {
           method: 'GET',
         }
@@ -76,7 +76,7 @@ class StoresApi {
 
     try {
       const { data: updatedStore } = await fetchApi({
-        url: `/admin/api/stores/${id}`,
+        url: `/api/stores/${id}`,
         options: {
           method: 'PATCH',
           headers: {
@@ -97,7 +97,7 @@ class StoresApi {
 
     try {
       const { data: updatedStore } = await fetchApi({
-        url: `/admin/api/stores/business/${id}`,
+        url: `/api/stores/business/${id}`,
         options: {
           method: 'PATCH',
           headers: {
@@ -116,7 +116,7 @@ class StoresApi {
   async deletStore(id) {
     try {
       await fetchApi({
-        url: `/admin/api/stores/${id}`,
+        url: `/api/stores/${id}`,
         options: {
           method: 'DELETE',
         }

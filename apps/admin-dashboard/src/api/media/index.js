@@ -5,7 +5,7 @@ class MediaApi {
     let media;
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/media/${id}`,
+        url: `/api/media/${id}`,
         options: {
           method: "GET",
         },

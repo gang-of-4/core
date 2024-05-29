@@ -6,7 +6,7 @@ class OrdersApi {
 
     try {
       const { data } = await fetchApi({
-        url: "/admin/api/orders",
+        url: "/api/orders",
         options: {
           method: "GET",
         },
@@ -31,7 +31,7 @@ class OrdersApi {
 
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/orders/${id}`,
+        url: `/api/orders/${id}`,
         options: {
           method: "GET",
         },
@@ -48,7 +48,7 @@ class OrdersApi {
 
     try {
       const { data: updatedOrder } = await fetchApi({
-        url: `/admin/api/orders/${id}`,
+        url: `/api/orders/${id}`,
         options: {
           method: "PATCH",
           headers: {

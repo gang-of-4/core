@@ -5,7 +5,6 @@ const config = {
   experimental: {
     appDir: false
   },
-  basePath: '/admin',
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

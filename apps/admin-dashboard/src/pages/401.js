@@ -37,7 +37,7 @@ const Page = () => {
             <Box
               alt="Not authorized"
               component="img"
-              src="/admin/assets/errors/error-401.png"
+              src="/assets/errors/error-401.png"
               sx={{
                 height: 'auto',
                 maxWidth: '100%',

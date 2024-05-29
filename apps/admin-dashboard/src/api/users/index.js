@@ -5,7 +5,7 @@ class UsersApi {
     let user;
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/users/${id}`,
+        url: `/api/users/${id}`,
         options: {
           method: "GET",
         },

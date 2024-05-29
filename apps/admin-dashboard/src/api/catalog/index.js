@@ -4,7 +4,7 @@ class CatalogApi {
   // Items
   async getItems({ q, status }) {
     let items;
-    let url = "/admin/api/catalog/items";
+    let url = "/api/catalog/items";
 
     q && (url += `?q=${q}`);
     q && status && (url += `&status=${status}`);
@@ -40,7 +40,7 @@ class CatalogApi {
     let data;
     try {
       const { data: returnedData } = await fetchApi({
-        url: `/admin/api/catalog/items/${id}`,
+        url: `/api/catalog/items/${id}`,
         options: {
           method: "PATCH",
           headers: {
@@ -71,7 +71,7 @@ class CatalogApi {
     let data;
     try {
       const { data: returnedData } = await fetchApi({
-        url: `/admin/api/catalog/items/${id}/status`,
+        url: `/api/catalog/items/${id}/status`,
         options: {
           method: "PATCH",
           headers: {
@@ -94,7 +94,7 @@ class CatalogApi {
     let item;
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/catalog/items/${id}`,
+        url: `/api/catalog/items/${id}`,
         options: {
           method: "DELETE",
           headers: {
@@ -115,7 +115,7 @@ class CatalogApi {
     let options;
     try {
       const { data } = await fetchApi({
-        url: "/admin/api/catalog/options/group",
+        url: "/api/catalog/options/group",
         options: {
           method: "GET",
         },
@@ -137,7 +137,7 @@ class CatalogApi {
     let option;
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/catalog/options/group/${id}`,
+        url: `/api/catalog/options/group/${id}`,
         options: {
           method: "GET",
         },
@@ -153,7 +153,7 @@ class CatalogApi {
     let data;
     try {
       const { data: returnedData } = await fetchApi({
-        url: `/admin/api/catalog/options/group`,
+        url: `/api/catalog/options/group`,
         options: {
           method: "POST",
           headers: {
@@ -178,7 +178,7 @@ class CatalogApi {
     let options;
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/catalog/options/group/${id}`,
+        url: `/api/catalog/options/group/${id}`,
         options: {
           method: "DELETE",
           headers: {
@@ -198,7 +198,7 @@ class CatalogApi {
     let data;
     try {
       const { data: returnedData } = await fetchApi({
-        url: `/admin/api/catalog/options/group/${id}`,
+        url: `/api/catalog/options/group/${id}`,
         options: {
           method: "PATCH",
           headers: {
@@ -223,7 +223,7 @@ class CatalogApi {
     let data;
     try {
       const { data: returnedData } = await fetchApi({
-        url: "/admin/api/catalog/options",
+        url: "/api/catalog/options",
         options: {
           method: "POST",
           headers: {
@@ -249,7 +249,7 @@ class CatalogApi {
     let categories;
     try {
       const { data } = await fetchApi({
-        url: "/admin/api/catalog/categories",
+        url: "/api/catalog/categories",
         options: {
           method: "GET",
         },
@@ -271,7 +271,7 @@ class CatalogApi {
     let category;
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/catalog/categories/${id}`,
+        url: `/api/catalog/categories/${id}`,
         options: {
           method: "GET",
         },
@@ -288,7 +288,7 @@ class CatalogApi {
     let data;
     try {
       const { data: returnedData } = await fetchApi({
-        url: `/admin/api/catalog/categories`,
+        url: `/api/catalog/categories`,
         options: {
           method: "POST",
           headers: {
@@ -316,7 +316,7 @@ class CatalogApi {
     let categories;
     try {
       const { data } = await fetchApi({
-        url: `/admin/api/catalog/categories/${id}`,
+        url: `/api/catalog/categories/${id}`,
         options: {
           method: "DELETE",
           headers: {
@@ -336,7 +336,7 @@ class CatalogApi {
     let data;
     try {
       const { data: returnedData } = await fetchApi({
-        url: `/admin/api/catalog/categories/${id}`,
+        url: `/api/catalog/categories/${id}`,
         options: {
           method: "PATCH",
           headers: {

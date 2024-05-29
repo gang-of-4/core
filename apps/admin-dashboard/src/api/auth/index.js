@@ -6,7 +6,7 @@ class AuthApi {
 
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await fetch(`/admin/api/auth/login`, {
+        const res = await fetch(`/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

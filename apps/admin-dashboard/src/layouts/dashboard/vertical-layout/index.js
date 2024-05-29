@@ -63,7 +63,7 @@ export const VerticalLayout = (props) => {
     children,
     sections,
     navColor,
-    bgUrl = "/admin/assets/gradient-bg.svg",
+    bgUrl = "/assets/gradient-bg.svg",
   } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
   const mobileNav = useMobileNav();

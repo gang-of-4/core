@@ -41,7 +41,7 @@ const Page = () => {
             <Box
               alt="Not found"
               component="img"
-              src="/admin/assets/errors/error-404.png"
+              src="/assets/errors/error-404.png"
               sx={{
                 height: "auto",
                 maxWidth: "100%",
