@@ -30,7 +30,7 @@ export default function BecomeVendor() {
           }}
         >
           Start by &nbsp;
-          <Link href="vendor/auth/signup" target="_blank">
+          <Link href="https://vendor.cars4sale.tech/auth/signup" target="_blank">
             creating a vendor account
           </Link>
           .

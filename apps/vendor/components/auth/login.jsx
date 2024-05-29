@@ -162,7 +162,7 @@ export default function Page() {
                   Not a vendor? Login as a
                   &nbsp;
                   <Link
-                    href={`${paths.auth.login}`}
+                    href={`https://cars4sale.tech/auth/login`}
                     underline="hover"
                     variant="subtitle2"
                   >

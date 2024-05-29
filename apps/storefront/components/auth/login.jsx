@@ -148,7 +148,7 @@ export default function Page() {
                   <Typography color="text.secondary" variant="body2">
                     Not a customer? Login as a &nbsp;
                     <Link
-                      href={`${paths.absolutePaths.vendor}${paths.auth.login}`}
+                      href={`https://vendor.cars4sale.tech/auth/login`}
                       underline="hover"
                       variant="subtitle2"
                     >
