@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, Item } from '@prisma/client/catalog';
 import { Expose, Transform, Type } from 'class-transformer';
-import { Decimal } from '@prisma/client/catalog/runtime/library';
+import { Prisma } from '@prisma/client/catalog';
 import { CategoryEntity } from '../../categories/entities/category.entity';
 import { OptionGroupEntity } from './option-group.entity';
 import { VariantEntity } from './variant.entity';
@@ -24,10 +24,10 @@ export class ItemEntity implements Item {
   @Expose({ groups: ['http'] })
   quantity: number;
 
-  @ApiProperty({ type: Decimal })
+  @ApiProperty({ type: Prisma.Decimal })
   @Transform(({ value }) => value?.toNumber())
   @Type(() => Number)
-  price: Decimal;
+  price: Prisma.Decimal;
 
   @ApiProperty()
   description: string;

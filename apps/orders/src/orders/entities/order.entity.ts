@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, Order } from '@prisma/client/orders';
-import { Decimal } from '@prisma/client/orders/runtime/library';
+import { Prisma } from '@prisma/client/orders';
 import { Exclude, Transform, Type } from 'class-transformer';
 import { AddressEntity } from './address.entity';
 import { ItemEntity } from './item.entity';
@@ -18,12 +18,12 @@ export class OrderEntity implements Order {
   @ApiProperty()
   @Transform(({ value }) => value?.toNumber())
   @Type(() => Number)
-  total: Decimal;
+  total: Prisma.Decimal;
 
   @ApiProperty()
   @Transform(({ value }) => value?.toNumber())
   @Type(() => Number)
-  subtotal: Decimal;
+  subtotal: Prisma.Decimal;
 
   @ApiProperty()
   status: $Enums.OrderStatus;

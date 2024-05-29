@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { Decimal } from '@prisma/client/catalog/runtime/library';
+import { Prisma } from '@prisma/client/cart';
 import { OptionGroup } from '../common/interfaces/catalog.interface';
 import { ItemEntity } from './item.entity';
 
@@ -11,7 +11,7 @@ export class VariantEntity {
   @ApiProperty()
   sku: string;
 
-  @ApiProperty({ type: Decimal, nullable: true })
+  @ApiProperty({ type: Prisma.Decimal, nullable: true })
   @Type(() => Number)
   price: number;
 

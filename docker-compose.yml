@@ -46,6 +46,78 @@ services:
         depends_on:
             db:
                 condition: service_healthy
+    media:
+        container_name: media
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
+            args:
+                - NAME=media
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        networks:
+            - core-network
+        ports:
+            - '3005:3005'
+        depends_on:
+            db:
+                condition: service_healthy
+    orders:
+        container_name: orders
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
+            args:
+                - NAME=orders
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        networks:
+            - core-network
+        ports:
+            - '3008:3008'
+        depends_on:
+            db:
+                condition: service_healthy
+            kafka:
+                condition: service_healthy
+    cart:
+        container_name: cart
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
+            args:
+                - NAME=cart
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        networks:
+            - core-network
+        ports:
+            - '3007:3007'
+        depends_on:
+            db:
+                condition: service_healthy
+            kafka:
+                condition: service_healthy
+    catalog:
+        container_name: catalog
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
+            args:
+                - NAME=catalog
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        networks:
+            - core-network
+        ports:
+            - '3006:3006'
+        depends_on:
+            db:
+                condition: service_healthy
     db:
         container_name: db
         restart: unless-stopped

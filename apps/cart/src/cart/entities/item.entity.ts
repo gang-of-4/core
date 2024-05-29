@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { Decimal } from '@prisma/client/cart/runtime/library';
+import { Prisma } from '@prisma/client/cart';
 import {
   Category,
   Media,
@@ -26,7 +26,7 @@ export class ItemEntity {
   @Transform(({ value }) => value?.toNumber())
   quantity: number;
 
-  @ApiProperty({ type: Decimal })
+  @ApiProperty({ type: Prisma.Decimal })
   @Type(() => Number)
   price: any;
 

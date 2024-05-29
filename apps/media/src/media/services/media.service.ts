@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { decodeToken } from 'common/shared.utils';
+import { decodeToken } from '../../common/shared.utils';
 import { PrismaService } from '../../prisma/prisma.service';
 import { S3Service } from '../../aws/services/s3.service';
 import * as crypto from 'crypto';

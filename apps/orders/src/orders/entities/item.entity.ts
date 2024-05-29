@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, Item } from '@prisma/client/orders';
-import { Decimal } from '@prisma/client/orders/runtime/library';
+import { Prisma } from '@prisma/client/orders';
 import { Exclude, Transform, Type } from 'class-transformer';
 import { ImageEntity } from './item-image.entity';
 import { OptionGroupEntity } from './option-group.entity';
@@ -18,10 +18,10 @@ export class ItemEntity implements Item {
   @ApiProperty()
   quantity: number;
 
-  @ApiProperty({ type: Decimal })
+  @ApiProperty({ type: Prisma.Decimal })
   @Transform(({ value }) => value?.toNumber())
   @Type(() => Number)
-  price: Decimal;
+  price: Prisma.Decimal;
 
   @ApiProperty()
   @Type(() => ImageEntity)
