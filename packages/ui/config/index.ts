@@ -1,4 +1,68 @@
-export const config = {
+export interface Iconfig {
+  platformName: string;
+  platformDescription: string;
+  version: string;
+  about: {
+    name: string;
+  };
+  contact: {
+    name: string;
+  };
+  footer: {
+    sections: {
+      title: string;
+      items: {
+        title: string;
+        path: string;
+      }[];
+    }[];
+  };
+  store: {
+    name: string;
+    plural: string;
+    individual: {
+      name: string;
+      description: string;
+    };
+    business: {
+      name: string;
+      description: string;
+    };
+    description: string;
+  };
+  catalog: {
+    name: string;
+    item: {
+      name: string;
+      plural: string;
+    };
+    category: {
+      name: string;
+      plural: string;
+    };
+    option: {
+      name: string;
+      plural: string;
+    };
+    optionGroup: {
+      name: string;
+      plural: string;
+      example: string;
+    };
+    variant: {
+      name: string;
+    };
+  };
+  cart: {
+    name: string;
+  };
+  order: {
+    name: string;
+    plural: string;
+  };
+}
+
+export const config: Iconfig = {
   platformName: "Cars4Sale",
   platformDescription: "Cars4Sale is a platform for buying and selling cars",
   version: "0.1.1",
