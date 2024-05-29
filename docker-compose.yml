@@ -142,7 +142,7 @@ services:
             - core-network
         restart: unless-stopped
         healthcheck:
-            test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server kafka:9092 --topic hc --create --if-not-exists && kafka-topics && .sh --bootstrap-server kafka:9092 --topic hc --describe"]
+            test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server kafka:9092 --topic hc --create --if-not-exists && kafka-topics.sh --bootstrap-server kafka:9092 --topic hc --describe"]
             start_period: 10s
             interval: 5s
             timeout: 10s
