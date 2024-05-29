@@ -1,4 +1,46 @@
-module.exports = {
+export interface ThemeConfig {
+    content: string[];
+    theme: {
+      extend: {
+        colors: {
+          primary: {
+            DEFAULT: string;
+            50: string;
+            100: string;
+            200: string;
+            300: string;
+            400: string;
+          };
+          secondary: {
+            50: string;
+            100: string;
+            200: string;
+            300: string;
+            400: string;
+            500: string;
+            600: string;
+            700: string;
+            800: string;
+            900: string;
+          };
+          success: {
+            DEFAULT: string;
+          };
+          warning: {
+            DEFAULT: string;
+          };
+          error: {
+            DEFAULT: string;
+          };
+          info: {
+            DEFAULT: string;
+          };
+        };
+      };
+    };
+  }
+
+export default <ThemeConfig>{
     content: [
         "./pages/**/*.{js,ts,jsx,tsx}",
         './components/**/*.{js,ts,jsx,tsx}',
