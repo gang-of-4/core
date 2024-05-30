@@ -17,7 +17,7 @@ import { join } from 'path';
         options: {
           package: 'catalog',
           protoPath: join(__dirname, '../../src/grpc/catalog.proto'),
-          url: 'localhost:50052',
+          url: 'catalog:50052',
           loader: {
             longs: Number,
             arrays: true,
