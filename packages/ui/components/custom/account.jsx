@@ -10,23 +10,11 @@ export function Account({ app, auth, accountPopoverButtons }) {
 
   const pathname = usePathname();
 
-  const url = getUrl(app);
-
-  function getUrl(app) {
-    switch (app) {
-      case "vendor":
-        return `vendor`;
-      case "admin":
-        return `admin`;
-      default:
-        return "";
-    }
-  }
 
   const Else = pathname.includes("/auth/") ? null : (
     <Button
       component={NextLink}
-      href={`${url}${paths.auth.login}`}
+      href={`${paths.auth.login}`}
       size={mdUp ? "medium" : "small"}
       variant="contained"
     >
